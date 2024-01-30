@@ -243,13 +243,11 @@
     <ClCompile Include="bitvec64.cpp" />
     <ClCompile Include="blast6out.cpp" />
     <ClCompile Include="blosum62.cpp" />
-    <ClCompile Include="catdict.cpp" />
     <ClCompile Include="chainer1.cpp" />
     <ClCompile Include="chainer.cpp" />
     <ClCompile Include="chimehit.cpp" />
     <ClCompile Include="chunksearcher.cpp" />
     <ClCompile Include="cigar.cpp" />
-    <ClCompile Include="classifier.cpp" />
     <ClCompile Include="closedrefsink.cpp" />
     <ClCompile Include="clusterfast.cpp" />
     <ClCompile Include="clustersink.cpp" />
@@ -388,7 +386,6 @@
     <ClCompile Include="trees.c" />
     <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="uchime2denovo.cpp" />
-    <ClCompile Include="uchimefinder.cpp" />
     <ClCompile Include="udbbuild.cpp" />
     <ClCompile Include="udbusortedsearcherbig.cpp" />
     <ClCompile Include="udbcodedsearcher.cpp" />
@@ -400,7 +397,6 @@
     <ClCompile Include="udbstats.cpp" />
     <ClCompile Include="udbusortedsearcher.cpp" />
     <ClCompile Include="ungappedblast.cpp" />
-    <ClCompile Include="unifrac.cpp" />
     <ClCompile Include="unoise3.cpp" />
     <ClCompile Include="uparsesink.cpp" />
     <ClCompile Include="uparsedp.cpp" />

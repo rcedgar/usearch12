@@ -284,9 +284,6 @@
     <ClCompile Include="uparsesink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="chunksearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pcb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -434,9 +431,6 @@
     <ClCompile Include="bitmapsearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="uchimefinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="quarts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -456,9 +450,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="interp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="unifrac.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="newick.cpp">
@@ -497,9 +488,6 @@
     <ClCompile Include="getu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classifier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="roccer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -516,9 +504,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mannwhitney.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="catdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wordcounter.cpp">
@@ -591,6 +576,9 @@
       <Filter>C Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxtruncate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chunksearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
