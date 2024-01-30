@@ -512,9 +512,6 @@
     <ClCompile Include="gzipfileio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="samseqsource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gspbag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
