@@ -389,7 +389,6 @@
     <ClCompile Include="userout.cpp" />
     <ClCompile Include="viterbifastbandmem.cpp" />
     <ClCompile Include="viterbifastmem.cpp" />
-    <ClCompile Include="viterbilingap.cpp" />
     <ClCompile Include="whisker.cpp" />
     <ClCompile Include="wordcounter.cpp" />
     <ClCompile Include="wordparams.cpp" />
