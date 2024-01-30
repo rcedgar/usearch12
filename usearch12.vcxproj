@@ -421,7 +421,6 @@
     <ClCompile Include="testglobalalign.cpp" />
     <ClCompile Include="testsixaligner.cpp" />
     <ClCompile Include="testsortindexes.cpp" />
-    <ClCompile Include="threeway.cpp" />
     <ClCompile Include="timing.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />

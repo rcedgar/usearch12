@@ -503,9 +503,6 @@
     <ClCompile Include="bimeradp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="threeway.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sintaxsearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

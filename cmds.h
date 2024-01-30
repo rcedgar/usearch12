@@ -67,17 +67,10 @@ A(search_exact)
 A(search_global)
 A(search_local)
 
-//A(search_oligodb)
-//A(search_pcr)
-//A(search_pcr2)
-//A(search_peptidedb)
-//A(search_phix)
-
 A(sortbylength)
 A(sortbysize)
 
 A(test)
-A(three_way)
 A(ublast)
 
 A(uchime3_denovo)
