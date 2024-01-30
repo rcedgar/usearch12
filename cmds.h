@@ -4,9 +4,6 @@
 
 A(version)
 
-//A(allpairs_global)
-//A(allpairs_local)
-
 A(cluster_fast)
 A(cluster_otus)
 A(cluster_smallmem)
@@ -31,16 +28,6 @@ A(sintax_summary)
 A(udb2fasta)
 A(udbinfo)
 A(udbstats)
-
-//A(pairs_global)
-//A(pairs_local)
-//
-//A(search_exact)
-//A(search_global)
-//A(search_local)
-//
-//A(sortbylength)
-//A(sortbysize)
 
 A(ublast)
 
