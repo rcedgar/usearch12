@@ -9,7 +9,6 @@
 #include "dbtype.h"
 #include "dbhitsink.h"
 #include "closedrefsink.h"
-#include "diffprofsink.h"
 #include "uparsesink.h"
 #include "qscoresink.h"
 #include "otutabsink.h"
@@ -184,7 +183,6 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	Log("Search time %u secs (%s)\n", SearchSecs, SecsToStr(SearchSecs));
 
 	DBHitSink::OnAllDone();
-	DiffProfSink::OnAllDone();
 	UParseSink::CloseOutputFiles();
 	SintaxSearcher::CloseOutputFiles();
 	QScoreSink::OnAllDone();

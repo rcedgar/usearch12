@@ -75,7 +75,6 @@ STR_OPT(mockout)		//
 STR_OPT(nbcout)			//
 STR_OPT(rdpout)			//
 STR_OPT(diffstabbedout)	//
-STR_OPT(diffprofout)	//
 STR_OPT(qout)			//
 STR_OPT(ampout)			//
 STR_OPT(ampoutq)		//

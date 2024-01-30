@@ -24,7 +24,6 @@
 #include "pcrsink.h"
 #include "dbhitsink.h"
 #include "qscoresink.h"
-#include "diffprofsink.h"
 #include "otutabsink.h"
 #include "closedrefsink.h"
 #include "constaxsink.h"
@@ -419,13 +418,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		SeqDB *DB = searcher->GetSeqDB();
 		DBHitSink *dbhitsink = new DBHitSink(DB, Local, QueryIsNucleo, DBIsNucleo);
 		HM.AddSink(dbhitsink);
-		}
-
-	if (optset_diffprofout)
-		{
-		SeqDB *DB = searcher->GetSeqDB();
-		DiffProfSink *sink = new DiffProfSink(DB, Local, QueryIsNucleo, DBIsNucleo);
-		HM.AddSink(sink);
 		}
 
 	if (optset_qout)

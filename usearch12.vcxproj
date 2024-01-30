@@ -282,7 +282,6 @@
     <ClCompile Include="derepresult.cpp" />
     <ClCompile Include="detrainer.cpp" />
     <ClCompile Include="diagbox.cpp" />
-    <ClCompile Include="diffprofsink.cpp" />
     <ClCompile Include="distmx.cpp" />
     <ClCompile Include="distmxsplit.cpp" />
     <ClCompile Include="drawtree.cpp" />
