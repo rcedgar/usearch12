@@ -74,11 +74,4 @@ void OTUTableSink::OnAllDone()
 		Progress("Writing %s\n", FileName.c_str());
 		m_OT->ToJsonFile(FileName);
 		}
-
-	if (optset_mothur_shared_out)
-		{
-		const string FileName = opt(mothur_shared_out);
-		Progress("Writing %s\n", FileName.c_str());
-		m_OT->ToMothurSharedFile(FileName);
-		}
 	}

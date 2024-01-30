@@ -407,9 +407,6 @@
     <ClCompile Include="getfastqs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mothur.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bitmapsearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

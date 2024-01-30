@@ -901,12 +901,11 @@ void DerepResult::Write()
 	ToUC(opt(uc));
 	ToTabbed(opt(tabbedout));
 
-	if (optset_otutabout || optset_biomout || optset_mothur_shared_out)
+	if (optset_otutabout || optset_biomout)
 		{
 		OTUTable OT;
 		ToOTUTable(OT);
 		OT.ToTabbedFile(opt(otutabout));
 		OT.ToJsonFile(opt(biomout));
-		OT.ToMothurSharedFile(opt(mothur_shared_out));
 		}
 	}

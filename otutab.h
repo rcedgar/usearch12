@@ -33,7 +33,6 @@ public:
 // File output
 	void ToTabbedFile(const string &FileName, bool AsFreqs = false) const;
 	void ToJsonFile(const string &FileName) const;
-	void ToMothurSharedFile(const string &FileName) const;
 
 // Transform table
 	//void Rarify(unsigned Size, bool DeleteIfSmaller, unsigned &DeletedCount);

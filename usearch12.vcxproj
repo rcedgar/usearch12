@@ -323,7 +323,6 @@
     <ClCompile Include="mergepre.cpp" />
     <ClCompile Include="mergestats.cpp" />
     <ClCompile Include="mergethread.cpp" />
-    <ClCompile Include="mothur.cpp" />
     <ClCompile Include="mx.cpp" />
     <ClCompile Include="myutils.cpp" />
     <ClCompile Include="newick.cpp" />
