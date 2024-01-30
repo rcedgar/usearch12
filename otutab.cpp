@@ -1887,11 +1887,6 @@ void cmd_otutab_merge()
 	OTOut.ToTabbedFile(opt(output));
 	}
 
-void cmd_otutab_subsample()
-	{
-	Die("otutab_subsample not supported, use otutab_rare");
-	}
-
 void cmd_qiimemap2otutab()
 	{
 	OTUTable OT;
