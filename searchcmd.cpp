@@ -46,24 +46,9 @@ void cmd_usearch_local()
 	Search(CMD_usearch_local, opt(usearch_local), opt(db));
 	}
 
-void cmd_search_global()
-	{
-	Search(CMD_search_global, opt(search_global), opt(db));
-	}
-
-void cmd_search_local()
-	{
-	Search(CMD_search_local, opt(search_local), opt(db));
-	}
-
 void cmd_uparse_ref()
 	{
 	Search(CMD_uparse_ref, opt(uparse_ref), opt(db));
-	}
-
-void cmd_search_exact()
-	{
-	Search(CMD_search_exact, opt(search_exact), opt(db));
 	}
 
 void cmd_sintax()

@@ -31,9 +31,6 @@ Terminator::Terminator(CMD Cmd)
 		break;
 
 	case CMD_ublast:
-	case CMD_search_global:
-	case CMD_search_local:
-	case CMD_search_exact:
 	case CMD_sintax:
 		m_MaxAccepts = 0;
 		m_MaxRejects = 0;

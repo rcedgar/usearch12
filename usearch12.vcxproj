@@ -230,7 +230,6 @@
     <ClCompile Include="adler32.c" />
     <ClCompile Include="accepter.cpp" />
     <ClCompile Include="alignresult.cpp" />
-    <ClCompile Include="allpairs.cpp" />
     <ClCompile Include="alnheuristics.cpp" />
     <ClCompile Include="alnout.cpp" />
     <ClCompile Include="alnparams.cpp" />
@@ -376,7 +375,6 @@
     <ClCompile Include="setnucmx.cpp" />
     <ClCompile Include="sintaxsummary.cpp" />
     <ClCompile Include="sintaxsearcher.cpp" />
-    <ClCompile Include="sortlen.cpp" />
     <ClCompile Include="strdict.cpp" />
     <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />

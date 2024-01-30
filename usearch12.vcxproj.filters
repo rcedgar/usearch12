@@ -134,9 +134,6 @@
     <ClCompile Include="setnucmx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sortlen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="substmx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,9 +207,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="localaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="allpairs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lockobj.cpp">

@@ -182,7 +182,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 	case CMD_ublast:
 	case CMD_usearch_local:
-	case CMD_search_local:
 		{
 		float DBSize = 0.0;
 		if (optset_ka_dbsize)
@@ -198,11 +197,10 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 	case CMD_ublast:
 	case CMD_usearch_local:
-	case CMD_search_local:
 		{
 		if (Cmd == CMD_ublast)
 			aligner = new LocalAligner(AT_LocalPos);
-		else if (Cmd == CMD_usearch_local || Cmd == CMD_search_local)
+		else if (Cmd == CMD_usearch_local)
 			{
 			unsigned WordLength = opt(hspw);
 			if (DBIsNucleo)
@@ -225,17 +223,9 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		break;
 		}
 
-	case CMD_search_exact:
-		{
-		asserta(aligner == 0);
-		aligner = new ExactAligner;
-		break;
-		}
-
 	case CMD_usearch_global:
 	case CMD_otutab:
 	case CMD_closed_ref:
-	case CMD_search_global:
 	case CMD_uparse_ref:
 	case CMD_cluster_otus:
 		{
@@ -348,21 +338,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		else
 			asserta(false);
 		searcher = US;
-		break;
-		}
-
-	case CMD_search_global:
-	case CMD_search_local:
-		{
-		SeqDBSearcher *SS = new SeqDBSearcher(seqdb);
-		searcher = SS;
-		break;
-		}
-
-	case CMD_search_exact:
-		{
-		ExactSearcher *SS = new ExactSearcher(seqdb);
-		searcher = SS;
 		break;
 		}
 
