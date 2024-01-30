@@ -70,7 +70,6 @@ A(search_local)
 A(sortbylength)
 A(sortbysize)
 
-A(test)
 A(ublast)
 
 A(uchime3_denovo)

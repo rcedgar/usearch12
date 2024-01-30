@@ -12,13 +12,6 @@
 #include <Windows.h>
 #endif
 
-void cmd_test()
-	{
-	//void Test();
-	//opt(test);
-	//Test();
-	}
-
 bool g_LowerCaseWarning = false;
 
 int main(int argc, char **argv)
