@@ -426,8 +426,6 @@
     <ClCompile Include="seqinfo.cpp" />
     <ClCompile Include="seqsource.cpp" />
     <ClCompile Include="setnucmx.cpp" />
-    <ClCompile Include="sign.cpp" />
-    <ClCompile Include="sinapssearcher.cpp" />
     <ClCompile Include="sintaxsummary.cpp" />
     <ClCompile Include="sintaxsearcher.cpp" />
     <ClCompile Include="sortlen.cpp" />

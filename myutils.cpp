@@ -2128,9 +2128,7 @@ void PrintCopyright(FILE *f)
 		return;
 
 	fprintf(f, "(C) Copyright 2013-18 Robert C. Edgar, all rights reserved.\n");
-	fprintf(f, "https://drive5.com/usearch\n");
-	extern const char *GetSig();
-	fprintf(f, "\n%s\n\n", GetSig());
+	fprintf(f, "https://drive5.com/usearch\n\n");
 	}
 
 void PrintCmdLine(FILE *f)
