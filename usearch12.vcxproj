@@ -337,7 +337,6 @@
     <ClCompile Include="pattern.cpp" />
     <ClCompile Include="pcb.cpp" />
     <ClCompile Include="prime.cpp" />
-    <ClCompile Include="profile.cpp" />
     <ClCompile Include="quarts.cpp" />
     <ClCompile Include="scorepath.cpp" />
     <ClCompile Include="search.cpp" />
