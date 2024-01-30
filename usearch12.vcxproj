@@ -342,7 +342,6 @@
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
     <ClCompile Include="searcher.cpp" />
-    <ClCompile Include="seed.cpp" />
     <ClCompile Include="segmaskseq.cpp" />
     <ClCompile Include="seqdb.cpp" />
     <ClCompile Include="seqdbfromfasta.cpp" />

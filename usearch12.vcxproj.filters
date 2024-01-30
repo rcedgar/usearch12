@@ -113,9 +113,6 @@
     <ClCompile Include="searcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="seed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="segmaskseq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
