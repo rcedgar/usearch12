@@ -252,7 +252,6 @@
     <ClCompile Include="bitvec64.cpp" />
     <ClCompile Include="blast6out.cpp" />
     <ClCompile Include="blosum62.cpp" />
-    <ClCompile Include="cachetest.cpp" />
     <ClCompile Include="calcdistmx.cpp" />
     <ClCompile Include="calcdistmxa.cpp" />
     <ClCompile Include="calcdistmxu.cpp" />
@@ -284,7 +283,6 @@
     <ClCompile Include="constaxstr.cpp" />
     <ClCompile Include="count.cpp" />
     <ClCompile Include="countsort.cpp" />
-    <ClCompile Include="countwordsch.cpp" />
     <ClCompile Include="coveragemap.cpp" />
     <ClCompile Include="cpubench.cpp" />
     <ClCompile Include="crc32.c" />
