@@ -307,7 +307,6 @@
     <ClCompile Include="fastxgetsubseq.cpp" />
     <ClCompile Include="fastaindex.cpp" />
     <ClCompile Include="fastxinfo.cpp" />
-    <ClCompile Include="fastxlearn.cpp" />
     <ClCompile Include="fastxrelabel.cpp" />
     <ClCompile Include="fastxrevcomp.cpp" />
     <ClCompile Include="fastxsplit.cpp" />

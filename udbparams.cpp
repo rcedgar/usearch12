@@ -124,10 +124,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 	{
 	switch (Algo)
 		{
-	case CMD_fastx_learn:
-		SetDefaults_GlobalUSearch(Nucleo);
-		return;
-
 	case CMD_uparse_ref:
 		SetDefaults_UChime(Nucleo);
 		return;
