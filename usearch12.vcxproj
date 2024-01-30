@@ -280,7 +280,6 @@
     <ClCompile Include="deparser.cpp" />
     <ClCompile Include="derepfull.cpp" />
     <ClCompile Include="derepresult.cpp" />
-    <ClCompile Include="detrainer.cpp" />
     <ClCompile Include="diagbox.cpp" />
     <ClCompile Include="distmx.cpp" />
     <ClCompile Include="distmxsplit.cpp" />
@@ -405,7 +404,6 @@
     <ClCompile Include="phix.cpp" />
     <ClCompile Include="filterphix.cpp" />
     <ClCompile Include="phixfinder.cpp" />
-    <ClCompile Include="poisson.cpp" />
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="profile.cpp" />
     <ClCompile Include="qscoresink.cpp" />
@@ -417,7 +415,6 @@
     <ClCompile Include="searchcmd.cpp" />
     <ClCompile Include="searcher.cpp" />
     <ClCompile Include="searchpcr2.cpp" />
-    <ClCompile Include="secant.cpp" />
     <ClCompile Include="seed.cpp" />
     <ClCompile Include="segmaskseq.cpp" />
     <ClCompile Include="seqdb.cpp" />
