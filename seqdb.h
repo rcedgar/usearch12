@@ -48,7 +48,6 @@ public:
 	bool m_Aligned;
 	bool m_IsNucleo;
 	bool m_IsNucleoSet;
-	bool m_TwoBit;
 
 	map<string, unsigned> m_LabelToSeqIndex;
 
@@ -137,8 +136,6 @@ public:
 	uint32 GetLabelBytes() const;
 
 	void GetSI(unsigned Id, SeqInfo &SI) const;
-	void GetConcatenatedTwoBit_SI(SeqInfo *SI2, const char *Label) const;
-	void GetConcatenatedTwoBit_AllocBuffer(byte **ptrSeq2, uint *ptrL) const;
 
 	unsigned GetMaxLabelLength() const;
 	unsigned GetMaxSeqLength() const;
@@ -151,7 +148,6 @@ public:
 	void FromFastx(const string &FileName, bool StripGaps = true, bool ShowProgress = true);
 	void FromFasta(const string &FileName, bool StripGaps = true, bool ShowProgress = true);
 	void FromSeqDBSubset(const SeqDB &DB, const unsigned *SeqIndexes, unsigned N);
-	void FromSeqDB2(const SeqDB &DB);
 
 	void ToFasta(const string &FileName) const;
 	void ToFasta(FILE *f) const;

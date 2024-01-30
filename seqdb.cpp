@@ -7,7 +7,7 @@
 #include "seqinfo.h"
 #include "mask.h"
 #include "sort.h"
-#include "twobit.h"
+//#include "twobit.h"
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 
@@ -110,7 +110,7 @@ SeqDB::SeqDB()
 	m_Aligned = false;
 	m_IsNucleo = false;
 	m_IsNucleoSet = false;
-	m_TwoBit = false;
+	//m_TwoBit = false;
 	}
 
 void SeqDB::InitEmpty(bool Nucleo)
@@ -261,7 +261,6 @@ void SeqDB::GetSI(unsigned Id, SeqInfo &SI) const
 	SI.m_Index = Id;
 	SI.m_IsORF = false;
 	SI.m_RevComp = false;
-	SI.m_TwoBit = m_TwoBit;
 	}
 
 bool SeqDB::GetIsNucleo()
@@ -969,36 +968,4 @@ double SeqDB::GetEE(unsigned SeqIndex) const
 void SeqDB::ToUpper()
 	{
 	Mask(MT_None);
-	}
-
-//uint g_TwoBitBytes;
-void SeqDB::FromSeqDB2(const SeqDB &DB)
-	{
-	m_FileName.clear();
-	const uint N = DB.GetSeqCount();
-	m_SeqCount = 0;
-	Alloc(N, false);
-	m_TwoBit = true;
-	m_SeqCount = N;
-	for (uint SeqIndex = 0; SeqIndex < N; ++SeqIndex)
-		{
-		const char *Label = DB.GetLabel(SeqIndex);
-		uint n = ustrlen(Label) + 1;
-		m_Labels[SeqIndex] = myalloc(char, n);
-		memcpy(m_Labels[SeqIndex], Label, n);
-
-		const byte *Seq = DB.GetSeq(SeqIndex);
-		uint L = DB.GetSeqLength(SeqIndex);
-		asserta(L > 0);
-
-		uint TwoBitBytes = TwoBit_GetBufferBytes(L);
-		//g_TwoBitBytes = TwoBitBytes;
-		//ProgressLog("\n");
-		//ProgressLog("L=%u TwoBitBytes %u\n", L, TwoBitBytes);
-		byte *Seq2 = myalloc(byte, TwoBitBytes);
-		TwoBit_Encode(Seq, L, Seq2);
-
-		m_Seqs[SeqIndex] = Seq2;
-		m_SeqLengths[SeqIndex] = L;
-		}
 	}

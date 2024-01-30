@@ -15,6 +15,7 @@ bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 
 void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 	{
+	asserta(!Circles);
 	unsigned ThreadCount = GetRequestedThreadCount();
 	DR.m_Input = &Input;
 
@@ -47,7 +48,10 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 
 		uint32 SeqHash = UINT32_MAX;
 		if (Circles)
-			SeqHash = SeqHashCircle(Seq, L);
+			{
+			asserta(false);
+			//SeqHash = SeqHashCircle(Seq, L);
+			}
 		else
 			{
 			SeqHash = SeqHash32(Seq, L);
@@ -136,7 +140,10 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 				const byte *U = Seqs[UniqueSeqIndex];
 				Eq = false;
 				if (Circles)
-					Eq = SeqEqCircle(Q, QL, U, UL);
+					{
+					asserta(false);
+					//Eq = SeqEqCircle(Q, QL, U, UL);
+					}
 				else
 					{
 					Eq = SeqEq(Q, QL, U, UL);

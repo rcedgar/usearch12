@@ -227,7 +227,6 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="adderrsq.cpp" />
     <ClCompile Include="adler32.c" />
     <ClCompile Include="alphadivtable.cpp" />
     <ClCompile Include="alphasig.cpp" />
@@ -244,7 +243,6 @@
     <ClCompile Include="alpha.cpp" />
     <ClCompile Include="alpha2.cpp" />
     <ClCompile Include="alphadivcmd.cpp" />
-    <ClCompile Include="alphadivrare.cpp" />
     <ClCompile Include="alphainfo.cpp" />
     <ClCompile Include="annot.cpp" />
     <ClCompile Include="annotator.cpp" />
@@ -252,7 +250,6 @@
     <ClCompile Include="betadiv.cpp" />
     <ClCompile Include="betadivcmd.cpp" />
     <ClCompile Include="bimeradp.cpp" />
-    <ClCompile Include="alphabit.cpp" />
     <ClCompile Include="bitmapsearcher.cpp" />
     <ClCompile Include="bitvec.cpp" />
     <ClCompile Include="bitvec64.cpp" />
@@ -314,10 +311,6 @@
     <ClCompile Include="evalue.cpp" />
     <ClCompile Include="exactaligner.cpp" />
     <ClCompile Include="exactsearcher.cpp" />
-    <ClCompile Include="extendminus.cpp" />
-    <ClCompile Include="extendminus2.cpp" />
-    <ClCompile Include="extendplus.cpp" />
-    <ClCompile Include="extendplus2.cpp" />
     <ClCompile Include="fastaexplode.cpp" />
     <ClCompile Include="fastagetseqsp.cpp" />
     <ClCompile Include="fastagetseqst.cpp" />
@@ -326,7 +319,6 @@
     <ClCompile Include="fasta_xlat.cpp" />
     <ClCompile Include="fastqfilter2.cpp" />
     <ClCompile Include="fasttiming.cpp" />
-    <ClCompile Include="fastxadderrs.cpp" />
     <ClCompile Include="fastqeestats.cpp" />
     <ClCompile Include="fastqeestats2.cpp" />
     <ClCompile Include="fastq_sra_splitpairs.cpp" />
@@ -385,13 +377,8 @@
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
     <ClCompile Include="gspbag.cpp" />
-    <ClCompile Include="kmerscanbothskip.cpp" />
-    <ClCompile Include="kmerscanskip.cpp" />
     <ClCompile Include="leila.cpp" />
-    <ClCompile Include="makeglobalchain.cpp" />
-    <ClCompile Include="makesyncmerchains.cpp" />
     <ClCompile Include="palindrome.cpp" />
-    <ClCompile Include="recursivesixaligner.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
     <ClCompile Include="gzread.c" />
@@ -406,19 +393,10 @@
     <ClCompile Include="inftrees.c" />
     <ClCompile Include="interp.cpp" />
     <ClCompile Include="json.cpp" />
-    <ClCompile Include="kmerscan.cpp" />
-    <ClCompile Include="kmerscanboth.cpp" />
     <ClCompile Include="randseq.cpp" />
+    <ClCompile Include="roccer.cpp" />
     <ClCompile Include="rotate.cpp" />
     <ClCompile Include="selfhsps.cpp" />
-    <ClCompile Include="seqdb2.cpp" />
-    <ClCompile Include="seqdbgetsi2.cpp" />
-    <ClCompile Include="seqhashcircle.cpp" />
-    <ClCompile Include="sixalignallpairs.cpp" />
-    <ClCompile Include="sixalignallpairs2.cpp" />
-    <ClCompile Include="sixalignallpairs3.cpp" />
-    <ClCompile Include="sixlcr.cpp" />
-    <ClCompile Include="sixuclust.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="lcrdata.cpp" />
@@ -478,7 +456,6 @@
     <ClCompile Include="quarts.cpp" />
     <ClCompile Include="randforest.cpp" />
     <ClCompile Include="rcemalloc.cpp" />
-    <ClCompile Include="roccer.cpp" />
     <ClCompile Include="samfilter.cpp" />
     <ClCompile Include="samout.cpp" />
     <ClCompile Include="samrange.cpp" />
@@ -505,8 +482,6 @@
     <ClCompile Include="sinapssearcher.cpp" />
     <ClCompile Include="sintaxsummary.cpp" />
     <ClCompile Include="sintaxsearcher.cpp" />
-    <ClCompile Include="sixaligner.cpp" />
-    <ClCompile Include="sixalignpair.cpp" />
     <ClCompile Include="sortlen.cpp" />
     <ClCompile Include="star.cpp" />
     <ClCompile Include="staralign.cpp" />
@@ -515,12 +490,6 @@
     <ClCompile Include="substmx.cpp" />
     <ClCompile Include="svg.cpp" />
     <ClCompile Include="svgchart.cpp" />
-    <ClCompile Include="syncmer.cpp" />
-    <ClCompile Include="syncmerindex.cpp" />
-    <ClCompile Include="syncmerscan.cpp" />
-    <ClCompile Include="syncmerscanboth.cpp" />
-    <ClCompile Include="syncmerscanbothskip.cpp" />
-    <ClCompile Include="syncmerscanskip.cpp" />
     <ClCompile Include="tabbed2otutab.cpp" />
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxbench.cpp" />
@@ -535,15 +504,6 @@
     <ClCompile Include="testglobalalign.cpp" />
     <ClCompile Include="testsixaligner.cpp" />
     <ClCompile Include="testsortindexes.cpp" />
-    <ClCompile Include="test_alignerid.cpp" />
-    <ClCompile Include="test_alignerspeed.cpp" />
-    <ClCompile Include="test_recursivealigner.cpp" />
-    <ClCompile Include="test_strat.cpp" />
-    <ClCompile Include="test_syncmerchain.cpp" />
-    <ClCompile Include="test_twobit_decode.cpp" />
-    <ClCompile Include="test_viterbitiming.cpp" />
-    <ClCompile Include="test_viterbitwobitsimple.cpp" />
-    <ClCompile Include="test_viterbitwobit.cpp" />
     <ClCompile Include="threeway.cpp" />
     <ClCompile Include="timing.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
@@ -557,17 +517,6 @@
     <ClCompile Include="clustertree.cpp" />
     <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="trimprimer.cpp" />
-    <ClCompile Include="twobit.cpp" />
-    <ClCompile Include="twobit_decode_ns.cpp" />
-    <ClCompile Include="twobit_encode.cpp" />
-    <ClCompile Include="twobit_kmerscan.cpp" />
-    <ClCompile Include="twobit_kmerscanboth.cpp" />
-    <ClCompile Include="twobit_kmerscanbothskip.cpp" />
-    <ClCompile Include="twobit_kmerscanskip.cpp" />
-    <ClCompile Include="twobit_syncmerscan.cpp" />
-    <ClCompile Include="twobit_syncmerscanboth.cpp" />
-    <ClCompile Include="twobit_syncmerscanbothskip.cpp" />
-    <ClCompile Include="twobit_syncmerscanskip.cpp" />
     <ClCompile Include="uchime2denovo.cpp" />
     <ClCompile Include="uchime2ref.cpp" />
     <ClCompile Include="uchimefinder.cpp" />
@@ -594,12 +543,9 @@
     <ClCompile Include="upclustersink.cpp" />
     <ClCompile Include="usearch_main.cpp" />
     <ClCompile Include="userout.cpp" />
-    <ClCompile Include="viterbiasp.cpp" />
     <ClCompile Include="viterbifastbandmem.cpp" />
     <ClCompile Include="viterbifastmem.cpp" />
     <ClCompile Include="viterbilingap.cpp" />
-    <ClCompile Include="viterbitwobitlingap.cpp" />
-    <ClCompile Include="viterbi_twobit.cpp" />
     <ClCompile Include="whisker.cpp" />
     <ClCompile Include="wordcounter.cpp" />
     <ClCompile Include="wordparams.cpp" />
@@ -776,7 +722,6 @@
     <ClInclude Include="sinapssearcher.h" />
     <ClInclude Include="sintaxsearcher.h" />
     <ClInclude Include="seqdb2.h" />
-    <ClInclude Include="recursivesixaligner.h" />
     <ClInclude Include="snvdata.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="sparsemx.h" />
