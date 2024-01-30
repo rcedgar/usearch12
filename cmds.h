@@ -80,8 +80,6 @@ A(udbstats)
 A(orient)
 A(pairs_global)
 A(pairs_local)
-A(sam_filter)
-A(sam_range)
 
 A(search_exact)
 A(search_global)

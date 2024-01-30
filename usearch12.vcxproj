@@ -359,6 +359,7 @@
     <ClCompile Include="interp.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="roccer.cpp" />
+    <ClCompile Include="samout.cpp" />
     <ClCompile Include="selfhsps.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
@@ -409,10 +410,6 @@
     <ClCompile Include="profile.cpp" />
     <ClCompile Include="qscoresink.cpp" />
     <ClCompile Include="quarts.cpp" />
-    <ClCompile Include="rcemalloc.cpp" />
-    <ClCompile Include="samfilter.cpp" />
-    <ClCompile Include="samout.cpp" />
-    <ClCompile Include="samrange.cpp" />
     <ClCompile Include="samrec.cpp" />
     <ClCompile Include="samseqsource.cpp" />
     <ClCompile Include="scorepath.cpp" />
