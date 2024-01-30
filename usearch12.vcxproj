@@ -269,9 +269,6 @@
     <ClCompile Include="clustersmallmem.cpp" />
     <ClCompile Include="cmd.cpp" />
     <ClCompile Include="cmdline.cpp" />
-    <ClCompile Include="codeindex.cpp" />
-    <ClCompile Include="codeindexsorter.cpp" />
-    <ClCompile Include="codeindexsorter_query.cpp" />
     <ClCompile Include="comppath.cpp" />
     <ClCompile Include="constaxf.cpp" />
     <ClCompile Include="constaxsink.cpp" />
