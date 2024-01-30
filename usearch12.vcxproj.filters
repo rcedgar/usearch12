@@ -290,9 +290,6 @@
     <ClCompile Include="uparsepretty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastqchars.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="staralign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -416,9 +413,6 @@
     <ClCompile Include="profile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastqeestats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="whisker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -477,9 +471,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxinfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastqeestats2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bitmapsearcher.cpp">

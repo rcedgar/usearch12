@@ -290,8 +290,6 @@
     <ClCompile Include="fastaseqsource.cpp" />
     <ClCompile Include="fastqfilter2.cpp" />
     <ClCompile Include="fasttiming.cpp" />
-    <ClCompile Include="fastqeestats.cpp" />
-    <ClCompile Include="fastqeestats2.cpp" />
     <ClCompile Include="fastx2qiime.cpp" />
     <ClCompile Include="fastxgetlabels.cpp" />
     <ClCompile Include="fastxgetsamplenames.cpp" />
@@ -313,7 +311,6 @@
     <ClCompile Include="fastqfilter.cpp" />
     <ClCompile Include="fastqjoin.cpp" />
     <ClCompile Include="fastqmerge.cpp" />
-    <ClCompile Include="fastqchars.cpp" />
     <ClCompile Include="fastqseqsource.cpp" />
     <ClCompile Include="fastauniquesbylabels.cpp" />
     <ClCompile Include="filetype.cpp" />
