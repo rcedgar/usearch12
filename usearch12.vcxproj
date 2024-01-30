@@ -291,7 +291,6 @@
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
-    <ClCompile Include="gspbag.cpp" />
     <ClCompile Include="mergealign.cpp" />
     <ClCompile Include="mergelogvaln.cpp" />
     <ClCompile Include="gzipfileio.cpp" />

@@ -497,9 +497,6 @@
     <ClCompile Include="gzipfileio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gspbag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="viterbilingap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
