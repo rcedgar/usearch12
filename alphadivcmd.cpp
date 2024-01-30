@@ -289,16 +289,6 @@ static double GetPx1(ADIV_METRIC Metric, const vector<float> &Values,
 	return P;
 	}
 
-void cmd_otutab_xform()
-	{
-	const string &InputFileName = opt(otutab_xform);
-	OTUTable OT;
-	OT.FromTabbedFile(InputFileName);
-	OTUTable OTx;
-	XForm(OT, OTx);
-	OTx.ToTabbedFile(opt(output));
-	}
-
 void cmd_alpha_divx()
 	{
 	const string &InputFileName = opt(alpha_divx);

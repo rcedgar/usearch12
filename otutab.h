@@ -29,7 +29,6 @@ public:
 // File input
 	void FromTabbedFile(const string &FileName);
 	void FromQiimeMapFile(const string &FileName);
-	void CheckSize() const;
 
 // File output
 	void ToTabbedFile(const string &FileName, bool AsFreqs = false) const;

@@ -183,7 +183,6 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 		++OTUIndex;
 		}
 	ProgressFileDone();
-	CheckSize();
 	}
 
 void OTUTable::FromTabbedFile(const string &FileName)
@@ -253,7 +252,6 @@ void OTUTable::FromTabbedFile(const string &FileName)
 		}
 	ProgressFileDone();
 	CloseStdioFile(f);
-	CheckSize();
 	}
 
 void OTUTable::ToTabbedFile(const string &FileName, bool AsFreqs) const
@@ -2108,121 +2106,6 @@ void cmd_otutab_binary()
 	if (optset_output)
 		OTOut.ToTabbedFile(opt(output));
 	asserta(AlreadyZero + Zeroed + Oned == OTUCount*SampleCount);
-	}
-
-void cmd_otutab_singlep()
-	{
-	OTUTable OT;
-	OT.FromTabbedFile(opt(otutab_singlep));
-	unsigned MaxN = 128;
-	if (optset_topn)
-		MaxN = opt(topn);
-	FILE *fOut = 0;
-	if (optset_output)
-		fOut = CreateStdioFile(opt(output));
-
-	Pf(fOut, "#SP");
-	Pf(fOut, "\tAvgN");
-	for (unsigned n = 1; n <= MaxN; n *= 2)
-		Pf(fOut, "\t%u", n);
-	Pf(fOut, "\n");
-
-	const unsigned SampleCount = OT.GetSampleCount();
-	const unsigned OTUCount = OT.GetOTUCount();
-
-	vector<unsigned> TotalSizes;
-	OT.GetOTUSizes(TotalSizes);
-	asserta(SIZE(TotalSizes) == OTUCount);
-
-	unsigned TotalN1 = 0;
-	unsigned TotalSum = 0;
-	for (unsigned SampleIndex = 0; SampleIndex < SampleCount; ++SampleIndex)
-		{
-		Pr(fOut, "%s", OT.GetSampleName(SampleIndex));
-		vector<unsigned> Sizes;
-		OT.GetCounts_BySample(SampleIndex, Sizes);
-		asserta(SIZE(Sizes) == OTUCount);
-
-		unsigned N1 = 0;
-		unsigned Sum = 0;
-		for (unsigned OTUIndex = 0; OTUIndex < OTUCount; ++OTUIndex)
-			{
-			unsigned Count = Sizes[OTUIndex];
-			if (Count == 1)
-				{
-				++N1;
-				++TotalN1;
-				Sum += TotalSizes[OTUIndex];
-				TotalSum += TotalSizes[OTUIndex];
-				}
-			}
-		double Avg = 0.0;
-		if (N1 > 0)
-			Avg = double(Sum)/N1;
-		Pf(fOut, "\t%.1f", Avg);
-
-		for (unsigned n = 1; n <= MaxN; n *= 2)
-			{
-			unsigned TotalSingletonCount = 0;
-			unsigned TotalGEn = 0;
-			for (unsigned OTUIndex = 0; OTUIndex < OTUCount; ++OTUIndex)
-				{
-				unsigned Count = Sizes[OTUIndex];
-				if (Count == 1)
-					{
-					++TotalSingletonCount;
-					if (TotalSizes[OTUIndex] >= n)
-						++TotalGEn;
-					}
-				}
-			double P = 0.0;
-			if (TotalSingletonCount > 0)
-				P = double(TotalGEn)/double(TotalSingletonCount);
-			Pf(fOut, "\t%.4f", P);
-			}
-		Pf(fOut, "\n");
-		}
-
-	Pr(fOut, "Total");
-	double Avg = 0.0;
-	if (TotalN1 > 0)
-		Avg = double(TotalSum)/TotalN1;
-	Pf(fOut, "\t%.1f", Avg);
-	for (unsigned n = 1; n <= MaxN; n *= 2)
-		{
-		unsigned TotalSingletonCount = 0;
-		unsigned TotalGEn = 0;
-		for (unsigned SampleIndex = 0; SampleIndex < SampleCount; ++SampleIndex)
-			{
-			vector<unsigned> Sizes;
-			OT.GetCounts_BySample(SampleIndex, Sizes);
-			for (unsigned OTUIndex = 0; OTUIndex < OTUCount; ++OTUIndex)
-				{
-				unsigned Count = Sizes[OTUIndex];
-				if (Count == 1)
-					{
-					++TotalSingletonCount;
-					if (TotalSizes[OTUIndex] >= n)
-						++TotalGEn;
-					}
-				}
-			}
-		double P = 0.0;
-		if (TotalSingletonCount > 0)
-			P = double(TotalGEn)/double(TotalSingletonCount);
-		Pf(fOut, "\t%.4f", P);
-		}
-	Pf(fOut, "\n");
-
-	CloseStdioFile(fOut);
-	}
-
-void OTUTable::CheckSize() const
-	{
-#if	BITS == 32
-	if (GetTotalCount() > 250000)
-		Die("OTU table too big for 32-bit version (max 250k reads)");
-#endif
 	}
 
 void cmd_otutab_shuffle_samples()
