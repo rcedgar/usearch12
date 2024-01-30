@@ -345,7 +345,6 @@
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
     <ClCompile Include="gspbag.cpp" />
-    <ClCompile Include="leila.cpp" />
     <ClCompile Include="palindrome.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
