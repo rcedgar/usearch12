@@ -281,10 +281,8 @@
     <ClCompile Include="constaxf.cpp" />
     <ClCompile Include="constaxsink.cpp" />
     <ClCompile Include="constaxstr.cpp" />
-    <ClCompile Include="count.cpp" />
     <ClCompile Include="countsort.cpp" />
     <ClCompile Include="coveragemap.cpp" />
-    <ClCompile Include="cpubench.cpp" />
     <ClCompile Include="crc32.c" />
     <ClCompile Include="crosser.cpp" />
     <ClCompile Include="dbhitsink.cpp" />
@@ -424,7 +422,6 @@
     <ClCompile Include="newick.cpp" />
     <ClCompile Include="objmgr.cpp" />
     <ClCompile Include="fragaligner.cpp" />
-    <ClCompile Include="omptest.cpp" />
     <ClCompile Include="orffinder.cpp" />
     <ClCompile Include="orient.cpp" />
     <ClCompile Include="otutab.cpp" />

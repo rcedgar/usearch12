@@ -262,7 +262,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_uparse_ref:
 	case CMD_uchime_denovo:
 	case CMD_cluster_otus:
-	case CMD_cpubench:
 		{
 		asserta(aligner == 0);
 		aligner = new GlobalAligner;
@@ -410,7 +409,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_search_oligodb:
 	case CMD_search_peptidedb:
 	case CMD_search_pcr:
-	case CMD_cpubench:
 		{
 		SeqDBSearcher *SS = new SeqDBSearcher(seqdb);
 		searcher = SS;
