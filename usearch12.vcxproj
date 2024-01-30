@@ -300,7 +300,6 @@
     <ClCompile Include="fastqeestats.cpp" />
     <ClCompile Include="fastqeestats2.cpp" />
     <ClCompile Include="fastx2qiime.cpp" />
-    <ClCompile Include="fastxdemux.cpp" />
     <ClCompile Include="fastxgetlabels.cpp" />
     <ClCompile Include="fastxgetsamplenames.cpp" />
     <ClCompile Include="fastagetsegs.cpp" />
