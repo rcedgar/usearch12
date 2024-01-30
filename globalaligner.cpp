@@ -39,18 +39,6 @@ AlignResult *GlobalAligner::Align()
 	IncCounter(GlobalAligner_Align);
 	asserta(m_Target != 0);
 	asserta(m_PI == 0);
-	if (optset_circles)
-		{
-		AlignResult *AR = ObjMgr::GetAlignResult();
-		bool Aligned =
-		  GlobalAlign_Circle(m_Mem, *m_Query, *m_Target, *m_AP, *m_AH, m_HF, AR);
-		if (!Aligned)
-			{
-			ObjMgr::Down(AR);
-			return 0;
-			}
-		return AR;
-		}
 
 	m_PI = ObjMgr::GetPathInfo();
 

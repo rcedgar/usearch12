@@ -96,7 +96,7 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 
 	g_DR = new DerepResult;
 	DerepResult &DR = *g_DR;
-	DerepFull(Input, DR, RevComp, opt(circles));
+	DerepFull(Input, DR, RevComp, false);
 	const unsigned UniqueCount = DR.m_ClusterCount;
 
 	SeqDB UniqueDB;

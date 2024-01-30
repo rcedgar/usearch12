@@ -347,7 +347,6 @@
     <ClCompile Include="gettandemrange2.cpp" />
     <ClCompile Include="getu.cpp" />
     <ClCompile Include="getuniquelettercount.cpp" />
-    <ClCompile Include="globalaligncircle.cpp" />
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
     <ClCompile Include="gspbag.cpp" />
@@ -368,7 +367,6 @@
     <ClCompile Include="json.cpp" />
     <ClCompile Include="randseq.cpp" />
     <ClCompile Include="roccer.cpp" />
-    <ClCompile Include="rotate.cpp" />
     <ClCompile Include="selfhsps.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />

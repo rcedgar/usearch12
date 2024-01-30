@@ -80,8 +80,6 @@ A(udb2fasta)
 A(udbinfo)
 A(udbstats)
 
-//A(omptest)
-//A(cpubench)
 A(orient)
 A(pairs_global)
 A(pairs_local)
@@ -105,9 +103,6 @@ A(three_way)
 A(ublast)
 
 A(uchime3_denovo)
-//A(uchime2_denovo)
-//A(uchime_denovo)
-//A(uchime_ref)
 
 A(unoise3)
 A(uparse_ref)
@@ -115,9 +110,6 @@ A(usearch_global)
 A(usearch_local)
 
 A(sintax)
-//A(hitax)
-//A(sinaps)
-//A(uncross)
 
 A(alpha_div)
 A(alpha_divx)
@@ -159,43 +151,12 @@ A(udb2bitvec)
 A(unbias)
 A(maxsubseq)
 
-//A(nbc_tax)
-//A(bbc_tax)
-//A(nj)
-//A(njtax)
-//A(nbc_l1o)
-//A(tree2tax)
-//A(tree_cmp)
-
-//A(channot)
-//A(fastx_mask_track)
-//A(countwordsch)
-//A(cache_test)
-//A(fastx_adderrs)
-//A(adderrsq)
 A(text_subsample)
 
 A(get_segs)
 A(self_hsps)
 
-//A(six_alignpair)
-//A(six_alignallpairs)
-//A(six_alignallpairs2)
-//A(six_alignallpairs3)
-//A(six_uclust)
-//A(six_lcr)
 A(fulldp_allpairs)
-
-//A(test_alignerid)
-//A(test_alignerspeed)
-//A(test_syncmerchain)
-
-//A(abench)
-//A(abench_fullpctid)
-//A(abench_ga)
-//A(abench_ra)
-
-A(rotate)
 
 A(term_kmer)
 

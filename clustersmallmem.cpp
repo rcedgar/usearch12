@@ -150,8 +150,6 @@ void cmd_cluster_otus()
 	{
 	if (optset_sizein || optset_sizeout)
 		Die("-sizein/out not supported");
-	if (optset_circles)
-		Die("-circles not supported, use -cluster_fast");
 	default_opt(minsize, 2);
 	ClusterSmallmem(CMD_cluster_otus, opt(cluster_otus));
 	}

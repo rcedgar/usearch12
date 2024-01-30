@@ -184,7 +184,7 @@ static void Derep(const string &FileName)
 		Die("Use -fastaout, not -output");
 
 	bool RevComp = StrandOptToRevComp(false, false);
-	bool Circles = opt(circles);
+	bool Circles = false;
 
 	SeqDB Input;
 	Input.FromFastx(FileName);
