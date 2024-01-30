@@ -12,13 +12,9 @@ A(cluster_otus)
 A(cluster_smallmem)
 A(closed_ref)
 
-A(derep_fulllength)
-
 A(calc_distmx)
 A(calc_distmxa)
 A(calc_distmx_smallmem)
-A(distmx_split_identity)
-A(calc_lcr_probs)
 
 A(fasta_explode)
 A(fasta_stripgaps)

@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="C Source Files">
+      <UniqueIdentifier>{1d92b3a9-9201-452f-8eea-8232505a434a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="accepter.cpp">
@@ -110,9 +113,6 @@
     <ClCompile Include="pattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rcemalloc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scorepath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -138,9 +138,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="setnucmx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sortlen.cpp">
@@ -233,9 +230,6 @@
     <ClCompile Include="make3way.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="writechhit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="makesearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -281,12 +275,6 @@
     <ClCompile Include="dbhitsink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="star.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="secant.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -326,28 +314,13 @@
     <ClCompile Include="treetofile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="drawtree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="treegetdistmx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="calcdistmx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="calcdistmxu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clusteragg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="agg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="clusteraggd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="getcc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pathinfo.cpp">
@@ -368,9 +341,6 @@
     <ClCompile Include="fileseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="omptest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="linereader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -378,9 +348,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="samout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="samfilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chainer1.cpp">
@@ -399,9 +366,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastqjoin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="nastout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="seqhash.cpp">
@@ -453,9 +417,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="profile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="diffprofsink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastqeestats.cpp">
@@ -527,9 +488,6 @@
     <ClCompile Include="bitmapsearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxdemux.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="uchimefinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -539,37 +497,16 @@
     <ClCompile Include="deparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="detrainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="poisson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="phix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="phixfinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="annot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="annotator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxlearn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="unoise.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="filterphix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="uchime2denovo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="uchime2ref.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chimehit.cpp">
@@ -582,9 +519,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sintaxsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="unoise2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="interp.cpp">
@@ -608,13 +542,7 @@
     <ClCompile Include="treefromagg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="treetab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="distmx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpubench.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="findgene.cpp">
@@ -632,12 +560,6 @@
     <ClCompile Include="getuniquelettercount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sinapssearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="unbias.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastxstripannots.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -647,22 +569,13 @@
     <ClCompile Include="fastx2qiime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dereppersample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="closedrefsink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alphadivrare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxrelabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastq_sra_splitpairs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxgetlabels.cpp">
@@ -677,43 +590,16 @@
     <ClCompile Include="sintaxsummary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clustertree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastxsyncpairs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="distmxsplit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tree2tax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dectree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dectreetraindata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="classifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="randforest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="otutabclassify.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crosser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="roccer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="otutabselect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tabbed2otutab.cpp">
@@ -725,55 +611,19 @@
     <ClCompile Include="strdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="taxstats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="trimprimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="searchpcr2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hitax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taxtree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="taxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bbcsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taxclean.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taxbench.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taxtune.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taxsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lcrdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="constaxsink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="njtax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="nj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="constaxf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="treecmp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mannwhitney.cpp">
@@ -806,40 +656,16 @@
     <ClCompile Include="fastxsplitn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="heatmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="samrange.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wordcounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bitvec64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="channot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="countwordsch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastagetsegs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cachetest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxadderrs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alphadiv.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="count.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adderrsq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fasttiming.cpp">
@@ -848,52 +674,10 @@
     <ClCompile Include="fastqfilter2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxmasktrack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastxtrimprimers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getsegs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hashtime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adler32.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crc32.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="deflate.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gzlib.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gzread.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="infback.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inffast.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inflate.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inftrees.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trees.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gzipfileio.cpp">
@@ -902,127 +686,13 @@
     <ClCompile Include="samseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="syncmerindex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="coveragemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="extendplus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="extendplus2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="extendminus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="extendminus2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="testsixaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alphabit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixalignpair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="syg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="twobit_kmerscanboth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_kmerscan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_syncmerscan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_syncmerscanboth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kmerscan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_encode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kmerscanboth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="syncmerscan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="syncmerscanboth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="seqdb2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_decode_ns.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="randseq.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="codeindex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="codeindexsorter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="testsortindexes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="codeindexsorter_query.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="syncmer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixuclust.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="seqdbgetsi2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixlcr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixalignallpairs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixalignallpairs2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sixalignallpairs3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="viterbi_twobit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_viterbitwobit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="recursivesixaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kmerscanskip.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_kmerscanskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kmerscanbothskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_kmerscanbothskip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gspbag.cpp">
@@ -1031,61 +701,13 @@
     <ClCompile Include="testglobalalign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="twobit_syncmerscanbothskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="twobit_syncmerscanskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="syncmerscanskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="syncmerscanbothskip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="viterbiasp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_viterbitwobitsimple.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="viterbitwobitlingap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="viterbilingap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_twobit_decode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_viterbitiming.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makeglobalchain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_recursivealigner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cigar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_strat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_alignerspeed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fulldpallpairs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_alignerid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test_syncmerchain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makesyncmerchains.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fasta_xlat.cpp">
@@ -1094,31 +716,7 @@
     <ClCompile Include="calcdistmxa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="featuretable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="featureselect1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="leila.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="seqhashcircle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="globalaligncircle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="rotate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="getglobalhsps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gettandemrange1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gettandemrange2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastaindex.cpp">
@@ -1133,9 +731,6 @@
     <ClCompile Include="fastagetseqst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="palindrome.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gethspsself.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1143,9 +738,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastalettercounts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="clustercc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxsplitseek.cpp">
@@ -1157,8 +749,41 @@
     <ClCompile Include="fastxsplitmb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clustercccentroids.cpp">
+    <ClCompile Include="unoise3.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="adler32.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crc32.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="deflate.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gzlib.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gzread.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="infback.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inffast.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inflate.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inftrees.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trees.c">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zutil.c">
+      <Filter>C Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1702,9 +1327,6 @@
     <ClInclude Include="prestonsvg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="uncrosser2mock.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="wordcounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1759,9 +1381,6 @@
     <ClInclude Include="twobitsyncmerscanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hash.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="syncmerindex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1813,9 +1432,6 @@
     <ClInclude Include="syncmer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="recursivesixaligner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="uspdata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1835,6 +1451,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="abench.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uncrosser2mock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

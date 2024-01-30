@@ -197,11 +197,6 @@ static void Derep(const string &FileName)
 	DR.Write();
 	}
 
-void cmd_derep_fulllength()
-	{
-	Die("-derep_fulllength obsolete, use -fastx_uniques");
-	}
-
 void cmd_fastx_uniques()
 	{
 	Derep(opt(fastx_uniques));

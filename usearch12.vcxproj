@@ -282,7 +282,6 @@
     <ClCompile Include="derepresult.cpp" />
     <ClCompile Include="diagbox.cpp" />
     <ClCompile Include="distmx.cpp" />
-    <ClCompile Include="distmxsplit.cpp" />
     <ClCompile Include="dustmask.cpp" />
     <ClCompile Include="estats.cpp" />
     <ClCompile Include="evalue.cpp" />
@@ -363,7 +362,6 @@
     <ClCompile Include="staralign.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
-    <ClCompile Include="lcrdata.cpp" />
     <ClCompile Include="linereader.cpp" />
     <ClCompile Include="lnfrac.cpp" />
     <ClCompile Include="loaddb.cpp" />
