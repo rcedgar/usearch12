@@ -6,6 +6,32 @@
 
 void PMetric(FILE *f, double x);
 
+static LINKAGE GetLinkageFromCmdLine()
+	{
+	if (!optset_linkage)
+		return LINKAGE_Max;
+	string lk = string(opt(linkage));
+	if (lk == "min")
+		return LINKAGE_Min;
+	else if (lk == "avg")
+		return LINKAGE_Avg;
+	else if (lk == "max")
+		return LINKAGE_Max;
+	Die("Invalid linkage '%s'", sopt(linkage));
+	return LINKAGE_Max;
+	}
+
+static const char *LinkageToStr(LINKAGE lk)
+	{
+	switch (lk)
+		{
+	case LINKAGE_Min: return "Min";
+	case LINKAGE_Avg: return "Avg";
+	case LINKAGE_Max: return "Max";
+		}
+	return "???";
+	}
+
 static void GetMetrics(vector<unsigned> &v)
 	{
 	v.clear();

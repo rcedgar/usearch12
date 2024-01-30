@@ -264,8 +264,6 @@
     <ClCompile Include="cigar.cpp" />
     <ClCompile Include="classifier.cpp" />
     <ClCompile Include="closedrefsink.cpp" />
-    <ClCompile Include="clusteragg.cpp" />
-    <ClCompile Include="clusteraggd.cpp" />
     <ClCompile Include="clusterfast.cpp" />
     <ClCompile Include="clustersink.cpp" />
     <ClCompile Include="clustersmallmem.cpp" />
@@ -487,7 +485,6 @@
     <ClCompile Include="treegetdistmx.cpp" />
     <ClCompile Include="trees.c" />
     <ClCompile Include="treetab.cpp" />
-    <ClCompile Include="clustertree.cpp" />
     <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="trimprimer.cpp" />
     <ClCompile Include="uchime2denovo.cpp" />

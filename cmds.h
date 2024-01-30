@@ -6,16 +6,11 @@ A(version)
 
 A(allpairs_global)
 A(allpairs_local)
-//A(annot)
-A(gunzip)
 
-A(cluster_agg)
-A(cluster_aggd)
 A(cluster_fast)
 A(cluster_otus)
 A(cluster_smallmem)
 A(closed_ref)
-A(cluster_tree)
 
 A(derep_fulllength)
 
