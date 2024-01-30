@@ -266,8 +266,6 @@
     <ClCompile Include="closedrefsink.cpp" />
     <ClCompile Include="clusteragg.cpp" />
     <ClCompile Include="clusteraggd.cpp" />
-    <ClCompile Include="clustercc.cpp" />
-    <ClCompile Include="clustercccentroids.cpp" />
     <ClCompile Include="clusterfast.cpp" />
     <ClCompile Include="clustersink.cpp" />
     <ClCompile Include="clustersmallmem.cpp" />
@@ -348,7 +346,6 @@
     <ClCompile Include="finger.cpp" />
     <ClCompile Include="fulldpallpairs.cpp" />
     <ClCompile Include="genefinder.cpp" />
-    <ClCompile Include="getcc.cpp" />
     <ClCompile Include="getcmd.cpp" />
     <ClCompile Include="getfastqs.cpp" />
     <ClCompile Include="getglobalhsps.cpp" />

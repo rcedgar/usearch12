@@ -11,14 +11,11 @@ A(gunzip)
 
 A(cluster_agg)
 A(cluster_aggd)
-A(cluster_edges)
 A(cluster_fast)
 A(cluster_otus)
 A(cluster_smallmem)
 A(closed_ref)
 A(cluster_tree)
-A(cluster_cc)
-A(cluster_cc_centroids)
 
 A(derep_fulllength)
 
