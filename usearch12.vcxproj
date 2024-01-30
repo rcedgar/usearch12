@@ -270,7 +270,6 @@
     <ClCompile Include="evalue.cpp" />
     <ClCompile Include="fastaseqsource.cpp" />
     <ClCompile Include="fastqfilter2.cpp" />
-    <ClCompile Include="fasttiming.cpp" />
     <ClCompile Include="fastxgetsamplenames.cpp" />
     <ClCompile Include="fastmask.cpp" />
     <ClCompile Include="fastq.cpp" />

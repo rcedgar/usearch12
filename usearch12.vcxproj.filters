@@ -491,9 +491,6 @@
     <ClCompile Include="bitvec64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fasttiming.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastqfilter2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
