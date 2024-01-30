@@ -503,9 +503,6 @@
     <ClCompile Include="phixfinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="filterphix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="uchime2denovo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -576,9 +573,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxgetlabels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="filterlowc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxgetsamplenames.cpp">

@@ -136,7 +136,6 @@ IS_TRUE(search_oligodb)
 IS_TRUE(search_peptidedb)
 IS_TRUE(search_pcr)
 IS_TRUE(search_phix)
-IS_TRUE(filter_phix)
 		}
 	return false;
 	}

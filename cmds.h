@@ -55,9 +55,6 @@ A(fastx_trim_primers)
 A(fastx_orient)
 A(fasta_lettercounts)
 
-A(filter_phix)
-A(filter_lowc)
-
 A(makeudb_ublast)
 A(makeudb_usearch)
 A(makeudb_sintax)

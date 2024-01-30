@@ -323,7 +323,6 @@
     <ClCompile Include="fastauniquesbylabels.cpp" />
     <ClCompile Include="filetype.cpp" />
     <ClCompile Include="fileseqsource.cpp" />
-    <ClCompile Include="filterlowc.cpp" />
     <ClCompile Include="findgene.cpp" />
     <ClCompile Include="findorfs.cpp" />
     <ClCompile Include="finger.cpp" />
@@ -394,7 +393,6 @@
     <ClCompile Include="pcb.cpp" />
     <ClCompile Include="pcrsink.cpp" />
     <ClCompile Include="phix.cpp" />
-    <ClCompile Include="filterphix.cpp" />
     <ClCompile Include="phixfinder.cpp" />
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="profile.cpp" />
