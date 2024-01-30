@@ -340,8 +340,6 @@
     <ClCompile Include="gethsps.cpp" />
     <ClCompile Include="gethspsself.cpp" />
     <ClCompile Include="getsegs.cpp" />
-    <ClCompile Include="gettandemrange1.cpp" />
-    <ClCompile Include="gettandemrange2.cpp" />
     <ClCompile Include="getu.cpp" />
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />
