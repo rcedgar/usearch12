@@ -274,13 +274,11 @@
     <ClCompile Include="constaxsink.cpp" />
     <ClCompile Include="constaxstr.cpp" />
     <ClCompile Include="countsort.cpp" />
-    <ClCompile Include="coveragemap.cpp" />
     <ClCompile Include="crc32.c" />
     <ClCompile Include="dbhitsink.cpp" />
     <ClCompile Include="deflate.c" />
     <ClCompile Include="deparser.cpp" />
     <ClCompile Include="derepfull.cpp" />
-    <ClCompile Include="dereppersample.cpp" />
     <ClCompile Include="derepresult.cpp" />
     <ClCompile Include="detrainer.cpp" />
     <ClCompile Include="diagbox.cpp" />
