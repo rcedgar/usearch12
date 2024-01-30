@@ -67,6 +67,78 @@ uint64 g_FreeTotal;
 
 static const double LOG2 = log(2.0);
 static const double LOG10 = log(10.0);
+// Fisher-Yates shuffle:
+// To shuffle an array a of n elements (indices 0 .. n-1):
+//  for i from n - 1 downto 1 do
+//       j := random integer with 0 <= j <= i
+//       exchange a[j] and a[i]
+void Shuffle(vector<unsigned> &v)
+	{
+	const unsigned N = SIZE(v);
+	for (unsigned i = N - 1; i >= 1; --i)
+		{
+		unsigned j = randu32()%(i + 1);
+		
+		unsigned vi = v[i];
+		unsigned vj = v[j];
+
+		v[i] = vj;
+		v[j] = vi;
+		}
+	}
+
+void Shuffle(vector<bool> &v)
+	{
+	const unsigned N = SIZE(v);
+	for (unsigned i = N - 1; i >= 1; --i)
+		{
+		unsigned j = randu32()%(i + 1);
+		
+		unsigned vi = v[i];
+		unsigned vj = v[j];
+
+		v[i] = vj;
+		v[j] = vi;
+		}
+	}
+
+void Shuffle(unsigned *v, unsigned N)
+	{
+	for (unsigned i = N - 1; i >= 1; --i)
+		{
+		unsigned j = randu32()%(i + 1);
+		
+		unsigned vi = v[i];
+		unsigned vj = v[j];
+
+		v[i] = vj;
+		v[j] = vi;
+		}
+	}
+
+void StringsFromFile(const string &FileName, set<string> &Strings)
+	{
+	Strings.clear();
+	FILE *f = OpenStdioFile(FileName);
+	string Line;
+	Progress("Reading %s...", FileName.c_str());
+	while (ReadLineStdioFile(f, Line))
+		Strings.insert(Line);
+	Progress("done.\n");
+	CloseStdioFile(f);
+	}
+
+void StringsFromFile(const string &FileName, vector<string> &Strings)
+	{
+	Strings.clear();
+	FILE *f = OpenStdioFile(FileName);
+	string Line;
+	Progress("Reading %s...", FileName.c_str());
+	while (ReadLineStdioFile(f, Line))
+		Strings.push_back(Line);
+	Progress("done.\n");
+	CloseStdioFile(f);
+	}
 
 double mylog2(double x)
 	{

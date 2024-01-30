@@ -68,9 +68,6 @@
     <ClCompile Include="fastaseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="findorfs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gethsps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -311,12 +308,6 @@
     <ClCompile Include="treetofile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="calcdistmx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="calcdistmxu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="agg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -392,22 +383,7 @@
     <ClCompile Include="pcrsink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxtruncate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="maskfastx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxsubsample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxgetseqs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxgetsubseq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="profile.cpp">
@@ -417,9 +393,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qscoresink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxsplit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="subsample.cpp">
@@ -468,9 +441,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mothur.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bitmapsearcher.cpp">
@@ -533,31 +503,16 @@
     <ClCompile Include="getuniquelettercount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxstripannots.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastx2qiime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="closedrefsink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxrelabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxgetlabels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxgetsamplenames.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sintaxsummary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxsyncpairs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getu.cpp">
@@ -576,9 +531,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="strdict.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trimprimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="taxy.cpp">
@@ -605,9 +557,6 @@
     <ClCompile Include="otutabcore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxsplitn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wordcounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -621,9 +570,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastqfilter2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxtrimprimers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gzipfileio.cpp">
@@ -653,19 +599,7 @@
     <ClCompile Include="getglobalhsps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastauniquesbylabels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gethspsself.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastalettercounts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxsplitseek.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastxsplitmb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="unoise3.cpp">
@@ -703,6 +637,9 @@
     </ClCompile>
     <ClCompile Include="zutil.c">
       <Filter>C Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fastxtruncate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
