@@ -350,8 +350,6 @@
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
     <ClCompile Include="gzread.c" />
-    <ClCompile Include="hashtime.cpp" />
-    <ClCompile Include="heatmap.cpp" />
     <ClCompile Include="hitmgr.cpp" />
     <ClCompile Include="hspfinder.cpp" />
     <ClCompile Include="infback.c" />
