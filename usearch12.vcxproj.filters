@@ -350,9 +350,6 @@
     <ClCompile Include="profile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="whisker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="subsample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
