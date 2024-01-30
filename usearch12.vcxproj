@@ -317,7 +317,6 @@
     <ClCompile Include="make3way.cpp" />
     <ClCompile Include="makesearcher.cpp" />
     <ClCompile Include="makeudb.cpp" />
-    <ClCompile Include="mannwhitney.cpp" />
     <ClCompile Include="mask.cpp" />
     <ClCompile Include="maxsubseq.cpp" />
     <ClCompile Include="mergepair.cpp" />

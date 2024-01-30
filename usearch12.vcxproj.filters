@@ -482,9 +482,6 @@
     <ClCompile Include="constaxf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mannwhitney.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wordcounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
