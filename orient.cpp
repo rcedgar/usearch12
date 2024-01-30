@@ -190,7 +190,7 @@ static void DoOrient(const string &QueryFileName)
 	bool DBIsNucleo;
 	UDBData *udb;
 	SeqDB *seqdb;
-	LoadDB(opt(db), CMD_orient, &seqdb, &udb, &DBIsNucleo);
+	LoadDB(opt(db), CMD_fastx_orient, &seqdb, &udb, &DBIsNucleo);
 
 	const SeqDB *DB = udb->m_SeqDB;
 	asserta(DB != 0);
@@ -217,12 +217,6 @@ static void DoOrient(const string &QueryFileName)
 	  PlusCount, GetPct(PlusCount, QueryCount),
 	  MinusCount, GetPct(MinusCount, QueryCount),
 	  NotCount, GetPct(NotCount, QueryCount));
-	}
-
-void cmd_orient()
-	{
-	const string QueryFileName = opt(orient);
-	DoOrient(QueryFileName);
 	}
 
 void cmd_fastx_orient()

@@ -73,7 +73,6 @@ A(udb2fasta)
 A(udbinfo)
 A(udbstats)
 
-A(orient)
 A(pairs_global)
 A(pairs_local)
 

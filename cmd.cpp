@@ -85,7 +85,7 @@ IS_TRUE(closed_ref)
 IS_TRUE(usearch_local)
 IS_TRUE(uparse_ref)
 IS_TRUE(sintax)
-IS_TRUE(orient)
+IS_TRUE(fastx_orient)
 		}
 	return false;
 	}

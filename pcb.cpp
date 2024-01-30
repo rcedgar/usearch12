@@ -156,7 +156,7 @@ void SetCmdPCB(CMD Cmd)
 	case CMD_search_pcr:
 		SetPCB(SearchPCR_PCB);
 		break;
-	case CMD_orient:
+	case CMD_fastx_orient:
 		SetPCB(Orient_PCB);
 		break;
 	case CMD_closed_ref:

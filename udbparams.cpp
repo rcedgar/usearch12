@@ -140,7 +140,7 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 		SetDefaults_GlobalUSearch(Nucleo);
 		return;
 
-	case CMD_orient:
+	case CMD_fastx_orient:
 		SetDefaults_Orient();
 		return;
 
