@@ -227,9 +227,6 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="abench.cpp" />
-    <ClCompile Include="abench_fullpctid.cpp" />
-    <ClCompile Include="abench_ga.cpp" />
     <ClCompile Include="adderrsq.cpp" />
     <ClCompile Include="adler32.c" />
     <ClCompile Include="alphadivtable.cpp" />
@@ -393,7 +390,6 @@
     <ClCompile Include="leila.cpp" />
     <ClCompile Include="makeglobalchain.cpp" />
     <ClCompile Include="makesyncmerchains.cpp" />
-    <ClCompile Include="abench_ra.cpp" />
     <ClCompile Include="palindrome.cpp" />
     <ClCompile Include="recursivesixaligner.cpp" />
     <ClCompile Include="gzipfileio.cpp" />

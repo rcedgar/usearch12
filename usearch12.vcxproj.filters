@@ -1088,18 +1088,6 @@
     <ClCompile Include="makesyncmerchains.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="abench.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="abench_fullpctid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="abench_ga.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="abench_ra.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fasta_xlat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

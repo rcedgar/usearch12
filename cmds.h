@@ -239,10 +239,10 @@ A(test_alignerid)
 A(test_alignerspeed)
 A(test_syncmerchain)
 
-A(abench)
-A(abench_fullpctid)
-A(abench_ga)
-A(abench_ra)
+//A(abench)
+//A(abench_fullpctid)
+//A(abench_ga)
+//A(abench_ra)
 
 A(rotate)
 
