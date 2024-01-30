@@ -347,7 +347,6 @@
     <ClCompile Include="gspbag.cpp" />
     <ClCompile Include="mergealign.cpp" />
     <ClCompile Include="mergelogvaln.cpp" />
-    <ClCompile Include="palindrome.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
     <ClCompile Include="gzread.c" />
@@ -474,7 +473,6 @@
     <ClCompile Include="udbsearcher.cpp" />
     <ClCompile Include="udbstats.cpp" />
     <ClCompile Include="udbusortedsearcher.cpp" />
-    <ClCompile Include="unbias.cpp" />
     <ClCompile Include="uncross2.cpp" />
     <ClCompile Include="uncross2mock.cpp" />
     <ClCompile Include="ungappedblast.cpp" />

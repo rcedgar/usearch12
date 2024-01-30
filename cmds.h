@@ -140,11 +140,8 @@ A(otutab_shuffle_samples)
 A(tabbed2otutab)
 A(qiimemap2otutab)
 
-A(palindrome)
-
 A(search_16s)
 A(udb2bitvec)
-A(unbias)
 A(maxsubseq)
 
 A(text_subsample)
