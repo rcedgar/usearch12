@@ -287,7 +287,6 @@
     <ClCompile Include="getfastqs.cpp" />
     <ClCompile Include="getglobalhsps.cpp" />
     <ClCompile Include="gethsps.cpp" />
-    <ClCompile Include="gethspsself.cpp" />
     <ClCompile Include="getu.cpp" />
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />

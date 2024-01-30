@@ -506,9 +506,6 @@
     <ClCompile Include="getglobalhsps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gethspsself.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="unoise3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -545,10 +542,10 @@
     <ClCompile Include="zutil.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxtruncate.cpp">
+    <ClCompile Include="chunksearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="chunksearcher.cpp">
+    <ClCompile Include="fastxtruncate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
