@@ -253,7 +253,6 @@
     <ClCompile Include="blast6out.cpp" />
     <ClCompile Include="blosum62.cpp" />
     <ClCompile Include="calcdistmx.cpp" />
-    <ClCompile Include="calcdistmxa.cpp" />
     <ClCompile Include="calcdistmxu.cpp" />
     <ClCompile Include="catdict.cpp" />
     <ClCompile Include="cdata.cpp" />

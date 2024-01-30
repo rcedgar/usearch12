@@ -13,7 +13,6 @@ A(cluster_smallmem)
 A(closed_ref)
 
 A(calc_distmx)
-A(calc_distmxa)
 A(calc_distmx_smallmem)
 
 A(fastq_chars)

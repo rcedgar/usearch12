@@ -659,9 +659,6 @@
     <ClCompile Include="cigar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="calcdistmxa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="getglobalhsps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
