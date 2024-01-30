@@ -1,0 +1,3 @@
+T(None)
+
+#undef T

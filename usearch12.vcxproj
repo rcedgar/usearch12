@@ -1,0 +1,848 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1D4F05A8-7B62-4EB6-B0DC-0CFE76E0224A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>usearch12</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>usearch12</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);CLARET=1</PreprocessorDefinitions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);psapi.lib</AdditionalDependencies>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);CLARET=1;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);psapi.lib</AdditionalDependencies>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);CLARET=1</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);psapi.lib</AdditionalDependencies>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);CLARET=1;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);psapi.lib</AdditionalDependencies>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="abench.cpp" />
+    <ClCompile Include="abench_fullpctid.cpp" />
+    <ClCompile Include="abench_ga.cpp" />
+    <ClCompile Include="adderrsq.cpp" />
+    <ClCompile Include="adler32.c" />
+    <ClCompile Include="alphadivtable.cpp" />
+    <ClCompile Include="alphasig.cpp" />
+    <ClCompile Include="bbcsearcher.cpp" />
+    <ClCompile Include="accepter.cpp" />
+    <ClCompile Include="alphadiv.cpp" />
+    <ClCompile Include="agg.cpp" />
+    <ClCompile Include="alignresult.cpp" />
+    <ClCompile Include="alloc.cpp" />
+    <ClCompile Include="allpairs.cpp" />
+    <ClCompile Include="alnheuristics.cpp" />
+    <ClCompile Include="alnout.cpp" />
+    <ClCompile Include="alnparams.cpp" />
+    <ClCompile Include="alpha.cpp" />
+    <ClCompile Include="alpha2.cpp" />
+    <ClCompile Include="alphadivcmd.cpp" />
+    <ClCompile Include="alphadivrare.cpp" />
+    <ClCompile Include="alphainfo.cpp" />
+    <ClCompile Include="annot.cpp" />
+    <ClCompile Include="annotator.cpp" />
+    <ClCompile Include="arscorer.cpp" />
+    <ClCompile Include="betadiv.cpp" />
+    <ClCompile Include="betadivcmd.cpp" />
+    <ClCompile Include="bimeradp.cpp" />
+    <ClCompile Include="alphabit.cpp" />
+    <ClCompile Include="bitmapsearcher.cpp" />
+    <ClCompile Include="bitvec.cpp" />
+    <ClCompile Include="bitvec64.cpp" />
+    <ClCompile Include="blast6out.cpp" />
+    <ClCompile Include="blosum62.cpp" />
+    <ClCompile Include="cachetest.cpp" />
+    <ClCompile Include="calcdistmx.cpp" />
+    <ClCompile Include="calcdistmxa.cpp" />
+    <ClCompile Include="calcdistmxu.cpp" />
+    <ClCompile Include="catdict.cpp" />
+    <ClCompile Include="cdata.cpp" />
+    <ClCompile Include="chainer1.cpp" />
+    <ClCompile Include="chainer.cpp" />
+    <ClCompile Include="channot.cpp" />
+    <ClCompile Include="chimehit.cpp" />
+    <ClCompile Include="chunksearcher.cpp" />
+    <ClCompile Include="cigar.cpp" />
+    <ClCompile Include="classifier.cpp" />
+    <ClCompile Include="closedrefsink.cpp" />
+    <ClCompile Include="clusteragg.cpp" />
+    <ClCompile Include="clusteraggd.cpp" />
+    <ClCompile Include="clustercc.cpp" />
+    <ClCompile Include="clustercccentroids.cpp" />
+    <ClCompile Include="clusterfast.cpp" />
+    <ClCompile Include="clustersink.cpp" />
+    <ClCompile Include="clustersmallmem.cpp" />
+    <ClCompile Include="cmd.cpp" />
+    <ClCompile Include="cmdline.cpp" />
+    <ClCompile Include="codeindex.cpp" />
+    <ClCompile Include="codeindexsorter.cpp" />
+    <ClCompile Include="codeindexsorter_query.cpp" />
+    <ClCompile Include="comppath.cpp" />
+    <ClCompile Include="constaxf.cpp" />
+    <ClCompile Include="constaxsink.cpp" />
+    <ClCompile Include="constaxstr.cpp" />
+    <ClCompile Include="count.cpp" />
+    <ClCompile Include="countsort.cpp" />
+    <ClCompile Include="countwordsch.cpp" />
+    <ClCompile Include="coveragemap.cpp" />
+    <ClCompile Include="cpubench.cpp" />
+    <ClCompile Include="crc32.c" />
+    <ClCompile Include="crosser.cpp" />
+    <ClCompile Include="dbhitsink.cpp" />
+    <ClCompile Include="dectree.cpp" />
+    <ClCompile Include="dectreetraindata.cpp" />
+    <ClCompile Include="deflate.c" />
+    <ClCompile Include="deparser.cpp" />
+    <ClCompile Include="derepfull.cpp" />
+    <ClCompile Include="dereppersample.cpp" />
+    <ClCompile Include="derepresult.cpp" />
+    <ClCompile Include="detrainer.cpp" />
+    <ClCompile Include="diagbox.cpp" />
+    <ClCompile Include="diffprofsink.cpp" />
+    <ClCompile Include="distmx.cpp" />
+    <ClCompile Include="distmxsplit.cpp" />
+    <ClCompile Include="drawtree.cpp" />
+    <ClCompile Include="dustmask.cpp" />
+    <ClCompile Include="estats.cpp" />
+    <ClCompile Include="evalue.cpp" />
+    <ClCompile Include="exactaligner.cpp" />
+    <ClCompile Include="exactsearcher.cpp" />
+    <ClCompile Include="extendminus.cpp" />
+    <ClCompile Include="extendminus2.cpp" />
+    <ClCompile Include="extendplus.cpp" />
+    <ClCompile Include="extendplus2.cpp" />
+    <ClCompile Include="fastaexplode.cpp" />
+    <ClCompile Include="fastagetseqsp.cpp" />
+    <ClCompile Include="fastagetseqst.cpp" />
+    <ClCompile Include="fastalettercounts.cpp" />
+    <ClCompile Include="fastaseqsource.cpp" />
+    <ClCompile Include="fasta_xlat.cpp" />
+    <ClCompile Include="fastqfilter2.cpp" />
+    <ClCompile Include="fasttiming.cpp" />
+    <ClCompile Include="fastxadderrs.cpp" />
+    <ClCompile Include="fastqeestats.cpp" />
+    <ClCompile Include="fastqeestats2.cpp" />
+    <ClCompile Include="fastq_sra_splitpairs.cpp" />
+    <ClCompile Include="fastx2qiime.cpp" />
+    <ClCompile Include="fastxdemux.cpp" />
+    <ClCompile Include="fastxgetlabels.cpp" />
+    <ClCompile Include="fastxgetsamplenames.cpp" />
+    <ClCompile Include="fastagetsegs.cpp" />
+    <ClCompile Include="fastxgetseqs.cpp" />
+    <ClCompile Include="fastxgetsubseq.cpp" />
+    <ClCompile Include="fastaindex.cpp" />
+    <ClCompile Include="fastxinfo.cpp" />
+    <ClCompile Include="fastxlearn.cpp" />
+    <ClCompile Include="fastxmasktrack.cpp" />
+    <ClCompile Include="fastxrelabel.cpp" />
+    <ClCompile Include="fastxrevcomp.cpp" />
+    <ClCompile Include="fastxsplit.cpp" />
+    <ClCompile Include="fastxsplitmb.cpp" />
+    <ClCompile Include="fastxsplitn.cpp" />
+    <ClCompile Include="fastxsplitseek.cpp" />
+    <ClCompile Include="fastxstripannots.cpp" />
+    <ClCompile Include="fastxsubsample.cpp" />
+    <ClCompile Include="fastxsyncpairs.cpp" />
+    <ClCompile Include="fastxtrimprimers.cpp" />
+    <ClCompile Include="fastxtruncate.cpp" />
+    <ClCompile Include="fastmask.cpp" />
+    <ClCompile Include="fastq.cpp" />
+    <ClCompile Include="fastqfilter.cpp" />
+    <ClCompile Include="fastqjoin.cpp" />
+    <ClCompile Include="fastqmerge.cpp" />
+    <ClCompile Include="fastqchars.cpp" />
+    <ClCompile Include="fastqseqsource.cpp" />
+    <ClCompile Include="fastauniquesbylabels.cpp" />
+    <ClCompile Include="featureselect1.cpp" />
+    <ClCompile Include="featuretable.cpp" />
+    <ClCompile Include="filetype.cpp" />
+    <ClCompile Include="fileseqsource.cpp" />
+    <ClCompile Include="filterlowc.cpp" />
+    <ClCompile Include="findgene.cpp" />
+    <ClCompile Include="findorfs.cpp" />
+    <ClCompile Include="finger.cpp" />
+    <ClCompile Include="fulldpallpairs.cpp" />
+    <ClCompile Include="genefinder.cpp" />
+    <ClCompile Include="getcc.cpp" />
+    <ClCompile Include="getcmd.cpp" />
+    <ClCompile Include="getfastqs.cpp" />
+    <ClCompile Include="getglobalhsps.cpp" />
+    <ClCompile Include="gethsps.cpp" />
+    <ClCompile Include="gethspsself.cpp" />
+    <ClCompile Include="getsegs.cpp" />
+    <ClCompile Include="gettandemrange1.cpp" />
+    <ClCompile Include="gettandemrange2.cpp" />
+    <ClCompile Include="getu.cpp" />
+    <ClCompile Include="getuniquelettercount.cpp" />
+    <ClCompile Include="globalaligncircle.cpp" />
+    <ClCompile Include="globalaligner.cpp" />
+    <ClCompile Include="globalalignmem.cpp" />
+    <ClCompile Include="gspbag.cpp" />
+    <ClCompile Include="kmerscanbothskip.cpp" />
+    <ClCompile Include="kmerscanskip.cpp" />
+    <ClCompile Include="leila.cpp" />
+    <ClCompile Include="makeglobalchain.cpp" />
+    <ClCompile Include="makesyncmerchains.cpp" />
+    <ClCompile Include="abench_ra.cpp" />
+    <ClCompile Include="palindrome.cpp" />
+    <ClCompile Include="recursivesixaligner.cpp" />
+    <ClCompile Include="gzipfileio.cpp" />
+    <ClCompile Include="gzlib.c" />
+    <ClCompile Include="gzread.c" />
+    <ClCompile Include="hashtime.cpp" />
+    <ClCompile Include="heatmap.cpp" />
+    <ClCompile Include="hitax.cpp" />
+    <ClCompile Include="hitmgr.cpp" />
+    <ClCompile Include="hspfinder.cpp" />
+    <ClCompile Include="infback.c" />
+    <ClCompile Include="inffast.c" />
+    <ClCompile Include="inflate.c" />
+    <ClCompile Include="inftrees.c" />
+    <ClCompile Include="interp.cpp" />
+    <ClCompile Include="json.cpp" />
+    <ClCompile Include="kmerscan.cpp" />
+    <ClCompile Include="kmerscanboth.cpp" />
+    <ClCompile Include="randseq.cpp" />
+    <ClCompile Include="rotate.cpp" />
+    <ClCompile Include="selfhsps.cpp" />
+    <ClCompile Include="seqdb2.cpp" />
+    <ClCompile Include="seqdbgetsi2.cpp" />
+    <ClCompile Include="seqhashcircle.cpp" />
+    <ClCompile Include="sixalignallpairs.cpp" />
+    <ClCompile Include="sixalignallpairs2.cpp" />
+    <ClCompile Include="sixalignallpairs3.cpp" />
+    <ClCompile Include="sixlcr.cpp" />
+    <ClCompile Include="sixuclust.cpp" />
+    <ClCompile Include="syg.cpp" />
+    <ClCompile Include="label.cpp" />
+    <ClCompile Include="lcrdata.cpp" />
+    <ClCompile Include="linereader.cpp" />
+    <ClCompile Include="lnfrac.cpp" />
+    <ClCompile Include="loaddb.cpp" />
+    <ClCompile Include="localaligner.cpp" />
+    <ClCompile Include="localaligner2.cpp" />
+    <ClCompile Include="localmulti.cpp" />
+    <ClCompile Include="lockobj.cpp" />
+    <ClCompile Include="logaln.cpp" />
+    <ClCompile Include="make3way.cpp" />
+    <ClCompile Include="makesearcher.cpp" />
+    <ClCompile Include="makeudb.cpp" />
+    <ClCompile Include="mannwhitney.cpp" />
+    <ClCompile Include="mask.cpp" />
+    <ClCompile Include="maskfastx.cpp" />
+    <ClCompile Include="maxcommonsubseq.cpp" />
+    <ClCompile Include="maxsubseq.cpp" />
+    <ClCompile Include="mergealign.cpp" />
+    <ClCompile Include="mergelogvaln.cpp" />
+    <ClCompile Include="mergepair.cpp" />
+    <ClCompile Include="mergepost.cpp" />
+    <ClCompile Include="mergepre.cpp" />
+    <ClCompile Include="mergestats.cpp" />
+    <ClCompile Include="mergethread.cpp" />
+    <ClCompile Include="mothur.cpp" />
+    <ClCompile Include="mx.cpp" />
+    <ClCompile Include="myutils.cpp" />
+    <ClCompile Include="nastout.cpp" />
+    <ClCompile Include="newick.cpp" />
+    <ClCompile Include="nj.cpp" />
+    <ClCompile Include="njtax.cpp" />
+    <ClCompile Include="objmgr.cpp" />
+    <ClCompile Include="fragaligner.cpp" />
+    <ClCompile Include="omptest.cpp" />
+    <ClCompile Include="orffinder.cpp" />
+    <ClCompile Include="orient.cpp" />
+    <ClCompile Include="otutab.cpp" />
+    <ClCompile Include="otutabclassify.cpp" />
+    <ClCompile Include="otutabcore.cpp" />
+    <ClCompile Include="otutabselect.cpp" />
+    <ClCompile Include="otutabsink.cpp" />
+    <ClCompile Include="outputsink.cpp" />
+    <ClCompile Include="outputuc.cpp" />
+    <ClCompile Include="pathinfo.cpp" />
+    <ClCompile Include="pattern.cpp" />
+    <ClCompile Include="pcb.cpp" />
+    <ClCompile Include="pcrsink.cpp" />
+    <ClCompile Include="phix.cpp" />
+    <ClCompile Include="filterphix.cpp" />
+    <ClCompile Include="phixfinder.cpp" />
+    <ClCompile Include="poisson.cpp" />
+    <ClCompile Include="prime.cpp" />
+    <ClCompile Include="profile.cpp" />
+    <ClCompile Include="qscoresink.cpp" />
+    <ClCompile Include="quarts.cpp" />
+    <ClCompile Include="randforest.cpp" />
+    <ClCompile Include="rcemalloc.cpp" />
+    <ClCompile Include="roccer.cpp" />
+    <ClCompile Include="samfilter.cpp" />
+    <ClCompile Include="samout.cpp" />
+    <ClCompile Include="samrange.cpp" />
+    <ClCompile Include="samrec.cpp" />
+    <ClCompile Include="samseqsource.cpp" />
+    <ClCompile Include="scorepath.cpp" />
+    <ClCompile Include="search.cpp" />
+    <ClCompile Include="searchcmd.cpp" />
+    <ClCompile Include="searcher.cpp" />
+    <ClCompile Include="searchpcr2.cpp" />
+    <ClCompile Include="secant.cpp" />
+    <ClCompile Include="seed.cpp" />
+    <ClCompile Include="segmaskseq.cpp" />
+    <ClCompile Include="seqdb.cpp" />
+    <ClCompile Include="seqdbfromfasta.cpp" />
+    <ClCompile Include="seqdbio.cpp" />
+    <ClCompile Include="seqdbsearcher.cpp" />
+    <ClCompile Include="seqdbseqsource.cpp" />
+    <ClCompile Include="seqhash.cpp" />
+    <ClCompile Include="seqinfo.cpp" />
+    <ClCompile Include="seqsource.cpp" />
+    <ClCompile Include="setnucmx.cpp" />
+    <ClCompile Include="sign.cpp" />
+    <ClCompile Include="sinapssearcher.cpp" />
+    <ClCompile Include="sintaxsummary.cpp" />
+    <ClCompile Include="sintaxsearcher.cpp" />
+    <ClCompile Include="sixaligner.cpp" />
+    <ClCompile Include="sixalignpair.cpp" />
+    <ClCompile Include="sortlen.cpp" />
+    <ClCompile Include="star.cpp" />
+    <ClCompile Include="staralign.cpp" />
+    <ClCompile Include="strdict.cpp" />
+    <ClCompile Include="subsample.cpp" />
+    <ClCompile Include="substmx.cpp" />
+    <ClCompile Include="svg.cpp" />
+    <ClCompile Include="svgchart.cpp" />
+    <ClCompile Include="syncmer.cpp" />
+    <ClCompile Include="syncmerindex.cpp" />
+    <ClCompile Include="syncmerscan.cpp" />
+    <ClCompile Include="syncmerscanboth.cpp" />
+    <ClCompile Include="syncmerscanbothskip.cpp" />
+    <ClCompile Include="syncmerscanskip.cpp" />
+    <ClCompile Include="tabbed2otutab.cpp" />
+    <ClCompile Include="tax.cpp" />
+    <ClCompile Include="taxbench.cpp" />
+    <ClCompile Include="taxclean.cpp" />
+    <ClCompile Include="taxsearcher.cpp" />
+    <ClCompile Include="taxstats.cpp" />
+    <ClCompile Include="taxtree.cpp" />
+    <ClCompile Include="taxtune.cpp" />
+    <ClCompile Include="taxy.cpp" />
+    <ClCompile Include="terminator.cpp" />
+    <ClCompile Include="termmer.cpp" />
+    <ClCompile Include="testglobalalign.cpp" />
+    <ClCompile Include="testsixaligner.cpp" />
+    <ClCompile Include="testsortindexes.cpp" />
+    <ClCompile Include="test_alignerid.cpp" />
+    <ClCompile Include="test_alignerspeed.cpp" />
+    <ClCompile Include="test_recursivealigner.cpp" />
+    <ClCompile Include="test_strat.cpp" />
+    <ClCompile Include="test_syncmerchain.cpp" />
+    <ClCompile Include="test_twobit_decode.cpp" />
+    <ClCompile Include="test_viterbitiming.cpp" />
+    <ClCompile Include="test_viterbitwobitsimple.cpp" />
+    <ClCompile Include="test_viterbitwobit.cpp" />
+    <ClCompile Include="threeway.cpp" />
+    <ClCompile Include="timing.cpp" />
+    <ClCompile Include="tracebackbitmem.cpp" />
+    <ClCompile Include="tree.cpp" />
+    <ClCompile Include="tree2tax.cpp" />
+    <ClCompile Include="treecmp.cpp" />
+    <ClCompile Include="treefromagg.cpp" />
+    <ClCompile Include="treegetdistmx.cpp" />
+    <ClCompile Include="trees.c" />
+    <ClCompile Include="treetab.cpp" />
+    <ClCompile Include="clustertree.cpp" />
+    <ClCompile Include="treetofile.cpp" />
+    <ClCompile Include="trimprimer.cpp" />
+    <ClCompile Include="twobit.cpp" />
+    <ClCompile Include="twobit_decode_ns.cpp" />
+    <ClCompile Include="twobit_encode.cpp" />
+    <ClCompile Include="twobit_kmerscan.cpp" />
+    <ClCompile Include="twobit_kmerscanboth.cpp" />
+    <ClCompile Include="twobit_kmerscanbothskip.cpp" />
+    <ClCompile Include="twobit_kmerscanskip.cpp" />
+    <ClCompile Include="twobit_syncmerscan.cpp" />
+    <ClCompile Include="twobit_syncmerscanboth.cpp" />
+    <ClCompile Include="twobit_syncmerscanbothskip.cpp" />
+    <ClCompile Include="twobit_syncmerscanskip.cpp" />
+    <ClCompile Include="uchime2denovo.cpp" />
+    <ClCompile Include="uchime2ref.cpp" />
+    <ClCompile Include="uchimefinder.cpp" />
+    <ClCompile Include="udbbuild.cpp" />
+    <ClCompile Include="udbusortedsearcherbig.cpp" />
+    <ClCompile Include="udbcodedsearcher.cpp" />
+    <ClCompile Include="udbdata.cpp" />
+    <ClCompile Include="udbinfo.cpp" />
+    <ClCompile Include="udbio.cpp" />
+    <ClCompile Include="udbparams.cpp" />
+    <ClCompile Include="udbsearcher.cpp" />
+    <ClCompile Include="udbstats.cpp" />
+    <ClCompile Include="udbusortedsearcher.cpp" />
+    <ClCompile Include="unbias.cpp" />
+    <ClCompile Include="uncross2.cpp" />
+    <ClCompile Include="uncross2mock.cpp" />
+    <ClCompile Include="ungappedblast.cpp" />
+    <ClCompile Include="unifrac.cpp" />
+    <ClCompile Include="unoise.cpp" />
+    <ClCompile Include="unoise2.cpp" />
+    <ClCompile Include="uparsesink.cpp" />
+    <ClCompile Include="uparsedp.cpp" />
+    <ClCompile Include="uparsepretty.cpp" />
+    <ClCompile Include="upclustersink.cpp" />
+    <ClCompile Include="usearch_main.cpp" />
+    <ClCompile Include="userout.cpp" />
+    <ClCompile Include="viterbiasp.cpp" />
+    <ClCompile Include="viterbifastbandmem.cpp" />
+    <ClCompile Include="viterbifastmem.cpp" />
+    <ClCompile Include="viterbilingap.cpp" />
+    <ClCompile Include="viterbitwobitlingap.cpp" />
+    <ClCompile Include="viterbi_twobit.cpp" />
+    <ClCompile Include="whisker.cpp" />
+    <ClCompile Include="wordcounter.cpp" />
+    <ClCompile Include="wordparams.cpp" />
+    <ClCompile Include="writechhit.cpp" />
+    <ClCompile Include="xdropalignmem.cpp" />
+    <ClCompile Include="xdropbwdmem.cpp" />
+    <ClCompile Include="xdropbwdsplit.cpp" />
+    <ClCompile Include="xdropfwdmem.cpp" />
+    <ClCompile Include="xdropfwdsplit.cpp" />
+    <ClCompile Include="zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="aafreqs.h" />
+    <ClInclude Include="abdist.h" />
+    <ClInclude Include="abench.h" />
+    <ClInclude Include="adivmetric.h" />
+    <ClInclude Include="alphabit_alt.h" />
+    <ClInclude Include="alphadivtable.h" />
+    <ClInclude Include="alphasig.h" />
+    <ClInclude Include="aspdata.h" />
+    <ClInclude Include="bbcsearcher.h" />
+    <ClInclude Include="accepter.h" />
+    <ClInclude Include="alphadiv.h" />
+    <ClInclude Include="adivs.h" />
+    <ClInclude Include="agg.h" />
+    <ClInclude Include="aligner.h" />
+    <ClInclude Include="alignresult.h" />
+    <ClInclude Include="allocs.h" />
+    <ClInclude Include="alnheuristics.h" />
+    <ClInclude Include="alnparams.h" />
+    <ClInclude Include="alpha.h" />
+    <ClInclude Include="alphainfo.h" />
+    <ClInclude Include="annotator.h" />
+    <ClInclude Include="annotclass.h" />
+    <ClInclude Include="bcresult.h" />
+    <ClInclude Include="bdivs.h" />
+    <ClInclude Include="benchresult.h" />
+    <ClInclude Include="betadiv.h" />
+    <ClInclude Include="alphabit.h" />
+    <ClInclude Include="bitmapsearcher.h" />
+    <ClInclude Include="bitvec.h" />
+    <ClInclude Include="bitvec64.h" />
+    <ClInclude Include="chainer1.h" />
+    <ClInclude Include="chainer.h" />
+    <ClInclude Include="changelog.h" />
+    <ClInclude Include="channot.h" />
+    <ClInclude Include="chimehit.h" />
+    <ClInclude Include="chunksearcher.h" />
+    <ClInclude Include="cigar.h" />
+    <ClInclude Include="classifier.h" />
+    <ClInclude Include="closedrefsink.h" />
+    <ClInclude Include="clustersink.h" />
+    <ClInclude Include="cmd.h" />
+    <ClInclude Include="cmdline.h" />
+    <ClInclude Include="cmds.h" />
+    <ClInclude Include="codeindex2.h" />
+    <ClInclude Include="codeindex2sorter.h" />
+    <ClInclude Include="codeindexsorter.h" />
+    <ClInclude Include="combo.h" />
+    <ClInclude Include="cons2.h" />
+    <ClInclude Include="constax.h" />
+    <ClInclude Include="constaxf.h" />
+    <ClInclude Include="constaxsink.h" />
+    <ClInclude Include="constaxstr.h" />
+    <ClInclude Include="count.h" />
+    <ClInclude Include="counters.h" />
+    <ClInclude Include="countsort.h" />
+    <ClInclude Include="cdata.h" />
+    <ClInclude Include="coveragemap.h" />
+    <ClInclude Include="crc32.h" />
+    <ClInclude Include="crosser.h" />
+    <ClInclude Include="ctest.h" />
+    <ClInclude Include="dbhitsink.h" />
+    <ClInclude Include="dbtype.h" />
+    <ClInclude Include="dectree.h" />
+    <ClInclude Include="dectreetraindata.h" />
+    <ClInclude Include="deflate.h" />
+    <ClInclude Include="deparser.h" />
+    <ClInclude Include="derep.h" />
+    <ClInclude Include="derepresult.h" />
+    <ClInclude Include="detrainer.h" />
+    <ClInclude Include="diagbox.h" />
+    <ClInclude Include="diffprofsink.h" />
+    <ClInclude Include="distmx.h" />
+    <ClInclude Include="dpband.h" />
+    <ClInclude Include="dpmem.h" />
+    <ClInclude Include="duster.h" />
+    <ClInclude Include="enable_timing.h" />
+    <ClInclude Include="estats.h" />
+    <ClInclude Include="evalue.h" />
+    <ClInclude Include="exactaligner.h" />
+    <ClInclude Include="exactsearcher.h" />
+    <ClInclude Include="extendminus.h" />
+    <ClInclude Include="extendplus.h" />
+    <ClInclude Include="fastq.h" />
+    <ClInclude Include="fastqseqsource.h" />
+    <ClInclude Include="fasttimers.h" />
+    <ClInclude Include="fasttiming.h" />
+    <ClInclude Include="fileseqsource.h" />
+    <ClInclude Include="filetype.h" />
+    <ClInclude Include="finger.h" />
+    <ClInclude Include="genefinder.h" />
+    <ClInclude Include="getu.h" />
+    <ClInclude Include="uspdata.h" />
+    <ClInclude Include="gzguts.h" />
+    <ClInclude Include="hash.h" />
+    <ClInclude Include="uspbag.h" />
+    <ClInclude Include="inffast.h" />
+    <ClInclude Include="inflate.h" />
+    <ClInclude Include="inftrees.h" />
+    <ClInclude Include="kmerscan.h" />
+    <ClInclude Include="label.h" />
+    <ClInclude Include="lcrdata.h" />
+    <ClInclude Include="linereader.h" />
+    <ClInclude Include="fragaligner.h" />
+    <ClInclude Include="mcresult.h" />
+    <ClInclude Include="meanstddev.h" />
+    <ClInclude Include="merge.h" />
+    <ClInclude Include="mergeglobals.h" />
+    <ClInclude Include="nbc.h" />
+    <ClInclude Include="nbcsearcher.h" />
+    <ClInclude Include="nofasttiming.h" />
+    <ClInclude Include="orffinder.h" />
+    <ClInclude Include="otutab.h" />
+    <ClInclude Include="otutabsink.h" />
+    <ClInclude Include="pcb.h" />
+    <ClInclude Include="pcrsink.h" />
+    <ClInclude Include="phixfinder.h" />
+    <ClInclude Include="preston.h" />
+    <ClInclude Include="prestonsvg.h" />
+    <ClInclude Include="profile.h" />
+    <ClInclude Include="qmerge.h" />
+    <ClInclude Include="qscoresink.h" />
+    <ClInclude Include="quarts.h" />
+    <ClInclude Include="randforest.h" />
+    <ClInclude Include="roccer.h" />
+    <ClInclude Include="rsvalndata.h" />
+    <ClInclude Include="samout.h" />
+    <ClInclude Include="samrec.h" />
+    <ClInclude Include="catdict.h" />
+    <ClInclude Include="seqdbsearcher.h" />
+    <ClInclude Include="fastaseqsource.h" />
+    <ClInclude Include="getticks.h" />
+    <ClInclude Include="globalaligner.h" />
+    <ClInclude Include="gobuff.h" />
+    <ClInclude Include="hitmgr.h" />
+    <ClInclude Include="hitsink.h" />
+    <ClInclude Include="hsp.h" />
+    <ClInclude Include="hspfinder.h" />
+    <ClInclude Include="localaligner.h" />
+    <ClInclude Include="localaligner2.h" />
+    <ClInclude Include="lockobj.h" />
+    <ClInclude Include="lockobjs.h" />
+    <ClInclude Include="mask.h" />
+    <ClInclude Include="mx.h" />
+    <ClInclude Include="myopts.h" />
+    <ClInclude Include="myutils.h" />
+    <ClInclude Include="obj.h" />
+    <ClInclude Include="objmgr.h" />
+    <ClInclude Include="objtype.h" />
+    <ClInclude Include="objtypes.h" />
+    <ClInclude Include="omplock.h" />
+    <ClInclude Include="outputsink.h" />
+    <ClInclude Include="pathinfo.h" />
+    <ClInclude Include="searcher.h" />
+    <ClInclude Include="segmask.h" />
+    <ClInclude Include="seq.h" />
+    <ClInclude Include="seqdb.h" />
+    <ClInclude Include="seqdbseqsource.h" />
+    <ClInclude Include="seqhash.h" />
+    <ClInclude Include="seqinfo.h" />
+    <ClInclude Include="seqsource.h" />
+    <ClInclude Include="sign.h" />
+    <ClInclude Include="sinapssearcher.h" />
+    <ClInclude Include="sintaxsearcher.h" />
+    <ClInclude Include="seqdb2.h" />
+    <ClInclude Include="recursivesixaligner.h" />
+    <ClInclude Include="snvdata.h" />
+    <ClInclude Include="sort.h" />
+    <ClInclude Include="sparsemx.h" />
+    <ClInclude Include="stimers.h" />
+    <ClInclude Include="strdict.h" />
+    <ClInclude Include="subsample.h" />
+    <ClInclude Include="svg.h" />
+    <ClInclude Include="svgchart.h" />
+    <ClInclude Include="svnversion.h" />
+    <ClInclude Include="sixaligner.h" />
+    <ClInclude Include="syg.h" />
+    <ClInclude Include="codeindex.h" />
+    <ClInclude Include="syncmer.h" />
+    <ClInclude Include="syncmerindex.h" />
+    <ClInclude Include="tax.h" />
+    <ClInclude Include="taxbench.h" />
+    <ClInclude Include="taxhit.h" />
+    <ClInclude Include="taxlevel.h" />
+    <ClInclude Include="taxlevels.h" />
+    <ClInclude Include="taxpred.h" />
+    <ClInclude Include="taxprobs.h" />
+    <ClInclude Include="taxsearcher.h" />
+    <ClInclude Include="taxsink.h" />
+    <ClInclude Include="taxtree.h" />
+    <ClInclude Include="taxy.h" />
+    <ClInclude Include="terminator.h" />
+    <ClInclude Include="timers.h" />
+    <ClInclude Include="timing.h" />
+    <ClInclude Include="todo.h" />
+    <ClInclude Include="tracebit.h" />
+    <ClInclude Include="trainresults.h" />
+    <ClInclude Include="tree.h" />
+    <ClInclude Include="tree2tax.h" />
+    <ClInclude Include="tsfeats.h" />
+    <ClInclude Include="twobit.h" />
+    <ClInclude Include="twobitsyncmerscanner.h" />
+    <ClInclude Include="uchimefinder.h" />
+    <ClInclude Include="udbcodedsearcher.h" />
+    <ClInclude Include="udbdata.h" />
+    <ClInclude Include="udbfile.h" />
+    <ClInclude Include="udbparams.h" />
+    <ClInclude Include="udbsearcher.h" />
+    <ClInclude Include="udbsixsearcher.h" />
+    <ClInclude Include="udbusortedsearcher.h" />
+    <ClInclude Include="ufenum.h" />
+    <ClInclude Include="uncrosser2.h" />
+    <ClInclude Include="uncrosser2mock.h" />
+    <ClInclude Include="uparse.h" />
+    <ClInclude Include="uparsesink.h" />
+    <ClInclude Include="upclustersink.h" />
+    <ClInclude Include="userfields.h" />
+    <ClInclude Include="utaxclustersink.h" />
+    <ClInclude Include="utaxhit.h" />
+    <ClInclude Include="utaxroc.h" />
+    <ClInclude Include="utaxsearcher.h" />
+    <ClInclude Include="utaxtrain.h" />
+    <ClInclude Include="wordcounter.h" />
+    <ClInclude Include="xdpmem.h" />
+    <ClInclude Include="xtype.h" />
+    <ClInclude Include="zutil.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
