@@ -259,7 +259,6 @@
     <ClCompile Include="cdata.cpp" />
     <ClCompile Include="chainer1.cpp" />
     <ClCompile Include="chainer.cpp" />
-    <ClCompile Include="channot.cpp" />
     <ClCompile Include="chimehit.cpp" />
     <ClCompile Include="chunksearcher.cpp" />
     <ClCompile Include="cigar.cpp" />
@@ -325,7 +324,6 @@
     <ClCompile Include="fastaindex.cpp" />
     <ClCompile Include="fastxinfo.cpp" />
     <ClCompile Include="fastxlearn.cpp" />
-    <ClCompile Include="fastxmasktrack.cpp" />
     <ClCompile Include="fastxrelabel.cpp" />
     <ClCompile Include="fastxrevcomp.cpp" />
     <ClCompile Include="fastxsplit.cpp" />
