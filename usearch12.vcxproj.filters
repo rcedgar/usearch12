@@ -563,9 +563,6 @@
     <ClCompile Include="fastxstripannots.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="maxcommonsubseq.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastx2qiime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -671,9 +668,6 @@
     <ClCompile Include="fastxtrimprimers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="getsegs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gzipfileio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -701,9 +695,6 @@
     <ClCompile Include="cigar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fulldpallpairs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fasta_xlat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -728,16 +719,10 @@
     <ClCompile Include="gethspsself.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="selfhsps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastalettercounts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxsplitseek.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="termmer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxsplitmb.cpp">

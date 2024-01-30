@@ -330,14 +330,12 @@
     <ClCompile Include="findgene.cpp" />
     <ClCompile Include="findorfs.cpp" />
     <ClCompile Include="finger.cpp" />
-    <ClCompile Include="fulldpallpairs.cpp" />
     <ClCompile Include="genefinder.cpp" />
     <ClCompile Include="getcmd.cpp" />
     <ClCompile Include="getfastqs.cpp" />
     <ClCompile Include="getglobalhsps.cpp" />
     <ClCompile Include="gethsps.cpp" />
     <ClCompile Include="gethspsself.cpp" />
-    <ClCompile Include="getsegs.cpp" />
     <ClCompile Include="getu.cpp" />
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />
@@ -358,7 +356,6 @@
     <ClCompile Include="json.cpp" />
     <ClCompile Include="roccer.cpp" />
     <ClCompile Include="samout.cpp" />
-    <ClCompile Include="selfhsps.cpp" />
     <ClCompile Include="staralign.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
@@ -376,7 +373,6 @@
     <ClCompile Include="mannwhitney.cpp" />
     <ClCompile Include="mask.cpp" />
     <ClCompile Include="maskfastx.cpp" />
-    <ClCompile Include="maxcommonsubseq.cpp" />
     <ClCompile Include="maxsubseq.cpp" />
     <ClCompile Include="mergepair.cpp" />
     <ClCompile Include="mergepost.cpp" />
@@ -437,7 +433,6 @@
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
-    <ClCompile Include="termmer.cpp" />
     <ClCompile Include="testglobalalign.cpp" />
     <ClCompile Include="testsixaligner.cpp" />
     <ClCompile Include="testsortindexes.cpp" />

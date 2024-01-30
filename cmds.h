@@ -129,15 +129,5 @@ A(qiimemap2otutab)
 
 A(search_16s)
 A(udb2bitvec)
-A(maxsubseq)
-
-A(text_subsample)
-
-A(get_segs)
-A(self_hsps)
-
-A(fulldp_allpairs)
-
-A(term_kmer)
 
 #undef A
