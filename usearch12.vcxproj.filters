@@ -638,9 +638,6 @@
     <ClCompile Include="catdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="uncross2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="svg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -648,9 +645,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="otutabcore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="uncross2mock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastxsplitn.cpp">
