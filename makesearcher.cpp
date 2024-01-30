@@ -3,7 +3,6 @@
 #include "exactsearcher.h"
 #include "udbcodedsearcher.h"
 #include "udbusortedsearcher.h"
-#include "taxsearcher.h"
 #include "sintaxsearcher.h"
 #include "uparsesink.h"
 #include "chunksearcher.h"
@@ -179,7 +178,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	Aligner *aligner = 0;
 	EStats *ES = 0;
 	UDBUsortedSearcher *US = 0;
-	TaxSearcher *TS = 0;
 
 	bool Local = CmdIsLocal(Cmd);
 	switch (Cmd)
@@ -355,11 +353,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			Die("-id option required");
 		US->m_MinFractId = (float) opt(id);
 		searcher = US;
-		if (Cmd == CMD_search_tax)
-			{
-			asserta(TS != 0);
-			TS->Init();
-			}
 		break;
 		}
 

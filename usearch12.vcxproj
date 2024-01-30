@@ -283,10 +283,7 @@
     <ClCompile Include="countsort.cpp" />
     <ClCompile Include="coveragemap.cpp" />
     <ClCompile Include="crc32.c" />
-    <ClCompile Include="crosser.cpp" />
     <ClCompile Include="dbhitsink.cpp" />
-    <ClCompile Include="dectree.cpp" />
-    <ClCompile Include="dectreetraindata.cpp" />
     <ClCompile Include="deflate.c" />
     <ClCompile Include="deparser.cpp" />
     <ClCompile Include="derepfull.cpp" />
@@ -343,8 +340,6 @@
     <ClCompile Include="fastqchars.cpp" />
     <ClCompile Include="fastqseqsource.cpp" />
     <ClCompile Include="fastauniquesbylabels.cpp" />
-    <ClCompile Include="featureselect1.cpp" />
-    <ClCompile Include="featuretable.cpp" />
     <ClCompile Include="filetype.cpp" />
     <ClCompile Include="fileseqsource.cpp" />
     <ClCompile Include="filterlowc.cpp" />
@@ -423,9 +418,7 @@
     <ClCompile Include="orffinder.cpp" />
     <ClCompile Include="orient.cpp" />
     <ClCompile Include="otutab.cpp" />
-    <ClCompile Include="otutabclassify.cpp" />
     <ClCompile Include="otutabcore.cpp" />
-    <ClCompile Include="otutabselect.cpp" />
     <ClCompile Include="otutabsink.cpp" />
     <ClCompile Include="outputsink.cpp" />
     <ClCompile Include="outputuc.cpp" />
@@ -441,7 +434,6 @@
     <ClCompile Include="profile.cpp" />
     <ClCompile Include="qscoresink.cpp" />
     <ClCompile Include="quarts.cpp" />
-    <ClCompile Include="randforest.cpp" />
     <ClCompile Include="rcemalloc.cpp" />
     <ClCompile Include="samfilter.cpp" />
     <ClCompile Include="samout.cpp" />
@@ -481,7 +473,6 @@
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxbench.cpp" />
     <ClCompile Include="taxclean.cpp" />
-    <ClCompile Include="taxsearcher.cpp" />
     <ClCompile Include="taxstats.cpp" />
     <ClCompile Include="taxtree.cpp" />
     <ClCompile Include="taxtune.cpp" />

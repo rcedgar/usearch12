@@ -6,9 +6,38 @@
 #include "distmx.h"
 #include <set>
 
-void ReadNameToValue(const string &FileName, map<string, string> &NameToValue);
 const char *SigOpToStr(unsigned IntOp);
 unsigned SigAvgsToIntOp(float Avg1, float Avg2, double P);
+
+void ReadStringSet(const string &FileName, set<string> &StrSet)
+	{
+	StrSet.clear();
+	FILE *f = OpenStdioFile(FileName);
+	string Line;
+	vector<string> Fields;
+	while (ReadLineStdioFile(f, Line))
+		StrSet.insert(Line);
+	}
+
+void ReadNameToValue(const string &FileName, map<string, string> &NameToValue)
+	{
+	NameToValue.clear();
+	FILE *f = OpenStdioFile(FileName);
+	string Line;
+	vector<string> Fields;
+	unsigned LineNr = 0;
+	while (ReadLineStdioFile(f, Line))
+		{
+		++LineNr;
+		Split(Line, Fields, '\t');
+		unsigned n = SIZE(Fields);
+		if (n != 2)
+			Die("Expected 2 fields in line %u of %s, got: ", n, Line.c_str());
+		const string &Name = Fields[0];
+		const string &Value = Fields[1];
+		NameToValue[Name] = Value;
+		}
+	}
 
 void GetKeys(const map<string, string> &Map, vector<string> &Keys)
 	{
