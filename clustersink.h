@@ -75,7 +75,6 @@ public:
 	static void CentroidsToFASTA(const string &FileName);
 	static void CentroidsToFASTQ(const string &FileName);
 	static void ClustersOut(const string &Prefix);
-	static void MSAOut(const string &MSAOutPrefix, const string &ConsOutFileName);
 	static const char *MakeCentroidLabel(unsigned ClusterIndex, string &Label);
 	static void GetLabels(unsigned ClusterIndex, vector<string> &Labels);
 	static void WriteConsTaxReport();

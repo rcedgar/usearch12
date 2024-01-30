@@ -9,11 +9,11 @@
 #include "cmd.h"
 #include "omplock.h"
 
-void StarAlign(SeqInfo *Query, const SeqInfo **Targets, const char **Paths, unsigned TargetCount,
-  SeqDB &MSA);
 void StripSize(string &Label);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
 void SeqToFastq(FILE *f, const byte *Seq, unsigned L, const char *Qual, const char *Label);
+void StarAlign(SeqInfo *Query, const SeqInfo **Targets, const char **Paths,
+  unsigned TargetCount, SeqDB &MSA);
 
 unsigned UParseSink::m_OTUCount;
 unsigned UParseSink::m_QueryCount;

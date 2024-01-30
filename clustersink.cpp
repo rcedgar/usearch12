@@ -22,8 +22,6 @@ extern DerepResult *g_DR;
 
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
-void Star2(const string &TargetSeq, const vector<string> &QuerySeqs,
-  const vector<string> &Paths, vector<string> &MSA);
 void GetConsSeq(const vector<string> &MSA, bool Nucleo, string &ConsSeq);
 void DecompressPath(const char *CompressedPath, string &Path);
 
@@ -577,113 +575,6 @@ void ClusterSink::GetClusterMembers(unsigned ClusterIndex, vector<unsigned> &Seq
 		}
 	}
 
-void ClusterSink::MSAOut(const string &MSAOutPrefix, const string &ConsOutFileName)
-	{
-	if (MSAOutPrefix == "" && ConsOutFileName == "")
-		return;
-
-	asserta(m_InputDB != 0 && m_UniqueDB != 0 && g_DR != 0);
-	asserta(m_ClusterIndexToCentroidSeqIndex != 0);
-	asserta(m_SeqIndexToCPath != 0);
-
-	bool Nucleo = m_CentroidDB->GetIsNucleo();
-
-	FILE *fConsOut = 0;
-	if (ConsOutFileName != "")
-		fConsOut = CreateStdioFile(ConsOutFileName);
-
-	unsigned InputSeqCount = m_InputDB->GetSeqCount();
-	unsigned OutSeqCount = 0;
-
-	bool SizeOut = opt(sizeout);
-	const unsigned *SizeOrder = SizeOut ? GetClusterSizeOrder() : 0;
-	unsigned ClusterCount = GetClusterCount();
-	for (unsigned i = 0; i < ClusterCount; ++i)
-		{
-		unsigned ClusterIndex = (SizeOrder ? SizeOrder[i] : i);
-		vector<unsigned> SeqIndexes;
-		GetClusterMembers(ClusterIndex, SeqIndexes);
-		const unsigned N = SIZE(SeqIndexes);
-		
-		unsigned CentroidSeqIndex = SeqIndexes[0];
-		unsigned CentroidUniqueSeqIndex = g_DR->GetClusterIndex(CentroidSeqIndex);
-		unsigned CL = m_UniqueDB->GetSeqLength(CentroidUniqueSeqIndex);
-		char Tmp[16];
-		sprintf(Tmp, "%uM", CL);
-		string CentroidCPath(Tmp);
-		string CentroidPath;
-		DecompressPath(CentroidCPath.c_str(), CentroidPath);
-
-		string CentroidSeq;
-		vector<string> QuerySeqs;
-		vector<string> Paths;
-		vector<string> Labels;
-		vector<string> MSA;
-		string Path;
-		for (unsigned MemberIndex = 0; MemberIndex < N; ++MemberIndex)
-			{
-			ProgressStep(OutSeqCount++, InputSeqCount, "Building MSAs");
-			unsigned SeqIndex = SeqIndexes[MemberIndex];
-			unsigned UniqueSeqIndex = g_DR->GetClusterIndex(SeqIndex);
-			const char *Q = (const char *) m_UniqueDB->GetSeq(UniqueSeqIndex);
-			const char *Label = m_InputDB->GetLabel(SeqIndex);
-			Labels.push_back(string(Label));
-			unsigned QL = m_UniqueDB->GetSeqLength(UniqueSeqIndex);
-			if (MemberIndex == 0)
-				CentroidSeq = string(Q, QL);
-			else
-				{
-				QuerySeqs.push_back(string(Q, QL));
-				const char *CPath = m_SeqIndexToCPath[UniqueSeqIndex];
-				if (CPath == 0)
-					{
-					asserta(UniqueSeqIndex == CentroidUniqueSeqIndex);
-					Paths.push_back(CentroidPath);
-					}
-				else
-					{
-					DecompressPath(CPath, Path);
-					Paths.push_back(Path);
-					}
-				}
-			}
-
-		Star2(CentroidSeq, QuerySeqs, Paths, MSA);
-
-		if (MSAOutPrefix != "")
-			{
-			sprintf(Tmp, "%u", ClusterIndex);
-			string FileName = MSAOutPrefix + string(Tmp);
-			FILE *f = CreateStdioFile(FileName);
-			asserta(SIZE(MSA) == N);
-			const unsigned ColCount = SIZE(MSA[0]);
-			for (unsigned i = 0; i < N; ++i)
-				{
-				const string &Row = MSA[i];
-				asserta(SIZE(Row) == ColCount);
-				unsigned SeqIndex = SeqIndexes[i];
-				// const char *Label = m_InputDB->GetLabel(SeqIndex);
-				const char *Label = Labels[i].c_str();
-				SeqToFasta(f, (const byte *) Row.c_str(), ColCount, Label);
-				}
-			CloseStdioFile(f);
-			}
-
-		if (fConsOut != 0)
-			{
-			string ConsSeq;
-			GetConsSeq(MSA, Nucleo, ConsSeq);
-			fprintf(fConsOut, ">Cluster%u", ClusterIndex);
-			if (SizeOut)
-				fprintf(fConsOut, ";size=%u;", GetClusterSize(ClusterIndex));
-			fputc('\n', fConsOut);
-			SeqToFasta(fConsOut, (const byte *) ConsSeq.c_str(), SIZE(ConsSeq), 0);
-			}
-		}
-	asserta(OutSeqCount == InputSeqCount);
-	CloseStdioFile(fConsOut);
-	}
-
 void ClusterSink::ClustersOut(const string &Prefix)
 	{
 	if (Prefix == "")
@@ -733,10 +624,7 @@ void ClusterSink::OnAllDone(const SeqDB *InputDB, const SeqDB *UniqueDB)
 		}
 
 	if (InputDB != 0)
-		{
 		ClustersOut(opt(clusters));
-		MSAOut(opt(msaout), opt(consout));
-		}
 
 	WriteConsTaxReport();
 	LogResults();

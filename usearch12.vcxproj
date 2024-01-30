@@ -360,6 +360,7 @@
     <ClCompile Include="roccer.cpp" />
     <ClCompile Include="samout.cpp" />
     <ClCompile Include="selfhsps.cpp" />
+    <ClCompile Include="staralign.cpp" />
     <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="lcrdata.cpp" />
@@ -429,8 +430,6 @@
     <ClCompile Include="sintaxsummary.cpp" />
     <ClCompile Include="sintaxsearcher.cpp" />
     <ClCompile Include="sortlen.cpp" />
-    <ClCompile Include="star.cpp" />
-    <ClCompile Include="staralign.cpp" />
     <ClCompile Include="strdict.cpp" />
     <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />
