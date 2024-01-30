@@ -171,7 +171,6 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	DBHitSink::OnAllDone();
 	UParseSink::CloseOutputFiles();
 	SintaxSearcher::CloseOutputFiles();
-	QScoreSink::OnAllDone();
 	OTUTableSink::OnAllDone();
 	ClosedRefSink::OnAllDone();
 	}

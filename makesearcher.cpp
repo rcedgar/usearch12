@@ -22,7 +22,6 @@
 #include "upclustersink.h"
 #include "clustersink.h"
 #include "dbhitsink.h"
-#include "qscoresink.h"
 #include "otutabsink.h"
 #include "closedrefsink.h"
 #include "derepresult.h"
@@ -357,13 +356,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		HM.AddSink(dbhitsink);
 		}
 
-	if (optset_qout)
-		{
-		QScoreSink *sink = new QScoreSink(Local, QueryIsNucleo, DBIsNucleo);
-		HM.AddSink(sink);
-		}
-
-	if (optset_otutabout || optset_biomout || optset_mothur_shared_out)
+	if (optset_otutabout || optset_biomout)
 		{
 		OTUTableSink *sink = new OTUTableSink;
 		OTUTable *OT = sink->m_OT;
