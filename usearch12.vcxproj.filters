@@ -20,9 +20,6 @@
     <ClCompile Include="alignresult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alloc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alnheuristics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -308,9 +305,6 @@
     <ClCompile Include="treetofile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="agg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pathinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -551,16 +545,7 @@
     <ClCompile Include="samseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="testsixaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="testsortindexes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gspbag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="testglobalalign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="viterbilingap.cpp">

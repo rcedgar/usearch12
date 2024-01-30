@@ -229,9 +229,7 @@
   <ItemGroup>
     <ClCompile Include="adler32.c" />
     <ClCompile Include="accepter.cpp" />
-    <ClCompile Include="agg.cpp" />
     <ClCompile Include="alignresult.cpp" />
-    <ClCompile Include="alloc.cpp" />
     <ClCompile Include="allpairs.cpp" />
     <ClCompile Include="alnheuristics.cpp" />
     <ClCompile Include="alnout.cpp" />
@@ -385,9 +383,6 @@
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
-    <ClCompile Include="testglobalalign.cpp" />
-    <ClCompile Include="testsixaligner.cpp" />
-    <ClCompile Include="testsortindexes.cpp" />
     <ClCompile Include="timing.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />

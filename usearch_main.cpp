@@ -70,19 +70,7 @@ int main(int argc, char **argv)
 
 	OutputSink::CloseOutputFiles();
 
-	LogTiming();
-	LogAllocs();
-
 	CheckUsedOpts(opt_log_used_opts);
-
-#if	0
-	ObjMgr::UpdateGlobalStats();
-	ObjMgr::LogGlobalStats();
-#endif
-
-#if ALLOC_TOTALS
-	LogAllocSummary();
-#endif
 
 	LogCounters();
 
@@ -92,33 +80,3 @@ int main(int argc, char **argv)
 	LogElapsedTimeAndRAM();
 	return 0;
 	}
-
-#if 0
-extern void ProgressTick();
-static bool g_ExitFlag;
-static void main2()
-	{
-	for (;;)
-		{
-		if (g_ExitFlag)
-			return;
-		mysleep(1000);
-		printf("Hello from main2\n");
-		}
-	}
-
-int main(int argc, char **argv)
-	{
-	int rc;
-#pragma omp parallel for
-	for (int i = 0; i < 2; ++i)
-		if (i == 0)
-			{
-			rc = main1(argc, argv);
-			g_ExitFlag = true;
-			}
-		else
-			main2();
-	return rc;
-	}
-#endif
