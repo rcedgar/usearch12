@@ -344,9 +344,6 @@
     <ClCompile Include="mask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="subsample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="orient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

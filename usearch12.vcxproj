@@ -356,7 +356,6 @@
     <ClCompile Include="sintaxsearcher.cpp" />
     <ClCompile Include="staralign.cpp" />
     <ClCompile Include="strdict.cpp" />
-    <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
