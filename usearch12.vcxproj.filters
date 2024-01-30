@@ -299,9 +299,6 @@
     <ClCompile Include="pathinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="samrec.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="udbbuild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -318,9 +315,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filetype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="samout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chainer1.cpp">
@@ -488,9 +482,6 @@
     <ClCompile Include="getu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="roccer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="strdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -528,9 +519,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="viterbilingap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cigar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getglobalhsps.cpp">

@@ -23,7 +23,6 @@ FILE *OutputSink::m_fMatchedFq;
 FILE *OutputSink::m_fNotMatched;
 FILE *OutputSink::m_fNotMatchedFq;
 FILE *OutputSink::m_fUC;
-FILE *OutputSink::m_fSAM;
 FILE *OutputSink::m_fTrimFa;
 
 static void RowToFasta(FILE *f, const char *Label, const char *Row)
@@ -88,7 +87,6 @@ void OutputSink::CloseOutputFiles()
 	CloseStdioFile(m_fNotMatched);
 	CloseStdioFile(m_fNotMatchedFq);
 	CloseStdioFile(m_fUC);
-	CloseStdioFile(m_fSAM);
 	CloseStdioFile(m_fTrimFa);
 
 	m_fAln = 0;
@@ -99,7 +97,6 @@ void OutputSink::CloseOutputFiles()
 	m_fMatchedFq = 0;
 	m_fNotMatchedFq = 0;
 	m_fUC = 0;
-	m_fSAM = 0;
 
 	m_OpenDone = false;
 	}
@@ -182,9 +179,6 @@ void OutputSink::OpenOutputFiles(CMD Cmd)
 
 	if (optset_uc)
 		m_fUC = CreateStdioFile(opt(uc));
-
-	if (optset_samout)
-		m_fSAM = CreateStdioFile(opt(samout));
 
 	if (optset_trimout)
 		m_fTrimFa = CreateStdioFile(opt(trimout));
@@ -379,7 +373,6 @@ void OutputSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
 		//bool HasBadTail(AlignResult *AR);
 		//HasBadTail(AR);
 		OutputAR(AR);
-		OutputSAM(AR, m_HitIndex);
 		}
 
 	if (HitCount > 0)
@@ -399,7 +392,6 @@ void OutputSink::OutputMatchedTrue(SeqInfo *Query, unsigned ClusterIndex)
 void OutputSink::OutputMatchedFalse(SeqInfo *Query, unsigned ClusterIndex)
 	{
 	OutputUCNoHits(Query, ClusterIndex);
-	OutputSAMNoHits(Query);
 	if (opt(output_no_hits))
 		{
 		OutputBlast6NoHits(Query);

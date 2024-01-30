@@ -72,7 +72,6 @@ private:
 	void OutputUCNoHits(SeqInfo *Query, unsigned ClusterIndex);
 	void OutputUserNoHits(SeqInfo *Query, unsigned ClusterIndex);
 	void OutputBlast6NoHits(SeqInfo *Query);
-	void OutputSAMNoHits(SeqInfo *Query);
 
 	unsigned GetMapQ();
 	};

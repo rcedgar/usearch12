@@ -8,7 +8,7 @@
 #include "label.h"
 #include "gobuff.h"
 
-typedef GoBuff<char, 128, true, false> t_MD;
+//typedef GoBuff<char, 128, true, false> t_MD;
 
 class SeqInfo;
 class PathInfo;
@@ -26,8 +26,8 @@ public:
 	SeqInfo *m_Target;
 	HSPData m_HSP;
 	PathInfo *m_PI;
-	GoBuff<char, 128, true, false> m_CIGAR;
-	t_MD m_MD;
+	//GoBuff<char, 128, true, false> m_CIGAR;
+	//t_MD m_MD;
 	GoBuff<char> m_PathOps;
 	GoBuff<unsigned> m_PathCounts;
 
@@ -233,12 +233,6 @@ public:
 	unsigned GetTargetSegWildcardCount();
 	void GetTrimInfo(uint &QLo, uint &QHi, string &QTrimmedSeq);
 
-// SAM support
-	void ToSAMLine(unsigned HitIndex, string &SAMLine);
-	const char *GetSAMReadSeq();
-	unsigned GetSAMReadSeqLength();
-	const char *GetCIGAR();
-	const char *GetMD();
 	const char *GetQueryRowWithTermGaps();
 	const char *GetTargetRowWithTermGaps();
 	const char *GetAnnotRowWithTermGaps(bool Nucleo);
@@ -247,8 +241,6 @@ private:
 	void FillLo();
 	void Fill() { if (!m_Filled) FillLo(); }
 	void AllocAlnLength();
-	void InitCIGAR();
-	void AppendCIGAR(char c, unsigned n);
 	};
 
 #endif // alignresult_h

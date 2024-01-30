@@ -198,22 +198,6 @@ static unsigned GetMapQ()
 	return 255;
 	}
 
-void AlignResult::ToSAMLine(unsigned HitIndex, string &Line)
-	{
-	Line.clear();
-
-	char Tmp[16];
-
-	AlignResult *AR = this;
-#define SAMOUT_CHAR(c)		Line += (c);
-#define SAMOUT_STR(s)		Line += (s);
-#define SAMOUT_STRN(s, n)	{ for (unsigned i = 0; i < (n); ++i) Line += (s)[i]; }
-#define SAMOUT_UINT(u)		{ sprintf(Tmp, "%u", (u)); Line += Tmp; }
-#define SAMOUT_INT(i)		{ sprintf(Tmp, "%d", (i)); Line += Tmp; }
-
-#include "samout.h"
-	}
-
 void AlignResult::FillLo()
 	{
 	m_FirstMCol = UINT_MAX;
@@ -839,79 +823,6 @@ float AlignResult::GetScore()
 		return (float) GetFractId();
 	}
 
-float AlignResult::GetSAMScore()
-	{
-	if (m_Local)
-		return (float) GetRawScore();
-	else
-		return (float) GetPctId();
-	}
-
-void AlignResult::InitCIGAR()
-	{
-	m_CIGAR.Alloc(128);
-	m_CIGAR.Size = 0;
-	}
-
-void AlignResult::AppendCIGAR(char c, unsigned n)
-	{
-	if (n == 0)
-		return;
-
-	char Tmp[16];
-	int i = sprintf(Tmp, "%u%c", n, c);
-	m_CIGAR.Alloc(m_CIGAR.Size + i + 32);
-	memcpy(m_CIGAR.Data + m_CIGAR.Size, Tmp, i);
-	m_CIGAR.Size += i;
-	}
-
-const char *AlignResult::GetCIGAR()
-	{
-	Fill();
-	const char *Path = GetPath();
-	unsigned ColCount = m_AlnLength;
-
-	m_PathOps.Alloc(ColCount);
-	m_PathCounts.Alloc(ColCount);
-
-	char *PathOps = m_PathOps.Data;
-	unsigned *PathCounts = m_PathCounts.Data;
-
-	unsigned ClipLeft = GetQueryUnalignedLengthLeft();
-	unsigned ClipRight = GetQueryUnalignedLengthRight();
-
-	InitCIGAR();
-
-	if (ClipLeft > 0)
-		{
-		if (opt(sam_softclip))
-			AppendCIGAR('S', ClipLeft);
-		else
-			AppendCIGAR('H', ClipLeft);
-		}
-
-	unsigned N = PathToVecs(Path, PathOps, PathCounts);
-	for (unsigned i = 0; i < N; ++i)
-		{
-		char c = PathOps[i];
-		if (c == 'D')
-			c = 'I';
-		else if (c == 'I')
-			c = 'D';
-		AppendCIGAR(c, PathCounts[i]);
-		}
-
-	if (ClipRight > 0)
-		{
-		if (opt(sam_softclip))
-			AppendCIGAR('S', ClipRight);
-		else
-			AppendCIGAR('H', ClipRight);
-		}
-
-	m_CIGAR.Data[m_CIGAR.Size] = 0;
-	return m_CIGAR.Data;
-	}
 
 unsigned AlignResult::GetQuerySegWildcardCount()
 	{
@@ -947,38 +858,6 @@ unsigned AlignResult::GetTargetSegWildcardCount()
 			++n;
 		}
 	return n;
-	}
-
-const char *AlignResult::GetMD()
-	{
-	Fill();
-
-	const char *QRow = GetQueryRow();
-	const char *TRow = GetTargetRow();
-
-	void AlnToMD(const char *QRow, const char *TRow, unsigned ColCount, t_MD &MD);
-	AlnToMD(QRow, TRow, m_AlnLength, m_MD);
-	return m_MD.Data;
-	}
-
-const char *AlignResult::GetSAMReadSeq()
-	{
-	Fill();
-
-	if (opt(sam_softclip))
-		return (const char *) m_Query->m_Seq;
-	else
-		return (const char *) GetQuerySeg();
-	}
-
-unsigned AlignResult::GetSAMReadSeqLength()
-	{
-	Fill();
-
-	if (opt(sam_softclip))
-		return m_Query->m_L;
-	else
-		return GetQuerySegLength();
 	}
 
 double AlignResult::GetGCPct()
