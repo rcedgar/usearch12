@@ -304,7 +304,6 @@
     <ClCompile Include="inftrees.c" />
     <ClCompile Include="interp.cpp" />
     <ClCompile Include="json.cpp" />
-    <ClCompile Include="staralign.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="linereader.cpp" />
     <ClCompile Include="lnfrac.cpp" />
@@ -357,13 +356,13 @@
     <ClCompile Include="setnucmx.cpp" />
     <ClCompile Include="sintaxsummary.cpp" />
     <ClCompile Include="sintaxsearcher.cpp" />
+    <ClCompile Include="staralign.cpp" />
     <ClCompile Include="strdict.cpp" />
     <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
-    <ClCompile Include="timing.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="treefromagg.cpp" />

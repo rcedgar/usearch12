@@ -1,4 +1,3 @@
-//#include "enable_timing.h"
 #include "myutils.h"
 #include "cmd.h"
 #include "outputsink.h"
@@ -53,7 +52,6 @@ int main(int argc, char **argv)
 	Progress("[%s]\n", ShortCmdLine.c_str() + 1);
 	ProgressPrefix(true);
 
-	InitTiming();
 	InitAlpha();
 
 	CMD Cmd = GetCmd();
