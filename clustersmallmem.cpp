@@ -68,8 +68,6 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	SetCmdPCB(Cmd);
 
 	DB_SORT SortOrder = DBS_None;
-	if (Cmd == CMD_uchime_denovo)
-		Die("uchime_denovo not supported");
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 

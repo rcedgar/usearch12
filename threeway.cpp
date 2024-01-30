@@ -2,7 +2,6 @@
 #include "seqdb.h"
 #include "alignresult.h"
 #include "seqinfo.h"
-#include "chimehit.h"
 #include "objmgr.h"
 #include "globalaligner.h"
 

@@ -503,7 +503,6 @@
     <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="trimprimer.cpp" />
     <ClCompile Include="uchime2denovo.cpp" />
-    <ClCompile Include="uchime2ref.cpp" />
     <ClCompile Include="uchimefinder.cpp" />
     <ClCompile Include="udbbuild.cpp" />
     <ClCompile Include="udbusortedsearcherbig.cpp" />
@@ -520,8 +519,7 @@
     <ClCompile Include="uncross2mock.cpp" />
     <ClCompile Include="ungappedblast.cpp" />
     <ClCompile Include="unifrac.cpp" />
-    <ClCompile Include="unoise.cpp" />
-    <ClCompile Include="unoise2.cpp" />
+    <ClCompile Include="unoise3.cpp" />
     <ClCompile Include="uparsesink.cpp" />
     <ClCompile Include="uparsedp.cpp" />
     <ClCompile Include="uparsepretty.cpp" />
@@ -534,7 +532,6 @@
     <ClCompile Include="whisker.cpp" />
     <ClCompile Include="wordcounter.cpp" />
     <ClCompile Include="wordparams.cpp" />
-    <ClCompile Include="writechhit.cpp" />
     <ClCompile Include="xdropalignmem.cpp" />
     <ClCompile Include="xdropbwdmem.cpp" />
     <ClCompile Include="xdropbwdsplit.cpp" />

@@ -25,8 +25,6 @@ Terminator::Terminator(CMD Cmd)
 
 // UChime/UParse commands must hack these
 // if needed to prevent premature termination.
-	case CMD_uchime_ref:
-	case CMD_uchime_denovo:
 	case CMD_cluster_otus:
 	case CMD_uparse_ref:
 	case CMD_search_tax:

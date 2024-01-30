@@ -59,8 +59,6 @@ IS_TRUE(allpairs_global)
 IS_TRUE(pairs_global)
 IS_TRUE(cluster_fast)
 IS_TRUE(cluster_smallmem)
-IS_TRUE(uchime_ref)
-IS_TRUE(uchime_denovo)
 IS_TRUE(uparse_ref)
 IS_TRUE(cluster_otus)
 		}
@@ -88,7 +86,6 @@ IS_TRUE(cons_tax)
 IS_TRUE(otutab)
 IS_TRUE(closed_ref)
 IS_TRUE(usearch_local)
-IS_TRUE(uchime_ref)
 IS_TRUE(uparse_ref)
 IS_TRUE(sintax)
 IS_TRUE(orient)
@@ -100,7 +97,6 @@ bool CmdNoMask(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(uchime_ref)
 IS_TRUE(uparse_ref)
 		}
 	return false;

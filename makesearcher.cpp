@@ -93,13 +93,6 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		break;
 		}
 
-	case CMD_uchime_denovo:
-		{
-		opt(id) = 0.75;
-		optset_id = true;
-		break;
-		}
-
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
 		{
@@ -115,11 +108,6 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	bool AcceptAll = false;
 	if (Cmd == CMD_cluster_otus)
 		AcceptAll = true;
-	else if (Cmd == CMD_uchime_denovo)
-		{
-		if (!optset_abskew)
-			optset_abskew = true;
-		}
 	Accepter &accepter = *new Accepter(true, AcceptAll);
 	Terminator &terminator = *new Terminator(Cmd);
 
@@ -138,7 +126,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 
 // Need UDBUSortedSearcher even if uparse_alignall because ClusterSink needs it.
 	UDBUsortedSearcher *US = 0;
-	if (Cmd == CMD_cluster_otus || Cmd == CMD_uchime_denovo)
+	if (Cmd == CMD_cluster_otus)
 		{
 		if (!optset_maxhits)
 			{
@@ -258,9 +246,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_otutab:
 	case CMD_closed_ref:
 	case CMD_search_global:
-	case CMD_uchime_ref:
 	case CMD_uparse_ref:
-	case CMD_uchime_denovo:
 	case CMD_cluster_otus:
 		{
 		asserta(aligner == 0);
@@ -292,11 +278,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	if (Cmd == CMD_uparse_ref)
 		{
 		opt(id) = 0.0;
-		optset_id = true;
-		}
-	else if (Cmd == CMD_uchime_ref)
-		{
-		opt(id) = 0.75;
 		optset_id = true;
 		}
 	else if (Cmd == CMD_sintax)
@@ -340,20 +321,16 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		HM.AddSink(UPS);
 	// Fall through to CMD_uchime_ref case
 		}
-	case CMD_uchime_ref:
 	case CMD_usearch_global:
 	case CMD_search_tax:
 	case CMD_cons_tax:
 	case CMD_otutab:
 	case CMD_closed_ref:
 	case CMD_usearch_local:
-	case CMD_uchime_denovo:
 	case CMD_sintax:
 		{
 		if (Cmd == CMD_uparse_ref)
 			US = new BitMapSearcher;
-		else if (Cmd == CMD_uchime_ref)
-			US = new ChunkSearcher;
 		else if (Cmd == CMD_sintax)
 			{
 			SintaxSearcher *UTS = new SintaxSearcher;

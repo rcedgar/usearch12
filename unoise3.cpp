@@ -107,11 +107,6 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 	return BestTargetIndex;
 	}
 
-void cmd_unoise2()
-	{
-	Die("-unoise2 not supported in this build, use -unoise3");
-	}
-
 void cmd_unoise3()
 	{
 	string InputFileName = opt(unoise3);
@@ -146,7 +141,7 @@ void cmd_unoise3()
 
 	UDBUsortedSearcher *USS = new UDBUsortedSearcher;
 	UDBParams Params;
-	Params.FromCmdLine(CMD_unoise, true);
+	Params.FromCmdLine(CMD_unoise3, true);
 	USS->CreateEmpty(Params);
 	USS->InitSearcher(0, GA, 0, 0);
 	USS->m_MinFractId = 0.9;

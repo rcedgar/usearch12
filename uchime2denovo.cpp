@@ -127,12 +127,6 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string
 			asserta(false);
 			}
 
-		if (fUCA != 0 && IsChimera)
-			{
-			ChimeHit &Hit = DP->GetChimeHit();
-			WriteChimeAln(fUCA, Hit);
-			}
-
 		ObjMgr::Down(Query);
 
 		if (IsChimera)
