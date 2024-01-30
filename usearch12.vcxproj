@@ -288,8 +288,6 @@
     <ClCompile Include="exactaligner.cpp" />
     <ClCompile Include="exactsearcher.cpp" />
     <ClCompile Include="fastaexplode.cpp" />
-    <ClCompile Include="fastagetseqsp.cpp" />
-    <ClCompile Include="fastagetseqst.cpp" />
     <ClCompile Include="fastalettercounts.cpp" />
     <ClCompile Include="fastaseqsource.cpp" />
     <ClCompile Include="fasta_xlat.cpp" />
@@ -300,7 +298,6 @@
     <ClCompile Include="fastx2qiime.cpp" />
     <ClCompile Include="fastxgetlabels.cpp" />
     <ClCompile Include="fastxgetsamplenames.cpp" />
-    <ClCompile Include="fastagetsegs.cpp" />
     <ClCompile Include="fastxgetseqs.cpp" />
     <ClCompile Include="fastxgetsubseq.cpp" />
     <ClCompile Include="fastaindex.cpp" />

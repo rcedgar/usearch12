@@ -653,9 +653,6 @@
     <ClCompile Include="bitvec64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastagetsegs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alphadiv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -707,13 +704,7 @@
     <ClCompile Include="fastaindex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastagetseqsp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fastauniquesbylabels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastagetseqst.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gethspsself.cpp">
