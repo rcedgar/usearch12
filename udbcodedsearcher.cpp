@@ -115,14 +115,6 @@ void UDBCodedSearcher::UDBSearchNoAccel()
 
 void UDBCodedSearcher::SearchImpl()
 	{
-	if (g_Cmd == CMD_search_phix)
-		{
-		unsigned w = m_Params.m_WordWidth;
-		unsigned n = GetWordMatchCount(w);
-		if (n == 0)
-			return;
-		}
-
 	if (opt(accel) == 1.0)
 		{
 		UDBSearchNoAccel();

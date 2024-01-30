@@ -61,24 +61,9 @@ void cmd_uparse_ref()
 	Search(CMD_uparse_ref, opt(uparse_ref), opt(db));
 	}
 
-void cmd_search_oligodb()
-	{
-	Search(CMD_search_oligodb, opt(search_oligodb), opt(db));
-	}
-
-void cmd_search_peptidedb()
-	{
-	Search(CMD_search_peptidedb, opt(search_peptidedb), opt(db));
-	}
-
 void cmd_search_exact()
 	{
 	Search(CMD_search_exact, opt(search_exact), opt(db));
-	}
-
-void cmd_search_pcr()
-	{
-	Search(CMD_search_pcr, opt(search_pcr), opt(db));
 	}
 
 void cmd_sintax()
@@ -86,10 +71,4 @@ void cmd_sintax()
 	default_opt(tax_prod, true);
 	default_opt(boot_subset, "32");
 	Search(CMD_sintax, opt(sintax), opt(db));
-	}
-
-void cmd_search_phix()
-	{
-	default_opt(strand, "both");
-	Search(CMD_search_phix, opt(search_phix), "!!phix!!");
 	}

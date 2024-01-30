@@ -33,17 +33,9 @@ Terminator::Terminator(CMD Cmd)
 	case CMD_ublast:
 	case CMD_search_global:
 	case CMD_search_local:
-	case CMD_search_oligodb:
-	case CMD_search_peptidedb:
 	case CMD_search_exact:
-	case CMD_search_pcr:
 	case CMD_sintax:
 		m_MaxAccepts = 0;
-		m_MaxRejects = 0;
-		break;
-
-	case CMD_search_phix:
-		m_MaxAccepts = 1;
 		m_MaxRejects = 0;
 		break;
 

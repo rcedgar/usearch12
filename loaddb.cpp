@@ -134,15 +134,6 @@ void LoadUDB(CMD Cmd, const string &FileName, UDBData &udb)
 void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
   bool *ptrDBIsNucleo)
 	{
-	if (Cmd == CMD_search_phix)
-		{
-		PhixFinder::GlobalInit();
-		*ptrDBIsNucleo = true;
-		*ptrDB = 0;
-		*ptrUDB = PhixFinder::m_Data;
-		return;
-		}
-
 	if (DBFileName == "")
 		Die("Missing database filename");
 
@@ -179,8 +170,6 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
 	*ptrDB = seqdb;
 	*ptrUDB = udb;
 	*ptrDBIsNucleo = DBIsNucleo;
-	if (Cmd == CMD_search_oligodb || Cmd == CMD_search_pcr)
-		*ptrDBIsNucleo = true;
 
 	unsigned t2 = GetElapsedSecs();
 	unsigned DBLoadSecs = t2 - t1;

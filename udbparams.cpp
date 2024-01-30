@@ -157,10 +157,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 	case CMD_usearch_local:
 		SetDefaults_LocalUSearch(Nucleo);
 		return;
-
-	case CMD_search_phix:
-		SetDefaults_SearchPhix();
-		return;
 		}
 
 	asserta(false);

@@ -138,11 +138,6 @@ void SetCmdPCB(CMD Cmd)
 	case CMD_usearch_global:
 	case CMD_usearch_local:
 	case CMD_ublast:
-	case CMD_search_oligodb:
-	case CMD_search_peptidedb:
-	case CMD_search_phix:
-		SetPCB(SearcherPCB);
-		break;
 	case CMD_uparse_ref:
 		SetPCB(UParsePCB);
 		break;
@@ -152,9 +147,6 @@ void SetCmdPCB(CMD Cmd)
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
 		SetPCB(UclustPCB);
-		break;
-	case CMD_search_pcr:
-		SetPCB(SearchPCR_PCB);
 		break;
 	case CMD_fastx_orient:
 		SetPCB(Orient_PCB);

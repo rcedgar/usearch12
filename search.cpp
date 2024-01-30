@@ -143,25 +143,11 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 
 	bool QueryIsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &QueryIsNucleo);
-	if (Cmd == CMD_search_oligodb || Cmd == CMD_search_pcr)
-		QueryIsNucleo = true;
-//	MASK_TYPE QueryMaskType = StrToMaskType(sopt(qmask), MT_None);
 
 	UDBData *udb = 0;
 	SeqDB *seqdb = 0;
 	bool DBIsNucleo = false;
 	LoadDB(DBFileName, Cmd, &seqdb, &udb, &DBIsNucleo);
-
-	if (Cmd == CMD_search_oligodb || Cmd == CMD_search_pcr)
-		{
-		if (!QueryIsNucleo || !DBIsNucleo)
-			Die("nt sequences required");
-		}
-	if (Cmd == CMD_search_peptidedb)
-		{
-		if (QueryIsNucleo || DBIsNucleo)
-			Die("a.a. sequences required");
-		}
 
 	bool RevComp = GetRevComp(QueryIsNucleo, DBIsNucleo);
 	bool Xlat = GetXlat(QueryIsNucleo, DBIsNucleo);

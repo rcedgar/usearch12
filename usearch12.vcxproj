@@ -387,8 +387,6 @@
     <ClCompile Include="pattern.cpp" />
     <ClCompile Include="pcb.cpp" />
     <ClCompile Include="pcrsink.cpp" />
-    <ClCompile Include="phix.cpp" />
-    <ClCompile Include="phixfinder.cpp" />
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="profile.cpp" />
     <ClCompile Include="qscoresink.cpp" />
@@ -399,7 +397,6 @@
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
     <ClCompile Include="searcher.cpp" />
-    <ClCompile Include="searchpcr2.cpp" />
     <ClCompile Include="seed.cpp" />
     <ClCompile Include="segmaskseq.cpp" />
     <ClCompile Include="seqdb.cpp" />

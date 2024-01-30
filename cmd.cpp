@@ -106,10 +106,10 @@ bool CmdRequiresFastaDB(CMD Cmd)
 IS_TRUE(search_global)
 IS_TRUE(search_local)
 //IS_TRUE(bbc_tax)
-IS_TRUE(search_oligodb)
-IS_TRUE(search_peptidedb)
+//IS_TRUE(search_oligodb)
+//IS_TRUE(search_peptidedb)
 IS_TRUE(search_exact)
-IS_TRUE(search_pcr)
+//IS_TRUE(search_pcr)
 		}
 	return false;
 	}
@@ -132,10 +132,6 @@ IS_TRUE(cluster_fast)
 IS_TRUE(cluster_smallmem)
 IS_TRUE(allpairs_local)
 IS_TRUE(pairs_local)
-IS_TRUE(search_oligodb)
-IS_TRUE(search_peptidedb)
-IS_TRUE(search_pcr)
-IS_TRUE(search_phix)
 		}
 	return false;
 	}
@@ -154,8 +150,6 @@ IS_TRUE(usearch_local)
 IS_TRUE(cluster_fast)
 IS_TRUE(cluster_smallmem)
 IS_TRUE(cluster_otus)
-IS_TRUE(search_oligodb)
-IS_TRUE(search_peptidedb)
 		}
 	return false;
 	}
@@ -178,8 +172,6 @@ IS_TRUE(pairs_local)
 IS_TRUE(allpairs_global)
 IS_TRUE(pairs_global)
 IS_TRUE(cluster_otus)
-IS_TRUE(search_oligodb)
-IS_TRUE(search_peptidedb)
 		}
 	return false;
 	}

@@ -494,12 +494,6 @@
     <ClCompile Include="deparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="phix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="phixfinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="uchime2denovo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -597,9 +591,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="trimprimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="searchpcr2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="taxy.cpp">

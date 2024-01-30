@@ -183,9 +183,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_ublast:
 	case CMD_usearch_local:
 	case CMD_search_local:
-	case CMD_search_oligodb:
-	case CMD_search_peptidedb:
-	case CMD_search_phix:
 		{
 		float DBSize = 0.0;
 		if (optset_ka_dbsize)
@@ -202,9 +199,8 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_ublast:
 	case CMD_usearch_local:
 	case CMD_search_local:
-	case CMD_search_phix:
 		{
-		if (Cmd == CMD_ublast || Cmd == CMD_search_phix)
+		if (Cmd == CMD_ublast)
 			aligner = new LocalAligner(AT_LocalPos);
 		else if (Cmd == CMD_usearch_local || Cmd == CMD_search_local)
 			{
@@ -250,18 +246,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_sintax:
 		{
 		aligner = 0;
-		break;
-		}
-
-	case CMD_search_oligodb:
-	case CMD_search_peptidedb:
-	case CMD_search_pcr:
-		{
-		bool Nucleo = (Cmd == CMD_search_oligodb || Cmd == CMD_search_pcr);
-		asserta(aligner == 0);
-		FragAligner *FA  = new FragAligner;
-		FA->FragInit(Nucleo, false, opt(maxdiffs));
-		aligner = FA;
 		break;
 		}
 
@@ -351,7 +335,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		}
 
 	case CMD_ublast:
-	case CMD_search_phix:
 		{
 		UDBCodedSearcher *US = new UDBCodedSearcher;
 		if (udb != 0)
@@ -370,9 +353,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 
 	case CMD_search_global:
 	case CMD_search_local:
-	case CMD_search_oligodb:
-	case CMD_search_peptidedb:
-	case CMD_search_pcr:
 		{
 		SeqDBSearcher *SS = new SeqDBSearcher(seqdb);
 		searcher = SS;
@@ -394,12 +374,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		ClosedRefSink *CRS = new ClosedRefSink;
 		HM.AddSink(CRS);
-		}
-
-	if (Cmd == CMD_search_pcr)
-		{
-		PCRSink *PS = new PCRSink;
-		HM.AddSink(PS);
 		}
 
 	if (optset_dbmatched || optset_dbnotmatched || optset_dbcutout)
