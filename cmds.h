@@ -31,7 +31,6 @@ A(fastq_filter)
 A(fastq_filter2)
 A(fastq_join)
 A(fastq_mergepairs)
-A(fastq_sra_splitpairs)
 
 A(fastx_demux)
 A(fastx_findorfs)

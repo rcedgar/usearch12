@@ -299,7 +299,6 @@
     <ClCompile Include="fasttiming.cpp" />
     <ClCompile Include="fastqeestats.cpp" />
     <ClCompile Include="fastqeestats2.cpp" />
-    <ClCompile Include="fastq_sra_splitpairs.cpp" />
     <ClCompile Include="fastx2qiime.cpp" />
     <ClCompile Include="fastxdemux.cpp" />
     <ClCompile Include="fastxgetlabels.cpp" />
