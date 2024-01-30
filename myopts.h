@@ -64,7 +64,6 @@ STR_OPT(fastqout_discarded)		// Discarded reads (FASTQ format).
 STR_OPT(samout)			// Hits in SAM format.
 STR_OPT(ntout)			// Nucleotide ORFs, FASTA format.
 STR_OPT(aaout)			// Translated ORFs, FASTA format.
-STR_OPT(nastout)		// Hits in NAST format.
 STR_OPT(msaout)			// Output filename prefix, one MSA per cluster.
 STR_OPT(consout)		// FASTA output file for consensus sequences.
 STR_OPT(clusters)		// Output filename prefix, one FASTA per cluster.

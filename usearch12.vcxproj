@@ -345,6 +345,8 @@
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
     <ClCompile Include="gspbag.cpp" />
+    <ClCompile Include="mergealign.cpp" />
+    <ClCompile Include="mergelogvaln.cpp" />
     <ClCompile Include="palindrome.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
@@ -379,8 +381,6 @@
     <ClCompile Include="maskfastx.cpp" />
     <ClCompile Include="maxcommonsubseq.cpp" />
     <ClCompile Include="maxsubseq.cpp" />
-    <ClCompile Include="mergealign.cpp" />
-    <ClCompile Include="mergelogvaln.cpp" />
     <ClCompile Include="mergepair.cpp" />
     <ClCompile Include="mergepost.cpp" />
     <ClCompile Include="mergepre.cpp" />
@@ -389,7 +389,6 @@
     <ClCompile Include="mothur.cpp" />
     <ClCompile Include="mx.cpp" />
     <ClCompile Include="myutils.cpp" />
-    <ClCompile Include="nastout.cpp" />
     <ClCompile Include="newick.cpp" />
     <ClCompile Include="objmgr.cpp" />
     <ClCompile Include="fragaligner.cpp" />

@@ -176,14 +176,6 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
 	else
 		Die("LoadDB(%s)", CmdToStr(Cmd));
 
-	if (optset_nastout)
-		{
-		g_MSADB = new SeqDB;
-		g_MSADB->FromFasta(DBFileName, false);
-		if (!g_MSADB->m_Aligned)
-			Warning("%s is not aligned", DBFileName.c_str());
-		}
-
 	*ptrDB = seqdb;
 	*ptrUDB = udb;
 	*ptrDBIsNucleo = DBIsNucleo;

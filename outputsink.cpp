@@ -24,7 +24,6 @@ FILE *OutputSink::m_fNotMatched;
 FILE *OutputSink::m_fNotMatchedFq;
 FILE *OutputSink::m_fUC;
 FILE *OutputSink::m_fSAM;
-FILE *OutputSink::m_fNAST;
 FILE *OutputSink::m_fTrimFa;
 
 static void RowToFasta(FILE *f, const char *Label, const char *Row)
@@ -90,7 +89,6 @@ void OutputSink::CloseOutputFiles()
 	CloseStdioFile(m_fNotMatchedFq);
 	CloseStdioFile(m_fUC);
 	CloseStdioFile(m_fSAM);
-	CloseStdioFile(m_fNAST);
 	CloseStdioFile(m_fTrimFa);
 
 	m_fAln = 0;
@@ -102,7 +100,6 @@ void OutputSink::CloseOutputFiles()
 	m_fNotMatchedFq = 0;
 	m_fUC = 0;
 	m_fSAM = 0;
-	m_fNAST = 0;
 
 	m_OpenDone = false;
 	}
@@ -189,9 +186,6 @@ void OutputSink::OpenOutputFiles(CMD Cmd)
 	if (optset_samout)
 		m_fSAM = CreateStdioFile(opt(samout));
 
-	if (optset_nastout)
-		m_fNAST = CreateStdioFile(opt(nastout));
-
 	if (optset_trimout)
 		m_fTrimFa = CreateStdioFile(opt(trimout));
 
@@ -208,7 +202,6 @@ void OutputSink::OutputAR(AlignResult *AR)
 	OutputQSeg(AR);
 	OutputTSeg(AR);
 	OutputUC(AR);
-	OutputNAST(AR);
 	OutputTrim(AR);
 	EndTimer(OS_Output);
 	}

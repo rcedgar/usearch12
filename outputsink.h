@@ -24,7 +24,6 @@ public:
 	static FILE *m_fTSeg;
 	static FILE *m_fUC;
 	static FILE *m_fSAM;
-	static FILE *m_fNAST;
 	static FILE *m_fMatched;
 	static FILE *m_fMatchedFq;
 	static FILE *m_fNotMatched;
@@ -58,7 +57,6 @@ private:
 	static void OutputQSeg(AlignResult *AR);
 	static void OutputTSeg(AlignResult *AR);
 	static void OutputUC(AlignResult *AR);
-	static void OutputNAST(AlignResult *AR);
 	static void OutputTrim(AlignResult *AR);
 
 	void OutputSAM(AlignResult *AR, unsigned HitIndex);
