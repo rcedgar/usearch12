@@ -268,8 +268,6 @@
     <ClCompile Include="dustmask.cpp" />
     <ClCompile Include="estats.cpp" />
     <ClCompile Include="evalue.cpp" />
-    <ClCompile Include="exactaligner.cpp" />
-    <ClCompile Include="exactsearcher.cpp" />
     <ClCompile Include="fastaseqsource.cpp" />
     <ClCompile Include="fastqfilter2.cpp" />
     <ClCompile Include="fasttiming.cpp" />

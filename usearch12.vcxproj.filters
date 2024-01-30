@@ -338,12 +338,6 @@
     <ClCompile Include="seqhash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="exactaligner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="exactsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="clusterfast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
