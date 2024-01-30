@@ -413,9 +413,6 @@
     <ClCompile Include="fastxgetsubseq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastxrevcomp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="profile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -551,9 +548,6 @@
     <ClCompile Include="bitvec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fastaexplode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="getuniquelettercount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -629,12 +623,6 @@
     <ClCompile Include="catdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="svg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="svgchart.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="otutabcore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -668,9 +656,6 @@
     <ClCompile Include="testsixaligner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="syg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="testsortindexes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -686,16 +671,10 @@
     <ClCompile Include="cigar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fasta_xlat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="calcdistmxa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getglobalhsps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fastaindex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fastauniquesbylabels.cpp">

@@ -287,10 +287,8 @@
     <ClCompile Include="evalue.cpp" />
     <ClCompile Include="exactaligner.cpp" />
     <ClCompile Include="exactsearcher.cpp" />
-    <ClCompile Include="fastaexplode.cpp" />
     <ClCompile Include="fastalettercounts.cpp" />
     <ClCompile Include="fastaseqsource.cpp" />
-    <ClCompile Include="fasta_xlat.cpp" />
     <ClCompile Include="fastqfilter2.cpp" />
     <ClCompile Include="fasttiming.cpp" />
     <ClCompile Include="fastqeestats.cpp" />
@@ -300,10 +298,8 @@
     <ClCompile Include="fastxgetsamplenames.cpp" />
     <ClCompile Include="fastxgetseqs.cpp" />
     <ClCompile Include="fastxgetsubseq.cpp" />
-    <ClCompile Include="fastaindex.cpp" />
     <ClCompile Include="fastxinfo.cpp" />
     <ClCompile Include="fastxrelabel.cpp" />
-    <ClCompile Include="fastxrevcomp.cpp" />
     <ClCompile Include="fastxsplit.cpp" />
     <ClCompile Include="fastxsplitmb.cpp" />
     <ClCompile Include="fastxsplitn.cpp" />
@@ -353,7 +349,6 @@
     <ClCompile Include="roccer.cpp" />
     <ClCompile Include="samout.cpp" />
     <ClCompile Include="staralign.cpp" />
-    <ClCompile Include="syg.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="linereader.cpp" />
     <ClCompile Include="lnfrac.cpp" />
@@ -422,8 +417,6 @@
     <ClCompile Include="strdict.cpp" />
     <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />
-    <ClCompile Include="svg.cpp" />
-    <ClCompile Include="svgchart.cpp" />
     <ClCompile Include="tabbed2otutab.cpp" />
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
