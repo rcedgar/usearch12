@@ -470,16 +470,7 @@
     <ClCompile Include="interp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alphadivcmd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="betadiv.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="unifrac.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="betadivcmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="newick.cpp">
@@ -524,12 +515,6 @@
     <ClCompile Include="roccer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tabbed2otutab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cdata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="strdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -545,25 +530,13 @@
     <ClCompile Include="mannwhitney.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alphasig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alphadivtable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="catdict.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="otutabcore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wordcounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bitvec64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alphadiv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fasttiming.cpp">

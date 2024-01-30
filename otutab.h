@@ -36,9 +36,9 @@ public:
 	void ToMothurSharedFile(const string &FileName) const;
 
 // Transform table
-	void Rarify(unsigned Size, bool DeleteIfSmaller, unsigned &DeletedCount);
-	void Normalize_Old(unsigned Size); // Dumb!!
-	void SubsamplePct(unsigned Pct, SUBSAMPLE_METHOD Method, unsigned Iters);
+	//void Rarify(unsigned Size, bool DeleteIfSmaller, unsigned &DeletedCount);
+	//void Normalize_Old(unsigned Size); // Dumb!!
+	//void SubsamplePct(unsigned Pct, SUBSAMPLE_METHOD Method, unsigned Iters);
 	void DeleteSample(unsigned SampleIndex);
 	void DeleteOTU(unsigned OTUIndex);
 	void GetOTUSizes(vector<unsigned> &Sizes) const;

@@ -228,10 +228,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="adler32.c" />
-    <ClCompile Include="alphadivtable.cpp" />
-    <ClCompile Include="alphasig.cpp" />
     <ClCompile Include="accepter.cpp" />
-    <ClCompile Include="alphadiv.cpp" />
     <ClCompile Include="agg.cpp" />
     <ClCompile Include="alignresult.cpp" />
     <ClCompile Include="alloc.cpp" />
@@ -241,11 +238,8 @@
     <ClCompile Include="alnparams.cpp" />
     <ClCompile Include="alpha.cpp" />
     <ClCompile Include="alpha2.cpp" />
-    <ClCompile Include="alphadivcmd.cpp" />
     <ClCompile Include="alphainfo.cpp" />
     <ClCompile Include="arscorer.cpp" />
-    <ClCompile Include="betadiv.cpp" />
-    <ClCompile Include="betadivcmd.cpp" />
     <ClCompile Include="bimeradp.cpp" />
     <ClCompile Include="bitmapsearcher.cpp" />
     <ClCompile Include="bitvec.cpp" />
@@ -253,7 +247,6 @@
     <ClCompile Include="blast6out.cpp" />
     <ClCompile Include="blosum62.cpp" />
     <ClCompile Include="catdict.cpp" />
-    <ClCompile Include="cdata.cpp" />
     <ClCompile Include="chainer1.cpp" />
     <ClCompile Include="chainer.cpp" />
     <ClCompile Include="chimehit.cpp" />
@@ -355,7 +348,6 @@
     <ClCompile Include="orffinder.cpp" />
     <ClCompile Include="orient.cpp" />
     <ClCompile Include="otutab.cpp" />
-    <ClCompile Include="otutabcore.cpp" />
     <ClCompile Include="otutabsink.cpp" />
     <ClCompile Include="outputsink.cpp" />
     <ClCompile Include="outputuc.cpp" />
@@ -390,7 +382,6 @@
     <ClCompile Include="strdict.cpp" />
     <ClCompile Include="subsample.cpp" />
     <ClCompile Include="substmx.cpp" />
-    <ClCompile Include="tabbed2otutab.cpp" />
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
