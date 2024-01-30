@@ -358,7 +358,6 @@
     <ClCompile Include="inftrees.c" />
     <ClCompile Include="interp.cpp" />
     <ClCompile Include="json.cpp" />
-    <ClCompile Include="randseq.cpp" />
     <ClCompile Include="roccer.cpp" />
     <ClCompile Include="selfhsps.cpp" />
     <ClCompile Include="syg.cpp" />
