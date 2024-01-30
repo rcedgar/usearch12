@@ -230,7 +230,6 @@
     <ClCompile Include="adler32.c" />
     <ClCompile Include="alphadivtable.cpp" />
     <ClCompile Include="alphasig.cpp" />
-    <ClCompile Include="bbcsearcher.cpp" />
     <ClCompile Include="accepter.cpp" />
     <ClCompile Include="alphadiv.cpp" />
     <ClCompile Include="agg.cpp" />
@@ -244,8 +243,6 @@
     <ClCompile Include="alpha2.cpp" />
     <ClCompile Include="alphadivcmd.cpp" />
     <ClCompile Include="alphainfo.cpp" />
-    <ClCompile Include="annot.cpp" />
-    <ClCompile Include="annotator.cpp" />
     <ClCompile Include="arscorer.cpp" />
     <ClCompile Include="betadiv.cpp" />
     <ClCompile Include="betadivcmd.cpp" />
@@ -384,7 +381,6 @@
     <ClCompile Include="gzread.c" />
     <ClCompile Include="hashtime.cpp" />
     <ClCompile Include="heatmap.cpp" />
-    <ClCompile Include="hitax.cpp" />
     <ClCompile Include="hitmgr.cpp" />
     <ClCompile Include="hspfinder.cpp" />
     <ClCompile Include="infback.c" />
@@ -428,8 +424,6 @@
     <ClCompile Include="myutils.cpp" />
     <ClCompile Include="nastout.cpp" />
     <ClCompile Include="newick.cpp" />
-    <ClCompile Include="nj.cpp" />
-    <ClCompile Include="njtax.cpp" />
     <ClCompile Include="objmgr.cpp" />
     <ClCompile Include="fragaligner.cpp" />
     <ClCompile Include="omptest.cpp" />
@@ -508,8 +502,6 @@
     <ClCompile Include="timing.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />
-    <ClCompile Include="tree2tax.cpp" />
-    <ClCompile Include="treecmp.cpp" />
     <ClCompile Include="treefromagg.cpp" />
     <ClCompile Include="treegetdistmx.cpp" />
     <ClCompile Include="trees.c" />

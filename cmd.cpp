@@ -91,7 +91,6 @@ IS_TRUE(usearch_local)
 IS_TRUE(uchime_ref)
 IS_TRUE(uparse_ref)
 IS_TRUE(sintax)
-IS_TRUE(sinaps)
 IS_TRUE(orient)
 		}
 	return false;
@@ -113,7 +112,7 @@ bool CmdRequiresFastaDB(CMD Cmd)
 		{
 IS_TRUE(search_global)
 IS_TRUE(search_local)
-IS_TRUE(bbc_tax)
+//IS_TRUE(bbc_tax)
 IS_TRUE(search_oligodb)
 IS_TRUE(search_peptidedb)
 IS_TRUE(search_exact)

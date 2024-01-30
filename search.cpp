@@ -14,7 +14,6 @@
 #include "qscoresink.h"
 #include "otutabsink.h"
 #include "sintaxsearcher.h"
-#include "bbcsearcher.h"
 #include "hitmgr.h"
 #include "filetype.h"
 #include "pcb.h"
@@ -188,7 +187,6 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	DiffProfSink::OnAllDone();
 	UParseSink::CloseOutputFiles();
 	SintaxSearcher::CloseOutputFiles();
-	BBCSearcher::CloseOutputFiles();
 	QScoreSink::OnAllDone();
 	OTUTableSink::OnAllDone();
 	ClosedRefSink::OnAllDone();

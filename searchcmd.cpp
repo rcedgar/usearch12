@@ -88,31 +88,10 @@ void cmd_sintax()
 	Search(CMD_sintax, opt(sintax), opt(db));
 	}
 
-void cmd_sinaps()
-	{
-	Search(CMD_sinaps, opt(sinaps), opt(db));
-	}
-
 void cmd_search_phix()
 	{
 	default_opt(strand, "both");
 	Search(CMD_search_phix, opt(search_phix), "!!phix!!");
-	}
-
-void cmd_nbc_tax()
-	{
-	default_opt(dbmask, "none");
-	if (optset_boot_subset || optset_tax_prod)
-		Die("-boot_subset and -tax_prod not supported by nbc_tax");
-	Search(CMD_bbc_tax, opt(nbc_tax), opt(db));
-	}
-
-void cmd_bbc_tax()
-	{
-	default_opt(dbmask, "none");
-	default_opt(boot_subset, "32");
-	default_opt(tax_prod, true);
-	Search(CMD_bbc_tax, opt(bbc_tax), opt(db));
 	}
 
 void cmd_search_tax()

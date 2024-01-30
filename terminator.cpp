@@ -42,9 +42,6 @@ Terminator::Terminator(CMD Cmd)
 	case CMD_search_exact:
 	case CMD_search_pcr:
 	case CMD_sintax:
-	case CMD_bbc_tax:
-	case CMD_sinaps:
-	case CMD_cpubench:
 		m_MaxAccepts = 0;
 		m_MaxRejects = 0;
 		break;

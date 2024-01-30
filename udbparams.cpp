@@ -149,13 +149,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 		SetDefaults_GlobalUSearch(Nucleo);
 		return;
 
-	//case CMD_sintax:
-	case CMD_bbc_tax:
-	case CMD_sinaps:
-	case CMD_unbias:
-		SetDefaults_UTax();
-		return;
-
 	case CMD_orient:
 		SetDefaults_Orient();
 		return;

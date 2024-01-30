@@ -5,8 +5,6 @@
 #include "udbusortedsearcher.h"
 #include "taxsearcher.h"
 #include "sintaxsearcher.h"
-#include "bbcsearcher.h"
-#include "sinapssearcher.h"
 #include "uparsesink.h"
 #include "chunksearcher.h"
 #include "bitmapsearcher.h"
@@ -271,8 +269,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		break;
 		}
 	case CMD_sintax:
-	case CMD_bbc_tax:
-	case CMD_sinaps:
 		{
 		aligner = 0;
 		break;
@@ -304,7 +300,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		opt(id) = 0.75;
 		optset_id = true;
 		}
-	else if (Cmd == CMD_sintax || Cmd == CMD_sinaps || Cmd == CMD_bbc_tax)
+	else if (Cmd == CMD_sintax)
 		{
 		if (!optset_id)
 			{
@@ -354,7 +350,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_usearch_local:
 	case CMD_uchime_denovo:
 	case CMD_sintax:
-	case CMD_sinaps:
 		{
 		if (Cmd == CMD_uparse_ref)
 			US = new BitMapSearcher;
@@ -366,18 +361,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			UTS->FromUDBData(*udb);
 			UTS->Init();
 			US = UTS;
-			}
-		else if (Cmd == CMD_sinaps)
-			{
-			SinapsSearcher *UTS = new SinapsSearcher;
-			UTS->FromUDBData(*udb);
-			UTS->Init();
-			US = UTS;
-			}
-		else if (Cmd == CMD_search_tax)
-			{
-			TS = new TaxSearcher;
-			US = TS;
 			}
 		else
 			US = new UDBUsortedSearcher;
@@ -438,15 +421,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		ExactSearcher *SS = new ExactSearcher(seqdb);
 		searcher = SS;
-		break;
-		}
-
-	case CMD_bbc_tax:
-		{
-		BBCSearcher *BBCS = new BBCSearcher;
-		asserta(seqdb != 0);
-		BBCS->GlobalTrain(*seqdb);
-		searcher = BBCS;
 		break;
 		}
 
