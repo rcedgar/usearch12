@@ -318,7 +318,6 @@
     <ClCompile Include="makesearcher.cpp" />
     <ClCompile Include="makeudb.cpp" />
     <ClCompile Include="mask.cpp" />
-    <ClCompile Include="maxsubseq.cpp" />
     <ClCompile Include="mergepair.cpp" />
     <ClCompile Include="mergepost.cpp" />
     <ClCompile Include="mergepre.cpp" />
