@@ -93,24 +93,3 @@ void cmd_search_phix()
 	default_opt(strand, "both");
 	Search(CMD_search_phix, opt(search_phix), "!!phix!!");
 	}
-
-void cmd_search_tax()
-	{
-	default_opt(dbmask, "none");
-	default_opt(id, 0.5);
-	default_opt(stepwords, 0);
-	if (opt(train))
-		{
-		default_opt(maxaccepts, 256);
-		default_opt(maxrejects, 256);
-		default_opt(strand, "plus");
-		Search(CMD_search_tax, opt(search_tax), opt(search_tax));
-		}
-	else
-		Search(CMD_search_tax, opt(search_tax), opt(db));
-	}
-
-void cmd_cons_tax()
-	{
-	Search(CMD_cons_tax, opt(cons_tax), opt(db));
-	}

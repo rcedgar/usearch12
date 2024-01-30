@@ -136,7 +136,6 @@ void SetCmdPCB(CMD Cmd)
 	case CMD_search_global:
 	case CMD_search_local:
 	case CMD_usearch_global:
-	case CMD_search_tax:
 	case CMD_usearch_local:
 	case CMD_ublast:
 	case CMD_search_oligodb:

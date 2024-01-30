@@ -26,7 +26,6 @@
 #include "qscoresink.h"
 #include "otutabsink.h"
 #include "closedrefsink.h"
-#include "constaxsink.h"
 #include "derepresult.h"
 #include "accepter.h"
 #include "seqdb.h"
@@ -238,8 +237,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		}
 
 	case CMD_usearch_global:
-	case CMD_search_tax:
-	case CMD_cons_tax:
 	case CMD_otutab:
 	case CMD_closed_ref:
 	case CMD_search_global:
@@ -319,8 +316,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	// Fall through to CMD_uchime_ref case
 		}
 	case CMD_usearch_global:
-	case CMD_search_tax:
-	case CMD_cons_tax:
 	case CMD_otutab:
 	case CMD_closed_ref:
 	case CMD_usearch_local:
@@ -399,12 +394,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		ClosedRefSink *CRS = new ClosedRefSink;
 		HM.AddSink(CRS);
-		}
-
-	if (Cmd == CMD_cons_tax)
-		{
-		ConsTaxSink *CTS = new ConsTaxSink(false, QueryIsNucleo, DBIsNucleo);
-		HM.AddSink(CTS);
 		}
 
 	if (Cmd == CMD_search_pcr)

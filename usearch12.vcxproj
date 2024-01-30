@@ -284,7 +284,6 @@
     <ClCompile Include="diagbox.cpp" />
     <ClCompile Include="distmx.cpp" />
     <ClCompile Include="distmxsplit.cpp" />
-    <ClCompile Include="drawtree.cpp" />
     <ClCompile Include="dustmask.cpp" />
     <ClCompile Include="estats.cpp" />
     <ClCompile Include="evalue.cpp" />
@@ -460,11 +459,6 @@
     <ClCompile Include="svgchart.cpp" />
     <ClCompile Include="tabbed2otutab.cpp" />
     <ClCompile Include="tax.cpp" />
-    <ClCompile Include="taxbench.cpp" />
-    <ClCompile Include="taxclean.cpp" />
-    <ClCompile Include="taxstats.cpp" />
-    <ClCompile Include="taxtree.cpp" />
-    <ClCompile Include="taxtune.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
     <ClCompile Include="termmer.cpp" />
@@ -476,9 +470,7 @@
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="treefromagg.cpp" />
-    <ClCompile Include="treegetdistmx.cpp" />
     <ClCompile Include="trees.c" />
-    <ClCompile Include="treetab.cpp" />
     <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="trimprimer.cpp" />
     <ClCompile Include="uchime2denovo.cpp" />

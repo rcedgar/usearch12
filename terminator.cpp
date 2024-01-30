@@ -14,7 +14,6 @@ Terminator::Terminator(CMD Cmd)
 
 	case CMD_otutab:
 	case CMD_closed_ref:
-	case CMD_cons_tax:
 		m_MaxAccepts = 4;
 		m_MaxRejects = 16;
 		break;
@@ -27,7 +26,6 @@ Terminator::Terminator(CMD Cmd)
 // if needed to prevent premature termination.
 	case CMD_cluster_otus:
 	case CMD_uparse_ref:
-	case CMD_search_tax:
 		m_MaxAccepts = 1;
 		m_MaxRejects = 32;
 		break;
