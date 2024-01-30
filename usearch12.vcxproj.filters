@@ -449,9 +449,6 @@
     <ClCompile Include="treefromagg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="distmx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="findgene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

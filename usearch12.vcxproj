@@ -265,7 +265,6 @@
     <ClCompile Include="derepfull.cpp" />
     <ClCompile Include="derepresult.cpp" />
     <ClCompile Include="diagbox.cpp" />
-    <ClCompile Include="distmx.cpp" />
     <ClCompile Include="dustmask.cpp" />
     <ClCompile Include="estats.cpp" />
     <ClCompile Include="evalue.cpp" />
