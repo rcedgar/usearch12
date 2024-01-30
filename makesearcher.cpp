@@ -21,7 +21,6 @@
 #include "outputsink.h"
 #include "upclustersink.h"
 #include "clustersink.h"
-#include "pcrsink.h"
 #include "dbhitsink.h"
 #include "qscoresink.h"
 #include "otutabsink.h"

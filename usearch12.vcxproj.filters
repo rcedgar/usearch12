@@ -359,9 +359,6 @@
     <ClCompile Include="upclustersink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pcrsink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

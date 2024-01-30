@@ -346,7 +346,6 @@
     <ClCompile Include="pathinfo.cpp" />
     <ClCompile Include="pattern.cpp" />
     <ClCompile Include="pcb.cpp" />
-    <ClCompile Include="pcrsink.cpp" />
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="profile.cpp" />
     <ClCompile Include="qscoresink.cpp" />
