@@ -102,8 +102,6 @@ A(usearch_local)
 A(sintax)
 
 A(alpha_div)
-A(alpha_divx)
-A(alpha_sigx)
 A(alpha_div_sig)
 A(beta_div)
 
