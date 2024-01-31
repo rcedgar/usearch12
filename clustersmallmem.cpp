@@ -50,9 +50,6 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	if (QueryFileName == "")
 		Die("Missing input filename");
 
-	if (optset_msaout || optset_consout || optset_constax)
-		Die("-msaout, -consout and -constax not supported, use -cluster_fast");
-
 	if (optset_fastaout)
 		{
 		if (Cmd == CMD_cluster_otus)
@@ -60,9 +57,6 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 		else
 			Die("-fastaout not supported, use -centroids");
 		}
-
-	if (optset_qmask)
-		Die("-qmask not supported");
 
 	void SetCmdPCB(CMD Cmd);
 	SetCmdPCB(Cmd);

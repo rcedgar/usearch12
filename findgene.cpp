@@ -177,7 +177,6 @@ void cmd_search_16s()
 	GeneFinder::m_WordLength = WordLength;
 	GeneFinder::m_DBWordPresentVec = Vec;
 
-	asserta(!optset_qmask);
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	unsigned ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;

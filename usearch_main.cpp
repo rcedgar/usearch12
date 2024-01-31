@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
 	OutputSink::CloseOutputFiles();
 
-	CheckUsedOpts(opt_log_used_opts);
+	CheckUsedOpts(false);
 
 	LogCounters();
 

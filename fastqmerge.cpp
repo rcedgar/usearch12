@@ -102,8 +102,6 @@ void cmd_fastq_mergepairs()
 		Die("maxee filtering not supported, use fastq_filter");
 	if (optset_output)
 		Die("Use -fastqout and/or -fastaout, not -output");
-	if (optset_fastq_maxdiffpct)
-		Die("-fastq_maxdiffpct not supported, use -fastq_pctid");
 
 	if (!optset_notrunclabels)
 		{
@@ -119,12 +117,6 @@ void cmd_fastq_mergepairs()
 	asserta(SIZE(RevFileNames) == N);
 	if (N == 0)
 		Die("No input files specified / found");
-
-	if (optset_fastq_trimstagger)
-		Warning("-fastq_trimstagger is obsolete, staggers are always trimmed");
-
-	if (optset_fastq_allowmergestagger)
-		Warning("-fastq_allowmergestagger is obsolete, use -fastq_nostagger to disallow");
 
 	if (!optset_fastq_minlen)
 		{

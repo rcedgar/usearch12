@@ -260,10 +260,4 @@ void MyCmdLine(int argc, char **argv)
 	if (opt_threads > 1)
 		Die("--threads > 1 && TIMING");
 #endif
-
-	if (opt_compilerinfo)
-		{
-		CompilerInfo();
-		exit(0);
-		}
 	}

@@ -195,7 +195,6 @@ static void DoOrient(const string &QueryFileName)
 	const SeqDB *DB = udb->m_SeqDB;
 	asserta(DB != 0);
 
-	asserta(!optset_qmask);
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	unsigned ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;

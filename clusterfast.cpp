@@ -110,9 +110,9 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 
 	Searcher *ptrSearcher = MakeClusterSearcher(g_Cmd, Nucleo);
 
-	if (optset_msaout || optset_consout || optset_clusters || optset_constax)
+	if (optset_clusters || optset_constax)
 		{
-		bool SaveCPaths = (optset_msaout || optset_consout);
+		bool SaveCPaths = false;
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);
 		}
 
