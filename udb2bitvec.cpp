@@ -2,23 +2,6 @@
 #include "udbdata.h"
 #include "bitvec.h"
 
-void cmd_udbstats()
-	{
-	const string &InputFileName = opt(udbstats);
-	if (InputFileName == "")
-		Die("Missing input filename");
-
-	UDBData *udb = new UDBData;
-	udb->FromUDBFile(InputFileName);
-	udb->LogSettings();
-	udb->LogTopWords(opt(verbose) ? UINT_MAX : 10);
-	udb->LogSizeHisto();
-	udb->LogMemUsage();
-
-	if (opt(verbose))
-		udb->LogRows();
-	}
-
 void cmd_udb2bitvec()
 	{
 #if	BITS==32

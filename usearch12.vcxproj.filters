@@ -140,9 +140,6 @@
     <ClCompile Include="udbdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="udbinfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="udbio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,9 +147,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="udbsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="udbstats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="udbusortedsearcher.cpp">
@@ -392,7 +386,7 @@
     <ClCompile Include="deparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="uchime2denovo.cpp">
+    <ClCompile Include="uchime3denovo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="chimehit.cpp">
@@ -507,6 +501,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="staralign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="udb2bitvec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

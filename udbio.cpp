@@ -425,15 +425,3 @@ void UDBData::WriteRowsNotVarCoded(FILE *f, const uint32 *Sizes) const
 		WriteStdioFile(f, s, N*sizeof(uint32));
 		}
 	}
-
-void cmd_udb2fasta()
-	{
-	const string &InputFileName = opt(udb2fasta);
-	const string &OutputFileName = opt(output);
-	if (InputFileName == "" || OutputFileName == "")
-		Die("Missing -udb2fasta or -output");
-
-	UDBData &udb = *new UDBData;
-	udb.FromUDBFile(InputFileName);
-	udb.ToFasta(OutputFileName);
-	}

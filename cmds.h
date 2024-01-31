@@ -25,10 +25,6 @@ A(makeudb_sintax)
 
 A(sintax_summary)
 
-A(udb2fasta)
-A(udbinfo)
-A(udbstats)
-
 A(ublast)
 
 A(uchime3_denovo)
