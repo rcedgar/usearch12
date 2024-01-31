@@ -6,11 +6,9 @@
 #include "hitmgr.h"
 #include "seqdb.h"
 #include "udbusortedsearcher.h"
-//#include "phixfinder.h"
 #include "globalaligner.h"
 #include "alignresult.h"
 #include "label.h"
-#include "annotator.h"
 #include "fastq.h"
 #include <math.h>
 
@@ -59,6 +57,8 @@ def f(d, x):
 
 static unsigned *g_TargetIndexes;
 static unsigned *g_TotalSizes;
+static const unsigned MAX_HOT = 8;
+static const unsigned MAX_DROP = 8;
 
 static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned *ptrDiffs)
 	{

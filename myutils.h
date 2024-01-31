@@ -40,7 +40,7 @@
 
 using namespace std;
 
-#include "timing.h"
+
 
 #ifdef _MSC_VER
 #include <crtdbg.h>
@@ -452,5 +452,11 @@ inline bool myislower(char c) { return (c & 0x20) != 0; }
 #define NO_TRACE		0
 #define TMP_TRACE		2	// true but not 1, for grep_trace
 #define REMOVEME		1
+
+#define StartTimer(x)	/* empty */
+#define PauseTimer(x)	/* empty */
+#define EndTimer(x)		/* empty */
+#define AddCounter(x, y)	/* empty */
+#define IncCounter(x)	/* empty */
 
 #endif	// myutils_h
