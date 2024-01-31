@@ -4,7 +4,6 @@
 #include "seqdb.h"
 #include "seqhash.h"
 #include "dbtype.h"
-#include "phixfinder.h"
 
 SeqDB *g_MSADB = 0;
 

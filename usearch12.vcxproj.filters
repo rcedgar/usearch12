@@ -742,16 +742,7 @@
     <ClInclude Include="pcrsink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="phixfinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="preston.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="primes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="qscoresink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="quarts.h">

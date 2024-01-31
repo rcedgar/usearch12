@@ -474,10 +474,7 @@
     <ClInclude Include="pathinfo.h" />
     <ClInclude Include="pcb.h" />
     <ClInclude Include="pcrsink.h" />
-    <ClInclude Include="phixfinder.h" />
-    <ClInclude Include="preston.h" />
     <ClInclude Include="primes.h" />
-    <ClInclude Include="qscoresink.h" />
     <ClInclude Include="quarts.h" />
     <ClInclude Include="searcher.h" />
     <ClInclude Include="segmask.h" />

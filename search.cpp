@@ -10,7 +10,6 @@
 #include "dbhitsink.h"
 #include "closedrefsink.h"
 #include "uparsesink.h"
-#include "qscoresink.h"
 #include "otutabsink.h"
 #include "sintaxsearcher.h"
 #include "hitmgr.h"
