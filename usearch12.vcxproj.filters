@@ -574,15 +574,6 @@
     <ClInclude Include="combo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="constaxf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constaxsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constaxstr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="count.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -878,6 +869,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxsink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxstr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
