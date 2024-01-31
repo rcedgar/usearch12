@@ -101,9 +101,6 @@ static void Thread(SeqSource *SS, bool RevComp)
 
 void cmd_search_16s()
 	{
-#if	BITS==32
-	Die("search_16s not supported in 32-bit version");
-#endif
 	const string QueryFileName = opt(search_16s);
 
 	bool RevComp = StrandOptToRevComp(false, true);

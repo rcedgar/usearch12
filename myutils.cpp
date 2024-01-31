@@ -535,10 +535,6 @@ byte *ReadAllStdioFile(FILE *f, uint32 &FileSize)
 	{
 	uint64 Pos = GetStdioFilePos64(f);
 	uint64 FileSize64 = GetStdioFileSize64(f);
-#if	BITS == 32
-	if (FileSize > UINT_MAX)
-		Die("ReadAllStdioFile (32-bit): file too big");
-#endif
 	FileSize = uint32(FileSize64);
 	SetStdioFilePos(f, 0);
 	byte *Buffer = myalloc(byte, FileSize);
@@ -551,10 +547,6 @@ byte *ReadAllStdioFile64(const string &FileName, uint64 &FileSize)
 	{
 	FILE *f = OpenStdioFile(FileName);
 	FileSize = GetStdioFileSize64(f);
-#if	BITS==32
-	if (FileSize > UINT32_MAX)
-		Die("File too big, requires 64-bit version: %s", FileName.c_str());
-#endif
 	byte *Buffer = ReadAllStdioFile64(f, FileSize);
 	CloseStdioFile(f);
 	return Buffer;
@@ -565,16 +557,10 @@ byte *ReadAllStdioFile64(FILE *f, uint64 &FileSize)
 	uint64 SavedPos = GetStdioFilePos64(f);
 	FileSize = GetStdioFileSize64(f);
 
-#if BITS==32
-	if (FileSize > UINT32_MAX)
-		Die("File too big, requires 64-bit version");
-	byte *Buffer = myalloc(byte, (uint32) FileSize);
-#else
 	if (FileSize > UINT_MAX)
 		Die("ReadAllStdioFile64, file too big %s", MemBytesToStr((double) FileSize));
 	unsigned uFileSize = (unsigned) FileSize;
 	byte *Buffer = myalloc(byte, uFileSize);
-#endif
 
 	uint64 Pos = 0;
 	uint64 BytesLeft = FileSize;
@@ -815,10 +801,6 @@ uint32 GetStdioFileSize32(FILE *f)
 
 	if (Length < 0)
 		Die("ftello in GetFileSize");
-#if	BITS == 32
-	if (Length > UINT32_MAX)
-		Die("File size too big for 32-bit version (%s)", MemBytesToStr((double) Length));
-#endif
 	return (uint32) Length;
 	}
 
@@ -838,10 +820,6 @@ uint64 GetStdioFileSize_NoFail(FILE *f)
 
 	if (Length < 0)
 		return UINT64_MAX;
-#if	BITS == 32
-	if (Length > UINT32_MAX)
-		Die("File size too big for 32-bit version (%s)", MemBytesToStr((double) Length));
-#endif
 	return (uint64) Length;
 	}
 
@@ -857,10 +835,6 @@ uint64 GetStdioFileSize64(FILE *f)
 
 	if (Length < 0)
 		Die("ftello in GetFileSize");
-#if	BITS == 32
-	if (Length > UINT32_MAX)
-		Die("File size too big for 32-bit version (%s)", MemBytesToStr((double) Length));
-#endif
 	return (uint64) Length;
 	}
 
@@ -881,15 +855,6 @@ void DeleteStdioFile(const string &FileName)
 double GetUsableMemBytes()
 	{
 	double RAM = GetPhysMemBytes();
-#if	BITS==32
-#ifdef	_MSC_VER
-	if (RAM > 2e9)
-		return 2e9;
-#else
-	if (RAM > 4e9)
-		return 4e9;
-#endif
-#endif
 	return RAM;
 	}
 
@@ -2517,15 +2482,6 @@ void *mymalloc(unsigned n, unsigned bytes)
 		{
 		double b = GetMemUseBytes();
 		double Total = b + double(Bytes32);
-
-#if	BITS==32
-		if (Total > 2e9)
-			{
-			Log("\n%s(%u): Out of memory, mymalloc(%u, %u), curr %.3g bytes, total %.3g (%s)\n",
-			  g_AllocFile, g_AllocLine, n, bytes, b, Total, MemBytesToStr(Total));
-			Die("Memory limit of 32-bit process exceeded, 64-bit build required");
-			}
-#endif
 
 		fprintf(stderr, "\n%s(%u): Out of memory mymalloc(%u), curr %.3g bytes",
 		  g_AllocFile, g_AllocLine, (unsigned) bytes, b);

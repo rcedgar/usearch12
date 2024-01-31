@@ -4,9 +4,6 @@
 
 void cmd_udb2bitvec()
 	{
-#if	BITS==32
-	Die("udb2bitvec not supported in 32-bit version");
-#endif
 	const string &InputFileName = opt(udb2bitvec);
 	const string &OutputFileName = opt(output);
 	if (InputFileName == "")
