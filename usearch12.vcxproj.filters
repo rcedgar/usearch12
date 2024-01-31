@@ -535,9 +535,6 @@
     <ClInclude Include="alpha.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alphadiv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alphainfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>

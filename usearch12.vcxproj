@@ -402,7 +402,6 @@
     <ClInclude Include="alnheuristics.h" />
     <ClInclude Include="alnparams.h" />
     <ClInclude Include="alpha.h" />
-    <ClInclude Include="alphadiv.h" />
     <ClInclude Include="alphainfo.h" />
     <ClInclude Include="annotator.h" />
     <ClInclude Include="bitmapsearcher.h" />

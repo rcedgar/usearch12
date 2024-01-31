@@ -2,7 +2,6 @@
 #define otutab_h
 
 #include <map>
-#include "alphadiv.h"
 #include "mx.h"
 
 class OTUTable

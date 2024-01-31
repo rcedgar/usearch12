@@ -2,7 +2,6 @@
 #include "otutab.h"
 #include "sort.h"
 #include "quarts.h"
-#include "alphadiv.h"
 #include "preston.h"
 #include "sort.h"
 #include "seqdb.h"
