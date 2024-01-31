@@ -403,7 +403,6 @@
     <ClInclude Include="alnparams.h" />
     <ClInclude Include="alpha.h" />
     <ClInclude Include="alphainfo.h" />
-    <ClInclude Include="annotator.h" />
     <ClInclude Include="bitmapsearcher.h" />
     <ClInclude Include="bitvec.h" />
     <ClInclude Include="bitvec64.h" />

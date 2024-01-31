@@ -538,9 +538,6 @@
     <ClInclude Include="alphainfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="annotator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bitmapsearcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
