@@ -802,12 +802,6 @@
     <ClInclude Include="trees.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="twobit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uchimefinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="udbcodedsearcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>

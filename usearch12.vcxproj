@@ -494,8 +494,6 @@
     <ClInclude Include="tracebit.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="trees.h" />
-    <ClInclude Include="twobit.h" />
-    <ClInclude Include="uchimefinder.h" />
     <ClInclude Include="udbcodedsearcher.h" />
     <ClInclude Include="udbdata.h" />
     <ClInclude Include="udbfile.h" />

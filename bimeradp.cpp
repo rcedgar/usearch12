@@ -1,7 +1,7 @@
 #include "myutils.h"
 #include "alpha.h"
 #include "seqinfo.h"
-#include "uchimefinder.h"
+#include "chimehit.h"
 
 #define TRACE	0
 
@@ -300,12 +300,12 @@ void AlignChime3(const string &Q3, const string &A3, const string &B3,
 	Hit.PctIdQM = 100.0 - (100.0*DiffsQM)/ColCount;
 	}
 
-void UChimeFinder::AlignChime(const SeqInfo *QSD, const SeqInfo *ASD, const SeqInfo *BSD,
-  const string &PathQA, const string &PathQB, ChimeHit &Hit)
-	{
-	string Q3;
-	string A3;
-	string B3;
-	Make3Way(QSD, ASD, BSD, PathQA, PathQB, Q3, A3, B3);
-	AlignChime3(Q3, A3, B3, QSD->m_Label, ASD->m_Label, BSD->m_Label, Hit);
-	}
+//void UChimeFinder::AlignChime(const SeqInfo *QSD, const SeqInfo *ASD, const SeqInfo *BSD,
+//  const string &PathQA, const string &PathQB, ChimeHit &Hit)
+//	{
+//	string Q3;
+//	string A3;
+//	string B3;
+//	Make3Way(QSD, ASD, BSD, PathQA, PathQB, Q3, A3, B3);
+//	AlignChime3(Q3, A3, B3, QSD->m_Label, ASD->m_Label, BSD->m_Label, Hit);
+//	}
