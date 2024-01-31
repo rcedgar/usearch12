@@ -186,15 +186,9 @@ UNS_OPT(fasta_cols,			80,			0,			UINT_MAX)	// Max length of a line when writing 
 
 UNS_OPT(maxstartdiffs,		4,			0,			UINT_MAX)	// -
 UNS_OPT(maxenddiffs,		4,			0,			UINT_MAX)	// -
-UNS_OPT(fastq_filter_qiime_r,		3,			0,			UINT_MAX)	// -
-UNS_OPT(fastq_filter_qiime_n,		0,			0,			UINT_MAX)	// -
-UNS_OPT(fastq_filter_qiime_q,		3,			0,			UINT_MAX)	// -
 
 
 
-
-
-FLT_OPT(fastq_filter_qiime_p,		0.75,		0.0,		1.0)		// -
 
 FLT_OPT(weak_id,			0.0,		0.0,		1.0)		// Min identity for weak hit.
 FLT_OPT(weak_evalue,		10.0,		0.0,		DBL_MAX)	// Max E-value for weak hit.
@@ -313,7 +307,6 @@ FLAG_OPT(offby1)			//
 FLAG_OPT(allxch)			//
 FLAG_OPT(maxskew)			//
 FLAG_OPT(bimeras_only)		//
-FLAG_OPT(fastq_filter_qiime)		//
 FLAG_OPT(overlap_only)		//
 FLAG_OPT(fastq_noguess)		//
 FLAG_OPT(fastq_forceq)		//

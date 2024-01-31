@@ -29,68 +29,12 @@ static omp_lock_t g_FastqOutLock;
 static omp_lock_t g_FastaOutLock;
 static omp_lock_t g_TotalsLock;
 
-static FASTQ_FILTER QiimeFilter(SeqInfo *SI)
-	{
-	const unsigned r = opt(fastq_filter_qiime_r);
-	const unsigned n = opt(fastq_filter_qiime_n);
-	const unsigned q = opt(fastq_filter_qiime_q);
-	const double p = opt(fastq_filter_qiime_p);
-
-	const unsigned L = SI->m_L;
-	const byte *Seq = SI->m_Seq;
-	const char *Qual = SI->m_Qual;
-
-	unsigned BadRun = 0;
-	unsigned GoodRun = 0;
-	unsigned NCount = 0;
-	for (unsigned i = 0; i < L; ++i)
-		{
-		char qc = Qual[i];
-		byte sc = Seq[i];
-
-		if (sc == 'N')
-			{
-			NCount += 1;
-			if (NCount > n)
-				return FF_MaxNs;
-			}
-
-		byte iq = FastQ::CharToIntQual(qc);
-		bool Good = (iq > q);
-
-		if (Good)
-			{
-			BadRun = 0;
-			GoodRun += 1;
-			}
-		else
-			{
-			GoodRun = 0;
-			BadRun += 1;
-			if (BadRun > r)
-				{
-				unsigned OutL = i - BadRun + 1;
-				if (OutL < SI->m_L)
-					++g_QiimeTrunc;
-				SI->m_L = OutL;
-				if (float(OutL)/L < p)
-					return FF_Short;
-				else
-					return FF_Good;
-				}
-			}
-		}
-	return FF_Good;
-	}
 
 static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	{
 	unsigned L = SI->m_L;
 	if (L == 0)
 		return FF_Short;
-
-	if (opt(fastq_filter_qiime))
-		return QiimeFilter(SI);
 
 	if (optset_fastq_truncqual)
 		SI->TruncateQual(opt(fastq_truncqual));
@@ -326,9 +270,6 @@ void cmd_fastq_filter()
 		ProgressLog("%10u  Discarded read with > %u Ns\n", g_MaxNsCount, opt(fastq_maxns));
 	if (optset_fastq_maxee)
 		ProgressLog("%10u  Discarded reads with expected errs > %.2f\n", g_BadCount, opt(fastq_maxee));
-	if (opt(fastq_filter_qiime))
-		ProgressLog("%10u  Reads truncated by QIIME filter (%.1f%%)\n", 
-		  g_QiimeTrunc, GetPct(g_QiimeTrunc, g_RecCount));
 	ProgressLog("%10u  Filtered reads (%s, %.1f%%)\n",
 	  g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_RecCount));
 	}
