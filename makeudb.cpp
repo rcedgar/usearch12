@@ -68,8 +68,3 @@ void cmd_makeudb_usearch()
 	{
 	MakeUDB(CMD_makeudb_usearch, opt(makeudb_usearch));
 	}
-
-void cmd_makeudb_sintax()
-	{
-	Die("makeudb_sintax obsolete, use makeudb_usearch");
-	}

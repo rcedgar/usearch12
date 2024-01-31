@@ -21,7 +21,6 @@ A(fastx_get_sample_names)
 
 A(makeudb_ublast)
 A(makeudb_usearch)
-A(makeudb_sintax)
 
 A(sintax_summary)
 

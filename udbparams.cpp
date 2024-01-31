@@ -135,7 +135,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 	case CMD_closed_ref:
 	case CMD_cluster_otus:
 	case CMD_makeudb_usearch:
-	case CMD_makeudb_sintax:
 	case CMD_sintax:
 		SetDefaults_GlobalUSearch(Nucleo);
 		return;
