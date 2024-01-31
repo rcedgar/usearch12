@@ -2,4 +2,4 @@
 
 git add .
 git commit -m "WIP"
-ls *.cpp | wc -l
+echo cpp= `ls *.cpp | wc -l` h= `ls *.h | wc -l`

@@ -517,9 +517,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aafreqs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="accepter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -527,9 +524,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alignresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="allocs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alnheuristics.h">
@@ -541,25 +535,91 @@
     <ClInclude Include="alpha.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alphadiv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="alphainfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="annotator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bitmapsearcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bitvec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bitvec64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="changelog.h">
+    <ClInclude Include="chainer1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chimehit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chunksearcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="closedrefsink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="clustersink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cons2.h">
+    <ClInclude Include="cmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="counters.h">
+    <ClInclude Include="cmds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="combo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxsink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constaxstr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="count.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="countsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crc32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbhitsink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbtype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="derep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="derepresult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="diagbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="duster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="estats.h">
@@ -571,13 +631,40 @@
     <ClInclude Include="fastaseqsource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fastq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fastqseqsource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileseqsource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="finger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fragaligner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="genefinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="getticks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="getu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globalaligner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gobuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gzguts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hitmgr.h">
@@ -592,7 +679,43 @@
     <ClInclude Include="hspfinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inffast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inffixed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inftrees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linereader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="localaligner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="localaligner2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lockobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lockobjs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="mask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="merge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mergeglobals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mx.h">
@@ -616,10 +739,43 @@
     <ClInclude Include="objtypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="omplock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orffinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="otutab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="otutabsink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="outputsink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pathinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pcb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pcrsink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phixfinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="preston.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qscoresink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quarts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="searcher.h">
@@ -628,10 +784,16 @@
     <ClInclude Include="segmask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="seq.h">
+    <ClInclude Include="seqdb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="seqdb.h">
+    <ClInclude Include="seqdbsearcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="seqdbseqsource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="seqhash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="seqinfo.h">
@@ -640,31 +802,40 @@
     <ClInclude Include="seqsource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sign.h">
+    <ClInclude Include="sintaxsearcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stimers.h">
+    <ClInclude Include="sparsemx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="svnversion.h">
+    <ClInclude Include="strdict.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taxy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="terminator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="timers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="timing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="todo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tracebit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="twobit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uchimefinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="udbcodedsearcher.h">
@@ -688,7 +859,16 @@
     <ClInclude Include="ufenum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="uparsesink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="upclustersink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="userfields.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wordcounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="xdpmem.h">
@@ -697,496 +877,13 @@
     <ClInclude Include="xtype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="omplock.h">
+    <ClInclude Include="zconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lockobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="derepresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="derep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="localaligner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lockobjs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chimehit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dbtype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="duster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="localaligner2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cmdline.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cmds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="seqdbsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dbhitsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fastq.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="qmerge.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uparse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uparsesink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chunksearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="seqdbseqsource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxtree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxlevels.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="agg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="samrec.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fastqseqsource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fileseqsource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="linereader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="filetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="samout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chainer1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="combo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fragaligner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pcb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="orffinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="seqhash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="exactaligner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="exactsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="finger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="upclustersink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pcrsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="countsort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nbcsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nbc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utaxsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="profile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="diffprofsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="qscoresink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="subsample.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constaxstr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="label.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utaxroc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="merge.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mergeglobals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxhit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utaxtrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trainresults.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxpred.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tax.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utaxclustersink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="otutab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="otutabsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bitmapsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sparsemx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxprobs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="benchresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uchimefinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="quarts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="deparser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="detrainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utaxhit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constax.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="phixfinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="annotator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sintaxsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adivs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alphadiv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bdivs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="betadiv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="distmx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="genefinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bitvec.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxlevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sinapssearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="closedrefsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="getu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tree2tax.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dectree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dectreetraindata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="randforest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crosser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="roccer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ctest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bcresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="annotclass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="meanstddev.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="strdict.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bbcsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lcrdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxbench.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taxsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constaxsink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tsfeats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="constaxf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alphadivtable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adivmetric.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alphasig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="catdict.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="preston.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="abdist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mcresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uncrosser2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="svg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="svgchart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="prestonsvg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="wordcounter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bitvec64.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="channot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="snvdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="rsvalndata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fasttimers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fasttiming.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="count.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nofasttiming.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="twobit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inflate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inftrees.h">
+    <ClInclude Include="zlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zutil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crc32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="deflate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gzguts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inffast.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="twobitsyncmerscanner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="syncmerindex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sixaligner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="coveragemap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="extendminus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="extendplus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alphabit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="enable_timing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="syg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kmerscan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alphabit_alt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="udbsixsearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="seqdb2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="codeindex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="codeindexsorter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="codeindex2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="codeindex2sorter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="syncmer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uspdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="aspdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uspbag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dpmem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dpband.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cigar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="abench.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uncrosser2mock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

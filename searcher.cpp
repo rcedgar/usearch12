@@ -25,7 +25,7 @@ Searcher::Searcher()
 
 bool Searcher::Align()
 	{
-	if (m_Aligner->GetType() == AT_Global || m_Aligner->GetType() == AT_Exact)
+	if (m_Aligner->GetType() == AT_Global)
 		return AlignPos(UINT_MAX, UINT_MAX);
 
 	m_Aligner->AlignMulti(m_ARs);

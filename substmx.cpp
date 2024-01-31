@@ -1,11 +1,7 @@
 #include "myutils.h"
 #include "mx.h"
 #include "alpha.h"
-#include "aafreqs.h"
 #include <math.h>
-
-int Karlin(int low, int high, const double *pr, double *lambda,
-  double *K, double *H);
 
 static bool isnum(char c)
 	{

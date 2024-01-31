@@ -16,8 +16,8 @@ enum ALIGNER_TYPE
 	AT_LocalPos,
 	AT_LocalNoPos,
 	AT_Frag,
-	AT_Exact,
-	AT_Long,
+	//AT_Exact,
+	//AT_Long,
 	};
 
 class Aligner
