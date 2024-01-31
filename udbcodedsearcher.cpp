@@ -12,7 +12,6 @@
 #include "xdpmem.h"
 #include "getticks.h"
 #include "aligner.h"
-//#include "localaligner.h"
 
 #define TRACE_WORD_ORDER	0
 #define TRACE_WORD_MATCHES	0

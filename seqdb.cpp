@@ -7,7 +7,6 @@
 #include "seqinfo.h"
 #include "mask.h"
 #include "sort.h"
-//#include "twobit.h"
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 

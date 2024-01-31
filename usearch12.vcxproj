@@ -363,7 +363,7 @@
     <ClCompile Include="treefromagg.cpp" />
     <ClCompile Include="trees.c" />
     <ClCompile Include="treetofile.cpp" />
-    <ClCompile Include="uchime2denovo.cpp" />
+    <ClCompile Include="uchime3denovo.cpp" />
     <ClCompile Include="udbbuild.cpp" />
     <ClCompile Include="udbusortedsearcherbig.cpp" />
     <ClCompile Include="udbcodedsearcher.cpp" />

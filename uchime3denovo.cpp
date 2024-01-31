@@ -146,11 +146,6 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string
 	CloseStdioFile(DeParser::m_fAln);
 	}
 
-void cmd_uchime2_denovo()
-	{
-	Die("-uchime2_denovo not supported in this build, use -uchime3_denovo");
-	}
-
 void cmd_uchime3_denovo()
 	{
 	const string &InputFileName = opt(uchime3_denovo);
