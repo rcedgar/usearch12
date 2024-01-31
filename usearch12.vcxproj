@@ -337,7 +337,6 @@
     <ClCompile Include="pcb.cpp" />
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="quarts.cpp" />
-    <ClCompile Include="scorepath.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
     <ClCompile Include="searcher.cpp" />

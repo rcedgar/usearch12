@@ -173,29 +173,6 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 		}
 	IncCounter(SuccessfulExtends);
 
-	//if (opt(log_ugx))
-	//	{
-	//	static bool HdrDone = false;
-	//	if (!HdrDone)
-	//		{
-	//		Log("@UGX  Y   QPos   TPos     Word  UXScore  MinScore  Labels\n");
-	//		Log("@UGX  -  -----  -----  -------  -------  --------  ------\n");
-	//		HdrDone = true;
-	//		}
-	//	const char *QueryLabel = m_Query->m_Label;
-	//	const char *TargetLabel = m_Target->m_Label;
-	//	unsigned PattLen = m_UDBParams->m_WordWidth;
-	//	Log("@UGX  %c  %5u  %5u  %*.*s %7.1f  %8.1f  %s, %s\n",
-	//		yon(Score >= m_MinUngappedRawScore),
-	//		QueryPos,
-	//		TargetPos,
-	//		PattLen, PattLen, Q + QueryPos,
-	//		Score,
-	//		m_MinUngappedRawScore,
-	//		QueryLabel,
-	//		TargetLabel);
-	//	}
-
 // Find anchor
 	unsigned Loi = (QueryPos + 1) - LeftLength;
 	unsigned Loj = (TargetPos + 1) - LeftLength;

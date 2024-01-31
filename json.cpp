@@ -7,7 +7,7 @@
 //      "format": "Biological Observation Matrix 0.9.1",
 //      "format_url": "http://biom-format.org",
 //      "type": "OTU table",
-//      "generated_by": "mothur1.33.3",
+//      "generated_by": "usearch10.33.3",
 //      "date": "Mon Nov  2 10:20:26 2015",
 //      "rows":[
 //            {"id":"Otu01", "metadata":null},

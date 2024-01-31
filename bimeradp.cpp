@@ -3,8 +3,6 @@
 #include "seqinfo.h"
 #include "chimehit.h"
 
-#define TRACE	0
-
 void Make3Way(const SeqInfo *SDQ, const SeqInfo *SDA, const SeqInfo *SDB,
   const string &PathQA, const string &PathQB,
   string &Q3, string &A3, string &B3);
@@ -287,8 +285,6 @@ void AlignChime3(const string &Q3, const string &A3, const string &B3,
 	Hit.ColEndFirst = ColLo + ColEndFirst;
 	Hit.ColStartSecond = ColLo + ColStartSecond;
 
-	//asserta(ColHi > ColLo);
-	//unsigned TrimmedColCount = ColHi - ColLo + 1;
 	ScoreBimera(Q3b, L3b, R3b, TrimmedColCount, ColEndFirst, ColStartSecond, Hit);
 	Hit.QLabel = QLabel;
 	Hit.LLabel = (AFirst ? ALabel : BLabel);
@@ -299,13 +295,3 @@ void AlignChime3(const string &Q3, const string &A3, const string &B3,
 	Hit.R3 = (AFirst ? B3 : A3);
 	Hit.PctIdQM = 100.0 - (100.0*DiffsQM)/ColCount;
 	}
-
-//void UChimeFinder::AlignChime(const SeqInfo *QSD, const SeqInfo *ASD, const SeqInfo *BSD,
-//  const string &PathQA, const string &PathQB, ChimeHit &Hit)
-//	{
-//	string Q3;
-//	string A3;
-//	string B3;
-//	Make3Way(QSD, ASD, BSD, PathQA, PathQB, Q3, A3, B3);
-//	AlignChime3(Q3, A3, B3, QSD->m_Label, ASD->m_Label, BSD->m_Label, Hit);
-//	}

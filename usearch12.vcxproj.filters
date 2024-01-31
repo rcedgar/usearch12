@@ -104,9 +104,6 @@
     <ClCompile Include="pattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scorepath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
