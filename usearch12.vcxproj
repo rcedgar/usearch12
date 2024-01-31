@@ -287,7 +287,6 @@
     <ClCompile Include="getfastqs.cpp" />
     <ClCompile Include="getglobalhsps.cpp" />
     <ClCompile Include="gethsps.cpp" />
-    <ClCompile Include="getu.cpp" />
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
@@ -440,7 +439,6 @@
     <ClInclude Include="fragaligner.h" />
     <ClInclude Include="genefinder.h" />
     <ClInclude Include="getticks.h" />
-    <ClInclude Include="getu.h" />
     <ClInclude Include="globalaligner.h" />
     <ClInclude Include="gobuff.h" />
     <ClInclude Include="gzguts.h" />

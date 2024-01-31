@@ -440,9 +440,6 @@
     <ClCompile Include="sintaxsummary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="getu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="strdict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -638,9 +635,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="getticks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="getu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globalaligner.h">
