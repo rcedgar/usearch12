@@ -436,7 +436,6 @@
     <ClInclude Include="finger.h" />
     <ClInclude Include="fragaligner.h" />
     <ClInclude Include="genefinder.h" />
-    <ClInclude Include="getticks.h" />
     <ClInclude Include="globalaligner.h" />
     <ClInclude Include="gobuff.h" />
     <ClInclude Include="gzguts.h" />

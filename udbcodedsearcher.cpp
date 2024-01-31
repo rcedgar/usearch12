@@ -10,7 +10,6 @@
 #include "alignresult.h"
 #include "sort.h"
 #include "xdpmem.h"
-#include "getticks.h"
 #include "aligner.h"
 
 #define TRACE_WORD_ORDER	0
