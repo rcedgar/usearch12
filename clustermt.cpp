@@ -1,12 +1,8 @@
-#include "myutils.h"
-#include "seqinfo.h"
-#include "seqsource.h"
-#include "seqdb.h"
 #include "udbdata.h"
 #include "pcb.h"
 #include "objmgr.h"
+#include "hitmgr.h"
 #include "udbusortedsearcher.h"
-#include "seqinfo.h"
 
 static unsigned g_ProgressThreadIndex = 0;
 
@@ -16,9 +12,7 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 
 	UDBUsortedSearcher *US = new UDBUsortedSearcher;
 	US->m_MinFractId = (float) opt(id);
-	UDBParams Params;
-	Params.FromCmdLine(CMD_cluster_mt, Nucleo);
-	US->CreateEmpty(Params);
+	HitMgr *HM = US->m_HitMgr;
 
 	for (;;)
 		{
@@ -35,6 +29,11 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
 		US->Search(Query);
+		AlignResult *AR = HM->GetTopHit();
+		if (AR == 0)
+			{
+			uint ClusterIndex = udb->AddSIToDB_CopyData(Query);
+			}
 		ObjMgr::Down(Query);
 		Query = 0;
 		}
