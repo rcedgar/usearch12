@@ -79,8 +79,8 @@ static uint32 NextRand(unsigned r)
 void SintaxSearcher::SetUShuffle()
 	{
 	const unsigned SeqCount = GetSeqCount();
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
 
 	const unsigned QueryUniqueWordCount = m_QueryUniqueWords.Size;
 	if (QueryUniqueWordCount < 8)
@@ -98,7 +98,7 @@ void SintaxSearcher::SetUShuffle()
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	// const unsigned M = QueryUniqueWordCount/8;
 	const unsigned M = (m_BootSubsetDivide ? QueryUniqueWordCount/m_BootSubset : m_BootSubset);
@@ -107,7 +107,7 @@ void SintaxSearcher::SetUShuffle()
 		m_r = NextRand(m_r);
 		unsigned i = m_r%QueryUniqueWordCount;
 		uint32 Word = QueryUniqueWords[i];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 
 		const uint32 *Row = UDBRows[Word];
 		const unsigned Size = Sizes[Word];
@@ -175,7 +175,7 @@ void SintaxSearcher::Classify()
 	m_Pred.clear();
 	m_Ps.clear();
 
-	asserta(!m_Params.DBIsCoded());
+	asserta(!m_UDBData->m_Params.DBIsCoded());
 
 	unsigned SelfIndex = UINT_MAX;
 	if (opt(self))
@@ -274,10 +274,10 @@ void SintaxSearcher::Init()
 	LOCK_CLASS();
 	if (m_Taxy == 0)
 		{
-		asserta(m_SeqDB != 0);
+		asserta(m_UDBData->m_SeqDB != 0);
 		m_Taxy = new Taxy;
 		vector<unsigned> *SeqIndexToTaxIndex = new vector<unsigned>;
-		m_Taxy->FromSeqDB(*m_SeqDB, SeqIndexToTaxIndex);
+		m_Taxy->FromSeqDB(*m_UDBData->m_SeqDB, SeqIndexToTaxIndex);
 		m_SeqIndexToTaxIndex = SeqIndexToTaxIndex;
 		}
 	UNLOCK_CLASS();

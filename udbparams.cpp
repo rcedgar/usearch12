@@ -137,6 +137,7 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 	case CMD_cluster_otus:
 	case CMD_makeudb_usearch:
 	case CMD_sintax:
+	case CMD_unoise3:
 		SetDefaults_GlobalUSearch(Nucleo);
 		return;
 

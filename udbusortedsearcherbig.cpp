@@ -56,8 +56,8 @@ void UDBUsortedSearcher::UDBSearchBig()
 	unsigned QueryStep;
 	GetWordCountingParams(m_MinFractId, QueryUniqueWordCount, MinU, QueryStep);
 
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
 	unsigned MaxSize = m_U.MaxSize;
 	if (MaxSize < SeqCount)
 		{

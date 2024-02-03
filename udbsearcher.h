@@ -16,7 +16,7 @@ class SeqInfo;
 class EStats;
 class AlignResult;
 
-class UDBSearcher : public Searcher, public UDBData
+class UDBSearcher : public Searcher // public UDBData
 	{
 public:
 // Duplicates TargetWord* stuff in UDBParams
@@ -26,6 +26,7 @@ public:
 	GoBuff<uint32> m_QueryWords;
 	GoBuff<uint32> m_QueryUniqueWords;
 	bool *m_QueryWordFound;
+	UDBData *m_UDBData;
 
 public:
 	UDBSearcher();
@@ -33,7 +34,7 @@ public:
 
 // Searcher interface implemented
 //	virtual void SearchImpl() = 0;
-	virtual void DBToFasta(FILE *f) const { ToFasta(f); } ;
+	virtual void DBToFasta(FILE *f) const { m_UDBData->ToFasta(f); } ;
 
 // Searcher interface delegated
 	virtual void SetQueryImpl() = 0;
@@ -50,7 +51,7 @@ public:
 	void LogPtrs();
 
 public:
-	bool HashSearch();
+	//bool HashSearch();
 	void AllocQueryLength(unsigned L);
 	void SetQueryWordsStep(unsigned Step);
 //	void SetQueryWordsStepNoBad(unsigned Step);

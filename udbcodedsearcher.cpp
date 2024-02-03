@@ -26,7 +26,7 @@ UDBCodedSearcher::UDBCodedSearcher()
 
 void UDBCodedSearcher::UDBSearchInit()
 	{
-	if (!m_Params.DBIsCoded() && !m_Params.DBIsVarCoded())
+	if (!m_UDBData->m_Params.DBIsCoded() && !m_UDBData->m_Params.DBIsVarCoded())
 		Die(".udb not compatible with this command");
 	}
 
@@ -37,7 +37,7 @@ bool UDBCodedSearcher::HasSeqDB() const
 
 SeqDB *UDBCodedSearcher::GetSeqDB() const
 	{
-	return m_SeqDB;
+	return m_UDBData->m_SeqDB;
 	}
 
 void UDBCodedSearcher::SetQueryImpl()
@@ -62,7 +62,7 @@ void UDBCodedSearcher::OnTargetDoneImpl()
 
 unsigned UDBCodedSearcher::GetWordMatchCount(unsigned Step)
 	{
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == UINT_MAX)
 		return 0;
 
@@ -71,11 +71,11 @@ unsigned UDBCodedSearcher::GetWordMatchCount(unsigned Step)
 	const byte *Q = m_Query->m_Seq;
 	for (unsigned QueryPos = 0; QueryPos <= End; QueryPos += Step)
 		{
-		uint32 Word = m_Params.SeqToWord(Q + QueryPos);
+		uint32 Word = m_UDBData->m_Params.SeqToWord(Q + QueryPos);
 		if (Word == UINT_MAX)
 			continue;
-		assert(Word < m_SlotCount);
-		unsigned Size = m_Sizes[Word];
+		assert(Word < m_UDBData->m_SlotCount);
+		unsigned Size = m_UDBData->m_Sizes[Word];
 		Count += Size;
 		}
 	EndTimer(WordMatchCount);
@@ -87,7 +87,7 @@ void UDBCodedSearcher::UDBSearchNoAccel()
 	SetQueryWordsAll();
 	unsigned QueryWordCount = m_QueryWords.Size;
 	assert(QueryWordCount < m_Query->m_L);
-	bool IsVarCoded = m_Params.DBIsVarCoded();
+	bool IsVarCoded = m_UDBData->m_Params.DBIsVarCoded();
 	const uint32 *QueryWords = m_QueryWords.Data;
 	for (unsigned QueryPos = 0; QueryPos < QueryWordCount; ++QueryPos)
 		{
@@ -95,7 +95,7 @@ void UDBCodedSearcher::UDBSearchNoAccel()
 		if (Word == UINT_MAX)
 			continue;
 
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 		if (IsVarCoded)
 			{
 			bool Terminate = SearchQueryWordVarCoded(QueryPos, Word);
@@ -147,8 +147,8 @@ void UDBCodedSearcher::SearchImpl()
 		if (Word == UINT_MAX)
 			continue;
 
-		assert(Word < m_SlotCount);
-		uint32 Size = m_Sizes[Word];
+		assert(Word < m_UDBData->m_SlotCount);
+		uint32 Size = m_UDBData->m_Sizes[Word];
 		if (Size <= 0.0f)
 			continue;
 
@@ -190,7 +190,7 @@ void UDBCodedSearcher::SearchImpl()
 	Log("-----  -------  ----\n");
 #endif
 	unsigned QueryWordCountA = unsigned(opt(accel)*QueryGoodWordCount);
-	bool IsVarCoded = m_Params.DBIsVarCoded();
+	bool IsVarCoded = m_UDBData->m_Params.DBIsVarCoded();
 	for (unsigned i = 0; i < QueryWordCountA; ++i)
 		{
 		unsigned k = QueryWordOrder[i];
@@ -198,7 +198,7 @@ void UDBCodedSearcher::SearchImpl()
 		assert(QueryPos < QueryWordCount);
 
 		uint32 Word = QueryWords[QueryPos];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 
 #if	TRACE_WORD_ORDER && !TRACE_WORD_MATCHES
 		{
@@ -229,11 +229,11 @@ void UDBCodedSearcher::SearchImpl()
 
 bool UDBCodedSearcher::SearchQueryWordVarCoded(unsigned QueryPos, uint32 Word)
 	{
-	const char * const *TargetLabels = m_SeqDB->m_Labels;
-	const unsigned Size = m_Sizes[Word];
-	const byte *Row = (const byte *) m_UDBRows[Word];
-	const byte * const *TargetSeqs = m_SeqDB->m_Seqs;
-	const unsigned *TargetSeqLengths = m_SeqDB->m_SeqLengths;
+	const char * const *TargetLabels = m_UDBData->m_SeqDB->m_Labels;
+	const unsigned Size = m_UDBData->m_Sizes[Word];
+	const byte *Row = (const byte *) m_UDBData->m_UDBRows[Word];
+	const byte * const *TargetSeqs = m_UDBData->m_SeqDB->m_Seqs;
+	const unsigned *TargetSeqLengths = m_UDBData->m_SeqDB->m_SeqLengths;
 
 	SeqInfo *Target = 0;
 	unsigned Pos = 0;
@@ -300,11 +300,11 @@ bool UDBCodedSearcher::SearchQueryWordVarCoded(unsigned QueryPos, uint32 Word)
 bool UDBCodedSearcher::SearchQueryWord(unsigned QueryPos, uint32 Word)
 	{
 	StartTimer(UDBS_SearchQueryWord1);
-	const char * const *TargetLabels = m_SeqDB->m_Labels;
-	const unsigned UDBIndexRowSize = m_Sizes[Word];
-	const uint32 *UDBIndexRow = m_UDBRows[Word];
-	const byte * const *TargetSeqs = m_SeqDB->m_Seqs;
-	const unsigned *TargetSeqLengths = m_SeqDB->m_SeqLengths;
+	const char * const *TargetLabels = m_UDBData->m_SeqDB->m_Labels;
+	const unsigned UDBIndexRowSize = m_UDBData->m_Sizes[Word];
+	const uint32 *UDBIndexRow = m_UDBData->m_UDBRows[Word];
+	const byte * const *TargetSeqs = m_UDBData->m_SeqDB->m_Seqs;
+	const unsigned *TargetSeqLengths = m_UDBData->m_SeqDB->m_SeqLengths;
 
 	SeqInfo *Target = 0;
 	EndTimer(UDBS_SearchQueryWord1);
@@ -314,7 +314,7 @@ bool UDBCodedSearcher::SearchQueryWord(unsigned QueryPos, uint32 Word)
 		uint32 Code = UDBIndexRow[Col];
 		unsigned TargetIndex;
 		unsigned TargetPos;
-		m_Params.DecodeSeqPos(Code, TargetIndex, TargetPos);
+		m_UDBData->m_Params.DecodeSeqPos(Code, TargetIndex, TargetPos);
 		EndTimer(UDBS_SearchQueryWord2);
 		unsigned TL = TargetSeqLengths[TargetIndex];
 		bool Covered = m_HitMgr->TargetPosCovered(TargetIndex, TargetPos, TL);

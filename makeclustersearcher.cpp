@@ -5,11 +5,10 @@
 #include "upclustersink.h"
 #include "clustersink.h"
 #include "accepter.h"
+#include "alnheuristics.h"
+#include "alnparams.h"
 
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
-
-static AlnParams g_AP;
-static AlnHeuristics g_AH;
 
 Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	{
@@ -47,7 +46,9 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	asserta(!CmdIsLocal(Cmd));
 
 	Aligner *aligner = new GlobalAligner;
-	aligner->Init(&g_AP, &g_AH);
+	const AlnParams *AP = AlnParams::GetGlobalAP();
+	const AlnHeuristics *AH = AlnHeuristics::GetGlobalAH();
+	aligner->Init(AP, AH);
 	HitMgr &HM = *new HitMgr(0);
 
 	OutputSink &OS = *new OutputSink(false, Nucleo, Nucleo);
@@ -74,12 +75,12 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	US->m_MinFractId = (float) opt(id);
 	UDBParams Params;
 	Params.FromCmdLine(Cmd, Nucleo);
-	US->CreateEmpty(Params);
-	seqdb = US->m_SeqDB;
+	US->m_UDBData->CreateEmpty(Params);
+	seqdb = US->m_UDBData->m_SeqDB;
 
 	US->InitSearcher(&HM, aligner, &accepter, &terminator);
 	US->m_RevComp = false;
-	udbdata = US;
+	udbdata = US->m_UDBData;
 	US->m_RevComp = StrandOptToRevComp(false, false);
 	searcher = US;
 

@@ -142,7 +142,7 @@ void cmd_unoise3()
 	UDBUsortedSearcher *USS = new UDBUsortedSearcher;
 	UDBParams Params;
 	Params.FromCmdLine(CMD_unoise3, true);
-	USS->CreateEmpty(Params);
+	USS->m_UDBData->CreateEmpty(Params);
 	USS->InitSearcher(0, GA, 0, 0);
 	USS->m_MinFractId = 0.9;
 
@@ -184,7 +184,7 @@ void cmd_unoise3()
 
 			if (g_fTab != 0)
 				{
-				const char *TargetLabel = USS->GetTargetLabel(TargetIndex);
+				const char *TargetLabel = USS->m_UDBData->GetTargetLabel(TargetIndex);
 
 				string TopAcc;
 				GetAccFromLabel(TargetLabel, TopAcc);
@@ -209,7 +209,7 @@ void cmd_unoise3()
 		else
 			{
 			++GoodCount;
-			TargetIndex = USS->AddSIToDB_CopyData(Query);
+			TargetIndex = USS->m_UDBData->AddSIToDB_CopyData(Query);
 			Diffs = 0;
 			g_TotalSizes[TargetIndex] = QSize;
 
@@ -227,7 +227,7 @@ void cmd_unoise3()
 	asserta(SIZE(UniqIndexToAmpIndex) == UniqCount);
 
 	SeqDB AmpDB;
-	const SeqDB &DB = *USS->m_SeqDB;
+	const SeqDB &DB = *USS->m_UDBData->m_SeqDB;
 	unsigned DBSeqCount = DB.GetSeqCount();
 	asserta(DBSeqCount == GoodCount);
 	const unsigned AmpCount = DBSeqCount;

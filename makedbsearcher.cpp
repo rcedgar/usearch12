@@ -205,7 +205,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		else if (Cmd == CMD_sintax)
 			{
 			SintaxSearcher *UTS = new SintaxSearcher;
-			UTS->FromUDBData(*udb);
+			UTS->m_UDBData->FromUDBData(*udb);
 			UTS->Init();
 			US = UTS;
 			}
@@ -213,7 +213,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			US = new UDBUsortedSearcher;
 
 		if (udb != 0)
-			US->FromUDBData(*udb);
+			US->m_UDBData->FromUDBData(*udb);
 		else if (seqdb != 0)
 			{
 			UDBParams Params;
@@ -233,7 +233,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		UDBCodedSearcher *US = new UDBCodedSearcher;
 		if (udb != 0)
-			US->FromUDBData(*udb);
+			US->m_UDBData->FromUDBData(*udb);
 		else if (seqdb != 0)
 			{
 			UDBParams Params;

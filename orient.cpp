@@ -56,8 +56,8 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 	const uint32 *WordsRC = US->m_QueryWords.Data;
 	asserta(WordCountRC == WordCount);
 
-	const uint32 *Sizes = US->m_Sizes;
-	unsigned SlotCount = US->m_SlotCount;
+	const uint32 *Sizes = US->m_UDBData->m_Sizes;
+	unsigned SlotCount = US->m_UDBData->m_SlotCount;
 	unsigned PlusCount = 0;
 	unsigned MinusCount = 0;
 	for (unsigned i = 0; i < WordCount; ++i)
@@ -143,7 +143,7 @@ static void Thread(SeqSource *SS, UDBData *udb)
 
 	SeqInfo *QueryRC = ObjMgr::GetSeqInfo();
 	UDBUsortedSearcher *US = new UDBUsortedSearcher;
-	US->FromUDBData(*udb);
+	US->m_UDBData->FromUDBData(*udb);
 	unsigned TargetSeqCount = US->GetSeqCount();
 	unsigned *TargetIndexes = myalloc(unsigned, TargetSeqCount);
 	unsigned *WordCounts = myalloc(unsigned, TargetSeqCount);

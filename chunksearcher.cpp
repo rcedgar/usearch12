@@ -105,7 +105,7 @@ void ChunkSearcher::SearchImpl()
 			{
 			unsigned TargetIndex = *p;
 			m_Target = ObjMgr::GetSeqInfo();
-			m_SeqDB->GetSI(TargetIndex, *m_Target);
+			m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
 			SetTarget(m_Target);
 			Log(" >%s\n", m_Target->m_Label);
 			ObjMgr::Down(m_Target);
@@ -117,7 +117,7 @@ void ChunkSearcher::SearchImpl()
 		{
 		unsigned TargetIndex = *p;
 		m_Target = ObjMgr::GetSeqInfo();
-		m_SeqDB->GetSI(TargetIndex, *m_Target);
+		m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();

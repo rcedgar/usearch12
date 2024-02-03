@@ -17,9 +17,9 @@ const char *BitMapSearcher::BitMapToStr(BITMAPTYPE BitMap, string &s)
 	const uint32 *QueryWords = m_QueryWords.Data;
 	const unsigned QueryWordCount = m_QueryWords.Size;
 
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
-	const unsigned SlotCount = m_SlotCount;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
+	const unsigned SlotCount = m_UDBData->m_SlotCount;
 	unsigned k = 1;
 	for (unsigned QueryIndex = 0; QueryIndex < QueryWordCount; ++QueryIndex)
 		{
@@ -162,7 +162,7 @@ void BitMapSearcher::SetQueryBitMapWords()
 #endif
 
 	m_QueryWords.Size = 0;
-	const unsigned w = m_Params.m_WordWidth;
+	const unsigned w = m_UDBData->m_Params.m_WordWidth;
 	if (m_Query->m_L < w)
 		return;
 
@@ -252,10 +252,10 @@ void BitMapSearcher::SetCandidates()
 
 	const uint32 *QueryWords = m_QueryWords.Data;
 	unsigned QueryWordCount = m_QueryWords.Size;
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
-	const unsigned SlotCount = m_SlotCount;
-	const unsigned DBSeqCount = m_SeqDB->GetSeqCount();
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
+	const unsigned SlotCount = m_UDBData->m_SlotCount;
+	const unsigned DBSeqCount = m_UDBData->m_SeqDB->GetSeqCount();
 
 	Alloc(DBSeqCount);
 
@@ -405,7 +405,7 @@ void BitMapSearcher::SearchImpl()
 		{
 		unsigned TargetSeqIndex = CandidateSeqIndexes[i];
 		m_Target = ObjMgr::GetSeqInfo();
-		m_SeqDB->GetSI(TargetSeqIndex, *m_Target);
+		m_UDBData->m_SeqDB->GetSI(TargetSeqIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();
@@ -425,7 +425,7 @@ void BitMapSearcher::LogTarget(unsigned TargetIndex)
 	uint64 BitMap = m_BitMaps.Data[SeqIndex];
 	string s;
 	const char *BitMapStr = BitMapToStr(BitMap, s);
-	const char *Label = m_SeqDB->GetLabel(SeqIndex);
+	const char *Label = m_UDBData->m_SeqDB->GetLabel(SeqIndex);
 
 	Log("%7u  %7u  %s  >%s\n", TargetIndex, WordCount, BitMapStr, Label);
 	}

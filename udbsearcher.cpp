@@ -8,11 +8,12 @@
 UDBSearcher::UDBSearcher()
 	{
 	m_QueryWordFound = 0;
+	m_UDBData = new UDBData;
 	}
 
 void UDBSearcher::FromSeqDB(UDBParams &Params, SeqDB &seqdb)
 	{
-	UDBData::FromSeqDB(seqdb, Params);
+	m_UDBData->FromSeqDB(seqdb, Params);
 	UDBSearchInit();
 	}
 
@@ -22,7 +23,7 @@ void UDBSearcher::SetQueryWordsAll()
 
 	StartTimer(UDBS_SetWords);
 	const byte *Q = m_Query->m_Seq;
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == UINT_MAX)
 		{
 		m_QueryWords.Size = 0;
@@ -32,8 +33,8 @@ void UDBSearcher::SetQueryWordsAll()
 	uint32 *Words = m_QueryWords.Data;
 	for (unsigned QueryPos = 0; QueryPos <= End; ++QueryPos)
 		{
-		uint32 Word = m_Params.SeqToWord(Q + QueryPos);
-		assert(Word == UINT_MAX || Word < m_SlotCount);
+		uint32 Word = m_UDBData->m_Params.SeqToWord(Q + QueryPos);
+		assert(Word == UINT_MAX || Word < m_UDBData->m_SlotCount);
 		Words[WordCount++] = Word;
 		}
 	asserta(WordCount <= m_QueryWords.MaxSize);
@@ -49,9 +50,9 @@ void UDBSearcher::AllocQueryLength(unsigned L)
 
 void UDBSearcher::SetQueryWordsStepPrefix()
 	{
-	unsigned PrefixLength = (unsigned) strlen((const char *) m_Params.m_StepPrefix);
+	unsigned PrefixLength = (unsigned) strlen((const char *) m_UDBData->m_Params.m_StepPrefix);
 	const byte *Seq = m_Query->m_Seq;
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == UINT_MAX)
 		{
 		m_QueryWords.Size = 0;
@@ -63,11 +64,11 @@ void UDBSearcher::SetQueryWordsStepPrefix()
 	for (unsigned QueryPos = 0; QueryPos <= End; ++QueryPos)
 		{
 		for (unsigned k = 0; k < PrefixLength; ++k)
-			if (Seq[k] != m_Params.m_StepPrefix[k])
+			if (Seq[k] != m_UDBData->m_Params.m_StepPrefix[k])
 				goto NextWord;
 
 		{
-		uint32 Word = m_Params.SeqToWord(Seq + QueryPos);
+		uint32 Word = m_UDBData->m_Params.SeqToWord(Seq + QueryPos);
 		if (Word != BAD_WORD)
 			Words[WordCount++] = Word;
 		}
@@ -83,7 +84,7 @@ void UDBSearcher::SetQueryWordsStep(unsigned Step)
 
 	StartTimer(UDBS_SetWords);
 	const byte *Seq = m_Query->m_Seq;
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == UINT_MAX)
 		{
 		m_QueryWords.Size = 0;
@@ -95,7 +96,7 @@ void UDBSearcher::SetQueryWordsStep(unsigned Step)
 	WordCount = 0;
 	for (unsigned QueryPos = 0; QueryPos <= End; QueryPos += Step)
 		{
-		uint32 Word = m_Params.SeqToWord(Seq + QueryPos);
+		uint32 Word = m_UDBData->m_Params.SeqToWord(Seq + QueryPos);
 		Words[WordCount++] = Word;
 		}
 	EndTimer(UDBS_SetWords);
@@ -131,7 +132,7 @@ void UDBSearcher::SetQueryWordsAllNoBadPattern()
 	StartTimer(SetQueryWordsAllNoBadPattern);
 	m_QueryWords.Alloc(m_Query->m_L);
 	const byte *Seq = m_Query->m_Seq;
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == 0)
 		{
 		m_QueryWords.Size = 0;
@@ -143,7 +144,7 @@ void UDBSearcher::SetQueryWordsAllNoBadPattern()
 	WordCount = 0;
 	for (unsigned QueryPos = 0; QueryPos <= End; ++QueryPos)
 		{
-		uint32 Word = m_Params.SeqToWordPattern(Seq + QueryPos);
+		uint32 Word = m_UDBData->m_Params.SeqToWordPattern(Seq + QueryPos);
 		if (Word != BAD_WORD)
 			Words[WordCount++] = Word;
 		}
@@ -156,7 +157,7 @@ void UDBSearcher::SetQueryWordsAllNoBadNoPattern()
 	StartTimer(SetQueryWordsAllNoBadNoPattern);
 	m_QueryWords.Alloc(m_Query->m_L);
 	const byte *Seq = m_Query->m_Seq;
-	const unsigned End = m_Params.GetLastValidWordPos(m_Query->m_L);
+	const unsigned End = m_UDBData->m_Params.GetLastValidWordPos(m_Query->m_L);
 	if (End == UINT_MAX)
 		{
 		m_QueryWords.Size = 0;
@@ -168,10 +169,10 @@ void UDBSearcher::SetQueryWordsAllNoBadNoPattern()
 	WordCount = 0;
 	for (unsigned QueryPos = 0; QueryPos <= End; ++QueryPos)
 		{
-		uint32 Word = m_Params.SeqToWord(Seq + QueryPos);
+		uint32 Word = m_UDBData->m_Params.SeqToWord(Seq + QueryPos);
 		if (Word != BAD_WORD)
 			{
-			assert(Word < m_SlotCount);
+			assert(Word < m_UDBData->m_SlotCount);
 			Words[WordCount++] = Word;
 			}
 		}
@@ -181,7 +182,7 @@ void UDBSearcher::SetQueryWordsAllNoBadNoPattern()
 
 void UDBSearcher::SetQueryWordsAllNoBad()
 	{
-	if (m_Params.DBIsSpaced())
+	if (m_UDBData->m_Params.DBIsSpaced())
 		SetQueryWordsAllNoBadPattern();
 	else
 		SetQueryWordsAllNoBadNoPattern();
@@ -194,8 +195,8 @@ void UDBSearcher::SetQueryUniqueWords()
 
 	if (m_QueryWordFound == 0)
 		{
-		m_QueryWordFound = myalloc(bool, m_SlotCount);
-		zero(m_QueryWordFound, m_SlotCount);
+		m_QueryWordFound = myalloc(bool, m_UDBData->m_SlotCount);
+		zero(m_QueryWordFound, m_UDBData->m_SlotCount);
 		}
 
 	const unsigned QueryWordCount = m_QueryWords.Size;
@@ -208,7 +209,7 @@ void UDBSearcher::SetQueryUniqueWords()
 	for (unsigned i = 0; i < QueryWordCount; ++i)
 		{
 		uint32 Word = QueryWords[i];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 		if (!m_QueryWordFound[Word])
 			{
 			UniqueWords[UniqueWordCount++] = Word;

@@ -19,7 +19,7 @@ bool UDBUsortedSearcher::HasSeqDB() const
 
 SeqDB *UDBUsortedSearcher::GetSeqDB() const
 	{
-	return m_SeqDB;
+	return m_UDBData->m_SeqDB;
 	}
 
 UDBUsortedSearcher::UDBUsortedSearcher()
@@ -94,10 +94,10 @@ void UDBUsortedSearcher::OnTargetDoneImpl()
 
 void UDBUsortedSearcher::UDBSearchInit()
 	{
-	if (m_Params.DBIsCoded())
+	if (m_UDBData->m_Params.DBIsCoded())
 		Die(".udb not supported by this command");
 
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	if (!optset_id)
 		Die("--id not set");
@@ -179,7 +179,7 @@ void UDBUsortedSearcher::AlignAll()
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
 		m_Target = ObjMgr::GetSeqInfo();
-		m_SeqDB->GetSI(TargetIndex, *m_Target);
+		m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();
@@ -213,7 +213,7 @@ void UDBUsortedSearcher::SortTop()
 			unsigned i = m_TopOrder.Data[j];
 			unsigned SeedIndex = m_TopTargetIndexes.Data[i];
 			unsigned WordCount = m_U.Data[SeedIndex];
-			const char *Label = m_SeqDB->GetLabel(SeedIndex);
+			const char *Label = m_UDBData->m_SeqDB->GetLabel(SeedIndex);
 			Log("%7u  %5u  %s", SeedIndex, WordCount, Label);
 			if (WordCount > LastWordCount)
 				Log(" **ORDER ERROR**");
@@ -225,7 +225,7 @@ void UDBUsortedSearcher::SortTop()
 
 unsigned UDBUsortedSearcher::GetSeqCount() const
 	{
-	return m_SeqDB->GetSeqCount();
+	return m_UDBData->m_SeqDB->GetSeqCount();
 	}
 
 void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
@@ -343,7 +343,7 @@ void UDBUsortedSearcher::SetTop(unsigned MinU)
 
 void UDBUsortedSearcher::SetU(unsigned QueryStep)
 	{
-	if (m_Params.DBIsCoded())
+	if (m_UDBData->m_Params.DBIsCoded())
 		SetU_Coded(QueryStep);
 	else
 		SetU_NonCoded(QueryStep);
@@ -371,8 +371,8 @@ void UDBUsortedSearcher::SetU(unsigned QueryStep)
 void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 	{
 	const unsigned SeqCount = GetSeqCount();
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
 
 	const unsigned QueryUniqueWordCount = m_QueryUniqueWords.Size;
 	const uint32 *QueryUniqueWords = m_QueryUniqueWords.Data;
@@ -389,14 +389,14 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
 		uint32 Word = QueryUniqueWords[i];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 
 		const uint32 *Row = UDBRows[Word];
 		const unsigned Size = Sizes[Word];
@@ -407,7 +407,7 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 
 			unsigned TargetIndex;
 			unsigned TargetPos;
-			m_Params.DecodeSeqPos(Code, TargetIndex, TargetPos);
+			m_UDBData->m_Params.DecodeSeqPos(Code, TargetIndex, TargetPos);
 			++(U[TargetIndex]);
 			}
 		}
@@ -417,8 +417,8 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 	{
 	const unsigned SeqCount = GetSeqCount();
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
 
 	const unsigned QueryUniqueWordCount = m_QueryUniqueWords.Size;
 	const uint32 *QueryUniqueWords = m_QueryUniqueWords.Data;
@@ -435,14 +435,14 @@ void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
 		uint32 Word = QueryUniqueWords[i];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 
 		const byte *Row = (const byte *) UDBRows[Word];
 		const unsigned Size = Sizes[Word];
@@ -468,8 +468,8 @@ void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 	{
 	const unsigned SeqCount = GetSeqCount();
-	const uint32 *Sizes = m_Sizes;
-	const uint32 * const *UDBRows = m_UDBRows;
+	const uint32 *Sizes = m_UDBData->m_Sizes;
+	const uint32 * const *UDBRows = m_UDBData->m_UDBRows;
 
 	const unsigned QueryUniqueWordCount = m_QueryUniqueWords.Size;
 	const uint32 *QueryUniqueWords = m_QueryUniqueWords.Data;
@@ -486,14 +486,14 @@ void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
 		uint32 Word = QueryUniqueWords[i];
-		assert(Word < m_SlotCount);
+		assert(Word < m_UDBData->m_SlotCount);
 
 		const uint32 *Row = UDBRows[Word];
 		const unsigned Size = Sizes[Word];
@@ -510,24 +510,24 @@ void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 void UDBUsortedSearcher::GetWordCountingParams(float MinFractId,
   unsigned QueryUniqueWordCount, unsigned &MinU, unsigned &Step)
 	{
-	asserta(m_Params.m_StepPrefix == 0);
+	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	void GetWordCountingParams(float MinFractId, unsigned QueryUniqueWordCount,
 	  unsigned DBStep, unsigned WordOnes, bool IsNucleo,
 	  unsigned &MinU, unsigned &Step);
 
-	GetWordCountingParams(MinFractId, QueryUniqueWordCount, m_Params.m_DBStep,
-	  m_Params.m_WordOnes, m_Params.m_IsNucleo, MinU, Step);
+	GetWordCountingParams(MinFractId, QueryUniqueWordCount, m_UDBData->m_Params.m_DBStep,
+	  m_UDBData->m_Params.m_WordOnes, m_UDBData->m_Params.m_IsNucleo, MinU, Step);
 	}
 
 void UDBUsortedSearcher::GetTargetSeqInfo(unsigned TargetIndex, SeqInfo *SI)
 	{
-	m_SeqDB->GetSI(TargetIndex, *SI);
+	m_UDBData->m_SeqDB->GetSI(TargetIndex, *SI);
 	}
 
 unsigned UDBUsortedSearcher::GetTopTargetIndex(SeqInfo *Query, unsigned *ptrU, unsigned *ptrN)
 	{
-	asserta(!m_Params.DBIsCoded());
+	asserta(!m_UDBData->m_Params.DBIsCoded());
 
 	const unsigned SeqCount = GetSeqCount();
 	m_TopU.Alloc(SeqCount);
@@ -561,7 +561,7 @@ unsigned UDBUsortedSearcher::DeleteSelf(SeqInfo *Query, unsigned *TargetIndexes,
 	if (N == 0)
 		return 0;
 
-	SeqDB &DB = *m_SeqDB;
+	SeqDB &DB = *m_UDBData->m_SeqDB;
 	const char *QueryLabel = Query->m_Label;
 	unsigned TopWordCount = WordCounts[0];
 	for (unsigned i = 0; i < N; ++i)
@@ -586,7 +586,7 @@ unsigned UDBUsortedSearcher::DeleteSelf(SeqInfo *Query, unsigned *TargetIndexes,
 
 unsigned UDBUsortedSearcher::GetU(SeqInfo *Query, unsigned *TargetIndexes, unsigned *WordCounts)
 	{
-	asserta(!m_Params.DBIsCoded());
+	asserta(!m_UDBData->m_Params.DBIsCoded());
 
 	const unsigned SeqCount = GetSeqCount();
 	m_TopU.Alloc(SeqCount);
@@ -596,9 +596,9 @@ unsigned UDBUsortedSearcher::GetU(SeqInfo *Query, unsigned *TargetIndexes, unsig
 	SetQueryImpl();
 	SetQueryWordsAllNoBad();
 	SetQueryUniqueWords();
-	if (m_Params.DBIsVarCoded())
+	if (m_UDBData->m_Params.DBIsVarCoded())
 		SetU_VarCoded(1);
-	else if (m_Params.DBIsCoded())
+	else if (m_UDBData->m_Params.DBIsCoded())
 		SetU_Coded(1);
 	else
 		SetU_NonCoded(1);
@@ -655,7 +655,7 @@ unsigned UDBUsortedSearcher::GetHot(SeqInfo *Query, unsigned MaxHot, unsigned Ma
 			unsigned k = TopOrder[i];
 			unsigned TargetSeqIndex = TopTargetIndexes[k];
 			unsigned u = m_TopU.Data[i];
-			const char *TargetLabel = m_SeqDB->GetLabel(TargetSeqIndex);
+			const char *TargetLabel = m_UDBData->m_SeqDB->GetLabel(TargetSeqIndex);
 			Log("%7u  %5u  %s\n", TargetSeqIndex, u, TargetLabel);
 			}
 		}
