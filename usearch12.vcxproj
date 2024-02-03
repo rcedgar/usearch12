@@ -249,6 +249,7 @@
     <ClCompile Include="chunksearcher.cpp" />
     <ClCompile Include="closedrefsink.cpp" />
     <ClCompile Include="clusterfast.cpp" />
+    <ClCompile Include="clustermt.cpp" />
     <ClCompile Include="clustersink.cpp" />
     <ClCompile Include="clustersmallmem.cpp" />
     <ClCompile Include="cmd.cpp" />
@@ -290,6 +291,7 @@
     <ClCompile Include="getuniquelettercount.cpp" />
     <ClCompile Include="globalaligner.cpp" />
     <ClCompile Include="globalalignmem.cpp" />
+    <ClCompile Include="makeclustersearcher.cpp" />
     <ClCompile Include="mergealign.cpp" />
     <ClCompile Include="mergelogvaln.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
@@ -313,7 +315,7 @@
     <ClCompile Include="lockobj.cpp" />
     <ClCompile Include="logaln.cpp" />
     <ClCompile Include="make3way.cpp" />
-    <ClCompile Include="makesearcher.cpp" />
+    <ClCompile Include="makedbsearcher.cpp" />
     <ClCompile Include="makeudb.cpp" />
     <ClCompile Include="mask.cpp" />
     <ClCompile Include="mergepair.cpp" />

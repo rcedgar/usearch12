@@ -200,7 +200,7 @@
     <ClCompile Include="make3way.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="makesearcher.cpp">
+    <ClCompile Include="makedbsearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="seqsource.cpp">
@@ -504,6 +504,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="udb2bitvec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clustermt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="makeclustersearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

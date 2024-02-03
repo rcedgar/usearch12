@@ -7,6 +7,7 @@ A(version)
 A(cluster_fast)
 A(cluster_otus)
 A(cluster_smallmem)
+A(cluster_mt)
 A(closed_ref)
 
 A(fastq_filter)

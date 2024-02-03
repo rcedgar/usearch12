@@ -130,6 +130,7 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
+	case CMD_cluster_mt:
 	case CMD_usearch_global:
 	case CMD_otutab:
 	case CMD_closed_ref:
