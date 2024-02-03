@@ -35,7 +35,7 @@ unsigned LineReader::GetPctDoneX10()
 	if (m_FileSize == UINT64_MAX || m_FileSize == 0)
 		return 0;
 	uint64 Pos = GetPos();
-	double f = double(Pos)/double(m_FileSize);
+	double f = double(m_LastBufferPos + m_BufferOffset)/double(m_FileSize);
 	uint n = uint(f*1000);
 	if (n >= 999)
 		n = 998;
@@ -57,6 +57,7 @@ void LineReader::Clear()
 	m_Buffer = 0;
 	m_BufferOffset = 0;
 	m_BufferBytes = 0;
+	m_LastBufferPos = 0;
 	m_LineNr = 0;
 	m_gz = false;
 	m_EOF = true;
@@ -153,7 +154,10 @@ void LineReader::FillBuff()
 	if (m_gz)
 		m_BufferBytes = ReadGzipFile(m_f, m_Buffer, LR_BUFF);
 	else
+		{
+		m_LastBufferPos = GetStdioFilePos64(m_f);
 		ReadStdioFile_NoFail(m_f, m_Buffer, LR_BUFF, &m_BufferBytes);
+		}
 	if (m_BufferBytes == 0)
 		m_EOF = true;
 	}

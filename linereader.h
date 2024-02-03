@@ -19,6 +19,7 @@ public:
 	char *m_Buffer;
 	uint32 m_BufferBytes;
 	uint32 m_BufferOffset;
+	uint64 m_LastBufferPos;
 	uint64 m_FileSize;
 	bool m_gz;
 	bool m_EOF;

@@ -8,13 +8,30 @@
 #include "outputsink.h"
 #include "omplock.h"
 
-static unsigned g_ProgressThreadIndex = 0;
+static uint g_ProgressThreadIndex = 0;
+static vector<SeqInfo *> g_Pending;
+static UDBData *g_udb;
 
-static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
+static void ProcessPending(OutputSink &OS)
 	{
-	unsigned ThreadIndex = GetThreadIndex();
+	for (vector<SeqInfo *>::const_iterator p = g_Pending.begin();
+	  p != g_Pending.end(); ++p)
+		{
+		SeqInfo *Query = *p;
+		uint ClusterIndex = g_udb->AddSIToDB_CopyData(Query);
+		g_udb->AddSeqNoncoded(ClusterIndex,
+			Query->m_Seq, Query->m_L, false);
+		OS.OutputMatchedFalse(Query, ClusterIndex);
+		ObjMgr::Down(Query);
+		}
+	g_Pending.clear();
+	}
 
-	UDBUsortedSearcher *US = new UDBUsortedSearcher(udb);
+static void Thread(SeqSource *SS, bool Nucleo)
+	{
+	uint ThreadIndex = GetThreadIndex();
+
+	UDBUsortedSearcher *US = new UDBUsortedSearcher(g_udb);
 	US->m_MinFractId = (float) opt(id);
 
 	HitMgr *HM = new HitMgr(0);
@@ -32,6 +49,11 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 
 	for (;;)
 		{
+#pragma omp critical
+		{
+		ProcessPending(OS);
+		}
+
 		SeqInfo *Query = ObjMgr::GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
@@ -48,18 +70,11 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 		AlignResult *AR = HM->GetTopHit();
 		if (AR == 0)
 			{
-			uint ClusterIndex = udb->AddSIToDB_CopyData(Query);
-			udb->AddSeqNoncoded(ClusterIndex,
-			  Query->m_Seq, Query->m_L, false);
-			Log("S >%s\n", Query->m_Label);
-			Lock();
-			OS.OutputMatchedFalse(Query, ClusterIndex);
-			Unlock();
+			ObjMgr::Up(Query);
+			g_Pending.push_back(Query);
 			}
 		else
 			{
-			Log("H >%s\n", Query->m_Label);
-			uint ClusterIndex = AR->m_Target->m_Index;
 			Lock();
 			OS.OutputAR(AR);
 			Unlock();
@@ -85,18 +100,21 @@ void cmd_cluster_mt()
 	InitGlobals(IsNucleo);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
-	UDBData *US = new UDBData;
+	g_udb = new UDBData;
 	UDBParams Params;
 	Params.FromCmdLine(CMD_cluster_mt, IsNucleo);
-	US->CreateEmpty(Params);
+	g_udb->CreateEmpty(Params);
 
-	unsigned ThreadCount = GetRequestedThreadCount();
+	uint ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;
 	ProgressCallback(0, 1000);
 #pragma omp parallel num_threads(ThreadCount)
 	{
-	Thread(SS, US, IsNucleo);
+	Thread(SS, IsNucleo);
 	}
 	ProgressCallback(999, 1000);
 	g_ProgressThreadIndex = UINT_MAX;
+
+	g_udb->ToFasta(opt(centroids));
+	ObjMgr::LogGlobalStats();
 	}
