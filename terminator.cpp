@@ -30,7 +30,6 @@ Terminator::Terminator(CMD Cmd)
 		m_MaxRejects = 32;
 		break;
 
-	case CMD_ublast:
 	case CMD_sintax:
 		m_MaxAccepts = 0;
 		m_MaxRejects = 0;

@@ -134,9 +134,6 @@
     <ClCompile Include="tracebackbitmem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="udbcodedsearcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="udbdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -797,9 +794,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="trees.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="udbcodedsearcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="udbdata.h">

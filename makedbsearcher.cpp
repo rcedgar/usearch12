@@ -1,6 +1,5 @@
 #include "myutils.h"
 #include "seqdbsearcher.h"
-#include "udbcodedsearcher.h"
 #include "udbusortedsearcher.h"
 #include "sintaxsearcher.h"
 #include "uparsesink.h"
@@ -85,7 +84,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	bool Local = CmdIsLocal(Cmd);
 	switch (Cmd)
 		{
-	case CMD_ublast:
 	case CMD_usearch_local:
 		{
 		float DBSize = 0.0;
@@ -100,12 +98,9 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 
 	switch (Cmd)
 		{
-	case CMD_ublast:
 	case CMD_usearch_local:
 		{
-		if (Cmd == CMD_ublast)
-			aligner = new LocalAligner(AT_LocalPos);
-		else if (Cmd == CMD_usearch_local)
+		if (Cmd == CMD_usearch_local)
 			{
 			unsigned WordLength = opt(hspw);
 			if (DBIsNucleo)
@@ -225,23 +220,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		if (!optset_id)
 			Die("-id option required");
 		US->m_MinFractId = (float) opt(id);
-		searcher = US;
-		break;
-		}
-
-	case CMD_ublast:
-		{
-		UDBCodedSearcher *US = new UDBCodedSearcher;
-		if (udb != 0)
-			US->m_UDBData->FromUDBData(*udb);
-		else if (seqdb != 0)
-			{
-			UDBParams Params;
-			Params.FromCmdLine(Cmd, DBIsNucleo);
-			US->FromSeqDB(Params, *seqdb);
-			}
-		else
-			asserta(false);
 		searcher = US;
 		break;
 		}

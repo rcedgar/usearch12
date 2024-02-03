@@ -11,6 +11,12 @@ UDBSearcher::UDBSearcher()
 	m_UDBData = new UDBData;
 	}
 
+//UDBSearcher::UDBSearcher(UDBData *data)
+//	{
+//	m_QueryWordFound = 0;
+//	m_UDBData = data;
+//	}
+
 void UDBSearcher::FromSeqDB(UDBParams &Params, SeqDB &seqdb)
 	{
 	m_UDBData->FromSeqDB(seqdb, Params);

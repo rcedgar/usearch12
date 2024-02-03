@@ -135,7 +135,8 @@ void SetCmdPCB(CMD Cmd)
 		break;
 	case CMD_usearch_global:
 	case CMD_usearch_local:
-	case CMD_ublast:
+		SetPCB(SearcherPCB);
+		break;
 	case CMD_uparse_ref:
 		SetPCB(UParsePCB);
 		break;

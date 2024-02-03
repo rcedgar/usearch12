@@ -145,16 +145,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 		SetDefaults_Orient();
 		return;
 
-	case CMD_ublast:
-	case CMD_makeudb_ublast:
-		if (!optset_posbits)
-			{
-			opt(posbits) = 255;
-			optset_posbits = true;
-			}
-		SetDefaults_LocalSeededSearch(Nucleo);
-		return;
-
 	case CMD_usearch_local:
 		SetDefaults_LocalUSearch(Nucleo);
 		return;

@@ -131,12 +131,6 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	if (DBFileName == "")
 		Die("Database file name not set");
 
-	if (Cmd == CMD_ublast)
-		{
-		if (!optset_evalue)
-			Die("Must specify -evalue for ublast");
-		}
-
 	SetPCBQueryFileName(QueryFileName);
 	SetPCBDBFileName(DBFileName);
 

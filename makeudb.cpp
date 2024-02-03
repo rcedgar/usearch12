@@ -59,11 +59,6 @@ static void MakeUDB(CMD Cmd, const string &InputFileName)
 	UDB.ToUDBFile(OutputFileName);
 	}
 
-void cmd_makeudb_ublast()
-	{
-	MakeUDB(CMD_makeudb_ublast, opt(makeudb_ublast));
-	}
-
 void cmd_makeudb_usearch()
 	{
 	MakeUDB(CMD_makeudb_usearch, opt(makeudb_usearch));

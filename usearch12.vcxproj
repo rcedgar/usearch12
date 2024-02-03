@@ -369,7 +369,6 @@
     <ClCompile Include="udbbuild.cpp" />
     <ClCompile Include="udb2bitvec.cpp" />
     <ClCompile Include="udbusortedsearcherbig.cpp" />
-    <ClCompile Include="udbcodedsearcher.cpp" />
     <ClCompile Include="udbdata.cpp" />
     <ClCompile Include="udbio.cpp" />
     <ClCompile Include="udbparams.cpp" />
@@ -493,7 +492,6 @@
     <ClInclude Include="tracebit.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="trees.h" />
-    <ClInclude Include="udbcodedsearcher.h" />
     <ClInclude Include="udbdata.h" />
     <ClInclude Include="udbfile.h" />
     <ClInclude Include="udbparams.h" />

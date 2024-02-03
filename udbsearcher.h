@@ -28,8 +28,11 @@ public:
 	bool *m_QueryWordFound;
 	UDBData *m_UDBData;
 
-public:
+protected:
 	UDBSearcher();
+
+public:
+	//UDBSearcher(UDBData *data);
 	virtual ~UDBSearcher() {} // Leak by design
 
 // Searcher interface implemented

@@ -20,12 +20,9 @@ A(fastx_uniques)
 A(fastx_truncate)
 A(fastx_get_sample_names)
 
-A(makeudb_ublast)
 A(makeudb_usearch)
 
 A(sintax_summary)
-
-A(ublast)
 
 A(uchime3_denovo)
 

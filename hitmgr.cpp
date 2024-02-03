@@ -188,23 +188,6 @@ void HitMgr::AppendHit(AlignResult *AR)
 	unsigned TargetIndex = AR->m_Target->m_Index;
 	AllocTargetIndex(TargetIndex);
 
-	if (g_Cmd == CMD_ublast)
-		{
-		if (!m_TargetHasHit[TargetIndex])
-			{
-			m_TargetHasHit[TargetIndex] = true;
-
-			AllocTargetCount(m_TargetCount+1);
-			m_Targets[m_TargetCount++] = TargetIndex;
-			}
-		else
-			{
-			unsigned Midj = AR->m_HSP.GetMidj();
-			if (TargetPosCovered(TargetIndex, Midj, AR->m_Target->m_L))
-				return;
-			}
-		}
-
 	m_OrderKnown = false;
 	AllocARs(m_HitCount+1);
 	m_Scores[m_HitCount] = AR->GetScore();

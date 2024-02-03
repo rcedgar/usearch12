@@ -3,11 +3,6 @@
 
 void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName);
 
-void cmd_ublast()
-	{
-	Search(CMD_ublast, opt(ublast), opt(db));
-	}
-
 void cmd_usearch_global()
 	{
 	Search(CMD_usearch_global, opt(usearch_global), opt(db));

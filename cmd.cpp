@@ -38,7 +38,6 @@ bool CmdIsLocal(CMD Cmd)
 	switch (Cmd)
 		{
 IS_TRUE(usearch_local)
-IS_TRUE(ublast)
 		}
 	return false;
 	}
@@ -58,21 +57,11 @@ IS_TRUE(cluster_otus)
 	return false;
 	}
 
-bool CmdRequiresUDBSeeds(CMD Cmd)
-	{
-	switch (Cmd)
-		{
-IS_TRUE(ublast)
-		}
-	return false;
-	}
-
 // UDB index derived from .udb or .fasta.
 bool CmdRequiresUDBIndex(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(ublast)
 IS_TRUE(usearch_global)
 IS_TRUE(otutab)
 IS_TRUE(closed_ref)
@@ -102,7 +91,6 @@ bool CmdCommonOutput(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(ublast)
 IS_TRUE(usearch_global)
 IS_TRUE(otutab)
 IS_TRUE(closed_ref)
@@ -117,7 +105,6 @@ bool CmdTerm(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(ublast)
 IS_TRUE(usearch_global)
 IS_TRUE(otutab)
 IS_TRUE(closed_ref)
@@ -133,7 +120,6 @@ bool CmdAcc(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(ublast)
 IS_TRUE(closed_ref)
 IS_TRUE(usearch_global)
 IS_TRUE(otutab)
@@ -149,7 +135,6 @@ bool CmdAllowsWeak(CMD Cmd)
 	{
 	switch (Cmd)
 		{
-IS_TRUE(ublast)
 IS_TRUE(usearch_global)
 IS_TRUE(usearch_local)
 		}
