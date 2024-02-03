@@ -41,7 +41,7 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 		if (ThreadIndex == g_ProgressThreadIndex)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
-		US->Search(Query);
+		US->Search(Query, true);
 		AlignResult *AR = HM->GetTopHit();
 		if (AR == 0)
 			{
@@ -54,6 +54,7 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 			{
 			Log("H >%s\n", Query->m_Label);
 			}
+		HM->OnQueryDone(Query);
 		ObjMgr::Down(Query);
 		Query = 0;
 		}
