@@ -6,11 +6,27 @@
 #include "globalaligner.h"
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
+#include "pcb.h"
 #include "omplock.h"
 
 static uint g_ProgressThreadIndex = 0;
 static vector<SeqInfo *> g_Pending;
 static UDBData *g_udb;
+static unsigned g_ClusterCount;
+static unsigned g_MemberCount;
+
+static const char *MyPCB()
+	{
+	static char *s = 0;
+#pragma omp critical
+	{
+	if (s == 0)
+		s = myalloc(char, 256);
+	sprintf(s, "%d clusters, %d members",
+	  g_ClusterCount, g_MemberCount);
+	}
+	return s;
+	}
 
 static void ProcessPending(OutputSink &OS)
 	{
@@ -19,6 +35,8 @@ static void ProcessPending(OutputSink &OS)
 		{
 		SeqInfo *Query = *p;
 		uint ClusterIndex = g_udb->AddSIToDB_CopyData(Query);
+		asserta(ClusterIndex == g_ClusterCount);
+		++g_ClusterCount;
 		g_udb->AddSeqNoncoded(ClusterIndex,
 			Query->m_Seq, Query->m_L, false);
 		OS.OutputMatchedFalse(Query, ClusterIndex);
@@ -76,6 +94,7 @@ static void Thread(SeqSource *SS, bool Nucleo)
 		else
 			{
 			Lock();
+			++g_MemberCount;
 			OS.OutputAR(AR);
 			Unlock();
 			}
@@ -104,6 +123,7 @@ void cmd_cluster_mt()
 	UDBParams Params;
 	Params.FromCmdLine(CMD_cluster_mt, IsNucleo);
 	g_udb->CreateEmpty(Params);
+	SetPCB(MyPCB);
 
 	uint ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;
