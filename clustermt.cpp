@@ -7,13 +7,113 @@
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
 #include "pcb.h"
-#include "omplock.h"
+#include <latch>
+#include <barrier>
 
 static uint g_ProgressThreadIndex = 0;
 static vector<SeqInfo *> g_Pending;
 static UDBData *g_udb;
 static unsigned g_ClusterCount;
 static unsigned g_MemberCount;
+
+static omp_lock_t g_OutputLock;
+static omp_lock_t g_UpdateLock;
+static omp_lock_t g_ReadLock;
+static omp_lock_t g_StateLock;
+
+static uint g_ReaderCount;
+static uint g_UpdaterCount;
+
+static void InitLocks()
+	{
+	omp_init_lock(&g_OutputLock);
+	omp_init_lock(&g_UpdateLock);
+	omp_init_lock(&g_ReadLock);
+	omp_init_lock(&g_StateLock);
+	}
+
+static void BeginOutput()
+	{
+	omp_set_lock(&g_OutputLock);
+	}
+
+static void EndOutput()
+	{
+	omp_unset_lock(&g_OutputLock);
+	}
+
+static void BeginRead()
+	{
+	for (;;)
+		{
+		bool Ok = false;
+		omp_set_lock(&g_StateLock);
+		if (g_UpdaterCount == 0)
+			{
+			if (g_ReaderCount == 0)
+				omp_set_lock(&g_ReadLock);
+			++g_ReaderCount;
+			Ok = true;
+			}
+		omp_unset_lock(&g_StateLock);
+		if (Ok)
+			return;
+
+	// Block until update has completed
+		omp_set_lock(&g_UpdateLock);
+		omp_unset_lock(&g_UpdateLock);
+		}
+	}
+
+static void EndRead()
+	{
+	omp_set_lock(&g_StateLock);
+	asserta(g_ReaderCount > 0);
+	asserta(g_UpdaterCount == 0);
+	--g_ReaderCount;
+	if (g_ReaderCount == 0)
+		omp_unset_lock(&g_ReadLock);
+	omp_unset_lock(&g_StateLock);
+	}
+
+static void BeginUpdate(const char *s)
+	{
+	for (;;)
+		{
+		bool Ok = false;
+		omp_set_lock(&g_StateLock);
+		if (g_UpdaterCount > 1)
+			Die("g_UpdaterCount > 1");
+		asserta(g_UpdaterCount <= 1);
+		if (g_UpdaterCount == 0 && g_ReaderCount == 0)
+			{
+			Ok = true;
+			omp_set_lock(&g_UpdateLock);
+			++g_UpdaterCount;
+			}
+		omp_unset_lock(&g_StateLock);
+		if (Ok)
+			return;
+
+	// Block until readers have completed
+		omp_set_lock(&g_ReadLock);
+		omp_unset_lock(&g_ReadLock);
+		}
+	}
+
+static void EndUpdate()
+	{
+	omp_set_lock(&g_StateLock);
+	if (g_UpdaterCount != 1)
+		Die("g_UpdaterCount != 1");
+	if (g_ReaderCount != 0)
+		Die("g_UpdaterCount != 1");
+	asserta(g_UpdaterCount == 1);
+	asserta(g_ReaderCount == 0);
+	g_UpdaterCount = 0;
+	omp_unset_lock(&g_UpdateLock);
+	omp_unset_lock(&g_StateLock);
+	}
 
 static const char *MyPCB()
 	{
@@ -30,6 +130,9 @@ static const char *MyPCB()
 
 static void ProcessPending(OutputSink &OS)
 	{
+	BeginUpdate("ProcessPending");
+	asserta(g_UpdaterCount == 1);
+	asserta(g_ReaderCount == 0);
 	for (vector<SeqInfo *>::const_iterator p = g_Pending.begin();
 	  p != g_Pending.end(); ++p)
 		{
@@ -43,6 +146,7 @@ static void ProcessPending(OutputSink &OS)
 		ObjMgr::Down(Query);
 		}
 	g_Pending.clear();
+	EndUpdate();
 	}
 
 static void Thread(SeqSource *SS, bool Nucleo)
@@ -84,19 +188,31 @@ static void Thread(SeqSource *SS, bool Nucleo)
 		if (ThreadIndex == g_ProgressThreadIndex)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
+		BeginRead();
+		asserta(g_UpdaterCount == 0);
+		asserta(g_ReaderCount > 0);
 		US->Search(Query, true);
+		asserta(g_UpdaterCount == 0);
+		asserta(g_ReaderCount > 0);
+		EndRead();
 		AlignResult *AR = HM->GetTopHit();
 		if (AR == 0)
 			{
 			ObjMgr::Up(Query);
+			BeginUpdate("g_Pending.push()");
+			asserta(g_UpdaterCount == 1);
+			asserta(g_ReaderCount == 0);
 			g_Pending.push_back(Query);
+			asserta(g_UpdaterCount == 1);
+			asserta(g_ReaderCount == 0);
+			EndUpdate();
 			}
 		else
 			{
-			Lock();
+			BeginOutput();
 			++g_MemberCount;
 			OS.OutputAR(AR);
-			Unlock();
+			EndOutput();
 			}
 		HM->OnQueryDone(Query);
 		ObjMgr::Down(Query);
@@ -117,6 +233,7 @@ void cmd_cluster_mt()
 	bool IsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &IsNucleo);
 	InitGlobals(IsNucleo);
+	InitLocks();
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	g_udb = new UDBData;
@@ -126,6 +243,7 @@ void cmd_cluster_mt()
 	SetPCB(MyPCB);
 
 	uint ThreadCount = GetRequestedThreadCount();
+	Progress("%u threads\n", ThreadCount);
 	g_ProgressThreadIndex = 0;
 	ProgressCallback(0, 1000);
 #pragma omp parallel num_threads(ThreadCount)
