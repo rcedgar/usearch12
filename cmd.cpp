@@ -97,6 +97,7 @@ IS_TRUE(closed_ref)
 IS_TRUE(usearch_local)
 IS_TRUE(cluster_fast)
 IS_TRUE(cluster_smallmem)
+IS_TRUE(cluster_mt)
 		}
 	return false;
 	}

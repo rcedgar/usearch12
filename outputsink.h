@@ -49,7 +49,7 @@ public:
 	virtual void OnQueryDone(SeqInfo *Query, HitMgr *HM);
 	virtual HST GetType() const { return HST_OutputSink; }
 
-private:
+public:
 	static void OutputAln(AlignResult *AR);
 	static void OutputBlast6(AlignResult *AR);
 	static void OutputUser(AlignResult *AR);
@@ -58,8 +58,6 @@ private:
 	static void OutputTSeg(AlignResult *AR);
 	static void OutputUC(AlignResult *AR);
 	static void OutputTrim(AlignResult *AR);
-
-	void OutputSAM(AlignResult *AR, unsigned HitIndex);
 
 	void OutputReport(FILE *f, SeqInfo *Query, HitMgr *HM);
 	void OutputReportLocal(FILE *f, SeqInfo *Query, HitMgr *HM);
@@ -72,8 +70,6 @@ private:
 	void OutputUCNoHits(SeqInfo *Query, unsigned ClusterIndex);
 	void OutputUserNoHits(SeqInfo *Query, unsigned ClusterIndex);
 	void OutputBlast6NoHits(SeqInfo *Query);
-
-	unsigned GetMapQ();
 	};
 
 static inline const char *ntoraa(bool Nucleo)

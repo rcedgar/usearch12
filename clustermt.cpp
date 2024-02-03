@@ -5,6 +5,8 @@
 #include "accepter.h"
 #include "globalaligner.h"
 #include "udbusortedsearcher.h"
+#include "outputsink.h"
+#include "omplock.h"
 
 static unsigned g_ProgressThreadIndex = 0;
 
@@ -26,6 +28,7 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 	const AlnHeuristics *AH = AlnHeuristics::GetGlobalAH();
 	aligner->Init(AP, AH);
 	US->m_Aligner = aligner;
+	OutputSink OS(false, Nucleo, Nucleo);
 
 	for (;;)
 		{
@@ -49,10 +52,17 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 			udb->AddSeqNoncoded(ClusterIndex,
 			  Query->m_Seq, Query->m_L, false);
 			Log("S >%s\n", Query->m_Label);
+			Lock();
+			OS.OutputMatchedFalse(Query, ClusterIndex);
+			Unlock();
 			}
 		else
 			{
 			Log("H >%s\n", Query->m_Label);
+			uint ClusterIndex = AR->m_Target->m_Index;
+			Lock();
+			OS.OutputAR(AR);
+			Unlock();
 			}
 		HM->OnQueryDone(Query);
 		ObjMgr::Down(Query);
