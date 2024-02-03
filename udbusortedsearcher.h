@@ -29,6 +29,7 @@ public:
 
 public:
 	UDBUsortedSearcher();
+	UDBUsortedSearcher(UDBData *data);
 	virtual ~UDBUsortedSearcher() {} // Leak by design
 
 	//void LockDataVec();

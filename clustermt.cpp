@@ -2,6 +2,8 @@
 #include "pcb.h"
 #include "objmgr.h"
 #include "hitmgr.h"
+#include "accepter.h"
+#include "globalaligner.h"
 #include "udbusortedsearcher.h"
 
 static unsigned g_ProgressThreadIndex = 0;
@@ -10,9 +12,20 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 	{
 	unsigned ThreadIndex = GetThreadIndex();
 
-	UDBUsortedSearcher *US = new UDBUsortedSearcher;
+	UDBUsortedSearcher *US = new UDBUsortedSearcher(udb);
 	US->m_MinFractId = (float) opt(id);
-	HitMgr *HM = US->m_HitMgr;
+
+	HitMgr *HM = new HitMgr(0);
+	US->m_HitMgr = HM;
+
+	US->m_Terminator = new Terminator(CMD_cluster_mt);
+	US->m_Accepter = new Accepter(true, false);
+
+	GlobalAligner *aligner = new GlobalAligner;
+	const AlnParams *AP = AlnParams::GetGlobalAP();
+	const AlnHeuristics *AH = AlnHeuristics::GetGlobalAH();
+	aligner->Init(AP, AH);
+	US->m_Aligner = aligner;
 
 	for (;;)
 		{
@@ -33,6 +46,13 @@ static void Thread(SeqSource *SS, UDBData *udb, bool Nucleo)
 		if (AR == 0)
 			{
 			uint ClusterIndex = udb->AddSIToDB_CopyData(Query);
+			udb->AddSeqNoncoded(ClusterIndex,
+			  Query->m_Seq, Query->m_L, false);
+			Log("S >%s\n", Query->m_Label);
+			}
+		else
+			{
+			Log("H >%s\n", Query->m_Label);
 			}
 		ObjMgr::Down(Query);
 		Query = 0;
@@ -51,6 +71,7 @@ void cmd_cluster_mt()
 
 	bool IsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &IsNucleo);
+	InitGlobals(IsNucleo);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	UDBData *US = new UDBData;

@@ -32,7 +32,7 @@ protected:
 	UDBSearcher();
 
 public:
-	//UDBSearcher(UDBData *data);
+	UDBSearcher(UDBData *data);
 	virtual ~UDBSearcher() {} // Leak by design
 
 // Searcher interface implemented

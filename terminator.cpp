@@ -8,6 +8,7 @@ Terminator::Terminator(CMD Cmd)
 	switch (Cmd)
 		{
 	case CMD_cluster_fast:
+	case CMD_cluster_mt:
 		m_MaxAccepts = 1;
 		m_MaxRejects = 8;
 		break;

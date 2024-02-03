@@ -22,6 +22,13 @@ SeqDB *UDBUsortedSearcher::GetSeqDB() const
 	return m_UDBData->m_SeqDB;
 	}
 
+UDBUsortedSearcher::UDBUsortedSearcher(UDBData *data) : UDBSearcher(data)
+	{
+	m_MinFractId = 0.0f;
+	m_Big = false;
+	m_Self = false;
+	}
+
 UDBUsortedSearcher::UDBUsortedSearcher()
 	{
 	m_MinFractId = 0.0f;
