@@ -40,6 +40,7 @@ HDRS = \
   constaxstr.h \
   count.h \
   countsort.h \
+  cpplock.h \
   crc32.h \
   dbhitsink.h \
   dbtype.h \
@@ -86,14 +87,12 @@ HDRS = \
   objmgr.h \
   objtype.h \
   objtypes.h \
-  omplock.h \
   orffinder.h \
   otutab.h \
   otutabsink.h \
   outputsink.h \
   pathinfo.h \
   pcb.h \
-  pcrsink.h \
   primes.h \
   quarts.h \
   searcher.h \

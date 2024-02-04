@@ -1,5 +1,3 @@
-#include <Windows.h>
-#include <debugapi.h>
 #include "udbdata.h"
 #include "pcb.h"
 #include "objmgr.h"

@@ -74,13 +74,14 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 
 	ProgressStep(0, 1000, "0%% merged");
 	unsigned ThreadCount = GetRequestedThreadCount();
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	if (opt(interleaved))
-		MergeThread(SS1, SS1);
-	else
-		MergeThread(SS1, SS2);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(MergeThread, &SS1, &SS2);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 	ProgressStep(999, 1000, "%.1f%% merged", GetPct(g_OutRecCount, g_InRecCount));
 

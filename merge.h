@@ -54,7 +54,7 @@ void WriteAlnPretty(FILE *f, const byte *A, const byte *B, const char *Path,
 	bool StripTermGaps);
 unsigned MergeUpdateQualStats(const SeqInfo *SI1, const SeqInfo *SI2,
   const string &Path, unsigned *ptrOverlapLength);
-void MergeThread(FASTQSeqSource &SS1, FASTQSeqSource &SS2);
+void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2);
 bool MergePair(MergeThreadData &TD);
 void WriteMergeResults(FILE *f);
 bool MergePre(SeqInfo *SI, bool Fwd);

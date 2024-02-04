@@ -4,6 +4,7 @@
 #include "seqinfo.h"
 #include "objmgr.h"
 #include "cpplock.h"
+#include <thread>
 
 void RevComp(const byte *Seq, unsigned L, byte *RCSeq);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
@@ -117,8 +118,10 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 		}
 	}
 
-static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
+static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	{
+	FASTQSeqSource &SS1 = *aSS1;
+	FASTQSeqSource &SS2 = *aSS2;
 	unsigned ThreadIndex = GetThreadIndex();
 
 	SeqInfo *SI1 = ObjMgr::GetSeqInfo();
@@ -181,10 +184,14 @@ void cmd_fastq_join()
 		g_fFastaOut = CreateStdioFile(opt(fastaout));
 
 	unsigned ThreadCount = GetRequestedThreadCount();
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS1, SS2);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, &SS1, &SS2);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 	ProgressStep(999, 1000, "Joining");
 

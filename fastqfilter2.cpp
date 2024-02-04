@@ -6,6 +6,7 @@
 #include "fastq.h"
 #include "label.h"
 #include "cpplock.h"
+#include <thread>
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);

@@ -13,67 +13,25 @@ bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 
 #define TRACE		0
 
-void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
+static uint g_SeqCount;
+static const byte * const *g_Seqs;
+static bool g_Circles;
+static bool g_RevComp;
+const uint *g_SeqLengths;
+
+void Thread(DerepThreadData *aTD)
 	{
-	asserta(!Circles);
-	unsigned ThreadCount = GetRequestedThreadCount();
-	DR.m_Input = &Input;
+	uint SeqCount = g_SeqCount;
+	const byte * const *Seqs = g_Seqs;
+	const uint *SeqLengths = g_SeqLengths;
+	bool Circles = g_Circles;
+	bool RevComp = g_RevComp;
 
-	unsigned SeqCount = Input.GetSeqCount();
-	if (SeqCount > INT_MAX)
-		Die("Too many seqs");
-
-	DerepThreadData *TDs = myalloc(DerepThreadData, ThreadCount);
-	for (unsigned ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
-		{
-		DerepThreadData &TD = TDs[ThreadIndex];
-		TD.SeqIndexes = myalloc(uint32, SeqCount);
-		TD.SeqHashes = myalloc(uint32, SeqCount);
-		TD.SeqCount = 0;
-		TD.ClusterSIs = 0;
-		TD.Strands = 0;
-		TD.UniqueSeqIndexes = 0;
-		TD.UniqueCount = 0;
-		TD.Done = false;
-		}
-
-	const byte * const *Seqs = Input.m_Seqs;
-	const unsigned *SeqLengths = Input.m_SeqLengths;
-
-	unsigned TooShortCount = 0;
-	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
-		{
-		const byte *Seq = Seqs[SeqIndex];
-		unsigned L = SeqLengths[SeqIndex];
-
-		uint32 SeqHash = UINT32_MAX;
-		if (Circles)
-			{
-			asserta(false);
-			//SeqHash = SeqHashCircle(Seq, L);
-			}
-		else
-			{
-			SeqHash = SeqHash32(Seq, L);
-			if (RevComp)
-				SeqHash = min(SeqHash, SeqHashRC32(Seq, L));
-			}
-
-		unsigned T = SeqHash%ThreadCount;
-		DerepThreadData &TD = TDs[T];
-		unsigned k = TD.SeqCount++;
-		TD.SeqIndexes[k] = SeqIndex;
-		TD.SeqHashes[k] = SeqHash;
-		}
-
-	unsigned FPs = 0;
-
-#pragma omp parallel num_threads(ThreadCount)
-	{
+	DerepThreadData &TD = *aTD;
 	const unsigned ThreadIndex = GetThreadIndex();
-	asserta(ThreadIndex < ThreadCount);
+	//asserta(ThreadIndex < ThreadCount);
 
-	DerepThreadData &TD = TDs[ThreadIndex];
+	//DerepThreadData &TD = TDs[ThreadIndex];
 	const unsigned TDSeqCount = TD.SeqCount;
 	unsigned &TDUniqueCount = TD.UniqueCount;
 
@@ -165,8 +123,81 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 			}
 		}
 
-	TDs[ThreadIndex].Done = true;
+	//TDs[ThreadIndex].Done = true;
+	TD.Done = true;
 	}
+
+void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
+	{
+	asserta(!Circles);
+	unsigned ThreadCount = GetRequestedThreadCount();
+	DR.m_Input = &Input;
+
+	unsigned SeqCount = Input.GetSeqCount();
+	if (SeqCount > INT_MAX)
+		Die("Too many seqs");
+
+	DerepThreadData *TDs = myalloc(DerepThreadData, ThreadCount);
+	for (unsigned ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		DerepThreadData &TD = TDs[ThreadIndex];
+		TD.SeqIndexes = myalloc(uint32, SeqCount);
+		TD.SeqHashes = myalloc(uint32, SeqCount);
+		TD.SeqCount = 0;
+		TD.ClusterSIs = 0;
+		TD.Strands = 0;
+		TD.UniqueSeqIndexes = 0;
+		TD.UniqueCount = 0;
+		TD.Done = false;
+		}
+
+	const byte * const *Seqs = Input.m_Seqs;
+	g_Seqs = Seqs;
+	const unsigned *SeqLengths = Input.m_SeqLengths;
+
+	unsigned TooShortCount = 0;
+	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+		{
+		const byte *Seq = Seqs[SeqIndex];
+		unsigned L = SeqLengths[SeqIndex];
+
+		uint32 SeqHash = UINT32_MAX;
+		if (Circles)
+			{
+			asserta(false);
+			//SeqHash = SeqHashCircle(Seq, L);
+			}
+		else
+			{
+			SeqHash = SeqHash32(Seq, L);
+			if (RevComp)
+				SeqHash = min(SeqHash, SeqHashRC32(Seq, L));
+			}
+
+		unsigned T = SeqHash%ThreadCount;
+		DerepThreadData &TD = TDs[T];
+		unsigned k = TD.SeqCount++;
+		TD.SeqIndexes[k] = SeqIndex;
+		TD.SeqHashes[k] = SeqHash;
+		}
+
+	unsigned FPs = 0;
+
+	g_SeqCount = SeqCount;
+	g_Seqs = Seqs;
+	g_SeqLengths = SeqLengths;
+	g_Circles = Circles;
+	g_RevComp = RevComp;
+
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		DerepThreadData *TD = &TDs[ThreadIndex];
+		thread *t = new thread(Thread, TD);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 	DR.FromThreadData(TDs, ThreadCount, true, 1);
 
