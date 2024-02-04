@@ -38,4 +38,6 @@ A(otutab)
 A(search_16s)
 A(udb2bitvec)
 
+A(test)
+
 #undef A

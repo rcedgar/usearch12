@@ -21,6 +21,8 @@ int main(int argc, char **argv)
 	setbuf(stdout, 0);
 	setbuf(stderr, 0);
 
+	thread::id Id = std::this_thread::get_id();
+
 	MyCmdLine(argc, argv);
 
 	if (!opt(quiet))

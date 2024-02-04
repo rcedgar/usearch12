@@ -32,6 +32,7 @@
 #include <float.h>
 #include <algorithm>
 #include <inttypes.h>
+#include <thread>
 
 #ifndef _MSC_VER
 #define _stricmp	strcasecmp

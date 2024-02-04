@@ -360,6 +360,7 @@
     <ClCompile Include="tax.cpp" />
     <ClCompile Include="taxy.cpp" />
     <ClCompile Include="terminator.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="treefromagg.cpp" />

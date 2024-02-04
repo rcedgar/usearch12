@@ -160,6 +160,7 @@ unsigned GetRequestedThreadCount()
 		return N;
 	unsigned MaxN = std::thread::hardware_concurrency();
 	unsigned CoreCount = GetCPUCoreCount();
+	bool MsgDone = false;
 	if (optset_threads)
 		N = opt(threads);
 	else
@@ -167,6 +168,7 @@ unsigned GetRequestedThreadCount()
 		if (CoreCount > 10)
 			{
 			Progress("CPU has %u cores, defaulting to 10 threads\n", CoreCount);
+			MsgDone = true;
 			N = 10;
 			}
 		else
@@ -174,11 +176,14 @@ unsigned GetRequestedThreadCount()
 		}
 	if (N > MaxN)
 		{
-		Warning("Max OMP threads %u", MaxN);
+		Warning("-threads %u > recommended max %u", N, MaxN);
+		MsgDone = true;
 		N = MaxN;
 		}
 	if (N == 0)
 		N = 1;
+	if (!MsgDone)
+		Progress("starting %u thread%s\n", N, N == 1 ? "" : "s");
 	Done = true;
 	return N;
 	}
@@ -2379,9 +2384,11 @@ unsigned GetThreadIndex()
 	static mutex Lock;
 	static map<thread::id, uint> IdToIdx;
 	static vector<thread::id> Ids;
-
+	//fprintf(stderr, "GetThreadIndex()\n");
 	Lock.lock();
+	//fprintf(stderr, "lock()\n");
 	thread::id Id = this_thread::get_id();
+	//fprintf(stderr, "Id()\n");
 	map<thread::id, uint>::const_iterator p = IdToIdx.find(Id);
 	uint Idx = UINT_MAX;
 	if (p == IdToIdx.end())
@@ -2392,6 +2399,7 @@ unsigned GetThreadIndex()
 		}
 	else
 		Idx = p->second;
+	//fprintf(stderr, "unlock()\n");
 	Lock.unlock();
 	return Idx;
 	}

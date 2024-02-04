@@ -52,7 +52,7 @@ static bool GetXlat(bool QueryIsNucleo, bool DBIsNucleo)
 	return QueryIsNucleo;
 	}
 
-static unsigned g_ProgressThreadIndex = 0;
+static unsigned g_ProgressThreadIndex = UINT_MAX;
 
 #if	MONITOR
 static void Monitor(SeqInfo *SI)
@@ -149,12 +149,9 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 
 	unsigned t1 = GetElapsedSecs();
 	unsigned ThreadCount = GetRequestedThreadCount();
-	g_ProgressThreadIndex = 0;
+	g_ProgressThreadIndex = UINT_MAX;
 	ProgressCallback(0, 1000);
-//#pragma omp parallel num_threads(ThreadCount)
-//	{
-//	Thread(Cmd, SS, seqdb, udb, QueryIsNucleo, DBIsNucleo, RevComp, Xlat);
-//	}
+
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{

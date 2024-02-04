@@ -29,7 +29,7 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 uint32 GetUniqueLetterCount(uint32 Word, uint32 w);
 
-static unsigned g_ProgressThreadIndex;
+static unsigned g_ProgressThreadIndex = UINT_MAX;
 
 static void Thread(SeqSource *SS, bool RevComp)
 	{
