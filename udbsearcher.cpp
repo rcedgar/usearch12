@@ -202,7 +202,7 @@ void UDBSearcher::SetQueryUniqueWords()
 	if (m_QueryWordFound == 0)
 		{
 		m_QueryWordFound = myalloc(bool, m_UDBData->m_SlotCount);
-		zero(m_QueryWordFound, m_UDBData->m_SlotCount);
+		zero_array(m_QueryWordFound, m_UDBData->m_SlotCount);
 		}
 
 	const unsigned QueryWordCount = m_QueryWords.Size;

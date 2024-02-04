@@ -2,15 +2,12 @@
 #define dbhitsink_h
 
 #include "hitsink.h"
-#include "lockobj.h"
 #include <time.h>
 
 class SeqDB;
 
 class DBHitSink : public HitSink
 	{
-	LOCKABLE(DBHitSink)
-
 private:
 // Thread-global
 	static bool m_InitDone;

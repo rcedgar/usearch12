@@ -179,7 +179,7 @@ UNS_OPT(boots,				100,		1,			UINT_MAX)	// -
 UNS_OPT(default_size,		UINT_MAX,	1,			UINT_MAX)	// Default size for sortbysize.
 UNS_OPT(long_target,		50000,		1,			UINT_MAX)	// -
 
-UNS_OPT(fasta_cols,			80,			0,			UINT_MAX)	// Max length of a line when writing FASTA sequence, zero=all on one line.
+UNS_OPT(fasta_cols,			80,			0,			UINT_MAX)	// Max length of a line when writing FASTA sequence, zero_array=all on one line.
 
 
 

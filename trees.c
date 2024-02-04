@@ -55,10 +55,10 @@
 /* repeat previous bit length 3-6 times (2 bits of repeat count) */
 
 #define REPZ_3_10    17
-/* repeat a zero length 3-10 times  (3 bits of repeat count) */
+/* repeat a zero_array length 3-10 times  (3 bits of repeat count) */
 
 #define REPZ_11_138  18
-/* repeat a zero length 11-138 times  (7 bits of repeat count) */
+/* repeat a zero_array length 11-138 times  (7 bits of repeat count) */
 
 local const int extra_lbits[LENGTH_CODES] /* extra bits for each length code */
    = {0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0};
@@ -568,11 +568,11 @@ local void gen_bitlen(s, desc)
  * IN assertion: the array bl_count contains the bit length statistics for
  * the given tree and the field len is set for all tree elements.
  * OUT assertion: the field code is set for all tree elements of non
- *     zero code length.
+ *     zero_array code length.
  */
 local void gen_codes (tree, max_code, bl_count)
     ct_data *tree;             /* the tree to decorate */
-    int max_code;              /* largest code with non zero frequency */
+    int max_code;              /* largest code with non zero_array frequency */
     ushf *bl_count;            /* number of codes at each bit length */
 {
     ush next_code[MAX_BITS+1]; /* next code value for each bit length */
@@ -621,7 +621,7 @@ local void build_tree(s, desc)
     const ct_data *stree  = desc->stat_desc->static_tree;
     int elems             = desc->stat_desc->elems;
     int n, m;          /* iterate over heap elements */
-    int max_code = -1; /* largest code with non zero frequency */
+    int max_code = -1; /* largest code with non zero_array frequency */
     int node;          /* new node being created */
 
     /* Construct the initial heap, with least frequent element in
@@ -642,7 +642,7 @@ local void build_tree(s, desc)
     /* The pkzip format requires that at least one distance code exists,
      * and that at least one bit should be sent even if there is only one
      * possible code. So to avoid special checks later on we force at least
-     * two codes of non zero frequency.
+     * two codes of non zero_array frequency.
      */
     while (s->heap_len < 2) {
         node = s->heap[++(s->heap_len)] = (max_code < 2 ? ++max_code : 0);
@@ -704,7 +704,7 @@ local void build_tree(s, desc)
 local void scan_tree (s, tree, max_code)
     deflate_state *s;
     ct_data *tree;   /* the tree to be scanned */
-    int max_code;    /* and its largest code of non zero frequency */
+    int max_code;    /* and its largest code of non zero_array frequency */
 {
     int n;                     /* iterates over all tree elements */
     int prevlen = -1;          /* last emitted length */
@@ -749,7 +749,7 @@ local void scan_tree (s, tree, max_code)
 local void send_tree (s, tree, max_code)
     deflate_state *s;
     ct_data *tree; /* the tree to be scanned */
-    int max_code;       /* and its largest code of non zero frequency */
+    int max_code;       /* and its largest code of non zero_array frequency */
 {
     int n;                     /* iterates over all tree elements */
     int prevlen = -1;          /* last emitted length */
@@ -800,7 +800,7 @@ local void send_tree (s, tree, max_code)
 local int build_bl_tree(s)
     deflate_state *s;
 {
-    int max_blindex;  /* index of last bit length code of non zero freq */
+    int max_blindex;  /* index of last bit length code of non zero_array freq */
 
     /* Determine the bit length frequencies for literal and distance trees */
     scan_tree(s, (ct_data *)s->dyn_ltree, s->l_desc.max_code);
@@ -916,7 +916,7 @@ void ZLIB_INTERNAL _tr_flush_block(s, buf, stored_len, last)
     int last;         /* one if this is the last block for a file */
 {
     ulg opt_lenb, static_lenb; /* opt_len and static_len in bytes */
-    int max_blindex = 0;  /* index of last bit length code of non zero freq */
+    int max_blindex = 0;  /* index of last bit length code of non zero_array freq */
 
     /* Build the Huffman trees unless a stored block is forced */
     if (s->level > 0) {

@@ -9,6 +9,8 @@
 
 #define TRACE_MOSAIC	0
 
+mutex Searcher::m_Lock;
+
 Searcher::Searcher()
 	{
 	m_Query = 0;

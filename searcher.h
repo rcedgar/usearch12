@@ -3,6 +3,7 @@
 
 #include "cmd.h"
 #include "gobuff.h"
+#include <mutex>
 
 class SeqInfo;
 class HitMgr;
@@ -19,6 +20,13 @@ class SeqDBHashIndex;
 
 class Searcher
 	{
+public:
+	static mutex m_Lock;
+	static void LOCK() { m_Lock.lock(); }
+	static void UNLOCK() { m_Lock.unlock(); }
+	static void LOCK_CLASS() { m_Lock.lock(); }
+	static void UNLOCK_CLASS() { m_Lock.unlock(); }
+
 public:
 	SeqInfo *m_Query;
 	SeqInfo *m_Target;

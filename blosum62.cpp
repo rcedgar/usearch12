@@ -1,6 +1,6 @@
 #include "myutils.h"
 #include "mx.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 extern Mx<float> g_SubstMxf;
 extern float **g_SubstMx;

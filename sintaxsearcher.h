@@ -7,8 +7,6 @@ class Taxy;
 
 class SintaxSearcher : public UDBUsortedSearcher
 	{
-	LOCKABLE(SintaxSearcher)
-
 public:
 	static FILE *m_f;
 	static Taxy *m_Taxy;

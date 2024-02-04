@@ -1,7 +1,6 @@
 #ifndef linereader_h
 #define linereader_h
 
-#include "lockobj.h"
 #include "gobuff.h"
 
 typedef GoBuff<char, 32*1024, true, false> t_LineBuff;
@@ -10,8 +9,6 @@ const unsigned LR_BUFF = (32*1024*1024);
 
 class LineReader
 	{
-	LOCKABLE(LineReader)
-
 public:
 	string m_FileName;
 	FILE *m_f;

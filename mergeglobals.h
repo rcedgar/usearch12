@@ -2,10 +2,10 @@
 #error "STORECLASS"
 #endif
 
-STORECLASS omp_lock_t g_GetNextLock;
-STORECLASS omp_lock_t g_MergeOutLock;
-STORECLASS omp_lock_t g_TotalsLock;
-STORECLASS omp_lock_t g_ReportLock;
+//STORECLASS omp_lock_t g_GetNextLock;
+//STORECLASS omp_lock_t g_MergeOutLock;
+//STORECLASS omp_lock_t g_TotalsLock;
+//STORECLASS omp_lock_t g_ReportLock;
 
 STORECLASS FILE *g_fFastqOut;
 STORECLASS FILE *g_fFastaOut;

@@ -94,7 +94,7 @@ void SintaxSearcher::SetUShuffle()
 
 	unsigned *U = m_U.Data;
 	StartTimer(ZeroU);
-	zero(U, SeqCount);
+	zero_array(U, SeqCount);
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);

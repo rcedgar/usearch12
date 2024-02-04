@@ -259,10 +259,10 @@ static void Alloc(unsigned ThreadIndex)
 	PathInfo **PIs = myalloc(PathInfo *, NewSize);
 	AlignResult **ARs = myalloc(AlignResult *, NewSize);
 
-	zero(Mems, NewSize);
-	zero(HFs, NewSize);
-	zero(PIs, NewSize);
-	zero(ARs, NewSize);
+	zero_array(Mems, NewSize);
+	zero_array(HFs, NewSize);
+	zero_array(PIs, NewSize);
+	zero_array(ARs, NewSize);
 
 	if (g_Size > 0)
 		{

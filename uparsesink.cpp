@@ -7,7 +7,7 @@
 #include "seqdb.h"
 #include "label.h"
 #include "cmd.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 void StripSize(string &Label);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);

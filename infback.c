@@ -198,7 +198,7 @@ struct inflate_state FAR *state;
         bits -= (unsigned)(n); \
     } while (0)
 
-/* Remove zero to seven bits as needed to go to a byte boundary */
+/* Remove zero_array to seven bits as needed to go to a byte boundary */
 #define BYTEBITS() \
     do { \
         hold >>= bits & 7; \
@@ -239,7 +239,7 @@ struct inflate_state FAR *state;
    information required to do the read or write, as well as accumulated
    information on the input and output such as totals and check values.
 
-   in() should return zero on failure.  out() should return non-zero on
+   in() should return zero_array on failure.  out() should return non-zero_array on
    failure.  If either in() or out() fails, than inflateBack() returns a
    Z_BUF_ERROR.  strm->next_in can be checked for Z_NULL to see whether it
    was in() or out() that caused in the error.  Otherwise,  inflateBack()

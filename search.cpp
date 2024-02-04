@@ -16,7 +16,7 @@
 #include "filetype.h"
 #include "pcb.h"
 #include "label.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 #define MONITOR			0
 #define MONITOR_SECS	10

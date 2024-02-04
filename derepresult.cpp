@@ -9,7 +9,7 @@
 #include "merge.h"
 #include <time.h>
 #include "cmd.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 #define TRACE		0
 
@@ -269,9 +269,9 @@ void DerepResult::MakeLabel(unsigned ClusterIndex, unsigned Size,
 	if (m_optRelabelSet)
 		{
 		char Tmp[16];
-		Lock();
+		LOCK();
 		unsigned n = (++g_RelabelCounter);
-		Unlock();
+		UNLOCK();
 		sprintf(Tmp, "%u", n);
 		Label = m_optRelabel + string(Tmp);
 		}
@@ -434,7 +434,7 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 
 // Compute cluster sizes
 	unsigned *ClusterSizes = myalloc(unsigned, m_ClusterCount);
-	zero(ClusterSizes, m_ClusterCount);
+	zero_array(ClusterSizes, m_ClusterCount);
 
 	m_SeqIndexToClusterIndex = myalloc(unsigned, SeqCount);
 	m_Strands = myalloc(bool, SeqCount);
@@ -544,7 +544,7 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 	Log("%7.7s  %7.7s  %7.7s  %7u\n", "", "", "", m_Finger[m_ClusterCount]);
 #endif
 
-	zero(ClusterSizes, m_ClusterCount);
+	zero_array(ClusterSizes, m_ClusterCount);
 
 #if	TRACE
 	{

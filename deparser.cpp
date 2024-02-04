@@ -7,7 +7,7 @@
 #include "objmgr.h"
 #include "label.h"
 #include "alpha.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 #define TRACE			0
 #define TRACE_ALNS		0

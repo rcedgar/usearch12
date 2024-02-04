@@ -61,7 +61,7 @@ unsigned start;         /* inflate()'s starting value for strm->avail_out */
 #ifdef INFLATE_STRICT
     unsigned dmax;              /* maximum distance from zlib header */
 #endif
-    unsigned wsize;             /* window size or zero if not using window */
+    unsigned wsize;             /* window size or zero_array if not using window */
     unsigned whave;             /* valid bytes in the window */
     unsigned wnext;             /* window write index */
     unsigned char FAR *window;  /* allocated sliding window, if wsize != 0 */

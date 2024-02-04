@@ -185,7 +185,7 @@ typedef struct {
     int mode;               /* see gzip modes above */
     int fd;                 /* file descriptor */
     char *path;             /* path or fd for error messages */
-    unsigned size;          /* buffer size, zero if not allocated yet */
+    unsigned size;          /* buffer size, zero_array if not allocated yet */
     unsigned want;          /* requested buffer size, default is GZBUFSIZE */
     unsigned char *in;      /* input buffer (double-sized when writing) */
     unsigned char *out;     /* output buffer (double-sized when reading) */

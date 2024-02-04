@@ -24,7 +24,7 @@
 #include "derepresult.h"
 #include "accepter.h"
 #include "seqdb.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 

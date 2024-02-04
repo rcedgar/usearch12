@@ -295,7 +295,7 @@ local int gz_skip(state, len)
 }
 
 /* Read len bytes into buf from file, or less than len up to the end of the
-   input.  Return the number of bytes read.  If zero is returned, either the
+   input.  Return the number of bytes read.  If zero_array is returned, either the
    end of file was reached, or there was an error.  state->err must be
    consulted in that case to determine which. */
 local z_size_t gz_read(state, buf, len)
@@ -306,7 +306,7 @@ local z_size_t gz_read(state, buf, len)
     z_size_t got;
     unsigned n;
 
-    /* if len is zero, avoid unnecessary operations */
+    /* if len is zero_array, avoid unnecessary operations */
     if (len == 0)
         return 0;
 
@@ -575,7 +575,7 @@ char * ZEXPORT gzgets(file, buf, len)
     }
 
     /* copy output bytes up to new line or len - 1, whichever comes first --
-       append a terminating zero to the string (we don't check for a zero in
+       append a terminating zero_array to the string (we don't check for a zero_array in
        the contents, let the user worry about that) */
     str = buf;
     left = (unsigned)len - 1;

@@ -6,6 +6,7 @@
 #include "alignresult.h"
 #include "hspfinder.h"
 #include "objmgr.h"
+#include "cpplock.h"
 
 void GetMergeAln(const MergeThreadData &TD, int &Left, unsigned &AlnLength, int &Right);
 
@@ -165,7 +166,7 @@ void MergeThread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "%.1f%% merged",
 			  GetPct(g_OutRecCount, g_InRecCount));
 
-		omp_set_lock(&g_GetNextLock);
+		LOCK();
 		bool Ok1 = SS1.GetNext(TD.SI1);
 		bool Ok2 = SS2.GetNext(TD.SI2);
 		TD.FL = TD.SI1->m_L;
@@ -175,21 +176,21 @@ void MergeThread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
 	// if reads were truncated due to bad tails.
 		unsigned L1 = TD.SI1->m_L;
 		unsigned L2 = TD.SI2->m_L;
-		omp_unset_lock(&g_GetNextLock);
+		UNLOCK();
 
 		if (!Ok1)
 			break;
 
 		if (g_fTab)
 			{
-			omp_set_lock(&g_ReportLock);
+			LOCK();
 			fprintf(g_fTab, "%s", TD.SI1->m_Label);
+			UNLOCK();
 			}
 
 		if (!Ok2)
 			{
 			Warning("Premature EOF in %s", sopt(reverse));
-			omp_unset_lock(&g_ReportLock);
 			break;
 			}
 
@@ -202,7 +203,7 @@ void MergeThread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
 
 		bool Ok = MergePair(TD);
 
-		omp_set_lock(&g_MergeOutLock);
+		LOCK();
 		++g_InRecCount;
 		if (Ok)
 			{
@@ -267,8 +268,7 @@ void MergeThread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
 		if (g_fTab != 0)
 			{
 			fprintf(g_fTab, Ok ? "\tresult=merged\n" : "\tresult=notmerged\n");
-			omp_unset_lock(&g_ReportLock);
 			}
-		omp_unset_lock(&g_MergeOutLock);
+		UNLOCK();
 		}
 	}

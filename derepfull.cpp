@@ -70,7 +70,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 
 #pragma omp parallel num_threads(ThreadCount)
 	{
-	const unsigned ThreadIndex = omp_get_thread_num();
+	const unsigned ThreadIndex = GetThreadIndex();
 	asserta(ThreadIndex < ThreadCount);
 
 	DerepThreadData &TD = TDs[ThreadIndex];

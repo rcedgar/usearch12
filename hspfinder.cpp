@@ -287,7 +287,7 @@ void HSPFinder::AllocLA(unsigned LA)
 
 	m_WordsASize = LA + 512;
 	m_WordsA = myalloc(uint32, m_WordsASize);
-	//zero(m_WordsA, m_WordsASize);
+	//zero_array(m_WordsA, m_WordsASize);
 
 	if (opt(logmemgrows))
 		Log("HSPFinder::AllocLA(%u)\n", m_WordsASize);
@@ -330,7 +330,7 @@ void HSPFinder::SetA(SeqInfo *SI)
 	{
 	AllocLA(SI->m_L);
 	StartTimer(WF_SetAZero);
-	zero(m_WordCountsA, m_WordCount);
+	zero_array(m_WordCountsA, m_WordCount);
 	EndTimer(WF_SetAZero);
 
 	m_SA = SI;

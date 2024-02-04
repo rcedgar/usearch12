@@ -1,7 +1,7 @@
 #ifndef seqsource_h
 #define seqsource_h
 
-#include "lockobj.h"
+#include <mutex>
 #include "filetype.h"
 
 class SeqInfo;
@@ -9,7 +9,10 @@ class ObjMgr;
 
 class SeqSource
 	{
-	LOCKABLE(SeqSource)
+public:
+	static mutex m_Lock;
+	static void LOCK_CLASS() { m_Lock.lock(); }
+	static void UNLOCK_CLASS() { m_Lock.unlock(); }
 
 public:
 	bool m_DoGetLock;

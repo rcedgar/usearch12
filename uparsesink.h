@@ -2,7 +2,6 @@
 #define uparsesink_h
 
 #include "hitsink.h"
-#include "lockobj.h"
 #include "mx.h"
 
 class SeqDB;
@@ -25,8 +24,6 @@ const double OTU_PCTID1 = 95.0;
 
 class UParseSink : public HitSink
 	{
-	LOCKABLE(UParseSink)
-
 public:
 	UParseSink();
 	virtual ~UParseSink();

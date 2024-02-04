@@ -1,6 +1,8 @@
 #ifndef hitsink_h
 #define hitsink_h
 
+#include <mutex>
+
 class SeqInfo;
 class HitMgr;
 class AlignResult;
@@ -28,6 +30,11 @@ enum HST
 class HitSink
 	{
 	friend class HitMgr;
+
+public:
+	static mutex m_Lock;
+	static void LOCK_CLASS() { m_Lock.lock(); }
+	static void UNLOCK_CLASS() { m_Lock.unlock(); }
 
 public:
 	HitMgr *m_HitMgr;

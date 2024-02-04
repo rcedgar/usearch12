@@ -16,7 +16,7 @@
 #include "constaxstr.h"
 #include "label.h"
 #include <set>
-#include "omplock.h"
+#include "cpplock.h"
 
 extern DerepResult *g_DR;
 
@@ -109,7 +109,7 @@ ClusterSink::ClusterSink(SeqDB *seqdb, UDBData *udbdata) :
 		{
 		m_SeqIndexToCPath = myalloc(char *, SeqCount);
 #if	DEBUG
-		zero(m_SeqIndexToCPath, SeqCount);
+		zero_array(m_SeqIndexToCPath, SeqCount);
 #endif
 		}
 	 }

@@ -3,9 +3,12 @@
 #include "pathinfo.h"
 #include "alignresult.h"
 #include "seqinfo.h"
-#include "omplock.h"
+#include "cpplock.h"
 #include "alpha.h"
 #include "alnparams.h"
+#include <mutex>
+
+mutex AlignResult::m_Lock;
 
 /***
 Sequences in m_Query and m_Target are full-length sequences.

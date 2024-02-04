@@ -1,7 +1,6 @@
 #include "myutils.h"
 #include "objmgr.h"
 #include "seqinfo.h"
-#include "omplock.h"
 #include "seqsource.h"
 #include "udbdata.h"
 #include "udbparams.h"
@@ -9,7 +8,7 @@
 #include "globalaligner.h"
 #include "alignresult.h"
 #include "sort.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 #define	TRACE		0
 

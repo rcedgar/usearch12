@@ -2,7 +2,7 @@
 #include "fastqseqsource.h"
 #include "seqinfo.h"
 #include "alpha.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 #define	TRACE	0
 

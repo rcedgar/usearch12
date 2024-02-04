@@ -132,11 +132,6 @@ void cmd_fastq_mergepairs()
 	FastQ::InitFromCmdLine();
 	FastQ::InitMerge();
 
-	omp_init_lock(&g_GetNextLock);
-	omp_init_lock(&g_MergeOutLock);
-	omp_init_lock(&g_TotalsLock);
-	omp_init_lock(&g_ReportLock);
-
 	if (optset_fastqout)
 		g_fFastqOut = CreateStdioFile(opt(fastqout));
 

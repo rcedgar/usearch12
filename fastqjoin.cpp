@@ -3,6 +3,7 @@
 #include "fastqseqsource.h"
 #include "seqinfo.h"
 #include "objmgr.h"
+#include "cpplock.h"
 
 void RevComp(const byte *Seq, unsigned L, byte *RCSeq);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
@@ -40,9 +41,6 @@ bool IlluminaLabelPairMatch(const char *Label1, const char *Label2)
 	return true;
 	}
 
-static omp_lock_t g_GetNextLock;
-static omp_lock_t g_MergedFastqOutLock;
-static omp_lock_t g_MergedFastaOutLock;
 static unsigned g_Count;
 
 static inline bool isacgt(char c)
@@ -92,9 +90,9 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 	char Tmp[16];
 	if (optset_relabel)
 		{
-		omp_set_lock(&g_GetNextLock);
+		LOCK();
 		++g_Count;
-		omp_unset_lock(&g_GetNextLock);
+		UNLOCK();
 
 		sprintf(Tmp, "%u", g_Count);
 		if (opt(relabel)[0] == '+')
@@ -106,16 +104,16 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	if (g_fFastqOut != 0)
 		{
-		omp_set_lock(&g_MergedFastqOutLock);
+		LOCK();
 		SIJ->ToFastq(g_fFastqOut);
-		omp_unset_lock(&g_MergedFastqOutLock);
+		UNLOCK();
 		}
 
 	if (g_fFastaOut != 0)
 		{
-		omp_set_lock(&g_MergedFastaOutLock);
+		LOCK();
 		SIJ->ToFasta(g_fFastaOut);
-		omp_unset_lock(&g_MergedFastaOutLock);
+		UNLOCK();
 		}
 	}
 
@@ -133,10 +131,10 @@ static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2)
 		if (ThreadIndex == 0)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "Joining");
 
-		omp_set_lock(&g_GetNextLock);
+		LOCK();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
-		omp_unset_lock(&g_GetNextLock);
+		UNLOCK();
 
 		if (!Ok1)
 			break;
@@ -165,10 +163,6 @@ void cmd_fastq_join()
 
 	if (!optset_fastq_join || !optset_reverse)
 		Die("Missing filename");
-
-	omp_init_lock(&g_GetNextLock);
-	omp_init_lock(&g_MergedFastqOutLock);
-	omp_init_lock(&g_MergedFastaOutLock);
 
 	FastQ::InitFromCmdLine();
 //	FastQ::InitMerge();

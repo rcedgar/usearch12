@@ -3,7 +3,7 @@
 #include "seqinfo.h"
 #include "uparsesink.h"
 #include "alpha.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 double UParseSink::GetSegParentPctId(unsigned SegIndex)
 	{

@@ -4,6 +4,7 @@
 #include "alignresult.h"
 #include "outputsink.h"
 #include "hspfinder.h"
+#include "cpplock.h"
 
 /***
 	d = i - j
@@ -249,9 +250,9 @@ bool MergeAlign(MergeThreadData &TD)
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\tnohsp");
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_NotAlignedCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		return false;
 		}
 
@@ -267,9 +268,9 @@ bool MergeAlign(MergeThreadData &TD)
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\talntooshort");
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_OvTooShortCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		return false;
 		}
 
@@ -278,9 +279,9 @@ bool MergeAlign(MergeThreadData &TD)
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\tstaggered");
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_StaggeredCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		}
 
 	if (opt(fastq_nostagger) && Stag)
@@ -299,11 +300,11 @@ bool MergeAlign(MergeThreadData &TD)
 		TD.AR = ObjMgr::GetAlignResult();
 		TD.AR->CreateLocalUngapped(*SI1, *SI2RC, TD.HSP, true);
 
-		omp_set_lock(&g_MergeOutLock);
+		LOCK();
 		WriteAln(g_fAln, TD.AR);
 		if (Stag)
 			WriteStagger(g_fAln, *TD.AR);
-		omp_unset_lock(&g_MergeOutLock);
+		UNLOCK();
 
 		ObjMgr::Down(TD.AR);
 		TD.AR = 0;
@@ -311,18 +312,18 @@ bool MergeAlign(MergeThreadData &TD)
 
 	if (TD.DiffCount == 0)
 		{
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_ExactOverlapCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		}
 
 	if (TD.DiffCount > opt(fastq_maxdiffs))
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\ttoo_many_diffs");
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_MaxDiffsCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		return false;
 		}
 
@@ -333,9 +334,9 @@ bool MergeAlign(MergeThreadData &TD)
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\tpctid_too_low");
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_MaxDiffsCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		return false;
 		}
 

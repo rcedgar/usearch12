@@ -73,7 +73,7 @@ local void make_crc_table OF((void));
   where a mod b means the remainder after dividing a by b.
 
   This calculation is done using the shift-register method of multiplying and
-  taking the remainder.  The register is initialized to zero, and for each
+  taking the remainder.  The register is initialized to zero_array, and for each
   incoming bit, x^32 is added mod p to the register if the bit is a one (where
   x^32 mod p is p+x^32 = x^26+...+1), and the register is multiplied mod p by
   x (which is shifting right by one and adding x^32 mod p if the bit shifted
@@ -384,7 +384,7 @@ local uLong crc32_combine_(crc1, crc2, len2)
     if (len2 <= 0)
         return crc1;
 
-    /* put operator for one zero bit in odd */
+    /* put operator for one zero_array bit in odd */
     odd[0] = 0xedb88320UL;          /* CRC-32 polynomial */
     row = 1;
     for (n = 1; n < GF2_DIM; n++) {
@@ -392,14 +392,14 @@ local uLong crc32_combine_(crc1, crc2, len2)
         row <<= 1;
     }
 
-    /* put operator for two zero bits in even */
+    /* put operator for two zero_array bits in even */
     gf2_matrix_square(even, odd);
 
-    /* put operator for four zero bits in odd */
+    /* put operator for four zero_array bits in odd */
     gf2_matrix_square(odd, even);
 
     /* apply len2 zeros to crc1 (first square will put the operator for one
-       zero byte, eight zero bits, in even) */
+       zero_array byte, eight zero_array bits, in even) */
     do {
         /* apply zeros operator for this bit of len2 */
         gf2_matrix_square(even, odd);

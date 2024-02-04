@@ -313,7 +313,7 @@ void UDBData::ToUDBFile(FILE *f) const
 		{
 		SizesBuffer = myalloc(uint32, m_SlotCount);
 		Sizes = SizesBuffer;
-		zero(Sizes, m_SlotCount);
+		zero_array(Sizes, m_SlotCount);
 
 		Progress("Sort rows, dbaccel %u%%...", DBAccelPct);
 		unsigned *Order = myalloc(unsigned, m_SlotCount);

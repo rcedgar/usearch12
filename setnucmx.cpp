@@ -1,6 +1,6 @@
 #include "myutils.h"
 #include "mx.h"
-#include "omplock.h"
+#include "cpplock.h"
 #include "alpha.h"
 
 Mx<float> g_SubstMxf;

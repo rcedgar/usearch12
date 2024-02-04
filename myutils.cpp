@@ -19,6 +19,8 @@
 #include <float.h>
 #include <algorithm>
 #include <stdlib.h>
+#include <thread>
+#include <mutex>
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
@@ -156,7 +158,7 @@ unsigned GetRequestedThreadCount()
 	static bool Done = false;
 	if (Done)
 		return N;
-	unsigned MaxN = omp_get_max_threads();
+	unsigned MaxN = std::thread::hardware_concurrency();
 	unsigned CoreCount = GetCPUCoreCount();
 	if (optset_threads)
 		N = opt(threads);
@@ -868,7 +870,7 @@ static char *GetThreadStr()
 		{
 		unsigned NewThreadStrCount = ThreadIndex + 4;
 		char **NewThreadStrs = myalloc(char *, NewThreadStrCount);
-		zero(NewThreadStrs, NewThreadStrCount);
+		zero_array(NewThreadStrs, NewThreadStrCount);
 		if (g_ThreadStrCount > 0)
 			memcpy(NewThreadStrs, g_ThreadStrs, g_ThreadStrCount*sizeof(char *));
 		g_ThreadStrs = NewThreadStrs;
@@ -2375,7 +2377,24 @@ unsigned GetCPUCoreCount()
 
 unsigned GetThreadIndex()
 	{
-	return omp_get_thread_num();
+	static mutex Lock;
+	static map<thread::id, uint> IdToIdx;
+	static vector<thread::id> Ids;
+
+	Lock.lock();
+	thread::id Id = this_thread::get_id();
+	map<thread::id, uint>::const_iterator p = IdToIdx.find(Id);
+	uint Idx = UINT_MAX;
+	if (p == IdToIdx.end())
+		{
+		Idx = SIZE(Ids);
+		Ids.push_back(Id);
+		IdToIdx[Id] = Idx;
+		}
+	else
+		Idx = p->second;
+	Lock.unlock();
+	return Idx;
 	}
 
 // MUST COME AT END BECAUSE OF #undefs

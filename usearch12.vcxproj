@@ -464,14 +464,13 @@
     <ClInclude Include="objmgr.h" />
     <ClInclude Include="objtype.h" />
     <ClInclude Include="objtypes.h" />
-    <ClInclude Include="omplock.h" />
+    <ClInclude Include="cpplock.h" />
     <ClInclude Include="orffinder.h" />
     <ClInclude Include="otutab.h" />
     <ClInclude Include="otutabsink.h" />
     <ClInclude Include="outputsink.h" />
     <ClInclude Include="pathinfo.h" />
     <ClInclude Include="pcb.h" />
-    <ClInclude Include="pcrsink.h" />
     <ClInclude Include="primes.h" />
     <ClInclude Include="quarts.h" />
     <ClInclude Include="searcher.h" />

@@ -1,6 +1,6 @@
 #include "myutils.h"
 #include "merge.h"
-#include "omplock.h"
+#include "cpplock.h"
 
 void MergeLogVAln(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP)
 	{

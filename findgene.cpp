@@ -8,7 +8,7 @@
 #include "fragaligner.h"
 #include "accepter.h"
 #include "sort.h"
-#include "omplock.h"
+#include "cpplock.h"
 #include "gobuff.h"
 #include "genefinder.h"
 #include "bitvec.h"
@@ -159,7 +159,7 @@ void cmd_search_16s()
 		GeneFinder::m_fCounts = CreateStdioFile(opt(output2));
 
 	bool *Vec = myalloc(bool, SlotCount);
-	zero(Vec, SlotCount);
+	zero_array(Vec, SlotCount);
 
 	for (unsigned Word = 0; Word < SlotCount; ++Word)
 		{

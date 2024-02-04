@@ -8,7 +8,7 @@ void WordCounter::Init(unsigned WordLength)
 	m_WordLength = WordLength;
 	m_DictSize = myipow(4, WordLength);
 	m_Counts = myalloc(uint32, m_DictSize);
-	zero(m_Counts, m_DictSize);
+	zero_array(m_Counts, m_DictSize);
 	}
 
 uint32 WordCounter::SeqToWord(const byte *Seq) const

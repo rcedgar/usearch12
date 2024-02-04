@@ -2,7 +2,7 @@
 #include "mx.h"
 #include "sparsemx.h"
 #include "seqdb.h"
-// #include "omplock.h"
+// #include "cpplock.h"
 
 char ProbToChar(float p);
 

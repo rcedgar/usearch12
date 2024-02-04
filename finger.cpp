@@ -27,7 +27,7 @@ void Finger::Init(const unsigned *GroupIndexes, unsigned N, bool Asc)
 
 	m_Order = myalloc(unsigned, N);
 	unsigned *GroupSizes = myalloc(unsigned, m_GroupCount);
-	zero(GroupSizes, m_GroupCount);
+	zero_array(GroupSizes, m_GroupCount);
 
 	for (unsigned i = 0; i < N; ++i)
 		++(GroupSizes[m_GroupIndexes[i]]);
@@ -45,7 +45,7 @@ void Finger::Init(const unsigned *GroupIndexes, unsigned N, bool Asc)
 	asserta(Lo == N);
 	m_GroupIndexToLo[m_GroupCount] = Lo;
 
-	zero(GroupSizes, m_GroupCount);
+	zero_array(GroupSizes, m_GroupCount);
 
 	for (unsigned i = 0; i < m_N; ++i)
 		{

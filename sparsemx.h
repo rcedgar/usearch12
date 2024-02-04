@@ -61,10 +61,10 @@ public:
 		m_Capacities = myalloc(uint32, RowCount);
 		m_Indexes = myalloc(uint32 *, RowCount);
 
-		zero(m_Rows, RowCount);
-		zero(m_Sizes, RowCount);
-		zero(m_Capacities, RowCount);
-		zero(m_Indexes, RowCount);
+		zero_array(m_Rows, RowCount);
+		zero_array(m_Sizes, RowCount);
+		zero_array(m_Capacities, RowCount);
+		zero_array(m_Indexes, RowCount);
 
 		m_Labels.resize(RowCount);
 		};

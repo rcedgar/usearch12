@@ -3,13 +3,10 @@
 
 #include "hitsink.h"
 #include "otutab.h"
-#include "lockobj.h"
 #include "seqdb.h"
 
 class ClosedRefSink  : public HitSink
 	{
-	LOCKABLE(ClosedRefSink)
-
 public:
 	static SeqDB *m_RefOTUs;
 	static SeqDB *m_DataOTUs;

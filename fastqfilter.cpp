@@ -5,6 +5,7 @@
 #include "objmgr.h"
 #include "fastq.h"
 #include "label.h"
+#include "cpplock.h"
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -25,9 +26,9 @@ static unsigned g_MaxNsCount = 0;
 static unsigned g_MinQCount = 0;
 static unsigned g_QiimeTrunc = 0;
 
-static omp_lock_t g_FastqOutLock;
-static omp_lock_t g_FastaOutLock;
-static omp_lock_t g_TotalsLock;
+//static omp_lock_t g_FastqOutLock;
+//static omp_lock_t g_FastaOutLock;
+//static omp_lock_t g_TotalsLock;
 
 
 static FASTQ_FILTER FastqFilter(SeqInfo *SI)
@@ -124,9 +125,9 @@ static void Thread(FASTQSeqSource &SS)
 			ProgressStep(SS.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
 			  GetPct(g_OutRecCount, g_RecCount));
 
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_RecCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		FASTQ_FILTER FF = FastqFilter(SI);
 
 		string Label = string(SI->m_Label);
@@ -140,10 +141,10 @@ static void Thread(FASTQSeqSource &SS)
 			{
 			Discarded = false;
 
-			omp_set_lock(&g_TotalsLock);
+			LOCK();
 			++g_OutRecCount;
 			FastqRelabel(SI);
-			omp_unset_lock(&g_TotalsLock);
+			UNLOCK();
 
 			if (g_fEEOut != 0)
 				{
@@ -152,13 +153,13 @@ static void Thread(FASTQSeqSource &SS)
 				fprintf(g_fEEOut, "%s\t%.2g\n", Label.c_str(), EE);
 				}
 
-			omp_set_lock(&g_FastqOutLock);
+			LOCK();
 			SI->ToFastq(g_fFastqOut);
-			omp_unset_lock(&g_FastqOutLock);
+			UNLOCK();
 
-			omp_set_lock(&g_FastaOutLock);
+			LOCK();
 			SI->ToFasta(g_fFastaOut);
-			omp_unset_lock(&g_FastaOutLock);
+			UNLOCK();
 			break;
 			}
 
@@ -184,22 +185,19 @@ static void Thread(FASTQSeqSource &SS)
 
 		if (Discarded)
 			{
-			omp_set_lock(&g_FastqOutLock);
+			LOCK();
 			SI->ToFastq(g_fDiscFq, Label.c_str());
-			omp_unset_lock(&g_FastqOutLock);
-
-			omp_set_lock(&g_FastaOutLock);
 			SI->ToFasta(g_fDiscFa, Label.c_str());
-			omp_unset_lock(&g_FastaOutLock);
+			UNLOCK();
 			}
 		}
 
-	omp_set_lock(&g_TotalsLock);
+	LOCK();
 	g_ShortCount += ShortCount;
 	g_BadCount += BadCount;
 	g_MaxNsCount += MaxNsCount;
 	g_MinQCount += MinQCount;
-	omp_unset_lock(&g_TotalsLock);
+	UNLOCK();
 	}
 
 void cmd_fastq_filter()
@@ -208,10 +206,6 @@ void cmd_fastq_filter()
 
 	if (InputFileName == "")
 		Die("Missing input");
-
-	omp_init_lock(&g_TotalsLock);
-	omp_init_lock(&g_FastaOutLock);
-	omp_init_lock(&g_FastqOutLock);
 
 	FastQ::InitFromCmdLine();
 	

@@ -93,7 +93,7 @@ struct inflate_state {
     gz_headerp head;            /* where to save gzip header information */
         /* sliding window */
     unsigned wbits;             /* log base 2 of requested window size */
-    unsigned wsize;             /* window size or zero if not using window */
+    unsigned wsize;             /* window size or zero_array if not using window */
     unsigned whave;             /* valid bytes in the window */
     unsigned wnext;             /* window write index */
     unsigned char FAR *window;  /* allocated sliding window, if needed */

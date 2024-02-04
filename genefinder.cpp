@@ -11,7 +11,7 @@
 #include "alignresult.h"
 #include "accepter.h"
 #include "sort.h"
-#include "omplock.h"
+#include "cpplock.h"
 #include "gobuff.h"
 #include "genefinder.h"
 

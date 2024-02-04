@@ -2,7 +2,6 @@
 #define outputsink_h
 
 #include "hitsink.h"
-#include "lockobj.h"
 #include "cmd.h"
 
 class AlignResult;
@@ -12,8 +11,6 @@ struct HSPData;
 
 class OutputSink : public HitSink
 	{
-	LOCKABLE(OutputSink)
-
 public:
 	static bool m_OpenDone;
 	static FILE *m_fAln;

@@ -15,7 +15,7 @@ public:
 	const byte *m_Seq;
 	const char *m_Qual;
 
-// Buffers are non-zero iff memory owned by this object.
+// Buffers are non-zero_array iff memory owned by this object.
 	char *m_LabelBuffer;
 	byte *m_SeqBuffer;
 	char *m_QualBuffer;

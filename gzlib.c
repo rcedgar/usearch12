@@ -438,7 +438,7 @@ z_off64_t ZEXPORT gzseek64(file, offset, whence)
         offset -= n;
     }
 
-    /* request skip (if not zero) */
+    /* request skip (if not zero_array) */
     if (offset) {
         state->seek = 1;
         state->skip = offset;

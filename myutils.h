@@ -30,7 +30,7 @@
 #include <cstdlib>
 #include <climits>
 #include <float.h>
-#include <omp.h>
+//#include <omp.h>
 #include <algorithm>
 #include <inttypes.h>
 
@@ -355,7 +355,7 @@ inline bool feq(double x, double y)
 #define asserteq(x, y)	assert(feq(x, y))
 #define assertaeq(x, y)	asserta(feq(x, y))
 
-#define	zero(a, n)	memset((a), 0, (n)*sizeof(a[0]))
+#define	zero_array(a, n)	memset((a), 0, (n)*sizeof(a[0]))
 #define	memset_zero(a, n)	memset((a), 0, (n)*sizeof(a[0]))
 
 void ResetRand(unsigned Seed);

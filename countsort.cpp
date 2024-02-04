@@ -30,8 +30,8 @@ unsigned CountSortOrderDesc(const unsigned *Values, unsigned ValueCount,
 	unsigned *Sizes = Mem.m_Sizes.Data;
 	unsigned *Offsets = Mem.m_Offsets.Data;
 
-	zero(Sizes, N);
-//	zero(Offsets, N);
+	zero_array(Sizes, N);
+//	zero_array(Offsets, N);
 
 	for (unsigned i = 0; i < ValueCount; ++i)
 		{
@@ -137,8 +137,8 @@ unsigned CountSortSubsetDesc(const unsigned *Values, unsigned ValueCount,
 	unsigned *Sizes = Mem.m_Sizes.Data;
 	unsigned *Offsets = Mem.m_Offsets.Data;
 
-	zero(Sizes, N);
-//	zero(Offsets, N);
+	zero_array(Sizes, N);
+//	zero_array(Offsets, N);
 
 	for (unsigned i = 0; i < ValueCount; ++i)
 		{

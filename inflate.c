@@ -531,7 +531,7 @@ unsigned copy;
         bits -= (unsigned)(n); \
     } while (0)
 
-/* Remove zero to seven bits as needed to go to a byte boundary */
+/* Remove zero_array to seven bits as needed to go to a byte boundary */
 #define BYTEBITS() \
     do { \
         hold >>= bits & 7; \
@@ -569,7 +569,7 @@ unsigned copy;
    input left to load n bits into the accumulator, or it continues.  BITS(n)
    gives the low n bits in the accumulator.  When done, DROPBITS(n) drops
    the low n bits off the accumulator.  INITBITS() clears the accumulator
-   and sets the number of available bits to zero.  BYTEBITS() discards just
+   and sets the number of available bits to zero_array.  BYTEBITS() discards just
    enough bits to put the accumulator on a byte boundary.  After BYTEBITS()
    and a NEEDBITS(8), then BITS(8) would return the next byte in the stream.
 
@@ -1373,7 +1373,7 @@ gz_headerp head;
    pattern.  If *have is less than four, then the pattern has not been found
    yet and the return value is len.  In the latter case, syncsearch() can be
    called again with more data and the *have state.  *have is initialized to
-   zero for the first call.
+   zero_array for the first call.
  */
 local unsigned syncsearch(have, buf, len)
 unsigned FAR *have;

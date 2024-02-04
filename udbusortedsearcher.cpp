@@ -392,7 +392,7 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 
 	unsigned *U = m_U.Data;
 	StartTimer(ZeroU);
-	zero(U, SeqCount);
+	zero_array(U, SeqCount);
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
@@ -438,7 +438,7 @@ void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 
 	unsigned *U = m_U.Data;
 	StartTimer(ZeroU);
-	zero(U, SeqCount);
+	zero_array(U, SeqCount);
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);
@@ -489,7 +489,7 @@ void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 
 	unsigned *U = m_U.Data;
 	StartTimer(ZeroU);
-	zero(U, SeqCount);
+	zero_array(U, SeqCount);
 	EndTimer(ZeroU);
 
 	StartTimer(SetU);

@@ -18,7 +18,7 @@ void BitVec64::Alloc(uint64 Size)
 	asserta(m_Vec == 0);
 	uint64 Bytes = Size/8 + 1;
 	m_Vec = myalloc64(byte, Size);
-	//zero(m_Vec, Bytes);
+	//zero_array(m_Vec, Bytes);
 	for (uint64 i = 0; i < Bytes; ++i)
 		m_Vec[i] = 0;
 	}

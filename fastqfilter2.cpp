@@ -5,6 +5,7 @@
 #include "objmgr.h"
 #include "fastq.h"
 #include "label.h"
+#include "cpplock.h"
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -16,9 +17,6 @@ static FILE *g_fFastqOut2 = 0;
 static unsigned g_OutCount = 0;
 static unsigned g_RecCount = 0;
 
-static omp_lock_t g_FastqOutLock;
-static omp_lock_t g_TotalsLock;
-
 static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2, double MaxEE)
 	{
 	unsigned ThreadIndex = GetThreadIndex();
@@ -29,12 +27,12 @@ static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2, double MaxEE)
 		ProgressStep(0, 1000, "Filtering");
 	for (;;)
 		{
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
 		if (Ok1 != Ok2)
 			Die("Premature end-of-file in %s reads", (Ok1 ? "reverse" : "forward"));
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		if (!Ok1)
 			break;
 
@@ -42,23 +40,21 @@ static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2, double MaxEE)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
 			  GetPct(g_OutCount, g_RecCount));
 
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_RecCount;
-		omp_unset_lock(&g_TotalsLock);
+		UNLOCK();
 		double EE1 = FastQ::GetEE(SI1->m_Qual, SI1->m_L);
 		double EE2 = FastQ::GetEE(SI2->m_Qual, SI2->m_L);
 		unsigned n1 = SI1->GetNCount();
 		unsigned n2 = SI2->GetNCount();
 		if (EE1 <= MaxEE && EE2 <= MaxEE && n1 == 0 && n2 == 0)
 			{
-			omp_set_lock(&g_TotalsLock);
+			LOCK();
 			++g_OutCount;
-			omp_unset_lock(&g_TotalsLock);
 
-			omp_set_lock(&g_FastqOutLock);
 			SI1->ToFastq(g_fFastqOut1);
 			SI2->ToFastq(g_fFastqOut2);
-			omp_unset_lock(&g_FastqOutLock);
+			UNLOCK();
 			}
 		}
 	}
@@ -72,9 +68,6 @@ void cmd_fastq_filter2()
 	double MaxEE = 1.0;
 	if (optset_fastq_maxee)
 		MaxEE = opt(fastq_maxee);
-
-	omp_init_lock(&g_TotalsLock);
-	omp_init_lock(&g_FastqOutLock);
 
 	FastQ::InitFromCmdLine();
 	

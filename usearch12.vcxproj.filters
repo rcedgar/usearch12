@@ -712,7 +712,7 @@
     <ClInclude Include="objtypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="omplock.h">
+    <ClInclude Include="cpplock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orffinder.h">
@@ -731,9 +731,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pcb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pcrsink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="primes.h">

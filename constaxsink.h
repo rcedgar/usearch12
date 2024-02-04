@@ -2,15 +2,12 @@
 #define constaxsink_h
 
 #include "hitsink.h"
-#include "lockobj.h"
 
 class SeqInfo;
 class HitMgr;
 
 class ConsTaxSink : public HitSink
 	{
-	LOCKABLE(ConsTaxSink)
-
 public:
 	static bool m_InitDone;
 	static FILE *m_fTab;

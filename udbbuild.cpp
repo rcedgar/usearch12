@@ -62,9 +62,9 @@ void UDBData::CreateEmpty(UDBParams &Params)
 	m_Sizes = myalloc(uint32, m_SlotCount);
 	m_UDBRows = myalloc(uint32 *, m_SlotCount);
 
-	zero(m_Capacities, m_SlotCount);
-	zero(m_Sizes, m_SlotCount);
-	zero(m_UDBRows, m_SlotCount);
+	zero_array(m_Capacities, m_SlotCount);
+	zero_array(m_Sizes, m_SlotCount);
+	zero_array(m_UDBRows, m_SlotCount);
 
 	m_TotalLettersSet = false;
 	m_TotalLetters = 0;
@@ -314,9 +314,9 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	m_Sizes = myalloc(uint32, m_SlotCount);
 	m_Capacities = myalloc(uint32, m_SlotCount);
 	m_UDBRows = myalloc(uint32 *, m_SlotCount);
-	zero(m_Sizes, m_SlotCount);
-	zero(m_Capacities, m_SlotCount);
-	zero(m_UDBRows, m_SlotCount);
+	zero_array(m_Sizes, m_SlotCount);
+	zero_array(m_Capacities, m_SlotCount);
+	zero_array(m_UDBRows, m_SlotCount);
 
 	const unsigned SeqCount = DB.GetSeqCount();
 	SeqInfo *SI = ObjMgr::GetSeqInfo();

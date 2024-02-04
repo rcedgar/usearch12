@@ -3,11 +3,7 @@
 #include "seqinfo.h"
 #include "pathinfo.h"
 #include "alignresult.h"
-#include "omplock.h"
-
-#if	TRACK_OBJ_THREAD
-#include <omp.h>
-#endif
+#include "cpplock.h"
 
 #undef Up
 #undef Down
@@ -23,7 +19,7 @@ ObjMgr *ObjMgr::GetObjMgr()
 		{
 		unsigned NewThreadCount = ThreadIndex + 32;
 		ObjMgr **NewOMs = myalloc(ObjMgr *, NewThreadCount);
-		zero(NewOMs, NewThreadCount);
+		zero_array(NewOMs, NewThreadCount);
 		if (m_ThreadCount > 0)
 			memcpy(NewOMs, m_OMs, m_ThreadCount*sizeof(ObjMgr *));
 		m_OMs = NewOMs;
@@ -61,15 +57,15 @@ const char *ObjTypeToStr2(ObjType Type)
 
 ObjMgr::ObjMgr()
 	{
-	zero(m_Free, OTCount);
-	zero(m_Busy, OTCount);
+	zero_array(m_Free, OTCount);
+	zero_array(m_Busy, OTCount);
 
 #if	DEBUG || TRACE_OBJS
 	m_Validate = false;
-	zero(m_BusyCounts, OTCount);
-	zero(m_GetCallCounts, OTCount);
-	zero(m_AllocCallCounts, OTCount);
-	zero(m_FreeCallCounts, OTCount);
+	zero_array(m_BusyCounts, OTCount);
+	zero_array(m_GetCallCounts, OTCount);
+	zero_array(m_AllocCallCounts, OTCount);
+	zero_array(m_FreeCallCounts, OTCount);
 #endif
 	}
 
@@ -137,9 +133,6 @@ Obj *ObjMgr::ThreadGetObj(ObjType Type)
 
 	assert(NewObj != 0);
 	NewObj->m_RefCount = 1;
-#if	TRACK_OBJ_THREAD
-	NewObj->m_OMPThreadIndex = omp_get_thread_num();
-#endif
 
 #if	DEBUG || TRACE_OBJS
 	++(m_BusyCounts[Type]);

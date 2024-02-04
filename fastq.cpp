@@ -149,9 +149,9 @@ void FastQ::AllocMerge()
 		m_CharPairMatchChar[i] = myalloc(char, 256);
 		m_CharPairMismatchChar[i] = myalloc(char, 256);
 
-		zero(m_PairMatchInt[i], 256);
-		zero(m_PairMatchChar[i], 256);
-		zero(m_PairMismatchInt[i], 256);
+		zero_array(m_PairMatchInt[i], 256);
+		zero_array(m_PairMatchChar[i], 256);
+		zero_array(m_PairMismatchInt[i], 256);
 		memset(m_CharPairMatchChar[i], '?', 256);
 		memset(m_CharPairMismatchChar[i], '?', 256);
 		}

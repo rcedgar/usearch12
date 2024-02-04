@@ -762,7 +762,7 @@ void UDBParams::SetTargetUniqueWords()
 	if (m_TargetWordFound == 0)
 		{
 		m_TargetWordFound = myalloc(bool, m_SlotCount);
-		zero(m_TargetWordFound, m_SlotCount);
+		zero_array(m_TargetWordFound, m_SlotCount);
 		}
 
 	const unsigned TargetWordCount = m_TargetWords.Size;

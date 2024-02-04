@@ -1,3 +1,4 @@
+#if 0
 #include "myutils.h"
 
 #define L(x)	omp_lock_t g_Lock##x;
@@ -11,3 +12,4 @@ static bool Init()
 	}
 
 static bool g_InitDone = Init();
+#endif

@@ -1,5 +1,6 @@
 #include "myutils.h"
 #include "merge.h"
+#include "cpplock.h"
 
 bool MergePost(MergeThreadData &TD)
 	{
@@ -12,21 +13,21 @@ bool MergePost(MergeThreadData &TD)
 
 	if (optset_fastq_minmergelen && L < opt(fastq_minmergelen))
 		{
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_MergedTooShortCount;
-		omp_unset_lock(&g_TotalsLock);
 		if (g_fTab)
 			fprintf(g_fTab, "\tmergetooshort");
+		UNLOCK();
 		return false;
 		}
 
 	if (optset_fastq_maxmergelen && L > opt(fastq_maxmergelen))
 		{
-		omp_set_lock(&g_TotalsLock);
+		LOCK();
 		++g_MergedTooLongCount;
-		omp_unset_lock(&g_TotalsLock);
 		if (g_fTab)
 			fprintf(g_fTab, "\tmergetoolong");
+		UNLOCK();
 		return false;
 		}
 
@@ -35,11 +36,11 @@ bool MergePost(MergeThreadData &TD)
 		byte MinIntQual = SI.GetMinIntQual();
 		if (MinIntQual < opt(fastq_minqual))
 			{
+			LOCK();
 			if (g_fTab)
 				fprintf(g_fTab, "\tminq=%u", MinIntQual);
-			omp_set_lock(&g_TotalsLock);
 			++g_MinQCount;
-			omp_unset_lock(&g_TotalsLock);
+			UNLOCK();
 			return false;
 			}
 		}

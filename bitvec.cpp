@@ -17,14 +17,14 @@ void BitVec::Alloc(unsigned Size)
 	asserta(m_Vec == 0);
 	unsigned Bytes = Size/8 + 1;
 	m_Vec = myalloc(byte, Bytes);
-	zero(m_Vec, Bytes);
+	zero_array(m_Vec, Bytes);
 	m_Size = Size;
 	}
 
 void BitVec::Zero()
 	{
 	unsigned Bytes = m_Size/8 + 1;
-	zero(m_Vec, Bytes);
+	zero_array(m_Vec, Bytes);
 	}
 
 void BitVec::Free()

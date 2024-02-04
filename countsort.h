@@ -20,7 +20,7 @@ public:
 	CountSortMem()
 		{
 		m_MaxValueCount = 0;
-		zero(m_Vecs, NVEC);
+		zero_array(m_Vecs, NVEC);
 		}
 
 	void Free()

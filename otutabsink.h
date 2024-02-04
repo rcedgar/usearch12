@@ -3,12 +3,9 @@
 
 #include "hitsink.h"
 #include "otutab.h"
-#include "lockobj.h"
 
 class OTUTableSink  : public HitSink
 	{
-	LOCKABLE(OTUTableSink)
-
 public:
 	static OTUTable *m_OT;
 	static FILE *m_fMap;

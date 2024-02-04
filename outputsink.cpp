@@ -7,6 +7,8 @@
 #include "clustersink.h"
 #include "cmd.h"
 
+mutex HitSink::m_Lock;
+
 void SeqToFastq(FILE *f, const byte *Seq, unsigned L, const char *Qual, const char *Label);
 
 void UserOut(FILE *f);

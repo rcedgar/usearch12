@@ -6,7 +6,6 @@
 #include "upclustersink.h"
 #include "uparsesink.h"
 #include "closedrefsink.h"
-#include "pcrsink.h"
 #include "otutabsink.h"
 
 static char *g_S;
@@ -97,15 +96,6 @@ static const char *UParsePCB()
 	sprintf(g_S, "%u seqs, %u chimeras",
 	  UParseSink::m_QueryCount,
 	  UParseSink::m_ChimeraCount);
-	return g_S;
-	}
-
-static const char *SearchPCR_PCB()
-	{
-	AllocS();
-	sprintf(g_S, "%u hits (%.1f%%)",
-	  PCRSink::m_HitCount,
-	  GetPct(PCRSink::m_QueryWithHitCount, PCRSink::m_QueryCount));
 	return g_S;
 	}
 

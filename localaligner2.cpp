@@ -55,8 +55,8 @@ void LocalAligner2::InitImpl()
 
 	m_QueryWordCounts = myalloc(uint32, m_DictSize);
 	m_QueryWordCounts2 = myalloc(uint32, m_DictSize);
-	zero(m_QueryWordCounts, m_DictSize);
-	zero(m_QueryWordCounts2, m_DictSize);
+	zero_array(m_QueryWordCounts, m_DictSize);
+	zero_array(m_QueryWordCounts2, m_DictSize);
 
 	m_WordToQueryPosVecBase = myalloc(uint32, m_DictSize);
 	}

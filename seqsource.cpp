@@ -7,6 +7,8 @@
 #include "cmd.h"
 #include "filetype.h"
 
+mutex SeqSource::m_Lock;
+
 #define TIME_LOCKS	0
 
 #if TIME_LOCKS
