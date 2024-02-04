@@ -30,7 +30,6 @@
 #include <cstdlib>
 #include <climits>
 #include <float.h>
-//#include <omp.h>
 #include <algorithm>
 #include <inttypes.h>
 

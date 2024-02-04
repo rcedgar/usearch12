@@ -15,7 +15,6 @@
 void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
   bool *ptrDBIsNucleo);
 
-static omp_lock_t g_OutLock;
 static FILE *g_fOut;
 static FILE *g_fFa;
 static FILE *g_fFq;
@@ -99,7 +98,7 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 	bool Minus = (MinusCount > PlusCount*StrandX);
 	asserta(!(Plus && Minus));
 	char c = '!';
-	omp_set_lock(&g_OutLock);
+	LOCK();
 	++g_QueryCount;
 	if (Plus)
 		{
@@ -133,7 +132,7 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 		}
 	if (g_fOut != 0)
 		fprintf(g_fOut, "%s\t%c\t%u\t%u\n", Query->m_Label, c, PlusCount, MinusCount);
-	omp_unset_lock(&g_OutLock);
+	UNLOCK();
 	}
 
 static void Thread(SeqSource *SS, UDBData *udb)
@@ -185,7 +184,6 @@ static void DoOrient(const string &QueryFileName)
 	if (optset_notmatched)
 		g_fNot = CreateStdioFile(opt(notmatched));
 
-	omp_init_lock(&g_OutLock);
 	bool DBIsNucleo;
 	UDBData *udb;
 	SeqDB *seqdb;

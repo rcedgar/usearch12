@@ -3,7 +3,6 @@
 
 #include "myutils.h"
 #include "seqdb.h"
-#include <omp.h>
 
 class UDBParams;
 class SeqInfo;
@@ -12,9 +11,6 @@ class SeqInfo;
 
 class UDBData
 	{
-public:
-	omp_lock_t *m_Lock;
-
 public:
 	string m_FileName;
 	UDBParams m_Params;
@@ -38,8 +34,6 @@ public:
 public:
 	UDBData();
 	~UDBData();
-	void LockMe() const;
-	void UnlockMe() const;
 	void Free();
 
 	void CreateEmpty(UDBParams &Params);

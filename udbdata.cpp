@@ -19,28 +19,13 @@ UDBData::UDBData()
 	m_TotalLettersSet = false;
 	m_TotalLetters = 0;
 	m_Prealloced = false;
-	m_Lock = myalloc(omp_lock_t, 1);
 	// m_UTaxData = 0;
 	m_RowBuffData = 0;
 	m_ParentData = 0;
-	omp_init_lock(m_Lock);
 	}
 
 UDBData::~UDBData()
 	{
-	omp_destroy_lock(m_Lock);
-	myfree(m_Lock);
-	m_Lock = 0;
-	}
-
-void UDBData::LockMe() const
-	{
-	omp_set_lock(m_Lock);
-	}
-
-void UDBData::UnlockMe() const
-	{
-	omp_set_lock(m_Lock);
 	}
 
 void UDBData::Free()

@@ -9,7 +9,7 @@
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
 #include "pcb.h"
-
+#if 0
 static uint g_ProgressThreadIndex = 0;
 static vector<SeqInfo *> g_Pending;
 static UDBData *g_udb;
@@ -284,3 +284,5 @@ void cmd_cluster_mt()
 	g_udb->ToFasta(opt(centroids));
 	ObjMgr::LogGlobalStats();
 	}
+#endif // 0
+void cmd_cluster_mt() {}

@@ -14,9 +14,6 @@ public:
 	static void LOCK_CLASS() { m_Lock.lock(); }
 	static void UNLOCK_CLASS() { m_Lock.unlock(); }
 
-public:
-	bool m_DoGetLock;
-
 protected:
 	SeqInfo *m_SI;
 	unsigned m_SeqCount;

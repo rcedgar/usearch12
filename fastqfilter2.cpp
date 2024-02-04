@@ -17,13 +17,15 @@ static FILE *g_fFastqOut2 = 0;
 static unsigned g_OutCount = 0;
 static unsigned g_RecCount = 0;
 
-static void Thread(FASTQSeqSource &SS1, FASTQSeqSource &SS2, double MaxEE)
+static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 	{
+	FASTQSeqSource &SS1 = *aSS1;
+	FASTQSeqSource &SS2 = *aSS2;
 	unsigned ThreadIndex = GetThreadIndex();
 	SeqInfo *SI1 = ObjMgr::GetSeqInfo();
 	SeqInfo *SI2 = ObjMgr::GetSeqInfo();
 
-	if (ThreadIndex == 0)
+	if (ThreadIndex == 1)
 		ProgressStep(0, 1000, "Filtering");
 	for (;;)
 		{
@@ -87,10 +89,14 @@ void cmd_fastq_filter2()
 		}
 
 	unsigned ThreadCount = GetRequestedThreadCount();
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS1, SS2, MaxEE);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, &SS1, &SS2, MaxEE);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 	SS1.Close();
 	SS2.Close();

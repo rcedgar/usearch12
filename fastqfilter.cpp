@@ -6,6 +6,7 @@
 #include "fastq.h"
 #include "label.h"
 #include "cpplock.h"
+#include <thread>
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -103,8 +104,9 @@ static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	return FF_Good;
 	}
 
-static void Thread(FASTQSeqSource &SS)
+static void Thread(FASTQSeqSource *aSS)
 	{
+	FASTQSeqSource &SS = *aSS;
 	unsigned ThreadIndex = GetThreadIndex();
 	SeqInfo *SI = ObjMgr::GetSeqInfo();
 
@@ -113,7 +115,7 @@ static void Thread(FASTQSeqSource &SS)
 	unsigned MaxNsCount = 0;
 	unsigned MinQCount = 0;
 
-	if (ThreadIndex == 0)
+	if (ThreadIndex == 1)
 		ProgressStep(0, 1000, "Filtering");
 	for (;;)
 		{
@@ -236,10 +238,14 @@ void cmd_fastq_filter()
 		g_fEEOut = CreateStdioFile(opt(eetabbedout));
 
 	unsigned ThreadCount = GetRequestedThreadCount();
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, &SS);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 	SS.Close();
 	CloseStdioFile(g_fFastaOut);
