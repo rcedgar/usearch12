@@ -7,8 +7,6 @@
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
 #include "pcb.h"
-#include <latch>
-#include <barrier>
 
 static uint g_ProgressThreadIndex = 0;
 static vector<SeqInfo *> g_Pending;
@@ -23,6 +21,16 @@ static omp_lock_t g_StateLock;
 
 static uint g_ReaderCount;
 static uint g_UpdaterCount;
+
+static void set_lock(omp_lock_t *p, int linenr, const char *src)
+	{
+	omp_set_lock(p);
+	}
+
+static void unset_lock(omp_lock_t *p, int linenr, const char *src)
+	{
+	omp_unset_lock(p);
+	}
 
 static void InitLocks()
 	{
@@ -118,13 +126,10 @@ static void EndUpdate()
 static const char *MyPCB()
 	{
 	static char *s = 0;
-#pragma omp critical
-	{
 	if (s == 0)
 		s = myalloc(char, 256);
 	sprintf(s, "%d clusters, %d members",
 	  g_ClusterCount, g_MemberCount);
-	}
 	return s;
 	}
 
@@ -171,10 +176,7 @@ static void Thread(SeqSource *SS, bool Nucleo)
 
 	for (;;)
 		{
-#pragma omp critical
-		{
 		ProcessPending(OS);
-		}
 
 		SeqInfo *Query = ObjMgr::GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
