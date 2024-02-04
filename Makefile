@@ -5,13 +5,13 @@ BINPATH := $(BINDIR)/usearch12
 CPPFLAGS := $(CPPFLAGS) -DNDEBUG -pthread
 
 CC = ccache gcc
-CFLAGS := $(CFLAGS) -O3 -fopenmp -ffast-math -msse -mfpmath=sse
+CFLAGS := $(CFLAGS) -O3 -ffast-math -msse -mfpmath=sse
 
 CXX = ccache g++
-CXXFLAGS := $(CXXFLAGS) -O3 -fopenmp -ffast-math -msse -mfpmath=sse
+CXXFLAGS := $(CXXFLAGS) -O3 -ffast-math -msse -mfpmath=sse
 
 UNAME_S := $(shell uname -s)
-LDFLAGS := $(LDFLAGS) -O3 -fopenmp -pthread -lpthread
+LDFLAGS := $(LDFLAGS) -O3 -pthread -lpthread
 ifeq ($(UNAME_S),Linux)
     LDFLAGS += -static
 endif
