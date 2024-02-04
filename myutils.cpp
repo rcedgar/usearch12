@@ -961,8 +961,8 @@ void Log(const char *Format, ...)
 
 void Die_(const char *Format, ...)
 	{
-#pragma omp critical
-	{
+	static mutex Lock;
+	Lock.lock();
 	static bool InDie = false;
 	if (InDie)
 		exit(1);
@@ -1006,7 +1006,6 @@ void Die_(const char *Format, ...)
 #endif
 
 	exit(1);
-	}
 	}
 
 void Warning_(const char *Format, ...)

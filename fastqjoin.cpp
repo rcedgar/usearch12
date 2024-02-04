@@ -131,7 +131,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		if (ThreadIndex == 0)
+		if (ThreadIndex == 1)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "Joining");
 
 		LOCK();

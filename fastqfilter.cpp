@@ -123,7 +123,7 @@ static void Thread(FASTQSeqSource *aSS)
 		if (!Ok)
 			break;
 
-		if (ThreadIndex == 0)
+		if (ThreadIndex == 1)
 			ProgressStep(SS.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
 			  GetPct(g_OutRecCount, g_RecCount));
 

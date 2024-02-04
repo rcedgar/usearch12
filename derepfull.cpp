@@ -66,7 +66,7 @@ void Thread(DerepThreadData *aTD)
 
 	for (unsigned i = 0; i < TDSeqCount; ++i)
 		{
-		if (ThreadIndex == 0)
+		if (ThreadIndex == 1)
 			ProgressStep(i, TDSeqCount, "DF");
 		unsigned SeqIndex = TDSeqIndexes[i];
 		assert(SeqIndex < SeqCount);

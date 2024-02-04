@@ -101,7 +101,7 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 		if (ThreadIndex == g_ProgressThreadIndex)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 #if	MONITOR
-		if (ThreadIndex == 0 && MonitorCounter%100 == 0)
+		if (ThreadIndex == 1 && MonitorCounter%100 == 0)
 			Monitor(Query);
 #endif
 
@@ -151,10 +151,19 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	unsigned ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;
 	ProgressCallback(0, 1000);
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(Cmd, SS, seqdb, udb, QueryIsNucleo, DBIsNucleo, RevComp, Xlat);
-	}
+//#pragma omp parallel num_threads(ThreadCount)
+//	{
+//	Thread(Cmd, SS, seqdb, udb, QueryIsNucleo, DBIsNucleo, RevComp, Xlat);
+//	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, Cmd, SS, seqdb, udb, QueryIsNucleo, DBIsNucleo, RevComp, Xlat);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
+
 	ProgressCallback(999, 1000);
 	g_ProgressThreadIndex = UINT_MAX;
 	unsigned t2 = GetElapsedSecs();

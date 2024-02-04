@@ -164,7 +164,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		if (ThreadIndex == 0)
+		if (ThreadIndex == 1)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "%.1f%% merged",
 			  GetPct(g_OutRecCount, g_InRecCount));
 

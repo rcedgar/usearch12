@@ -39,7 +39,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 		if (!Ok1)
 			break;
 
-		if (ThreadIndex == 0)
+		if (ThreadIndex == 1)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
 			  GetPct(g_OutCount, g_RecCount));
 

@@ -196,10 +196,15 @@ static void DoOrient(const string &QueryFileName)
 	unsigned ThreadCount = GetRequestedThreadCount();
 	g_ProgressThreadIndex = 0;
 	ProgressCallback(0, 1000);
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS, udb);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, SS, udb);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
+
 	ProgressCallback(999, 1000);
 	g_ProgressThreadIndex = UINT_MAX;
 	CloseStdioFile(g_fOut);

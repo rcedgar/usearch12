@@ -186,10 +186,14 @@ void cmd_search_16s()
 	time_t t1 = time(0);
 #endif
 
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS, RevComp);
-	}
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, SS, RevComp);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
 
 #if	TIM
 	time_t t2 = time(0);
