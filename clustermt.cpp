@@ -1,3 +1,5 @@
+#include <Windows.h>
+#include <debugapi.h>
 #include "udbdata.h"
 #include "pcb.h"
 #include "objmgr.h"
@@ -22,15 +24,39 @@ static omp_lock_t g_StateLock;
 static uint g_ReaderCount;
 static uint g_UpdaterCount;
 
+static char *lockname(omp_lock_t *p)
+	{
+	if (p == &g_StateLock) return "State";
+	if (p == &g_UpdateLock) return "Update";
+	if (p == &g_ReadLock) return "Read";
+	if (p == &g_OutputLock) return "Output";
+	return "LOCK??";
+	}
+
 static void set_lock(omp_lock_t *p, int linenr, const char *src)
 	{
+	char *name = lockname(p);
+	char s[1024];
+	sprintf(s, "[%d] set_lock(%p=%s) %s:%d call\n", GetThreadIndex(), p, name, src, linenr);
+	::OutputDebugString(s);
 	omp_set_lock(p);
+	sprintf(s, "[%d] set_lock(%p=%s) %s:%d done\n", GetThreadIndex(), p, name, src, linenr);
+	::OutputDebugString("");
 	}
 
 static void unset_lock(omp_lock_t *p, int linenr, const char *src)
 	{
+	char *name = lockname(p);
+	char s[1024];
+	sprintf(s, "[%d] unset_lock(%p=%s) %s:%d call\n", GetThreadIndex(), p, name, src, linenr);
+	::OutputDebugString(s);
 	omp_unset_lock(p);
+	sprintf(s, "[%d] unset_lock(%p=%s) %s:%d done\n", GetThreadIndex(), p, name, src, linenr);
+	::OutputDebugString(s);
 	}
+
+#define omp_set_lock(x)	set_lock(x, __LINE__, __FILE__)
+#define omp_unset_lock(x)	unset_lock(x, __LINE__, __FILE__)
 
 static void InitLocks()
 	{
