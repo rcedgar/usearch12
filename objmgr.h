@@ -31,9 +31,11 @@ private:
 
 public:
 	static vector<ObjMgr *> m_OMs;
+	static vector<ObjMgr *> m_FreeOMs;
 
 public:
 	static ObjMgr *CreateObjMgr();
+	static void FreeObjMgr(ObjMgr *OM);
 
 public:
 	void Up(Obj *pObj);
@@ -55,6 +57,7 @@ public:
 #define GetPathInfo()		__GetPathInfo(__FILE__, __LINE__)
 #define GetAlignResult()	__GetAlignResult(__FILE__, __LINE__)
 #else
+#define T(x)	\
 	x *Get##x() \
 		{ return (x *) GetObj(OT_##x); }
 #endif

@@ -1,7 +1,7 @@
 #ifndef obj_h
 #define obj_h
 
-#define TRACK_OBJS	1
+#define TRACK_OBJS	0
 
 #include "objtype.h"
 

@@ -17,11 +17,34 @@ void Obj::Down()
 	}
 
 vector<ObjMgr *> ObjMgr::m_OMs;
+vector<ObjMgr *> ObjMgr::m_FreeOMs;
+
+void ObjMgr::FreeObjMgr(ObjMgr *OM)
+	{
+	LOCK();
+	m_FreeOMs.push_back(OM);
+	vector<ObjMgr *> NewOMs;
+	for (size_t i = 0; i < m_OMs.size(); ++i)
+		{
+		ObjMgr *OM2 = m_OMs[i];
+		if (OM2 != OM)
+			NewOMs.push_back(OM2);
+		}
+	m_OMs = NewOMs;
+	UNLOCK();
+	}
 
 ObjMgr *ObjMgr::CreateObjMgr()
 	{
 	LOCK();
-	ObjMgr *OM = new ObjMgr;
+	ObjMgr *OM = 0;
+	if (!m_FreeOMs.empty())
+		{
+		OM = m_FreeOMs.back();
+		m_FreeOMs.pop_back();
+		}
+	else
+		OM = new ObjMgr;
 	m_OMs.push_back(OM);
 	UNLOCK();
 	return OM;
@@ -437,15 +460,14 @@ uint ObjMgr::GetFreeCount(uint Type) const
 void ObjMgr::LogBusy() const
 	{
 #if TRACK_OBJS
-
-#else
-	Log("ObjMgr::LogBusy(), !TRACK_OBJS\n");
-#endif
 	for (uint iType = 0; iType < OTCount; ++iType)
 		{
 		for (const Obj *pObj = m_Busy[iType]; pObj; pObj = pObj->m_Fwd)
 			Log("%s:%d\n", pObj->m_SourceFileName, pObj->m_SourceLineNr);
 		}
+#else
+	Log("ObjMgr::LogBusy(), !TRACK_OBJS\n");
+#endif
 	}
 
 void ObjMgr::LogStats() const

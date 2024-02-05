@@ -286,4 +286,5 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	TD.SI2->Down();
 	TD.SIOv->Down();
 	TD.SI2RC->Down();
+	ObjMgr::FreeObjMgr(OM);
 	}
