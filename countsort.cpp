@@ -6,7 +6,6 @@
 unsigned CountSortOrderDesc(const unsigned *Values, unsigned ValueCount,
   CountSortMem &Mem, unsigned *Order)
 	{
-	StartTimer(CountSort);
 #if	DEBUG
 	memset(Order, 0xff, ValueCount*sizeof(Order[0]));
 #endif
@@ -105,16 +104,12 @@ unsigned CountSortOrderDesc(const unsigned *Values, unsigned ValueCount,
 		}
 	}
 #endif
-	EndTimer(CountSort);
-
 	return Offsets[MinValue];
 	}
 
 unsigned CountSortSubsetDesc(const unsigned *Values, unsigned ValueCount,
   CountSortMem &Mem, const unsigned *Subset, unsigned *Result)
 	{
-	StartTimer(CountSortSubset);
-
 	unsigned MaxValue = 0;
 	unsigned NextValue = 0;
 	for (unsigned i = 0; i < ValueCount; ++i)
@@ -192,6 +187,5 @@ unsigned CountSortSubsetDesc(const unsigned *Values, unsigned ValueCount,
 	assert(OutputCount == Offsets[MinValue]);
 #endif
 
-	EndTimer(CountSortSubset);
 	return Offsets[MinValue];
 	}

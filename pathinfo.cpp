@@ -1,18 +1,10 @@
 #include "myutils.h"
 #include "pathinfo.h"
 
-#define TRACE	0
-
 void PathInfo::FreeIfBig()
 	{
 	if (m_BufferBytes < 4*g_MaxL)
 		return;
-
-#if	TRACE
-	Log("PathInfo::FreeIfBig(this=0x%lx) m_BufferBytes=%u\n",
-	  (long) this, m_BufferBytes);
-#endif
-	IncCounter(PathInfo_FreeIfBig);
 	myfree(m_Buffer);
 	m_Buffer = 0;
 	m_BufferBytes = 0;
@@ -23,12 +15,6 @@ void PathInfo::Alloc(unsigned Bytes)
 	FreeIfBig();
 	if (Bytes < m_BufferBytes)
 		return;
-
-#if	TRACE
-	Log("PathInfo::Alloc(this=0x%lx, Bytes=%u) m_BufferBytes=%u\n",
-	  (long) this, Bytes, m_BufferBytes);
-#endif
-	IncCounter(PathInfo_Realloc);
 	myfree(m_Buffer);
 	m_BufferBytes = Bytes + 128;
 	m_Buffer = myalloc(char, m_BufferBytes);

@@ -250,8 +250,6 @@ void UDBData::ToUDBFile(const string &FileName) const
 
 void UDBData::FromUDBFile(FILE *f, const string &FileName)
 	{
-	StartTimer(UDB_FromFile);
-
 	m_FileName = FileName;
 
 	UDBFileHdr Hdr;
@@ -286,15 +284,10 @@ void UDBData::FromUDBFile(FILE *f, const string &FileName)
 	m_SeqDB = new SeqDB;
 	asserta(m_SeqDB != 0);
 	m_SeqDB->FromFile(f, FileName);
-	EndTimer(UDB_FromFile);
-
-	//if (opt(validate))
-	//	ValidateRows();
 	}
 
 void UDBData::ToUDBFile(FILE *f) const
 	{
-	StartTimer(UDB_SplitToFile1);
 	if (opt(validate))
 		ValidateRows();
 
@@ -345,9 +338,7 @@ void UDBData::ToUDBFile(FILE *f) const
 		}
 
 	WriteStdioFile(f, Sizes, m_SlotCount*sizeof(Sizes[0]));
-	EndTimer(UDB_SplitToFile1);
 
-	StartTimer(UDB_SplitToFile2);
 	uint32 Magic = UDBFile_Magic3;
 	WriteStdioFile(f, &Magic, sizeof(Magic));
 
@@ -364,9 +355,6 @@ void UDBData::ToUDBFile(FILE *f) const
 		}
 	Sizes = 0;
 
-	EndTimer(UDB_SplitToFile2);
-
-	StartTimer(UDB_SplitToFile3);
 	Magic = UDBFile_Magic4;
 	WriteStdioFile(f, &Magic, sizeof(Magic));
 
@@ -385,8 +373,6 @@ void UDBData::ToUDBFile(FILE *f) const
 	SetStdioFilePos64(f, StartPos);
 	WriteStdioFile(f, &Hdr, sizeof(Hdr));
 	SetStdioFilePos64(f, EndPos);
-
-	EndTimer(UDB_SplitToFile3);
 	}
 
 void UDBData::WriteRowsVarCoded(FILE *f, const uint32 *Sizes) const

@@ -65,10 +65,9 @@ void ChunkSearcher::SearchImpl()
 		return;
 		}
 
-	//if (m_Chunk == 0)
-	//	m_Chunk = ObjMgr::GetSeqInfo();
 	asserta(m_Chunk == 0);
-	ObjMgr *OM = m_Chunk->m_Owner;
+	asserta(m_Query != 0);
+	ObjMgr *OM = m_Query->m_Owner;
 	m_Chunk = OM->GetSeqInfo();
 
 	unsigned QL = m_Query->m_L;

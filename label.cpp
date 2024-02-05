@@ -151,15 +151,12 @@ unsigned GetIntFieldFromLabel(const string &Label, const string &NameEq, unsigne
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default)
 	{
-	StartTimer(GetSizeFromLabel);
-//	unsigned Size = GetIntFieldFromLabel(Label, "size=", Default);
 	unsigned Size = Default;
 	const char *p = strstr(Label.c_str(), ";size=");
 	if (p != 0)
 		Size = (unsigned) atoi(p+6);
 	else if (Default == UINT_MAX)
 		Die("Missing size= in >%s", Label.c_str());
-	EndTimer(GetSizeFromLabel);
 	return Size;
 	}
 

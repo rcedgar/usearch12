@@ -71,7 +71,6 @@ static void AlignHSPMem(XDPMem &Mem, const byte *A, unsigned LA,
   const byte *B, unsigned LB, const HSPData &HSP, const AlnParams &AP,
   const AlnHeuristics &AH, PathInfo &PI)
 	{
-	StartTimer(AlignSPMem);
 	unsigned SLA = HSP.Leni;
 	unsigned SLB = HSP.Lenj;
 
@@ -83,7 +82,6 @@ static void AlignHSPMem(XDPMem &Mem, const byte *A, unsigned LA,
 			PI.Alloc(SLB+8);
 			PI.AppendIs(SLB);
 			}
-		EndTimer(AlignSPMem);
 		return;
 		}
 
@@ -94,14 +92,11 @@ static void AlignHSPMem(XDPMem &Mem, const byte *A, unsigned LA,
 			PI.Alloc(SLA+8);
 			PI.AppendDs(SLA);
 			}
-		EndTimer(AlignSPMem);
 		return;
 		}
 
 	AlnParams LocalAP;
 	LocalAP.Init(AP, HSP, LA, LB);
-
-	EndTimer(AlignSPMem);
 
 	const byte *SubA = A + HSP.Loi;
 	const byte *SubB = B + HSP.Loj;
@@ -135,7 +130,6 @@ bool GlobalAlign_AllOpts(XDPMem &Mem, const SeqInfo &Query, const SeqInfo &Targe
   const AlnParams &AP, const AlnHeuristics &AH, HSPFinder &HF, float &HSPFractId,
   PathInfo &PI, bool FullDPAlways, bool FailIfNoHSPs)
 	{
-	IncCounter(GlobalAlign);
 #if	TRACE
 	Log("\n");
 	Log("GlobalAlignMem\n");
@@ -171,8 +165,6 @@ bool GlobalAlign_AllOpts(XDPMem &Mem, const SeqInfo &Query, const SeqInfo &Targe
 		MinHSPLength = 16;
 
 	unsigned HSPCount = HF.GetGlobalHSPs(MinHSPLength, AH.MinGlobalHSPFractId, false, HSPFractId);
-	IncCounter(GetGlobalHSPs);
-	AddCounter(GlobalHSPs, HSPCount);
 #if	TRACE
 	Log("%u global hsps, id %.1f%%\n", HSPCount, HSPFractId*100.0);
 #endif

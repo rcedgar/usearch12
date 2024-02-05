@@ -131,7 +131,6 @@ void cmd_search_16s()
 	if (!optset_bitvec)
 		Die("-bitvec required");
 
-	StartTimer(MainInit);
 	BitVec BV;
 	string BitVecFileName = opt(bitvec);
 	FILE *f = OpenStdioFile(BitVecFileName);
@@ -173,7 +172,6 @@ void cmd_search_16s()
 				Vec[Word] = false;
 			}
 		}
-	EndTimer(MainInit);
 
 	GeneFinder::m_WordLength = WordLength;
 	GeneFinder::m_DBWordPresentVec = Vec;

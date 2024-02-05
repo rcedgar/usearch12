@@ -1885,7 +1885,6 @@ void ProgressStep64(uint64 i64, uint64 N64, const char *Msg)
 
 void ProgressStep(unsigned i, unsigned N, const char *Format, ...)
 	{
-	asserta(N != 1000);//@@
 	if (opt(quiet))
 		return;
 

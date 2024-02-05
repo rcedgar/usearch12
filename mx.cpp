@@ -67,7 +67,6 @@ void MxBase::OnDtor(MxBase *Mx)
 
 void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 	{
-	StartTimer(MxBase_Alloc);
 	m_Name = Name;
 	++m_AllocCount;
 	if (m_AllocatedRowCount == 0)
@@ -87,20 +86,12 @@ void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 
 		m_TotalBytes -= GetTotalBytes();
 
-		EndTimer(MxBase_Alloc);
-		StartTimer(MxBase_FreeData);
 		FreeData();
-		EndTimer(MxBase_FreeData);
-		StartTimer(MxBase_Alloc);
 
 		unsigned N = max(RowCount + 16, m_AllocatedRowCount);
 		unsigned M = max(ColCount + 16, m_AllocatedColCount);
 
-		EndTimer(MxBase_Alloc);
-		StartTimer(MxBase_AllocData);
 		AllocData(N, M);
-		EndTimer(MxBase_AllocData);
-		StartTimer(MxBase_Alloc);
 
 		m_TotalBytes += GetTotalBytes();
 		if (m_TotalBytes > m_MaxBytes)
@@ -112,8 +103,6 @@ void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 	asserta(ColCount <= m_AllocatedColCount);
 	m_RowCount = RowCount;
 	m_ColCount = ColCount;
-
-	EndTimer(MxBase_Alloc);
 	}
 
 void MxBase::LogMe(bool WithData, int Opts) const

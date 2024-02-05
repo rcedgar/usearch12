@@ -105,7 +105,6 @@ void FragAligner::FindHits(const byte *Frag, unsigned FL, const byte *Seq, unsig
 	if (L < FL)
 		return;
 
-	StartTimer(Frag_FindHits);
 	unsigned BestLo = UINT_MAX;
 	m_BestDiffs = UINT_MAX;
 	unsigned HitCount = 0;
@@ -153,7 +152,6 @@ void FragAligner::FindHits(const byte *Frag, unsigned FL, const byte *Seq, unsig
 		Log("       %*.*s", FL, FL, Frag);
 		Log("  %u diffs\n", DiffCount);
 		}
-	EndTimer(Frag_FindHits);
 	}
 
 void FragAligner::FindTopHits(const byte *Frag, unsigned FL, const byte *Seq, unsigned L,
@@ -163,7 +161,6 @@ void FragAligner::FindTopHits(const byte *Frag, unsigned FL, const byte *Seq, un
 	if (L < FL)
 		return;
 
-	StartTimer(Frag_FindHits);
 	m_BestDiffs = UINT_MAX;
 	unsigned HitCount = 0;
 	for (unsigned Lo = 0; Lo <= L - FL; ++Lo)
@@ -200,7 +197,6 @@ void FragAligner::FindTopHits(const byte *Frag, unsigned FL, const byte *Seq, un
 			}
 	Next:;
 		}
-	EndTimer(Frag_FindHits);
 	}
 
 void FragAligner::MakeAR(unsigned Lo, AlignResult *AR)

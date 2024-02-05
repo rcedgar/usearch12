@@ -292,7 +292,6 @@ void SeqInfo::GetReverse(SeqInfo *RevSI) const
 void SeqInfo::GetRevComp(SeqInfo *RCSI) const
 	{
 	RCSI->AllocSeq(m_L);
-	StartTimer(MakeRevComp);
 	RCSI->SetLabel(m_Label);
 	RCSI->m_Index = UINT_MAX;
 	if (m_Qual == 0)
@@ -323,7 +322,6 @@ void SeqInfo::GetRevComp(SeqInfo *RCSI) const
 	RCSI->m_L = m_L;
 	RCSI->m_RevComp = !m_RevComp;
 	RCSI->m_Index = m_Index;
-	EndTimer(MakeRevComp);
 	}
 
 void SeqInfo::RevCompInPlace()

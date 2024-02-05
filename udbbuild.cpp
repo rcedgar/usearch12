@@ -72,7 +72,6 @@ void UDBData::CreateEmpty(UDBParams &Params)
 
 void UDBData::GrowRow(uint32 Word)
 	{
-	IncCounter(AddWordGrows);
 	bool IsVarCoded = m_Params.DBIsVarCoded();
 	uint32 Size = m_Sizes[Word];
 	uint32 Capacity = m_Capacities[Word];
@@ -175,7 +174,6 @@ void UDBData::AddVarWord(uint32 Word, uint32 SeqIndex, uint32 Pos)
 
 void UDBData::AddSeqVarCoded(unsigned SeqIndex, const byte *Seq, unsigned L, bool SizeOnly)
 	{
-	StartTimer(UDBData_AddSeqVarCoded);
 	const unsigned MaxSeqIndex = m_Params.m_MaxSeqIndex;
 	m_Params.SetTargetWordsAll(Seq, L);
 	const unsigned DBStep = m_Params.m_DBStep;
@@ -203,12 +201,10 @@ void UDBData::AddSeqVarCoded(unsigned SeqIndex, const byte *Seq, unsigned L, boo
 				AddVarWord(Word, SeqIndex, TargetPos);
 			}
 		}
-	EndTimer(UDBData_AddSeqVarCoded);
 	}
 
 void UDBData::AddSeqCoded(unsigned SeqIndex, const byte *Seq, unsigned L, bool SizeOnly)
 	{
-	StartTimer(UDBData_AddSeqCoded);
 	const unsigned MaxSeqIndex = m_Params.m_MaxSeqIndex;
 	if (SeqIndex > MaxSeqIndex)
 		Die("UDBData::AddSeq, too many seqs, max %u (%s)",
@@ -254,12 +250,10 @@ void UDBData::AddSeqCoded(unsigned SeqIndex, const byte *Seq, unsigned L, bool S
 				}
 			}
 		}
-	EndTimer(UDBData_AddSeqCoded);
 	}
 
 void UDBData::AddSeqNoncoded(unsigned SeqIndex, const byte *Seq, unsigned L, bool SizeOnly)
 	{
-	StartTimer(UDBData_AddSeqNoncoded);
 	m_Params.AllocTargetLength(L);
 
 	m_Params.SetTargetWords(Seq, L);
@@ -286,7 +280,6 @@ void UDBData::AddSeqNoncoded(unsigned SeqIndex, const byte *Seq, unsigned L, boo
 			AddWord(Word, SeqIndex);
 			}
 		}
-	EndTimer(UDBData_AddSeqNoncoded);
 	}
 
 unsigned UDBData::AddSIToDB_CopyData(const SeqInfo *SI)
@@ -342,7 +335,6 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 		}
 	ProgressStep(999, 1000, "Word stats");
 
-	StartTimer(UDB_SplitFromSeqDB2);
 	vector<unsigned> Starts;
 	vector<unsigned> BlockSizes;
 	unsigned MaxSize = 1024*1024*1024;
@@ -383,7 +375,6 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 		}
 	asserta(Total == TotalSize);
 	m_Prealloced = true;
-	EndTimer(UDB_SplitFromSeqDB2);
 
 	LetterTotal = 0;
 	ProgressStep(0, 1000, "Build index");
@@ -402,7 +393,6 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 		}
 	ProgressStep(999, 1000, "Build index");
 
-	StartTimer(UDB_SplitFromSeqDB4);
 	for (unsigned Slot = 0; Slot < m_SlotCount; ++Slot)
 		asserta(m_Sizes[Slot] == m_Capacities[Slot]);
 
@@ -411,6 +401,4 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 
 	if (opt(validate))
 		ValidateRows();
-
-	EndTimer(UDB_SplitFromSeqDB4);
 	}

@@ -5,18 +5,9 @@ void Make3Way(const byte *Q, unsigned LQ, const byte *A, unsigned LA, const byte
   const string &PathQA, const string &PathQB,
   string &Q3, string &A3, string &B3)
 	{
-	StartTimer(Make3Way);
 	Q3.clear();
 	A3.clear();
 	B3.clear();
-
-	//const byte *Q = QSD->m_Seq;
-	//const byte *A = ASD->m_Seq;
-	//const byte *B = BSD->m_Seq;
-
-	//unsigned LQ = QSD->m_L;
-	//unsigned LA = ASD->m_L;
-	//unsigned LB = BSD->m_L;
 
 	vector<unsigned> InsertCountsA(LQ+1, 0);
 	unsigned QPos = 0;
@@ -138,7 +129,6 @@ void Make3Way(const byte *Q, unsigned LQ, const byte *A, unsigned LA, const byte
 
 	asserta(SIZE(Q3) == SIZE(A3));
 	asserta(SIZE(Q3) == SIZE(B3));
-	EndTimer(Make3Way);
 	}
 
 void Make3Way(const SeqInfo *QSD, const SeqInfo *ASD, const SeqInfo *BSD,

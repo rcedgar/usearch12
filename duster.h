@@ -31,7 +31,6 @@ public:
 private:
 	void wo1(int len, const byte *s, int ivv)
 		{
-		StartTimer(Duster_wo1);
 		int i, ii, j, v, t, n, n1, sum;
 		int js, nis;
 
@@ -75,7 +74,6 @@ private:
 				counts[ii]++;
 				}
 			}
-		EndTimer(Duster_wo1);
 		}
 
 	int wo(int len, const byte *s, int *beg, int *end)

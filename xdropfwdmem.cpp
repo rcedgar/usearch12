@@ -291,8 +291,6 @@ static void SAVE_TBI(unsigned i, unsigned j, char x)
 
 void XDropFwdTraceBackBitMem(XDPMem &Mem, unsigned Besti, unsigned Bestj, PathInfo &PI)
 	{
-	StartTimer(TraceBackBitMem);
-
 	PI.SetEmpty();
 
 	byte **TB = Mem.GetTBBit();
@@ -362,7 +360,6 @@ void XDropFwdTraceBackBitMem(XDPMem &Mem, unsigned Besti, unsigned Bestj, PathIn
 	Log("M=%u, D=%u, I=%u\n", M, D, I);
 	}
 #endif
-	EndTimer(TraceBackBitMem);
 	}
 
 float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
@@ -393,8 +390,6 @@ float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 	Mem.Alloc(LA, LB);
 	AllocSave(LA, LB);
 	GetSimple();
-
-	StartTimer(XDropFwdFastMem);
 
 #if	TRACE
 	Log("XDropFwdFast LA %u, LB %u\n", LA, LB);
@@ -730,8 +725,6 @@ float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 			}
 		}
 	
-	EndTimer(XDropFwdFastMem);
-
 #if	TRACE
 	{
 	g_MxDPM.LogMe();

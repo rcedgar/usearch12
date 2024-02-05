@@ -32,7 +32,6 @@ float XDropBwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 	Log("   B %2u %*.*s\n", LB, LB, LB, B);
 #endif
 	Mem.Alloc(LA, LB);
-	StartTimer(XDropBwd);
 	byte *RevA = Mem.GetRevA();
 	byte *RevB = Mem.GetRevB();
 	RevSeq(A, RevA, LA);
@@ -41,7 +40,6 @@ float XDropBwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 	Log("RevA %2u %*.*s\n", LA, LA, LA, RevA);
 	Log("RevB %2u %*.*s\n", LB, LB, LB, RevB);
 #endif
-	EndTimer(XDropBwd);
 	float Score = XDropFwdFastMem(Mem, RevA, LA, RevB, LB, AP, X, Leni, Lenj, PI);
 #if	TRACE
 	Log("XDropFwdFastMem Score %.1f, Leni %u, Lenj %u\n", Score, Leni, Lenj);
@@ -56,7 +54,6 @@ float XDropBwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 	asserta(M + I == Lenj);
 	}
 #endif
-	StartTimer(XDropBwd);
 	PI.Reverse();
 #if	DEBUG
 	{
@@ -69,6 +66,5 @@ float XDropBwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 #if	TRACE
 	LogAln((const byte *) A + LA - Leni, (const byte *) B + LB - Lenj, PI.m_Path);
 #endif
-	EndTimer(XDropBwd);
 	return Score;
 	}

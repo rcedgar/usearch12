@@ -13,7 +13,6 @@ static float GetAnchor(const byte *Q, const byte *T,
   const float * const *SubstMx,
   unsigned &AncLoi, unsigned &AncLoj, unsigned &AncLen)
 	{
-	StartTimer(GetAnchor);
 	unsigned i = Loi;
 	unsigned j = Loj;
 	unsigned L = SegLength;
@@ -61,7 +60,6 @@ static float GetAnchor(const byte *Q, const byte *T,
 	AncLoi = Loi + BestStartk;
 	AncLoj = Loj + BestStartk;
 	AncLen = Length;
-	EndTimer(GetAnchor);
 	return BestScore;
 	}
 
@@ -102,7 +100,6 @@ void LocalAligner::SetQueryPSSM()
 
 AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	{
-	StartTimer(LocalAligner_AlignPos);
 	const byte *Q = m_Query->m_Seq;
 	const byte *T = m_Target->m_Seq;
 	const float * const *PSSM = m_QueryPSSM.Data;
@@ -162,16 +159,13 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 		++i;
 		++j;
 		}
-	EndTimer(LocalAligner_AlignPos);
 
 // Accept ungapped segment?
 	const float Score = LeftScore + RightScore;
 	if (Score < m_MinUngappedRawScore)
 		{
-		IncCounter(FailedExtends);
 		return 0;
 		}
-	IncCounter(SuccessfulExtends);
 
 // Find anchor
 	unsigned Loi = (QueryPos + 1) - LeftLength;
@@ -185,7 +179,6 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 
 	if (AncRawScore <= 0.0f)
 		{
-		IncCounter(FailedAnchors);
 		return 0;
 		}
 
@@ -200,7 +193,6 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	float GappedScore = HSP.Score;
 	if (GappedScore <= 0.0f)
 		{
-		IncCounter(FailedGappedExtensions_DP);
 		PI->Down();
 		return 0;
 		}
@@ -209,7 +201,6 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	if (Evalue > opt(evalue))
 		{
 		PI->Down();
-		IncCounter(FailedGappedExtensions_Evalue);
 		return 0;
 		}
 
@@ -254,7 +245,6 @@ void LocalAligner::OnTargetDoneImpl()
 PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
   unsigned QueryPos, unsigned TargetPos, HSPData &HSP)
 	{
-	StartTimer(LocalAligner_AlignPos);
 	const byte *Q = m_Query->m_Seq;
 	const float * const *PSSM = m_QueryPSSM.Data;
 
@@ -312,39 +302,13 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 		++i;
 		++j;
 		}
-	EndTimer(LocalAligner_AlignPos);
 
 // Accept ungapped segment?
 	const float Score = LeftScore + RightScore;
 	if (Score < m_MinUngappedRawScore)
 		{
-		IncCounter(FailedExtends);
 		return 0;
 		}
-	IncCounter(SuccessfulExtends);
-
-	//if (opt(log_ugx))
-	//	{
-	//	static bool HdrDone = false;
-	//	if (!HdrDone)
-	//		{
-	//		Log("@UGX  Y   QPos   TPos     Word  UXScore  MinScore  Labels\n");
-	//		Log("@UGX  -  -----  -----  -------  -------  --------  ------\n");
-	//		HdrDone = true;
-	//		}
-	//	const char *QueryLabel = m_Query->m_Label;
-	//	const char *TargetLabel = m_Target->m_Label;
-	//	unsigned PattLen = m_UDBParams->m_WordWidth;
-	//	Log("@UGX  %c  %5u  %5u  %*.*s %7.1f  %8.1f  %s, %s\n",
-	//		yon(Score >= m_MinUngappedRawScore),
-	//		QueryPos,
-	//		TargetPos,
-	//		PattLen, PattLen, Q + QueryPos,
-	//		Score,
-	//		m_MinUngappedRawScore,
-	//		QueryLabel,
-	//		TargetLabel);
-	//	}
 
 // Find anchor
 	unsigned Loi = (QueryPos + 1) - LeftLength;
@@ -357,10 +321,7 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 		AncLoi, AncLoj, AncLen);
 
 	if (AncRawScore <= 0.0f)
-		{
-		IncCounter(FailedAnchors);
 		return 0;
-		}
 
 	ObjMgr *OM = m_Query->m_Owner;
 	PathInfo *PI = OM->GetPathInfo();
@@ -372,7 +333,6 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 	float GappedScore = HSP.Score;
 	if (GappedScore <= 0.0f)
 		{
-		IncCounter(FailedGappedExtensions_DP);
 		PI->Down();
 		return 0;
 		}
@@ -381,12 +341,8 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 	if (Evalue > opt(evalue))
 		{
 		PI->Down();
-		IncCounter(FailedGappedExtensions_Evalue);
 		return 0;
 		}
 
-	//AlignResult *AR = ObjMgr::GetAlignResult();
-	//AR->CreateLocalGapped(*m_Query, *m_Target, HSP, *PI, m_IsNucleo);
-	//PI->Down();
 	return PI;
 	}

@@ -9,7 +9,6 @@
 unsigned HSPFinder::GetGlobalHSPs(unsigned MinLength, float /* MinFractId */,
   bool StaggerOk, float &HSPFractId)
 	{
-	IncCounter(GetGlobalHSPs);
 	const byte *A = m_SA->m_Seq;
 	const byte *B = m_SB->m_Seq;
 
@@ -19,7 +18,6 @@ unsigned HSPFinder::GetGlobalHSPs(unsigned MinLength, float /* MinFractId */,
 	float X = m_AH->XDropGlobalHSP;
 	UngappedBlast(X, StaggerOk, MinLength, m_AH->MinGlobalHSPScore);
 	Chain();
-	StartTimer(GetHSPs2);
 
 	unsigned TotalLength = 0;
 	unsigned TotalSameCount = 0;
@@ -50,7 +48,6 @@ unsigned HSPFinder::GetGlobalHSPs(unsigned MinLength, float /* MinFractId */,
 
 			m_UngappedHSPCount = 0;
 			m_ChainedHSPCount = 0;
-			EndTimer(GetHSPs2);
 			return 0;
 			}
 
@@ -60,6 +57,5 @@ unsigned HSPFinder::GetGlobalHSPs(unsigned MinLength, float /* MinFractId */,
 
 	HSPFractId = TotalLength == 0 ? 0.0f :
 	  float(TotalSameCount)/float(TotalLength);
-	EndTimer(GetHSPs2);
 	return m_ChainedHSPCount;
 	}

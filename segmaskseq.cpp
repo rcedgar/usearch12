@@ -632,8 +632,6 @@ static void MakeSMSeq(const byte *Seq, unsigned L, SMSeq &S)
 
 void SegMaskSeq(const byte *Seq, unsigned L, byte *MaskedSeq)
 	{
-	StartTimer(SegMaskSeq);
-
 	SMSeq S;
 	MakeSMSeq(Seq, L, S);
 
@@ -662,5 +660,4 @@ void SegMaskSeq(const byte *Seq, unsigned L, byte *MaskedSeq)
 		}
 
 	freesegs(Segs);
-	EndTimer(SegMaskSeq);
 	}

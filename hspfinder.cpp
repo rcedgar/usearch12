@@ -228,15 +228,6 @@ unsigned HSPFinder::SeqToWords(const byte *Seq, unsigned L, uint32 *Words) const
 	if (L < m_WordLength)
 		return 0;
 
-#if	TIMING
-	if (g_InSetA)
-		StartTimer(WF_SeqToWordsA)
-	else if (g_InSetB)
-		StartTimer(WF_SeqToWordsB)
-	else
-		StartTimer(WF_SeqToWords)
-#endif
-
 	asserta(m_WordLength > 0);
 	const unsigned WordCount = L - m_WordLength + 1;
 	uint32 Word = 0;
@@ -282,17 +273,10 @@ void HSPFinder::AllocLA(unsigned LA)
 	{
 	if (LA <= m_WordsASize)
 		return;
-	StartTimer(WF_AllocLA);
 	myfree(m_WordsA);
 
 	m_WordsASize = LA + 512;
 	m_WordsA = myalloc(uint32, m_WordsASize);
-	//zero_array(m_WordsA, m_WordsASize);
-
-	if (opt(logmemgrows))
-		Log("HSPFinder::AllocLA(%u)\n", m_WordsASize);
-
-	EndTimer(WF_AllocLA);
 	}
 
 void HSPFinder::AllocLB(unsigned LB)
@@ -300,16 +284,10 @@ void HSPFinder::AllocLB(unsigned LB)
 	if (LB <= m_WordsBSize)
 		return;
 
-	StartTimer(WF_AllocLB);
 	myfree(m_WordsB);
 
 	m_WordsBSize = LB + 32;
 	m_WordsB = myalloc(uint32, m_WordsBSize);
-
-	if (opt(logmemgrows))
-		Log("HSPFinder::AllocLB(%u)\n", m_WordsBSize);
-
-	EndTimer(WF_AllocLB);
 	}
 
 void HSPFinder::AllocDiags(unsigned DiagCount)
@@ -317,33 +295,21 @@ void HSPFinder::AllocDiags(unsigned DiagCount)
 	if (DiagCount <= m_DiagToPosBSize)
 		return;
 
-	StartTimer(WF_AllocDiags);
 	myfree(m_DiagToPosB);
 
 	m_DiagToPosBSize = DiagCount + 1024;
 	m_DiagToPosB = myalloc(unsigned, m_DiagToPosBSize);
-
-	EndTimer(WF_AllocDiags);
 	}
 
 void HSPFinder::SetA(SeqInfo *SI)
 	{
 	AllocLA(SI->m_L);
-	StartTimer(WF_SetAZero);
 	zero_array(m_WordCountsA, m_WordCount);
-	EndTimer(WF_SetAZero);
 
 	m_SA = SI;
 
-#if TIMING
-	g_InSetA = true;
-#endif
 	m_WordCountA = SeqToWords(m_SA->m_Seq, m_SA->m_L, m_WordsA);
-#if TIMING
-	g_InSetA = false;
-#endif
 
-	StartTimer(WF_SetA2);
 	for (unsigned PosA = 0; PosA < m_WordCountA; ++PosA)
 		{
 		unsigned Word = m_WordsA[PosA];
@@ -354,7 +320,6 @@ void HSPFinder::SetA(SeqInfo *SI)
 		m_WordToPosA[Word*MaxReps + n] = PosA;
 		++(m_WordCountsA[Word]);
 		}
-	EndTimer(WF_SetA2);
 	}
 
 void HSPFinder::SetB(SeqInfo *SI)
@@ -362,18 +327,11 @@ void HSPFinder::SetB(SeqInfo *SI)
 	AllocLB(SI->m_L);
 	m_SB = SI;
 
-#if TIMING
-	g_InSetB = true;
-#endif
 	m_WordCountB = SeqToWords(SI->m_Seq, SI->m_L, m_WordsB);
-#if TIMING
-	g_InSetB = false;
-#endif
 	}
 
 unsigned HSPFinder::GetCommonWordCount() const
 	{
-	StartTimer(WF_GetCommonWordCount);
 	unsigned Count = 0;
 	for (unsigned PosB = 0; PosB < m_WordCountB; ++PosB)
 		{
@@ -382,7 +340,6 @@ unsigned HSPFinder::GetCommonWordCount() const
 		if (m_WordCountsA[Word] > 0)
 			++Count;
 		}
-	EndTimer(WF_GetCommonWordCount);
 	return Count;
 	}
 

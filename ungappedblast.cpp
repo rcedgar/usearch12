@@ -7,8 +7,6 @@
 
 void HSPFinder::UngappedBlast(float X, bool StaggerOk, unsigned MinLength, float MinScore)
 	{
-	IncCounter(UngappedBlast);
-
 #if	TRACE
 	Log("\n");
 	Log("Blast()\n");
@@ -18,16 +16,12 @@ void HSPFinder::UngappedBlast(float X, bool StaggerOk, unsigned MinLength, float
 	Log("B=%*.*s\n", m_SB->m_L, m_SB->m_L, m_SB->m_Seq);
 #endif
 
-	StartTimer(UngappedBlast);
 	if (MinScore < 0)
 		MinScore = (float) ComputeMinScoreGivenEvalueQUngapped(opt(evalue), m_SA->m_L);
 	m_UngappedHSPCount = 0;
 
 	if (m_SB->m_L < 2*m_WordLength)
-		{
-		EndTimer(UngappedBlast);
 		return;
-		}
 
 	const byte *A = m_SA->m_Seq;
 	const byte *B = m_SB->m_Seq;
@@ -187,8 +181,6 @@ void HSPFinder::UngappedBlast(float X, bool StaggerOk, unsigned MinLength, float
 			if (Ok)
 				{
 				++HitCount;
-				IncCounter(HitExtends);
-				AddCounter(HitExtendLetters, Length);
 
 				AllocHSPCount(m_UngappedHSPCount+1);
 				HSPData &HSP = *m_UngappedHSPs[m_UngappedHSPCount];
@@ -211,16 +203,9 @@ void HSPFinder::UngappedBlast(float X, bool StaggerOk, unsigned MinLength, float
 				BPos = Bhi + 1;
 				goto HSPFound;
 				}
-			else
-				{
-				IncCounter(FailedExtends);
-				AddCounter(FailedExtendLetters, Length);
-				}
 			}
 
 		++BPos;
 	HSPFound:;
 		}
-
-	EndTimer(UngappedBlast);
 	}

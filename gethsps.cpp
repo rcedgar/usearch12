@@ -10,10 +10,7 @@ void HSPFinder::GetHSPs(float X, float MinScore)
 	m_UngappedHSPCount = 0;
 
 	if (m_SB->m_L < 2*m_WordLength)
-		{
-		EndTimer(UngappedBlast);
 		return;
-		}
 
 	const byte *A = m_SA->m_Seq;
 	const byte *B = m_SB->m_Seq;
@@ -168,9 +165,6 @@ void HSPFinder::GetHSPs(float X, float MinScore)
 			bool Ok = (BestScore >= MinScore);
 			if (Ok)
 				{
-				IncCounter(HitExtends);
-				AddCounter(HitExtendLetters, Length);
-
 				AllocHSPCount(m_UngappedHSPCount+1);
 				HSPData &HSP = *m_UngappedHSPs[m_UngappedHSPCount];
 				++m_UngappedHSPCount;
@@ -192,11 +186,6 @@ void HSPFinder::GetHSPs(float X, float MinScore)
 
 				BPos = Bhi + 1;
 				goto HSPFound;
-				}
-			else
-				{
-				IncCounter(FailedExtends);
-				AddCounter(FailedExtendLetters, Length);
 				}
 			}
 

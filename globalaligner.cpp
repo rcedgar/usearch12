@@ -36,7 +36,6 @@ AlignResult *GlobalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 
 AlignResult *GlobalAligner::Align()
 	{
-	IncCounter(GlobalAligner_Align);
 	asserta(m_Target != 0);
 	asserta(m_PI == 0);
 	ObjMgr *OM = m_Target->m_Owner;

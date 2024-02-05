@@ -354,8 +354,6 @@ unsigned SeqDB::AddSI_CopyPtrs(const SeqInfo *SI)
 
 unsigned SeqDB::AddSeq_CopyPtrs(const char *Label, const byte *Seq, unsigned L)
 	{
-	StartTimer(SeqDBAddSeq1);
-
 	Alloc(m_SeqCount+1, false);
 
 	unsigned Index = m_SeqCount++;
@@ -373,7 +371,6 @@ unsigned SeqDB::AddSeq_CopyPtrs(const char *Label, const byte *Seq, unsigned L)
 
 	m_SeqLengths[Index] = L;
 
-	EndTimer(SeqDBAddSeq1);
 	return Index;
 	}
 
@@ -382,8 +379,6 @@ unsigned SeqDB::AddSeq_CopyData(const char *Label, const byte *Seq, unsigned L,
 	{
 	if (L == 0)
 		Die("Zero length sequence not allowed");
-
-	StartTimer(SeqDBAddSeq2);
 
 	Alloc(m_SeqCount+1, Qual != 0);
 
@@ -411,7 +406,6 @@ unsigned SeqDB::AddSeq_CopyData(const char *Label, const byte *Seq, unsigned L,
 
 	m_SeqLengths[Index] = L;
 
-	EndTimer(SeqDBAddSeq2);
 	return Index;
 	}
 

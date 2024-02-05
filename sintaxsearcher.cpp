@@ -93,11 +93,7 @@ void SintaxSearcher::SetUShuffle()
 		return;
 
 	unsigned *U = m_U.Data;
-	StartTimer(ZeroU);
 	zero_array(U, SeqCount);
-	EndTimer(ZeroU);
-
-	StartTimer(SetU);
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
 	// const unsigned M = QueryUniqueWordCount/8;
@@ -118,7 +114,6 @@ void SintaxSearcher::SetUShuffle()
 			++(U[TargetIndex]);
 			}
 		}
-	EndTimer(SetU);
 	}
 
 void SintaxSearcher::Classify_KTop()

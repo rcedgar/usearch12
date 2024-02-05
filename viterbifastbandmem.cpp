@@ -31,8 +31,6 @@ static float ViterbiFastBandMem(XDPMem &Mem, const byte *A, unsigned LA, const b
 	Mem.Alloc(LA, LB);
 	PI.Alloc2(LA, LB);
 
-	StartTimer(ViterbiFastBandMem);
-	
 	const float * const *Mx = AP.SubstMx;
 	float OpenA = AP.LOpenA;
 	float ExtA = AP.LExtA;
@@ -227,10 +225,7 @@ static float ViterbiFastBandMem(XDPMem &Mem, const byte *A, unsigned LA, const b
 		State = 'I';
 		}
 
-	EndTimer(ViterbiFastBandMem);
-
 	TraceBackBitMem(Mem, LA, LB, State, PI);
-
 	return Score;
 	}
 

@@ -13,13 +13,11 @@ void LocalAligner2::AlignMulti(GoBuff<AlignResult *, 32, true, false> &ARs)
 	Log("LocalAligner2::AlignMulti Q>%s T>%s\n",
 	  m_Query->m_Label, m_Target->m_Label);
 #endif
-	StartTimer(AlignMulti);
 	float MinScore = (float) g_ES->GetMinUngappedRawScore(m_Query->m_L);
 	ARs.Size = 0;
 
 	if (m_Target->m_L < 2*m_WordLength)
 		{
-		EndTimer(AlignMulti);
 		return;
 		}
 
@@ -117,6 +115,4 @@ void LocalAligner2::AlignMulti(GoBuff<AlignResult *, 32, true, false> &ARs)
 		++TargetPos;
 	Skip:;
 		}
-
-	EndTimer(AlignMulti);
 	}

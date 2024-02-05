@@ -125,22 +125,18 @@ void HitMgr::OnQueryDone(SeqInfo *Query)
 	++m_QueryCount;
 	if (m_HitCount > 0)
 		++m_QueryWithHitCount;
-	StartTimer(HM_OnQueryDone);
 	asserta(m_Query == Query);
 	for (vector<HitSink *>::const_iterator p = m_Sinks.begin();
 	  p != m_Sinks.end(); ++p)
 		{
 		HitSink *Sink = *p;
-		PauseTimer(HM_OnQueryDone);
 		Sink->OnQueryDone(Query, this);
-		StartTimer(HM_OnQueryDone);
 		}
 
 	DeleteHits();
 
 	m_Query->Down();
 	m_Query = 0;
-	EndTimer(HM_OnQueryDone);
 	}
 
 void HitMgr::DeleteHits()
@@ -223,7 +219,6 @@ bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) cons
 			Log("  m_TargetHasHit[%u]=%c\n", SeqIndex, tof(m_TargetHasHit[SeqIndex]));
 		}
 #endif
-		IncCounter(TargetPosCovered_False);
 		return false;
 		}
 
@@ -232,7 +227,6 @@ bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) cons
 	if (m_HitCount > 64 && m_TargetHasHit[SeqIndex] && TL < opt(long_target))
 		return true;
 
-	StartTimer(HitMgr_TargetPosCovered);
 	for (unsigned i = 0; i < m_HitCount; ++i)
 		{
 		const AlignResult &AR = *m_Hits[i];
@@ -244,8 +238,6 @@ bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) cons
 #if	TRACE
 				Log("  Is covered\n");
 #endif
-				EndTimer(HitMgr_TargetPosCovered);
-				IncCounter(TargetPosCovered_True);
 				return true;
 				}
 			}
@@ -253,8 +245,6 @@ bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) cons
 #if	TRACE
 	Log("  Not covered\n");
 #endif
-	EndTimer(HitMgr_TargetPosCovered);
-	IncCounter(TargetPosCovered_False);
 	return false;
 	}
 

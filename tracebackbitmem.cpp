@@ -9,7 +9,6 @@ void TraceBackBitMem(XDPMem &Mem, unsigned LA, unsigned LB, char State, PathInfo
 	{
 	PI.Alloc2(LA, LB);
 
-	StartTimer(TraceBackBitMem);
 	PI.SetEmpty();
 
 	byte **TB = Mem.GetTBBit();
@@ -71,5 +70,4 @@ void TraceBackBitMem(XDPMem &Mem, unsigned LA, unsigned LB, char State, PathInfo
 			}
 		}
 	PI.Reverse();
-	EndTimer(TraceBackBitMem);
 	}

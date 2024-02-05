@@ -55,7 +55,6 @@ Terminator::~Terminator()
 
 void Terminator::OnNewQuery()
 	{
-	IncCounter(TerminatorQueries);
 	asserta(m_MaxAccepts == 0 || m_AcceptCount <= m_MaxAccepts);
 	asserta(m_MaxRejects == 0 || m_RejectCount <= m_MaxRejects);
 
@@ -88,15 +87,9 @@ bool Terminator::Terminate(HitMgr *HM, bool Accept)
 		}
 
 	if (Accept)
-		{
-		IncCounter(Accepts);
 		++m_AcceptCount;
-		}
 	else
-		{
-		IncCounter(Rejects);
 		++m_RejectCount;
-		}
 
 	if (m_MaxAccepts > 0 && m_AcceptCount == m_MaxAccepts)
 		return true;

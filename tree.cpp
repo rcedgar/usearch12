@@ -308,7 +308,6 @@ void Tree::GetPathToRoot(unsigned NodeIndex, vector<unsigned> &Path) const
 
 unsigned Tree::GetLCA(const vector<unsigned> &NodeIndexes) const
 	{
-	StartTimer(T01);
 	const unsigned N = SIZE(NodeIndexes);
 	asserta(N > 0);
 	map<unsigned, unsigned> NodeToCount;
@@ -341,7 +340,6 @@ unsigned Tree::GetLCA(const vector<unsigned> &NodeIndexes) const
 			}
 		}
 	asserta(LCA != UINT_MAX);
-	EndTimer(T01);
 	return LCA;
 	}
 

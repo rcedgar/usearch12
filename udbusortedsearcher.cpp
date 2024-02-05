@@ -66,7 +66,6 @@ void UDBUsortedSearcher::OnQueryDoneImpl()
 	{
 	if (m_Big)
 		{
-		StartTimer(ZeroU_Big);
 	// Zero out previous
 		unsigned N = m_TopTargetIndexes.Size;
 		uint32 *TopTargetIndexes = m_TopTargetIndexes.Data;
@@ -81,16 +80,6 @@ void UDBUsortedSearcher::OnQueryDoneImpl()
 			U[TargetIndex] = 0;
 			}
 		m_TopTargetIndexes.Size = 0;
-		EndTimer(ZeroU_Big);
-#if	0 // DEBUG
-		{
-		const uint32 *U = m_U.Data;
-		for (unsigned i = 0; i < m_U.Size; ++i)
-			if (U[i] != 0)
-				Die("ZeroPrevious, m_TopTargetIndexes.Size %u, U[%u] = %u",
-				  m_TopTargetIndexes.Size, i, U[i]);
-		}
-#endif
 		}
 	}
 
@@ -239,8 +228,6 @@ unsigned UDBUsortedSearcher::GetSeqCount() const
 
 void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 	{
-	StartTimer(SetTopNoBump);
-
 	const unsigned SeqCount = GetSeqCount();
 	const unsigned *U = m_U.Data;
 	asserta(m_U.Size == SeqCount);
@@ -259,17 +246,13 @@ void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 			++TopCount;
 			}
 		}
-	AddCounter(HotHits, TopCount);
 
 	m_TopU.Size = TopCount;
 	m_TopTargetIndexes.Size = TopCount;
-
-	EndTimer(SetTopNoBump);
 	}
 
 void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 	{
-	StartTimer(SetTopBump);
 	double Bump = BumpPct/100.0;
 	unsigned SavedMinU = MinU;
 	const unsigned *U = m_U.Data;
@@ -305,10 +288,6 @@ void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 
 	m_TopU.Size = TopCount;
 	m_TopTargetIndexes.Size = TopCount;
-
-	AddCounter(HotHits, TopCount);
-
-	EndTimer(SetTopBump);
 	}
 
 void UDBUsortedSearcher::SetTop(unsigned MinU)
@@ -393,14 +372,8 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 		return;
 
 	unsigned *U = m_U.Data;
-	StartTimer(ZeroU);
 	zero_array(U, SeqCount);
-	EndTimer(ZeroU);
-
-	StartTimer(SetU);
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
-
-	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
@@ -420,7 +393,6 @@ void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
 			++(U[TargetIndex]);
 			}
 		}
-	EndTimer(SetU);
 	}
 
 void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
@@ -439,14 +411,8 @@ void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 		return;
 
 	unsigned *U = m_U.Data;
-	StartTimer(ZeroU);
 	zero_array(U, SeqCount);
-	EndTimer(ZeroU);
-
-	StartTimer(SetU);
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
-
-	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
@@ -471,7 +437,6 @@ void UDBUsortedSearcher::SetU_VarCoded(unsigned QueryStep)
 			++(U[TargetIndex]);
 			}
 		}
-	EndTimer(SetU);
 	}
 
 void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
@@ -490,14 +455,10 @@ void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 		return;
 
 	unsigned *U = m_U.Data;
-	StartTimer(ZeroU);
 	zero_array(U, SeqCount);
-	EndTimer(ZeroU);
 
-	StartTimer(SetU);
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
-	AddCounter(Step, QueryStep);
 
 	for (unsigned i = 0; i < QueryUniqueWordCount; i += QueryStep)
 		{
@@ -513,7 +474,6 @@ void UDBUsortedSearcher::SetU_NonCoded(unsigned QueryStep)
 			++(U[TargetIndex]);
 			}
 		}
-	EndTimer(SetU);
 	}
 
 void UDBUsortedSearcher::GetWordCountingParams(float MinFractId,
@@ -669,7 +629,6 @@ unsigned UDBUsortedSearcher::GetHot(SeqInfo *Query, unsigned MaxHot, unsigned Ma
 			}
 		}
 
-	StartTimer(U_SetHotHits);
 	if (N > MaxHot)
 		N = MaxHot;
 
@@ -688,12 +647,8 @@ unsigned UDBUsortedSearcher::GetHot(SeqInfo *Query, unsigned MaxHot, unsigned Ma
 		unsigned WordCount = U[TargetSeqIndex];
 		unsigned Drop = TopWordCount - WordCount;
 		if (Drop > MaxDrop)
-			{
-			EndTimer(U_SetHotHits);
 			return i;
-			}
 		TargetIndexes[i] = TargetSeqIndex;
 		}
-	EndTimer(U_SetHotHits);
 	return N;
 	}

@@ -275,7 +275,6 @@ void BitMapSearcher::SetCandidates()
 #endif
 
 	unsigned TargetCount = 0;
-	StartTimer(BMS_U1);
 	for (unsigned QueryIndex = 0; QueryIndex < QueryWordCount; ++QueryIndex)
 		{
 		uint32 Word = QueryWords[QueryIndex];
@@ -297,7 +296,6 @@ void BitMapSearcher::SetCandidates()
 			TargetSeqIndexToWordCount[TargetSeqIndex] = n + 1;
 			}
 		}
-	EndTimer(BMS_U1);
 
 	SetQueryBitMapWords();
 	QueryWordCount = m_QueryWords.Size;
@@ -321,21 +319,17 @@ void BitMapSearcher::SetCandidates()
 	m_BitMaps.Size = DBSeqCount;
 	m_TargetSeqIndexes.Size = TargetCount;
 
-	StartTimer(BMS_U2);
 	for (unsigned TargetIndex = 0; TargetIndex < TargetCount; ++TargetIndex)
 		{
 		unsigned TargetSeqIndex = TargetSeqIndexes[TargetIndex];
 		unsigned WordCount = TargetSeqIndexToWordCount[TargetSeqIndex];
 		TargetIndexToWordCount[TargetIndex] = WordCount;
 		}
-	EndTimer(BMS_U2);
 
 	QuickSortOrderDesc(TargetIndexToWordCount, TargetCount, Order);
 	m_Order.Size = TargetCount;
 
-	StartTimer(BMS_C);
 	ClusterBitMaps();
-	EndTimer(BMS_C);
 
 #if	TRACE
 	{
@@ -378,14 +372,12 @@ void BitMapSearcher::SetCandidates()
 	}
 #endif
 
-	StartTimer(BMS_Z);
 	for (unsigned i = 0; i < TargetCount; ++i)
 		{
 		unsigned TargetSeqIndex = TargetSeqIndexes[i];
 		assert(TargetSeqIndexToWordCount[TargetSeqIndex] > 0);
 		TargetSeqIndexToWordCount[TargetSeqIndex] = 0;
 		}
-	EndTimer(BMS_Z);
 
 #if DEBUG
 	{

@@ -124,7 +124,6 @@ void DeParser::GetLeftRight(AlignResult *AR, unsigned &Diffs, unsigned &Pos_Left
 	unsigned ColHi;
 	GetInternalColRange(Path, ColCount, ColLo, ColHi);
 
-	StartTimer(GetLeftRight);
 	unsigned QPos = 0;
 	unsigned TPos = 0;
 	const byte *Q = AR->m_Query->m_Seq;
@@ -207,7 +206,6 @@ void DeParser::GetLeftRight(AlignResult *AR, unsigned &Diffs, unsigned &Pos_Left
 		}
 	asserta(QPos == 0 && TPos == 0);
 	asserta(DiffsR == Diffs);
-	EndTimer(GetLeftRight);
 	}
 
 void DeParser::ClearHit()

@@ -440,7 +440,6 @@ void SeqToFastq(FILE *f, const byte *Seq, unsigned L, const char *Qual, const ch
 void SeqToFastaRC(FILE *f, const byte *Seq, unsigned L, const char *Label);
 void RevCompSeq(const byte *Seq, unsigned L, byte *RCSeq);
 
-void LogAllocs();
 unsigned GetRequestedThreadCount();
 
 inline char mytoupper(char c) { return c & (~0x20); }
@@ -452,11 +451,5 @@ inline bool myislower(char c) { return (c & 0x20) != 0; }
 #define NO_TRACE		0
 #define TMP_TRACE		2	// true but not 1, for grep_trace
 #define REMOVEME		1
-
-#define StartTimer(x)	/* empty */
-#define PauseTimer(x)	/* empty */
-#define EndTimer(x)		/* empty */
-#define AddCounter(x, y)	/* empty */
-#define IncCounter(x)	/* empty */
 
 #endif	// myutils_h

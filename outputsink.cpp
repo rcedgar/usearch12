@@ -190,7 +190,6 @@ void OutputSink::OpenOutputFiles(CMD Cmd)
 
 void OutputSink::OutputAR(AlignResult *AR)
 	{
-	StartTimer(OS_Output);
 	OutputAln(AR);
 	OutputBlast6(AR);
 	OutputUser(AR);
@@ -199,7 +198,6 @@ void OutputSink::OutputAR(AlignResult *AR)
 	OutputTSeg(AR);
 	OutputUC(AR);
 	OutputTrim(AR);
-	EndTimer(OS_Output);
 	}
 
 void OutputSink::OutputQSeg(AlignResult *AR)

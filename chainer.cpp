@@ -369,8 +369,6 @@ float Chainer::Chain(HSPData **HSPs, unsigned HSPCount,
 		return 0.0f;
 		}
 
-	StartTimer(Chain);
-
 #if	TRACE
 	LogHSPs(HSPs, HSPCount);
 #endif
@@ -500,7 +498,6 @@ float Chainer::Chain(HSPData **HSPs, unsigned HSPCount,
 #if	DEBUG
 	AssertValidChain(OptChain, OptChainLength);
 #endif
-	EndTimer(Chain);
 	return OptScore;
 	}
 

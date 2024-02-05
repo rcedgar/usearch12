@@ -135,11 +135,9 @@ bool LineReader::ReadLine(t_LineBuff &Line)
 			}
 		if (Length == Line.MaxSize)
 			{
-			StartTimer(LR_Realloc);
 			Line.Size = Length;
 			Line.Alloc(Line.MaxSize + 32*1024);
 			LineData = Line.Data;
-			EndTimer(LR_Realloc);
 			}
 		LineData[Length++] = c;
 		}

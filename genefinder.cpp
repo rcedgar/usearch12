@@ -105,7 +105,6 @@ bool GeneFinder::MakeCirc(const SeqInfo *SI, SeqInfo *SIC, unsigned SegLen)
 		return false;
 
 	SIC->AllocSeq(2*SegLen);
-	StartTimer(MakeCirc);
 	SIC->SetLabel(SI->m_Label);
 	SIC->m_L = 2*SegLen;
 	SIC->m_RevComp = false;
@@ -117,7 +116,6 @@ bool GeneFinder::MakeCirc(const SeqInfo *SI, SeqInfo *SIC, unsigned SegLen)
 
 	memcpy(SIC->m_SeqBuffer, EndSeg, SegLen);
 	memcpy(SIC->m_SeqBuffer + SegLen, StartSeg, SegLen);
-	EndTimer(MakeCirc);
 
 	return true;
 	}
@@ -285,8 +283,6 @@ unsigned GeneFinder::SearchWindow()
 
 void GeneFinder::SetCounts()
 	{
-	StartTimer(GF_SetCounts);
-
 	m_Counts.Alloc(m_QueryWordCount);
 	unsigned *Counts = m_Counts.Data;
 	bool *QueryWordPresentVec = m_QueryWordPresentVec.Data;
@@ -303,13 +299,10 @@ void GeneFinder::SetCounts()
 		Counts[Pos] = n;
 		}
 	m_Counts.Size = m_QueryWordCount;
-	EndTimer(GF_SetCounts);
 	}
 
 void GeneFinder::SetRawLoHis()
 	{
-	StartTimer(ScanVec);
-
 	m_RawWinLos.clear();
 	m_RawWinHis.clear();
 
@@ -334,12 +327,10 @@ void GeneFinder::SetRawLoHis()
 		m_RawWinHis.push_back(m_QueryWordCount-1);
 
 	asserta(SIZE(m_RawWinLos) == SIZE(m_RawWinHis));
-	EndTimer(ScanVec);
 	}
 
 void GeneFinder::SetWinLoHis()
 	{
-	StartTimer(MergeLoHis);
 	const unsigned N = SIZE(m_RawWinLos);
 	asserta(SIZE(m_RawWinHis) == N);
 	m_WinLos.clear();
@@ -376,7 +367,6 @@ void GeneFinder::SetWinLoHis()
 		m_WinLos.push_back(Lo);
 		m_WinHis.push_back(Hi);
 		}
-	EndTimer(MergeLoHis);
 	}
 
 const byte *GeneFinder::GetWinSeq()
@@ -476,7 +466,6 @@ uint32 GeneFinder::LettersToWord(const byte *Letters)
 
 void GeneFinder::SetQueryLetters()
 	{
-	StartTimer(SetQueryLetters);
 	const byte *Q = m_Query->m_Seq;
 	const unsigned QL = m_Query->m_L;
 	m_QueryLetters.Alloc(QL);
@@ -489,12 +478,10 @@ void GeneFinder::SetQueryLetters()
 			Letter = (byte) (randu32()%4);
 		Letters[i] = Letter;
 		}
-	EndTimer(SetQueryLetters);
 	}
 
 void GeneFinder::SetQueryWordPresentVec()
 	{
-	StartTimer(SetQueryWordPresentVec);
 	const byte *Letters = m_QueryLetters.Data;
 	m_QueryWordPresentVec.Alloc(m_QueryWordCount);
 	bool *QueryWordPresentVec = m_QueryWordPresentVec.Data;
@@ -526,7 +513,6 @@ void GeneFinder::SetQueryWordPresentVec()
 #endif
 		*QueryWordPresentVec++ = m_DBWordPresentVec[Word];
 		}
-	EndTimer(SetQueryWordPresentVec);
 	}
 
 void GeneFinder::MergeOverlappingRawLoHis()

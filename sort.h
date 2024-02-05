@@ -107,9 +107,7 @@ template<class T> void QuickSortInPlace(T *Values, unsigned N)
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortInPlace);
 	QuickSortInPlaceRecurse<T, false>(Values, 0, int(N-1));
-	EndTimer(QuickSortInPlace);
 	}
 
 template<class T> void QuickSortInPlaceDesc(T *Values, unsigned N)
@@ -118,9 +116,7 @@ template<class T> void QuickSortInPlaceDesc(T *Values, unsigned N)
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortInPlaceDesc);
 	QuickSortInPlaceRecurse<T, true>(Values, 0, int(N-1));
-	EndTimer(QuickSortInPlaceDesc);
 	}
 
 template<class T> void QuickSortOrder(const T *Values, unsigned N, unsigned *Order)
@@ -129,10 +125,8 @@ template<class T> void QuickSortOrder(const T *Values, unsigned N, unsigned *Ord
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortOrder);
 	Range(Order, N);
 	QuickSortOrderRecurse<T, false>(Values, 0, int(N-1), Order);
-	EndTimer(QuickSortOrder);
 	}
 
 template<class T> void QuickSortOrderDesc(const T *Values, unsigned N, unsigned *Order)
@@ -141,10 +135,8 @@ template<class T> void QuickSortOrderDesc(const T *Values, unsigned N, unsigned 
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortOrderDesc);
 	Range(Order, N);
 	QuickSortOrderRecurse<T, true>(Values, 0, int(N-1), Order);
-	EndTimer(QuickSortOrderDesc);
 	}
 
 template<class T> void QuickSortSubset(const T *Values, unsigned N, unsigned *Subset)
@@ -153,9 +145,7 @@ template<class T> void QuickSortSubset(const T *Values, unsigned N, unsigned *Su
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortSubset);
 	QuickSortOrderRecurse<T, false>(Values, 0, int(N-1), Subset);
-	EndTimer(QuickSortSubset);
 	}
 
 template<class T> void QuickSortSubsetDesc(const T *Values, unsigned N, unsigned *Subset)
@@ -164,9 +154,7 @@ template<class T> void QuickSortSubsetDesc(const T *Values, unsigned N, unsigned
 		return;
 	asserta(N < INT_MAX);
 
-	StartTimer(QuickSortSubsetDesc);
 	QuickSortOrderRecurse<T, true>(Values, 0, int(N-1), Subset);
-	EndTimer(QuickSortSubsetDesc);
 	}
 
 template<class t> float GetCountFromMapFloat(map<t, float> &Map, const t &Key, bool Fail = true)

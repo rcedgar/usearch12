@@ -61,7 +61,6 @@ void UDBUsortedSearcher::UDBSearchBig()
 	unsigned MaxSize = m_U.MaxSize;
 	if (MaxSize < SeqCount)
 		{
-		StartTimer(AllocU);
 	// Big chunk to avoid thrashing
 		unsigned NewMaxSize = RoundUp(SeqCount + GROW64K, GROW64K);
 		//Log("Realloc NewMaxSize %u, SeqCount %u\n", NewMaxSize, SeqCount);
@@ -70,29 +69,11 @@ void UDBUsortedSearcher::UDBSearchBig()
 		for (unsigned i = 0; i < m_U.MaxSize; ++i)
 			U[i] = 0;
 		m_TopTargetIndexes.Size = 0;
-		EndTimer(AllocU);
-		//Log("After realloc\n");
-		//LogVecs();
 		}
-
-	StartTimer(SetU);
 
 	m_TopTargetIndexes.Alloc(SeqCount);
 
 	m_U.Size = SeqCount;
-
-#if	0 // DEBUG
-	{
-	asserta(m_U.MaxSize >= SeqCount);
-	const uint32 *U = m_U.Data;
-	for (unsigned i = 0; i < SeqCount; ++i)
-		if (U[i] != 0)
-			{
-			// LogVecs();
-			Die("U[%u] = %u", i, U[i]);
-			}
-	}
-#endif
 
 	uint32 *TopTargetIndexes = m_TopTargetIndexes.Data;
 	uint32 *U = m_U.Data;
@@ -117,7 +98,6 @@ void UDBUsortedSearcher::UDBSearchBig()
 			U[SeedIndex] = Count+1;
 			}
 		}
-	EndTimer(SetU);
 	m_TopTargetIndexes.Size = TopCount;
 	//Log("m_TopTargetIndexes.Size %u\n", m_TopTargetIndexes.Size);
 	if (TopCount == 0)
