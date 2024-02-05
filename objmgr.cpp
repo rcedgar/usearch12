@@ -467,7 +467,54 @@ void ObjMgr::LogGlobalStats()
 #endif
 		Log("\n");
 		}
+	LogThreadStats();
 #if	TRACE_OBJS
 //	LogBusy();
 #endif
+	}
+
+uint ObjMgr::GetBusyCount(uint Type) const
+	{
+	asserta(Type < OTCount);
+	uint n = 0;
+	for (const Obj *p = m_Busy[Type]; p; p = p->m_Fwd)
+		++n;
+	return n;
+	}
+
+uint ObjMgr::GetFreeCount(uint Type) const
+	{
+	asserta(Type < OTCount);
+	uint n = 0;
+	for (const Obj *p = m_Free[Type]; p; p = p->m_Fwd)
+		++n;
+	return n;
+	}
+
+void ObjMgr::LogThreadStats()
+	{
+	Log("ObjMgr::LogThreadStats() %u threads\n",
+	  m_ThreadCount);
+	for (uint ThreadIndex = 0; ThreadIndex < m_ThreadCount; ++ThreadIndex)
+		{
+		const ObjMgr *OM = m_OMs[ThreadIndex];
+		if (OM != 0)
+			OM->LogStats();
+		}
+	}
+
+void ObjMgr::LogStats() const
+	{
+	Log("ObjMgr::LogStats() this=%p\n", this);
+#define T(x)	Log("  %7u busy  %7u free  %s\n", \
+	GetBusyCount(OT_##x), GetFreeCount(OT_##x), #x);
+#include "objtypes.h"	
+	}
+
+void ObjMgr::ThreadDownByIndex(uint ThreadIndex, Obj *pObj)
+	{
+	asserta(ThreadIndex < m_ThreadCount);
+	ObjMgr *OM = m_OMs[ThreadIndex];
+	asserta(OM != 0);
+	OM->ThreadDown(pObj);
 	}

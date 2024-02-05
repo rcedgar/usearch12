@@ -1,3 +1,4 @@
+#include "myutils.h"
 #include "udbdata.h"
 #include "pcb.h"
 #include "objmgr.h"
@@ -9,8 +10,8 @@
 #include "pcb.h"
 #include <chrono>
 
-static uint g_ProgressThreadIndex = 0;
-static vector<SeqInfo *> g_Pending;
+static uint g_ProgressThreadIndex = UINT_MAX;
+static vector<pair<uint, SeqInfo *> > g_Pending;
 static UDBData *g_udb;
 static unsigned g_ClusterCount;
 static unsigned g_MemberCount;
@@ -140,17 +141,18 @@ static const char *MyPCB()
 static void ProcessPending(OutputSink &OS)
 	{
 	BeginUpdate();
-	for (vector<SeqInfo *>::const_iterator p = g_Pending.begin();
+	for (vector<pair<uint, SeqInfo *> >::const_iterator p = g_Pending.begin();
 	  p != g_Pending.end(); ++p)
 		{
-		SeqInfo *Query = *p;
+		uint QueryThreadIndex = p->first;
+		SeqInfo *Query = p->second;
 		uint ClusterIndex = g_udb->AddSIToDB_CopyData(Query);
 		asserta(ClusterIndex == g_ClusterCount);
 		++g_ClusterCount;
 		g_udb->AddSeqNoncoded(ClusterIndex,
 			Query->m_Seq, Query->m_L, false);
 		OS.OutputMatchedFalse(Query, ClusterIndex);
-		ObjMgr::Down(Query);
+		ObjMgr::ThreadDownByIndex(QueryThreadIndex, Query);
 		}
 	g_Pending.clear();
 	EndUpdate();
@@ -205,7 +207,8 @@ static void Thread(SeqSource *SS, bool Nucleo)
 			ObjMgr::Up(Query);
 			BeginUpdate();
 			asserta(g_State == AS_Updating);
-			g_Pending.push_back(Query);
+			g_Pending.push_back(
+			  pair<uint, SeqInfo *>(ThreadIndex, Query));
 			asserta(g_State == AS_Updating);
 			EndUpdate();
 			}
@@ -245,7 +248,7 @@ void cmd_cluster_mt()
 
 	uint ThreadCount = GetRequestedThreadCount();
 	Progress("%u threads\n", ThreadCount);
-	g_ProgressThreadIndex = 0;
+	g_ProgressThreadIndex = UINT_MAX;
 	ProgressCallback(0, 1000);
 
 	g_State = AS_Idle;
@@ -259,7 +262,6 @@ void cmd_cluster_mt()
 		ts[ThreadIndex]->join();
 
 	ProgressCallback(999, 1000);
-	g_ProgressThreadIndex = UINT_MAX;
 
 	g_udb->ToFasta(opt(centroids));
 	ObjMgr::LogGlobalStats();

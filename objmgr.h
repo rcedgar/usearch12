@@ -42,6 +42,10 @@ public:
 	static void Up(Obj *pObj);
 	static void Down(Obj *pObj);
 	static void LogGlobalStats();
+	void LogStats() const;
+	uint GetBusyCount(uint Type) const;
+	uint GetFreeCount(uint Type) const;
+	static void LogThreadStats();
 
 #define T(x)	\
 		static x *Get##x() { return (x *) StaticGetObj(OT_##x); } \
@@ -77,6 +81,8 @@ public:
 			Validate();
 #endif
 		}
+
+	static void ThreadDownByIndex(uint ThreadIndex, Obj *pObj);
 
 	void ThreadDown(Obj *pObj)
 		{
