@@ -121,7 +121,7 @@ void SeqInfo::Copy(const SeqInfo &rhs)
 	m_ORFNucL = rhs.m_ORFNucL;
 	m_ORFNucSeq = rhs.m_ORFNucSeq;
 	if (rhs.m_ORFNucSeq != 0)
-		ObjMgr::Up(m_ORFNucSeq);
+		m_ORFNucSeq->Up();
 	}
 
 void SeqInfo::Init(unsigned Index)

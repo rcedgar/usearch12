@@ -123,11 +123,12 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	FASTQSeqSource &SS1 = *aSS1;
 	FASTQSeqSource &SS2 = *aSS2;
 	unsigned ThreadIndex = GetThreadIndex();
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
 
-	SeqInfo *SI1 = ObjMgr::GetSeqInfo();
-	SeqInfo *SI2 = ObjMgr::GetSeqInfo();
-	SeqInfo *SI2RC = ObjMgr::GetSeqInfo();
-	SeqInfo *SIJ = ObjMgr::GetSeqInfo();
+	SeqInfo *SI1 = OM.GetSeqInfo();
+	SeqInfo *SI2 = OM.GetSeqInfo();
+	SeqInfo *SI2RC = OM.GetSeqInfo();
+	SeqInfo *SIJ = OM.GetSeqInfo();
 
 	for (;;)
 		{

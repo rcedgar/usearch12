@@ -146,6 +146,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	FASTQSeqSource &SS1 = *aSS1;
 	FASTQSeqSource &SS2 = *aSS2;
 	unsigned ThreadIndex = GetThreadIndex();
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
 
 	MergeThreadData TD;
 
@@ -156,11 +157,11 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	TD.AP = AlnParams::GetGlobalAP();
 	TD.AH = AlnHeuristics::GetGlobalAH();
 	TD.HF->Init(*TD.AP, *TD.AH);
-	TD.PI = ObjMgr::GetPathInfo();
-	TD.SI1 = ObjMgr::GetSeqInfo();
-	TD.SI2 = ObjMgr::GetSeqInfo();
-	TD.SIOv = ObjMgr::GetSeqInfo();
-	TD.SI2RC = ObjMgr::GetSeqInfo();
+	TD.PI = OM->GetPathInfo();
+	TD.SI1 = OM->GetSeqInfo();
+	TD.SI2 = OM->GetSeqInfo();
+	TD.SIOv = OM->GetSeqInfo();
+	TD.SI2RC = OM->GetSeqInfo();
 
 	for (;;)
 		{

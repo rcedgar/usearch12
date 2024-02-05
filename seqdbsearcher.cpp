@@ -40,11 +40,11 @@ void SeqDBSearcher::SearchImpl()
 	const unsigned TargetSeqCount = m_SeqDB->GetSeqCount();
 	for (unsigned TargetSeqIndex = 0; TargetSeqIndex < TargetSeqCount; ++TargetSeqIndex)
 		{
-		SeqInfo *Target = ObjMgr::GetSeqInfo();
+		SeqInfo *Target = m_OM->GetSeqInfo();
 		m_SeqDB->GetSI(TargetSeqIndex, *Target);
 		SetTarget(Target);
 		bool Terminate = Align();
-		ObjMgr::Down(Target);
+		Target->Down();
 		if (Terminate)
 			return;
 		}

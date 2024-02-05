@@ -42,18 +42,20 @@ public:
 	Accepter *m_Accepter;
 	Terminator *m_Terminator;
 	ORFFinder *m_ORFFinder;
+	ObjMgr *m_OM;
 
 protected:
 	Searcher();
 
 public:
 	void InitSearcher(HitMgr *hitmgr, Aligner *aligner,
-	  Accepter *accepter, Terminator *terminator)
+	  Accepter *accepter, Terminator *terminator, ObjMgr *OM)
 		{
 		m_HitMgr = hitmgr;
 		m_Aligner = aligner;
 		m_Accepter = accepter;
 		m_Terminator = terminator;
+		m_OM = OM;
 		m_Query = 0;
 		m_Target = 0;
 		m_RevComp = false;

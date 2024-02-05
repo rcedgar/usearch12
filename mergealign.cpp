@@ -228,6 +228,8 @@ bool MergeAlign(MergeThreadData &TD)
 	SeqInfo *SIOv = TD.SIOv;
 	HSPFinder *HF = TD.HF;
 	const AlnHeuristics *AH = TD.AH;
+	ObjMgr *OM = SI1->m_Owner;
+
 	TD.DiffCount = 0;
 
 	HF->SetA(SI1);
@@ -297,7 +299,7 @@ bool MergeAlign(MergeThreadData &TD)
 
 	if (g_fAln != 0)
 		{
-		TD.AR = ObjMgr::GetAlignResult();
+		TD.AR = OM->GetAlignResult();
 		TD.AR->CreateLocalUngapped(*SI1, *SI2RC, TD.HSP, true);
 
 		LOCK();
@@ -306,7 +308,7 @@ bool MergeAlign(MergeThreadData &TD)
 			WriteStagger(g_fAln, *TD.AR);
 		UNLOCK();
 
-		ObjMgr::Down(TD.AR);
+		TD.AR->Down();
 		TD.AR = 0;
 		}
 

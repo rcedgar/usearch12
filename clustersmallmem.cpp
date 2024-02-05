@@ -64,6 +64,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	DB_SORT SortOrder = DBS_None;
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
 
 	bool Nucleo = SS->GetIsNucleo();
 
@@ -78,11 +79,11 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	bool AllDone = false;
 	for (;;)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM.GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
 			{
-			ObjMgr::Down(Query);
+			Query->Down();
 			break;
 			}
 		ProgressCallback(SS->GetPctDoneX10(), 1000);
@@ -124,7 +125,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 			break;
 
 		searcher->Search(Query);
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 	ProgressCallback(999, 1000);

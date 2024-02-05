@@ -39,8 +39,9 @@ AlignResult *GlobalAligner::Align()
 	IncCounter(GlobalAligner_Align);
 	asserta(m_Target != 0);
 	asserta(m_PI == 0);
+	ObjMgr *OM = m_Target->m_Owner;
 
-	m_PI = ObjMgr::GetPathInfo();
+	m_PI = m_Target->m_Owner->GetPathInfo();
 
 	float HSPFractId = FLT_MAX;
 	bool Aligned = false;
@@ -50,11 +51,11 @@ AlignResult *GlobalAligner::Align()
 	AlignResult *AR = 0;
 	if (Aligned)
 		{
-		AR = ObjMgr::GetAlignResult();
+		AR = OM->GetAlignResult();
 		AR->CreateGlobal(*m_Query, *m_Target, *m_PI, m_IsNucleo);
 		}
 
-	ObjMgr::Down(m_PI);
+	m_PI->Down();
 	m_PI = 0;
 
 	return AR;

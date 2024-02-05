@@ -70,13 +70,15 @@ int main(int argc, char **argv)
 
 	OutputSink::CloseOutputFiles();
 
-	CheckUsedOpts(false);
-
 	LogCounters();
 
 	if (g_LowerCaseWarning)
 		Warning("Input has lower-case masked sequences");
 
+	if (opt(log_objmgr_stats))
+		ObjMgr::LogGlobalStats();
+
 	LogElapsedTimeAndRAM();
+	CheckUsedOpts(false);
 	return 0;
 	}

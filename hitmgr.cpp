@@ -54,7 +54,7 @@ void HitMgr::Clear(bool ctor)
 			if (AR != 0)
 				{
 				//AR->Down();
-				ObjMgr::Down(AR);
+				AR->Down();
 				m_Hits[i] = 0;
 				}
 			}
@@ -92,7 +92,7 @@ void HitMgr::SetQuery(SeqInfo *Query)
 	asserta(m_Query == 0);
 	m_Query = Query;
 	if (m_Query != 0)
-		ObjMgr::Up(m_Query);
+		m_Query->Up();
 	m_QueryClusterIndex = UINT_MAX;
 	}
 
@@ -138,7 +138,7 @@ void HitMgr::OnQueryDone(SeqInfo *Query)
 
 	DeleteHits();
 
-	ObjMgr::Down(m_Query);
+	m_Query->Down();
 	m_Query = 0;
 	EndTimer(HM_OnQueryDone);
 	}
@@ -155,7 +155,7 @@ void HitMgr::DeleteHits()
 		{
 		AlignResult *AR = m_Hits[i];
 		asserta(AR != 0);
-		ObjMgr::Down(AR);
+		AR->Down();
 		m_Hits[i] = 0;
 		}
 
@@ -194,7 +194,7 @@ void HitMgr::AppendHit(AlignResult *AR)
 	m_Hits[m_HitCount] = AR;
 	++m_HitCount;
 
-	ObjMgr::Up(AR);
+	AR->Up();
 
 #if	TRACE
 	LogMe();
@@ -547,12 +547,6 @@ void HitMgr::ValidateARs()
 	for (unsigned HitIndex = 0; HitIndex < HitCount; ++HitIndex)
 		{
 		AlignResult *AR = GetHit(HitIndex);
-#if	TRACK_OBJ_THREAD
-		int ThreadIndex = omp_get_thread_num();
-		asserta(AR->m_OMPThreadIndex == ThreadIndex);
-		asserta(AR->m_Query->m_OMPThreadIndex == ThreadIndex);
-		asserta(AR->m_Target->m_OMPThreadIndex == ThreadIndex);
-#endif
 		asserta(AR->GetRefCount() > 0);
 		asserta(AR->m_Query->GetRefCount() > 0);
 		asserta(AR->m_Target->GetRefCount() > 0);

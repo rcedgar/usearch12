@@ -63,8 +63,8 @@ AlignResult *FragAligner::Align()
 	unsigned HitCount = m_HitLos.Size;
 	if (HitCount == 0)
 		return 0;
-
-	AlignResult *AR = ObjMgr::GetAlignResult();
+	ObjMgr *OM = m_Query->m_Owner;
+	AlignResult *AR = OM->GetAlignResult();
 	unsigned Lo = m_HitLos.Data[0];
 	MakeAR(Lo, AR);
 	return AR;
@@ -88,9 +88,10 @@ void FragAligner::AlignMulti(GoBuff<AlignResult *, 32, true, false> &ARs)
 	unsigned HitCount = m_HitLos.Size;
 	ARs.Alloc(HitCount);
 	ARs.Size = HitCount;
+	ObjMgr *OM = m_Query->m_Owner;
 	for (unsigned i = 0; i < HitCount; ++i)
 		{
-		AlignResult *AR = ObjMgr::GetAlignResult();
+		AlignResult *AR = OM->GetAlignResult();
 		unsigned Lo = m_HitLos.Data[i];
 		MakeAR(Lo, AR);
 		ARs.Data[i] = AR;

@@ -24,6 +24,7 @@ static mutex g_UpdateLock;
 
 static vector<UDBUsortedSearcher *> g_USs;
 static vector<OutputSink *> g_OSs;
+static vector<ObjMgr *> g_OMs;
 
 static const char *MyPCB()
 	{
@@ -39,6 +40,7 @@ static void ProcessPending(uint ThreadIndex)
 	{
 	UDBUsortedSearcher *US = g_USs[ThreadIndex];
 	OutputSink *OS = g_OSs[ThreadIndex];
+	ObjMgr *OM = g_OMs[ThreadIndex];
 	vector<SeqInfo *> &Pending = g_PendingVec[ThreadIndex];
 
 	Progress("Process pending (thread %u, %u)...\n", ThreadIndex, SIZE(Pending));
@@ -56,7 +58,7 @@ static void ProcessPending(uint ThreadIndex)
 			g_udb->AddSeqNoncoded(ClusterIndex,
 				Query->m_Seq, Query->m_L, false);
 			OS->OutputMatchedFalse(Query, ClusterIndex);
-			ObjMgr::ThreadDownByIndex(ThreadIndex, Query);
+			Query->Down();
 			}
 		else
 			{
@@ -73,15 +75,16 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 	{
 	UDBUsortedSearcher *US = g_USs[ThreadIndex];
 	OutputSink *OS = g_OSs[ThreadIndex];
+	ObjMgr *OM = g_OMs[ThreadIndex];
 	vector<SeqInfo *> &Pending = g_PendingVec[ThreadIndex];
 
 	for (;;)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
 			{
-			ObjMgr::Down(Query);
+			Query->Down();
 			break;
 			}
 		if (g_ProgressThreadIndex == UINT_MAX)
@@ -93,13 +96,13 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 		AlignResult *AR = US->m_HitMgr->GetTopHit();
 		if (AR == 0)
 			{
-			ObjMgr::Up(Query);
+			Query->Up();
 			Pending.push_back(Query);
 			++g_TotalPendingCount;
 			if (g_TotalPendingCount >= MAX_PENDING)
 				{
 				US->m_HitMgr->OnQueryDone(Query);
-				ObjMgr::Down(Query);
+				Query->Down();
 				Query = 0;
 				break;
 				}
@@ -112,7 +115,7 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 			g_OutputLock.unlock();
 			}
 		US->m_HitMgr->OnQueryDone(Query);
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 

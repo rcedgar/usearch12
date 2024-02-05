@@ -23,6 +23,9 @@ void GetFastqs2(const string &FwdOpt, const string &RevOpt,
 	{
 	FwdFileNames.clear();
 	RevFileNames.clear();
+	string FqDir = opt(fqdir);
+	if (!FqDir.empty() && !EndsWith(FqDir, "/"))
+		FqDir += '/';
 
 	if (StartsWith(FwdOpt, "@"))
 		{
@@ -44,12 +47,12 @@ void GetFastqs2(const string &FwdOpt, const string &RevOpt,
 				continue;
 			Split(Line, Fields, '\t');
 			unsigned n = SIZE(Fields);
-			if (n != 3)
-				Die("Bad line in %s, should be 3 tabbed fields, got %u",
+			if (n != 2)
+				Die("Bad line in %s, should be 2 tabbed fields, got %u",
 				  FwdOpt.c_str(), n);
 
-			FwdFileNames.push_back(Fields[0]);
-			RevFileNames.push_back(Fields[1]);
+			FwdFileNames.push_back(FqDir + Fields[0]);
+			RevFileNames.push_back(FqDir + Fields[1]);
 			}
 		CloseStdioFile(f);
 		return;

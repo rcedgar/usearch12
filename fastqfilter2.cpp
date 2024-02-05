@@ -23,8 +23,9 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 	FASTQSeqSource &SS1 = *aSS1;
 	FASTQSeqSource &SS2 = *aSS2;
 	unsigned ThreadIndex = GetThreadIndex();
-	SeqInfo *SI1 = ObjMgr::GetSeqInfo();
-	SeqInfo *SI2 = ObjMgr::GetSeqInfo();
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
+	SeqInfo *SI1 = OM.GetSeqInfo();
+	SeqInfo *SI2 = OM.GetSeqInfo();
 
 	if (ThreadIndex == 1)
 		ProgressStep(0, 1000, "Filtering");

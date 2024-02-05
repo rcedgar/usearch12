@@ -253,7 +253,8 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		HM.AddSink(sink);
 		}
 
-	searcher->InitSearcher(&HM, aligner, accepter, terminator);
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	searcher->InitSearcher(&HM, aligner, accepter, terminator, OM);
 	searcher->m_RevComp = RevComp;
 	searcher->m_Xlat = Xlat;
 

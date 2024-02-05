@@ -313,11 +313,11 @@ void TestLocalAligner2()
 
 			LA2->AlignMulti(ARs);
 			LA2->OnTargetDone(Target);
-			ObjMgr::Down(Target);
+			Target->Down();
 			}
 
 		LA2->OnQueryDone(Query);
-		ObjMgr::Down(Query);
+		Query->Down();
 		}
 	}
 

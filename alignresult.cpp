@@ -72,17 +72,17 @@ void AlignResult::OnZeroRefCount()
 	{
 	if (m_Query)
 		{
-		ObjMgr::Down(m_Query);
+		m_Query->Down();
 		m_Query = 0;
 		}
 	if (m_Target)
 		{
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 		m_Target = 0;
 		}
 	if (m_PI)
 		{
-		ObjMgr::Down(m_PI);
+		m_PI->Down();
 		m_PI = 0;
 		}
 
@@ -128,10 +128,10 @@ void AlignResult::Create(bool Local, bool Gapped, SeqInfo &Query, SeqInfo &Targe
 	m_Nucleo = Nucleo;
 
 	m_Query = &Query;
-	ObjMgr::Up(m_Query);
+	m_Query->Up();
 
 	m_Target = &Target;
-	ObjMgr::Up(m_Target);
+	m_Target->Up();
 
 	if (Local)
 		{
@@ -150,7 +150,7 @@ void AlignResult::Create(bool Local, bool Gapped, SeqInfo &Query, SeqInfo &Targe
 	if (Local && !Gapped)
 		{
 		asserta(PI == 0);
-		m_PI = ObjMgr::GetPathInfo();
+		m_PI = m_Owner->GetPathInfo();
 		unsigned SegLength = HSP->Leni;
 		m_PI->Alloc2(SegLength, SegLength);
 		m_PI->SetEmpty();
@@ -160,7 +160,7 @@ void AlignResult::Create(bool Local, bool Gapped, SeqInfo &Query, SeqInfo &Targe
 		{
 		m_PI = PI;
 		if (m_PI != 0)
-			ObjMgr::Up(m_PI);
+			m_PI->Up();
 		}
 
 	m_BitScoreSet = false;

@@ -78,7 +78,8 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	US->m_UDBData->CreateEmpty(Params);
 	seqdb = US->m_UDBData->m_SeqDB;
 
-	US->InitSearcher(&HM, aligner, &accepter, &terminator);
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	US->InitSearcher(&HM, aligner, &accepter, &terminator, OM);
 	US->m_RevComp = false;
 	udbdata = US->m_UDBData;
 	US->m_RevComp = StrandOptToRevComp(false, false);

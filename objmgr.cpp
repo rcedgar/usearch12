@@ -4,31 +4,27 @@
 #include "pathinfo.h"
 #include "alignresult.h"
 #include "cpplock.h"
+#include "obj.h"
 
-#undef Up
-#undef Down
+void Obj::Up()
+	{
+	m_Owner->Up(this);
+	}
 
-ObjMgr **ObjMgr::m_OMs;
-unsigned ObjMgr::m_ThreadCount;
+void Obj::Down()
+	{
+	m_Owner->Down(this);
+	}
 
-ObjMgr *ObjMgr::GetObjMgr()
+vector<ObjMgr *> ObjMgr::m_OMs;
+
+ObjMgr *ObjMgr::CreateObjMgr()
 	{
 	LOCK();
-	unsigned ThreadIndex = GetThreadIndex();
-	if (ThreadIndex >= m_ThreadCount)
-		{
-		unsigned NewThreadCount = ThreadIndex + 32;
-		ObjMgr **NewOMs = myalloc(ObjMgr *, NewThreadCount);
-		zero_array(NewOMs, NewThreadCount);
-		if (m_ThreadCount > 0)
-			memcpy(NewOMs, m_OMs, m_ThreadCount*sizeof(ObjMgr *));
-		m_OMs = NewOMs;
-		m_ThreadCount = NewThreadCount;
-		}
-	if (m_OMs[ThreadIndex] == 0)
-		m_OMs[ThreadIndex] = new ObjMgr(ThreadIndex);
+	ObjMgr *OM = new ObjMgr;
+	m_OMs.push_back(OM);
 	UNLOCK();
-	return m_OMs[ThreadIndex];
+	return OM;
 	}
 
 const char *ObjTypeToStr(ObjType Type)
@@ -55,9 +51,8 @@ const char *ObjTypeToStr2(ObjType Type)
 	return "??";
 	}
 
-ObjMgr::ObjMgr(uint ThreadIndex)
+ObjMgr::ObjMgr()
 	{
-	m_ThreadIndex = ThreadIndex;
 	zero_array(m_Free, OTCount);
 	zero_array(m_Busy, OTCount);
 
@@ -70,22 +65,45 @@ ObjMgr::ObjMgr(uint ThreadIndex)
 #endif
 	}
 
-void ObjMgr::Down(Obj *pObj)
-	{
-	ObjMgr *OM = GetObjMgr();
-	OM->ThreadDown(pObj);
-	}
-
 void ObjMgr::Up(Obj *pObj)
 	{
-	ObjMgr *OM = GetObjMgr();
-	OM->ThreadUp(pObj);
+#if	DEBUG
+	if (m_Validate)
+		Validate();
+#endif
+
+	assert(pObj->m_RefCount != 0);
+	++pObj->m_RefCount;
+
+#if	DEBUG
+	if (m_Validate)
+		Validate();
+#endif
 	}
 
-Obj *ObjMgr::StaticGetObj(ObjType Type)
+void ObjMgr::Down(Obj *pObj)
 	{
-	ObjMgr *OM = GetObjMgr();
-	return OM->ThreadGetObj(Type);
+#if	DEBUG
+	if (m_Validate)
+		Validate();
+#endif
+	assert(pObj->m_RefCount > 0);
+	--pObj->m_RefCount;
+	if (pObj->m_RefCount == 0)
+		{
+		ObjType Type = pObj->m_Type;
+#if	DEBUG
+		assert(m_BusyCounts[Type] > 0);
+		--(m_BusyCounts[Type]);
+#endif
+		FreeObj(pObj);
+		pObj->OnZeroRefCount();
+		}
+
+#if	DEBUG
+	if (m_Validate)
+		Validate();
+#endif
 	}
 
 Obj *ObjMgr::AllocNew(ObjType Type)
@@ -103,11 +121,11 @@ Obj *ObjMgr::AllocNew(ObjType Type)
 	default:
 		assert(false);
 		}
-	pObj->m_ThreadIndex = m_ThreadIndex;
+	pObj->m_Owner = this;
 	return pObj;
 	}
 
-Obj *ObjMgr::ThreadGetObj(ObjType Type)
+Obj *ObjMgr::GetObj(ObjType Type)
 	{
 #if	DEBUG
 	++(m_GetCallCounts[Type]);
@@ -363,7 +381,7 @@ void ObjMgr::ThreadUp(Obj *pObj, const char *FileName, unsigned LineNr)
 		LineNr);
 	}
 
-void ObjMgr::Up(Obj *pObj, const char *FileName, unsigned LineNr)
+void Obj *pObj, const char *FileName, unsigned LineNr->Up()
 	{
 	ObjMgr *OM = GetObjMgr();
 	OM->ThreadUp(pObj, FileName, LineNr);
@@ -382,7 +400,7 @@ void ObjMgr::ThreadDown(Obj *pObj, const char *FileName, unsigned LineNr)
 		LineNr);
 	}
 
-void ObjMgr::Down(Obj *pObj, const char *FileName, unsigned LineNr)
+void Obj *pObj, const char *FileName, unsigned LineNr->Down()
 	{
 	ObjMgr *OM = GetObjMgr();
 	OM->ThreadDown(pObj, FileName, LineNr);
@@ -419,63 +437,6 @@ static unsigned g_AllocCallCount[OTCount];
 static unsigned g_FreeCallCount[OTCount];
 #endif
 
-void ObjMgr::UpdateGlobalStats()
-	{
-	for (unsigned ThreadIndex = 0; ThreadIndex < m_ThreadCount; ++ThreadIndex)
-		{
-		ObjMgr *OM = m_OMs[ThreadIndex];
-		if (OM != 0)
-			OM->ThreadUpdateGlobalStats();
-		}
-	}
-
-void ObjMgr::ThreadUpdateGlobalStats()
-	{
-	LOCK();
-	for (unsigned i = 0; i < OTCount; ++i)
-		{
-		ObjType Type = (ObjType) i;
-		g_FreeCount[Type] += GetFreeCount(Type);
-		g_BusyCount[Type] += GetBusyCount(Type);
-		g_MaxRefCount[Type] = max(g_MaxRefCount[Type], GetMaxRefCount(Type));
-		g_Mem[Type] += GetTotalMem(Type);
-#if	DEBUG
-		g_GetCallCount[Type] += m_GetCallCounts[Type];
-		g_AllocCallCount[Type] += m_AllocCallCounts[Type];
-		g_FreeCallCount[Type] += m_FreeCallCounts[Type];
-#endif
-		}
-	UNLOCK();
-	}
-
-void ObjMgr::LogGlobalStats()
-	{
-	Log("\n");
-	Log("            Type        Busy        Free         Mem   MaxRefCnt        Gets      Allocs       Frees\n");
-	Log("----------------  ----------  ----------  ----------  ----------  ----------  ----------  ----------\n");
-	for (unsigned i = 0; i < OTCount; ++i)
-		{
-		ObjType Type = (ObjType) i;
-		const char *Name = ObjTypeToStr(Type);
-
-		Log("%16.16s", Name);
-		Log("  %10.10s", IntToStr(g_BusyCount[Type]));
-		Log("  %10.10s", IntToStr(g_FreeCount[Type]));
-		Log("  %10.10s", MemBytesToStr(g_Mem[Type]));
-		Log("  %10u", g_MaxRefCount[Type]);
-#if	DEBUG
-		Log("  %10.10s", IntToStr(g_GetCallCount[Type]));
-		Log("  %10.10s", IntToStr(g_AllocCallCount[Type]));
-		Log("  %10.10s", IntToStr(g_FreeCallCount[Type]));
-#endif
-		Log("\n");
-		}
-	LogThreadStats();
-#if	TRACE_OBJS
-//	LogBusy();
-#endif
-	}
-
 uint ObjMgr::GetBusyCount(uint Type) const
 	{
 	asserta(Type < OTCount);
@@ -494,18 +455,6 @@ uint ObjMgr::GetFreeCount(uint Type) const
 	return n;
 	}
 
-void ObjMgr::LogThreadStats()
-	{
-	Log("ObjMgr::LogThreadStats() %u threads\n",
-	  m_ThreadCount);
-	for (uint ThreadIndex = 0; ThreadIndex < m_ThreadCount; ++ThreadIndex)
-		{
-		const ObjMgr *OM = m_OMs[ThreadIndex];
-		if (OM != 0)
-			OM->LogStats();
-		}
-	}
-
 void ObjMgr::LogStats() const
 	{
 	Log("ObjMgr::LogStats() this=%p\n", this);
@@ -514,10 +463,29 @@ void ObjMgr::LogStats() const
 #include "objtypes.h"	
 	}
 
-void ObjMgr::ThreadDownByIndex(uint ThreadIndex, Obj *pObj)
+void ObjMgr::LogGlobalStats()
 	{
-	asserta(ThreadIndex < m_ThreadCount);
-	ObjMgr *OM = m_OMs[ThreadIndex];
-	asserta(OM != 0);
-	OM->ThreadDown(pObj);
+	uint N = SIZE(m_OMs);
+	Log("ObjMgr::LogGlobalStats(), %u OMs\n", N);
+	Log("");
+	Log("     Obj        Busy        Free   MaxRefCnt         Mem\n");
+	Log("--------  ----------  ----------  ----------  ----------\n");
+	for (uint iType = 0; iType < OTCount; ++iType)
+		{
+		ObjType Type = (ObjType) iType;
+		uint FreeCount = 0;
+		uint BusyCount = 0;
+		uint MaxRefCount = 0;
+		float TotalMem = 0;
+		for (uint i = 0; i < N; ++i)
+			{
+			FreeCount += m_OMs[i]->GetFreeCount(Type);
+			BusyCount += m_OMs[i]->GetBusyCount(Type);
+			TotalMem += m_OMs[i]->GetTotalMem(Type);
+			MaxRefCount = max(MaxRefCount, m_OMs[i]->GetMaxRefCount(Type));
+			}
+		Log("%8.8s  %10u  %10u  %10u  %10.10s\n",
+			ObjTypeToStr(Type), BusyCount, FreeCount,
+			MaxRefCount, MemBytesToStr(TotalMem));
+		}
 	}

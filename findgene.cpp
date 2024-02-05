@@ -33,7 +33,8 @@ static unsigned g_ProgressThreadIndex = UINT_MAX;
 
 static void Thread(SeqSource *SS, bool RevComp)
 	{
-	unsigned ThreadIndex = GetThreadIndex();
+	uint ThreadIndex = GetThreadIndex();
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
 
 	FragAligner *FA = new FragAligner;
 	FA->FragInit(true, false, 0);
@@ -52,7 +53,7 @@ static void Thread(SeqSource *SS, bool RevComp)
 
 	for (;;)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 #if	TIM
 		t1 = GetClockTicks();
 #endif
@@ -63,7 +64,7 @@ static void Thread(SeqSource *SS, bool RevComp)
 #endif
 		if (!Ok)
 			{
-			ObjMgr::Down(Query);
+			Query->Down();
 			break;
 			}
 		if (g_ProgressThreadIndex == UINT_MAX)
@@ -80,7 +81,7 @@ static void Thread(SeqSource *SS, bool RevComp)
 		t2 = GetClockTicks();
 		t_Find += (t2 - t1);
 #endif
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 

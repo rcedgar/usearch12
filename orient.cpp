@@ -138,8 +138,8 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 static void Thread(SeqSource *SS, UDBData *udb)
 	{
 	unsigned ThreadIndex = GetThreadIndex();
-
-	SeqInfo *QueryRC = ObjMgr::GetSeqInfo();
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	SeqInfo *QueryRC = OM->GetSeqInfo();
 	UDBUsortedSearcher *US = new UDBUsortedSearcher;
 	US->m_UDBData->FromUDBData(*udb);
 	unsigned TargetSeqCount = US->GetSeqCount();
@@ -148,11 +148,11 @@ static void Thread(SeqSource *SS, UDBData *udb)
 
 	for (;;)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
 			{
-			ObjMgr::Down(Query);
+			Query->Down();
 			break;
 			}
 		if (g_ProgressThreadIndex == UINT_MAX)
@@ -162,7 +162,7 @@ static void Thread(SeqSource *SS, UDBData *udb)
 
 		Query->GetRevComp(QueryRC);
 		Orient(Query, QueryRC, US);
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 

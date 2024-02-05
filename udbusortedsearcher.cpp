@@ -145,17 +145,18 @@ void UDBUsortedSearcher::SearchImpl()
 
 	const unsigned *TopOrder = m_TopOrder.Data;
 	const unsigned *TopTargetIndexes = m_TopTargetIndexes.Data;
+	ObjMgr *OM = m_Query->m_Owner;
 	for (unsigned k = 0; k < TopCount; ++k)
 		{
 		unsigned i = TopOrder[k];
 		unsigned TargetIndex = TopTargetIndexes[i];
 
-		m_Target = ObjMgr::GetSeqInfo();
+		m_Target = OM->GetSeqInfo();
 		GetTargetSeqInfo(TargetIndex, m_Target);
 		SetTarget(m_Target);
 
 		bool Terminate = Align();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 		if (Terminate)
 			return;
 		}
@@ -183,14 +184,15 @@ void UDBUsortedSearcher::QuickSortTop()
 void UDBUsortedSearcher::AlignAll()
 	{
 	const unsigned SeqCount = GetSeqCount();
+	ObjMgr *OM = m_Query->m_Owner;
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
-		m_Target = ObjMgr::GetSeqInfo();
+		m_Target = OM->GetSeqInfo();
 		m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 
 	// Hack to keep terminator happy
 		m_Terminator->m_AcceptCount = 0;
@@ -340,10 +342,10 @@ void UDBUsortedSearcher::SetTop(unsigned MinU)
 			{
 			unsigned TargetIndex = TopTargetIndexes[k];
 			unsigned u = TopU[k];
-			SeqInfo *Target = ObjMgr::GetSeqInfo();
+			SeqInfo *Target = m_Query->m_Owner->GetSeqInfo();
 			GetTargetSeqInfo(TargetIndex, Target);
 			Log("%7u  %5u  %s\n", TargetIndex, u, Target->m_Label);
-			ObjMgr::Down(Target);
+			Target->Down();
 			}
 		}
 	}
@@ -367,10 +369,10 @@ void UDBUsortedSearcher::SetU(unsigned QueryStep)
 			unsigned u = U[SeqIndex];
 			if (u == 0)
 				continue;
-			SeqInfo *Target = ObjMgr::GetSeqInfo();
+			SeqInfo *Target = m_Query->m_Owner->GetSeqInfo();
 			GetTargetSeqInfo(SeqIndex, Target);
 			Log("%7u  %5u  %s\n", SeqIndex, u, Target->m_Label);
-			ObjMgr::Down(Target);
+			Target->Down();
 			}
 		}
 	}

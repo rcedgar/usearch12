@@ -38,10 +38,10 @@ bool GlobalAlign_AllOpts(XDPMem &Mem, const SeqInfo &Query, const SeqInfo &Targe
   const AlnParams &AP, const AlnHeuristics &AH, HSPFinder &HF, float &HSPFractId,
   PathInfo &PI, bool FullDPAlways, bool FailIfNoHSPs);
 
-bool GlobalAlign_Easy(SeqInfo &Query, SeqInfo &Target, AlignResult &AR);
-void GlobalAlign_Easy_NeverFail(SeqInfo &Query, SeqInfo &Target, AlignResult &AR);
-bool GlobalAlign_Circle(XDPMem &Mem, SeqInfo &Query, SeqInfo &Target,
-  const AlnParams &AP, const AlnHeuristics &AH, HSPFinder &HF, AlignResult *AR);
+//bool GlobalAlign_Easy(SeqInfo &Query, SeqInfo &Target, AlignResult &AR);
+//void GlobalAlign_Easy_NeverFail(SeqInfo &Query, SeqInfo &Target, AlignResult &AR);
+//bool GlobalAlign_Circle(XDPMem &Mem, SeqInfo &Query, SeqInfo &Target,
+//  const AlnParams &AP, const AlnHeuristics &AH, HSPFinder &HF, AlignResult *AR);
 
 float ViterbiFastMem(XDPMem &Mem, const byte *A, unsigned LA,
   const byte *B, unsigned LB, const AlnParams &AP, PathInfo &PI);

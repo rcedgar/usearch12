@@ -128,17 +128,18 @@ void UDBUsortedSearcher::UDBSearchBig()
 	unsigned TopCount2 = CountSortSubsetDesc(U, TopCount, m_CSMem, TopTargetIndexes, TopTargetIndexes2);
 	m_TopTargetIndexes2.Size = TopCount2;
 
+	ObjMgr *OM = m_Query->m_Owner;
 // Align and test hot targets
 	for (unsigned i = 0; i < TopCount2; ++i)
 		{
 		unsigned TargetIndex = TopTargetIndexes2[i];
 
-		m_Target = ObjMgr::GetSeqInfo();
+		m_Target = OM->GetSeqInfo();
 		GetTargetSeqInfo(TargetIndex, m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (!Ok)
 			{
-			ObjMgr::Down(m_Target);
+			m_Target->Down();
 			bool Terminate = m_Terminator->Terminate(m_HitMgr, false);
 			if (Terminate)
 				return;
@@ -147,7 +148,7 @@ void UDBUsortedSearcher::UDBSearchBig()
 			}
 
 		bool Terminate = Align();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 		if (Terminate)
 			return;
 		}

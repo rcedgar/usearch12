@@ -71,8 +71,9 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	asserta(AncHii < LA);
 	asserta(AncHij < LB);
 
-	PathInfo *FwdPI = ObjMgr::GetPathInfo();
-	PathInfo *BwdPI = ObjMgr::GetPathInfo();
+	ObjMgr *OM = PI.m_Owner;
+	PathInfo *FwdPI = OM->GetPathInfo();
+	PathInfo *BwdPI = OM->GetPathInfo();
 
 	const byte *FwdA = A + AncHii;
 	const byte *FwdB = B + AncHij;
@@ -197,8 +198,8 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	HSP.Leni = BwdLeni + FwdLeni + AncLen - 2;
 	HSP.Lenj = BwdLenj + FwdLenj + AncLen - 2;
 
-	ObjMgr::Down(FwdPI);
-	ObjMgr::Down(BwdPI);
+	FwdPI->Down();
+	BwdPI->Down();
 	FwdPI = 0;
 	BwdPI = 0;
 
@@ -294,43 +295,43 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //		LogAln((const byte *) A + LA - Leni, (const byte *) B + LB - Lenj, PI->m_Path);
 //	}
 
-void TestXDrop2(const byte *A, unsigned LA, const byte *B, unsigned LB,
-  unsigned AncLoi, unsigned AncLoj, unsigned AncLen)
-	{
-	XDPMem Mem;
-	HSPData HSP;
-	PathInfo *PI = ObjMgr::GetPathInfo();
-	AlnParams AP;
-	AP.InitFromCmdLine(false);
-	AlnHeuristics AH;
-	AH.InitFromCmdLine(AP);
-	float X = AH.XDropG;
-	Log("A=%*.*s\n", LA, LA, A);
-	Log("  ");
-	for (unsigned i = 0; i < AncLoi; ++i)
-		Log(" ");
-	for (unsigned i = 0; i < AncLen; ++i)
-		Log("^");
-	Log("\n");
-
-	Log("B=%*.*s\n", LB, LB, B);
-	Log("  ");
-	for (unsigned i = 0; i < AncLoj; ++i)
-		Log(" ");
-	for (unsigned i = 0; i < AncLen; ++i)
-		Log("^");
-	Log("\n");
-
-	XDropAlignMem(Mem, (const byte *) A, LA, (const byte *) B, LB, AncLoi, AncLoj, AncLen, AP, X, HSP, *PI);
-	Log("A %2u %*.*s\n", LA, LA, LA, A);
-	Log("B %2u %*.*s\n", LB, LB, LB, B);
-	if (HSP.Score > 0.0f)
-		{
-		void LogAlnPretty(const byte *A, const byte *B, const char *Path,
-		  bool StripTermGaps);
-		LogAlnPretty((const byte *) A + HSP.Loi, (const byte *) B + HSP.Loj, PI->GetPath(), true);
-		}
-	}
+//void TestXDrop2(const byte *A, unsigned LA, const byte *B, unsigned LB,
+//  unsigned AncLoi, unsigned AncLoj, unsigned AncLen)
+//	{
+//	XDPMem Mem;
+//	HSPData HSP;
+//	PathInfo *PI = ObjMgr::GetPathInfo();
+//	AlnParams AP;
+//	AP.InitFromCmdLine(false);
+//	AlnHeuristics AH;
+//	AH.InitFromCmdLine(AP);
+//	float X = AH.XDropG;
+//	Log("A=%*.*s\n", LA, LA, A);
+//	Log("  ");
+//	for (unsigned i = 0; i < AncLoi; ++i)
+//		Log(" ");
+//	for (unsigned i = 0; i < AncLen; ++i)
+//		Log("^");
+//	Log("\n");
+//
+//	Log("B=%*.*s\n", LB, LB, B);
+//	Log("  ");
+//	for (unsigned i = 0; i < AncLoj; ++i)
+//		Log(" ");
+//	for (unsigned i = 0; i < AncLen; ++i)
+//		Log("^");
+//	Log("\n");
+//
+//	XDropAlignMem(Mem, (const byte *) A, LA, (const byte *) B, LB, AncLoi, AncLoj, AncLen, AP, X, HSP, *PI);
+//	Log("A %2u %*.*s\n", LA, LA, LA, A);
+//	Log("B %2u %*.*s\n", LB, LB, LB, B);
+//	if (HSP.Score > 0.0f)
+//		{
+//		void LogAlnPretty(const byte *A, const byte *B, const char *Path,
+//		  bool StripTermGaps);
+//		LogAlnPretty((const byte *) A + HSP.Loi, (const byte *) B + HSP.Loj, PI->GetPath(), true);
+//		}
+//	}
 
 unsigned GetIntField(const string &Label, const string &Name)
 	{

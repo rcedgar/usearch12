@@ -84,16 +84,18 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 	if (optset_minsize)
 		MinSize = opt(minsize);
 
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+
 #if	MONITOR
 	unsigned MonitorCounter = 0;
 #endif
 	for (;;)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
 			{
-			ObjMgr::Down(Query);
+			Query->Down();
 			break;
 			}
 		if (g_ProgressThreadIndex == UINT_MAX)
@@ -110,13 +112,13 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 			unsigned Size = GetSizeFromLabel(Query->m_Label, UINT_MAX);
 			if (Size < MinSize)
 				{
-				ObjMgr::Down(Query);
+				Query->Down();
 				Query = 0;
 				continue;
 				}
 			}
 		searcher->Search(Query);
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 

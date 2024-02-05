@@ -93,6 +93,7 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		Die("No sequences in input file");
 
 	bool Nucleo = Input.GetIsNucleo();
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
 
 	g_DR = new DerepResult;
 	DerepResult &DR = *g_DR;
@@ -124,10 +125,10 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		ProgressStep(UniqueIndex, UniqueCount+1, "%u clusters, max size %u, avg %.1f",
 		  ClusterSink::GetClusterCount(), ClusterSink::GetMaxSize(), ClusterSink::GetAvgSize());
 
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		UniqueDB.GetSI(SeqIndex, *Query);
 		ptrSearcher->Search(Query);
-		ObjMgr::Down(Query);
+		Query->Down();
 		Query = 0;
 		}
 

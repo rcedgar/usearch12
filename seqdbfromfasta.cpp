@@ -39,7 +39,9 @@ void SeqDB::FromFastx(const string &FileName, bool StripGaps, bool ShowProgress)
 		Die("Unrecognized file type %s", FileName.c_str());
 	SS->Open(FileName);
 	SS->m_StripGaps = StripGaps;
-	FromSS(*SS, ShowProgress);
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM->GetSeqInfo();
+	FromSS(*SS, SI, ShowProgress);
 	SS->Close();
 	SetIsAligned();
 	}
@@ -49,7 +51,9 @@ void SeqDB::FromFasta(const string &FileName, bool StripGaps, bool ShowProgress)
 	FASTASeqSource SS;
 	SS.Open(FileName);
 	SS.m_StripGaps = StripGaps;
-	FromSS(SS, ShowProgress);
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM->GetSeqInfo();
+	FromSS(SS, SI, ShowProgress);
 	SS.Close();
 	SetIsAligned();
 	}

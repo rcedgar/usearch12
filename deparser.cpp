@@ -75,7 +75,7 @@ unsigned DeParser::GetSeqCount() const
 
 SeqInfo *DeParser::GetSI(unsigned SeqIndex) const
 	{
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
+	SeqInfo *SI = m_OM->GetSeqInfo();
 	m_DB->GetSI(SeqIndex, *SI);
 	return SI;
 	}
@@ -261,8 +261,8 @@ void DeParser::Set3Way()
 
 	Make3Way(m_Query, SIL, SIR, PathQL, PathQR, m_Q3, m_L3, m_R3);
 
-	ObjMgr::Down(SIL);
-	ObjMgr::Down(SIR);
+	SIL->Down();
+	SIR->Down();
 	}
 
 void DeParser::FindAllExactBimeras()
@@ -317,8 +317,8 @@ void DeParser::FindAllExactBimeras()
 
 	Make3Way(m_Query, SIL, SIR, PathQL, PathQR, m_Q3, m_L3, m_R3);
 
-	ObjMgr::Down(SIL);
-	ObjMgr::Down(SIR);
+	SIL->Down();
+	SIR->Down();
 
 	GetChimeHit();
 
@@ -341,8 +341,8 @@ bool DeParser::FindExactBimera(unsigned SeqIndexL, unsigned SeqIndexR, bool *ptr
 
 	Make3Way(m_Query, SIL, SIR, PathQL, PathQR, m_Q3, m_L3, m_R3);
 
-	ObjMgr::Down(SIL);
-	ObjMgr::Down(SIR);
+	SIL->Down();
+	SIR->Down();
 
 	const unsigned ColCount = SIZE(m_Q3);
 	asserta(ColCount > 0);
@@ -507,8 +507,8 @@ void DeParser::ParseLo()
 			}
 
 		if (AR != 0)
-			ObjMgr::Down(AR);
-		ObjMgr::Down(SI);
+			AR->Down();
+		SI->Down();
 
 		if (m_DiffsQT == 0)
 			break;
@@ -590,8 +590,8 @@ void DeParser::ThreeToFasta(FILE *f) const
 	SeqToFasta(f, SIB->m_Seq, SIB->m_L, SIB->m_Label);
 	SeqToFasta(f, m_Query->m_Seq, m_Query->m_L, m_Query->m_Label);
 
-	ObjMgr::Down(SIL);
-	ObjMgr::Down(SIR);
+	SIL->Down();
+	SIR->Down();
 	}
 
 void DeParser::GetDiffsFrom3Way(unsigned &DiffsQM, unsigned &DiffsQT) const
@@ -766,7 +766,7 @@ void DeParser::WriteHitPretty(FILE *f, unsigned SeqIndex,
 	fprintf(f, "\n");
 	asserta(TPos == TL);
 
-	ObjMgr::Down(SI);
+	SI->Down();
 	}
 
 void DeParser::WriteResultPretty(FILE *f) const
@@ -944,8 +944,8 @@ void DeParser::Write3WayPretty(FILE *f) const
 	  GetPctIdQM(),
 	  GetDivPct());
 
-	ObjMgr::Down(SIL);
-	ObjMgr::Down(SIR);
+	SIL->Down();
+	SIR->Down();
 	}
 
 bool DeParser::IsChimera() const
@@ -1078,7 +1078,7 @@ void DeParser::WriteTopAlnPretty(FILE *f) const
 	fprintf(f, "Top     (%5u nt) %s\n", Target->m_L, Target->m_Label);
 	fprintf(f, "\n");
 	::WriteAlnPretty(f, Q, T, Path.c_str(), true);
-	ObjMgr::Down(Target);
+	Target->Down();
 	}
 
 void DeParser::WriteAln(FILE *f) const

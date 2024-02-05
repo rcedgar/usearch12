@@ -100,7 +100,7 @@ void LocalAligner2::AlignMulti(GoBuff<AlignResult *, 32, true, false> &ARs)
 					}
 				else
 					{
-					ObjMgr::Down(AR);
+					AR->Down();
 					AR = 0;
 					continue;
 					}

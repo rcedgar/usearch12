@@ -20,6 +20,7 @@ Searcher::Searcher()
 	m_Accepter = 0;
 	m_Terminator = 0;
 	m_ORFFinder = 0;
+	m_OM = 0;
 	m_RevComp = false;
 	m_Xlat = false;
 	m_Mosaic = false;
@@ -47,7 +48,7 @@ bool Searcher::Align()
 		else if (Weak)
 			m_HitMgr->AppendHit(AR);
 
-		ObjMgr::Down(AR);
+		AR->Down();
 		}
 
 	bool Terminate = m_Terminator->Terminate(m_HitMgr, AnyAccepts);
@@ -112,7 +113,7 @@ bool Searcher::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	bool Terminate = OnAR(AR);
 
 	if (AR != 0)
-		ObjMgr::Down(AR);
+		AR->Down();
 
 	return Terminate;
 	}
@@ -135,10 +136,10 @@ void Searcher::SearchXlat(SeqInfo *Query)
 	m_ORFFinder->Init(Query);
 	for (;;)
 		{
-		SeqInfo *ORFSI = ObjMgr::GetSeqInfo();
+		SeqInfo *ORFSI = m_OM->GetSeqInfo();
 		if (!m_ORFFinder->GetNextORF(ORFSI))
 			{
-			ObjMgr::Down(ORFSI);
+			ORFSI->Down();
 			break;
 			}
 		m_Query = ORFSI;
@@ -148,7 +149,7 @@ void Searcher::SearchXlat(SeqInfo *Query)
 		SearchImpl();
 		m_Aligner->OnQueryDone(ORFSI);
 		OnQueryDoneImpl();
-		ObjMgr::Down(ORFSI);
+		ORFSI->Down();
 		}
 	m_HitMgr->OnQueryDone(Query);
 	}
@@ -183,7 +184,7 @@ void Searcher::Search(SeqInfo *Query, bool KeepHits)
 
 	if (m_RevComp)
 		{
-		SeqInfo *QueryRC = ObjMgr::GetSeqInfo();
+		SeqInfo *QueryRC = m_OM->GetSeqInfo();
 		Query->GetRevComp(QueryRC);
 		m_Query = QueryRC;
 		SetQueryImpl();
@@ -194,7 +195,7 @@ void Searcher::Search(SeqInfo *Query, bool KeepHits)
 		if (m_Aligner != 0)
 			m_Aligner->OnQueryDone(QueryRC);
 		OnQueryDoneImpl();
-		ObjMgr::Down(QueryRC);
+		QueryRC->Down();
 		}
 	if (!KeepHits)
 		m_HitMgr->OnQueryDone(Query);
@@ -211,14 +212,14 @@ void Searcher::SearchMosaic(SeqInfo *Query)
 	bool Covered = false;
 	for (;;)
 		{
-		SeqInfo *MaskedSI = ObjMgr::GetSeqInfo();
+		SeqInfo *MaskedSI = m_OM->GetSeqInfo();
 		bool Ok = MosaicMask(Query, MaskedSI, false);
 #if TRACE_MOSAIC
 		Log("MosaicMask, Ok=%c\n", tof(Ok));
 #endif
 		if (!Ok)
 			{
-			ObjMgr::Down(MaskedSI);
+			MaskedSI->Down();
 			Covered = true;
 			break;
 			}
@@ -233,7 +234,7 @@ void Searcher::SearchMosaic(SeqInfo *Query)
 		SearchImpl();
 		m_Aligner->OnQueryDone(MaskedSI);
 		OnQueryDoneImpl();
-		ObjMgr::Down(MaskedSI);
+		MaskedSI->Down();
 #if TRACE_MOSAIC
 		Log("m_HitMgr->m_HitCount %u, PrevHitCount %u\n",
 		  m_HitMgr->m_HitCount, PrevHitCount);
@@ -245,18 +246,18 @@ void Searcher::SearchMosaic(SeqInfo *Query)
 
 	if (m_RevComp && !Covered)
 		{
-		SeqInfo *RCSI = ObjMgr::GetSeqInfo();
+		SeqInfo *RCSI = m_OM->GetSeqInfo();
 
 		for (;;)
 			{
-			SeqInfo *MaskedSI = ObjMgr::GetSeqInfo();
+			SeqInfo *MaskedSI = m_OM->GetSeqInfo();
 			bool Ok = MosaicMask(Query, MaskedSI, true);
 #if TRACE_MOSAIC
 			Log("RC MosaicMask, Ok=%c\n", tof(Ok));
 #endif
 			if (!Ok)
 				{
-				ObjMgr::Down(MaskedSI);
+				MaskedSI->Down();
 				break;
 				}
 #if TRACE_MOSAIC
@@ -270,7 +271,7 @@ void Searcher::SearchMosaic(SeqInfo *Query)
 			SearchImpl();
 			m_Aligner->OnQueryDone(MaskedSI);
 			OnQueryDoneImpl();
-			ObjMgr::Down(MaskedSI);
+			MaskedSI->Down();
 #if TRACE_MOSAIC
 			Log("RC m_HitMgr->m_HitCount %u, PrevHitCoutn %u\n",
 			  m_HitMgr->m_HitCount, PrevHitCount);

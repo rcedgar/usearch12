@@ -26,7 +26,8 @@ float XDropBwdSplit(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 
 	PI.SetEmpty();
 
-	PathInfo *SubPI = ObjMgr::GetPathInfo();
+	ObjMgr *OM = PI.m_Owner;
+	PathInfo *SubPI = OM->GetPathInfo();
 
 	float SumScore = 0.0f;
 	unsigned DoneA = 0;
@@ -73,6 +74,6 @@ float XDropBwdSplit(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 		DoneB += SubLenj;
 		}
 
-	ObjMgr::Down(SubPI);
+	SubPI->Down();
 	return SumScore;
 	}

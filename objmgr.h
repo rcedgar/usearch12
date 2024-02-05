@@ -20,127 +20,55 @@ class ObjMgr
 	friend class Obj;
 
 public:
-	uint m_ThreadIndex;
-
-private:
-	static ObjMgr **m_OMs;
-	static unsigned m_ThreadCount;
-
-private:
 	Obj *m_Free[OTCount];
 	Obj *m_Busy[OTCount];
 
+private:
+	ObjMgr();
+
 #if	DEBUG || TRACE_OBJS
 	bool m_Validate;
-	unsigned m_BusyCounts[OTCount];
-	unsigned m_GetCallCounts[OTCount];
-	unsigned m_FreeCallCounts[OTCount];
-	unsigned m_AllocCallCounts[OTCount];
+	uint m_BusyCounts[OTCount];
+	uint m_GetCallCounts[OTCount];
+	uint m_FreeCallCounts[OTCount];
+	uint m_AllocCallCounts[OTCount];
 #endif
 
-private:
-	ObjMgr(uint ThreadIndex);
+public:
+	static vector<ObjMgr *> m_OMs;
 
 public:
-	static void Up(Obj *pObj);
-	static void Down(Obj *pObj);
-	static void LogGlobalStats();
-	void LogStats() const;
+	static ObjMgr *CreateObjMgr();
+
+public:
+	void Up(Obj *pObj);
+	void Down(Obj *pObj);
 	uint GetBusyCount(uint Type) const;
 	uint GetFreeCount(uint Type) const;
-	static void LogThreadStats();
+	void LogStats() const;
+	Obj *GetObj(ObjType Type);
+	//Obj *GetObj(ObjType Type, const char *FileName, uint LineNr);
 
 #define T(x)	\
-		static x *Get##x() { return (x *) StaticGetObj(OT_##x); } \
-		static x *Get##x(const char *FileName, unsigned LineNr) { return (x *) StaticGetObj(OT_##x, FileName, LineNr); }
+	x *Get##x() \
+		{ return (x *) GetObj(OT_##x); } \
+	//x *Get##x(const char *FileName, uint LineNr) \
+	//	{ return (x *) GetObj(OT_##x, FileName, LineNr); }
 #include "objtypes.h"
-
-	static ObjMgr *GetObjMgr();
-	static Obj *StaticGetObj(ObjType Type);
-	static Obj *StaticGetObj(ObjType Type, const char *FileName, unsigned LineNr);
-
-public:
-	static void UpdateGlobalStats();
-	void ThreadUpdateGlobalStats();
-	Obj *ThreadGetObj(ObjType Type);
-	Obj *ThreadGetObj(ObjType Type, const char *FileName, unsigned LineNr);
-
-#define T(x)	\
-		x *Get__##x() { return (x *) ThreadGetObj(OT_##x); }
-#include "objtypes.h"
-
-	void ThreadUp(Obj *pObj)
-		{
-#if	DEBUG
-		if (m_Validate)
-			Validate();
-#endif
-
-		assert(pObj->m_RefCount != 0);
-		++pObj->m_RefCount;
-
-#if	DEBUG
-		if (m_Validate)
-			Validate();
-#endif
-		}
-
-	static void ThreadDownByIndex(uint ThreadIndex, Obj *pObj);
-
-	void ThreadDown(Obj *pObj)
-		{
-#if	DEBUG
-		if (m_Validate)
-			Validate();
-#endif
-#if	TRACK_OBJ_THREAD
-		asserta(pObj->m_OMPThreadIndex == omp_get_thread_num());
-#endif
-		assert(pObj->m_RefCount > 0);
-		--pObj->m_RefCount;
-		if (pObj->m_RefCount == 0)
-			{
-			ObjType Type = pObj->m_Type;
-#if	DEBUG
-			assert(m_BusyCounts[Type] > 0);
-			--(m_BusyCounts[Type]);
-#endif
-			FreeObj(pObj);
-			pObj->OnZeroRefCount();
-			}
-
-#if	DEBUG
-		if (m_Validate)
-			Validate();
-#endif
-		}
-
-#if	TRACE_OBJS
-	static void Up(Obj *pObj, const char *FileName, unsigned LineNr);
-	static void Down(Obj *pObj, const char *FileName, unsigned LineNr);
-	void LogBusy() const;
-	void ThreadUp(Obj *pObj, const char *FileName, unsigned LineNr);
-	void ThreadDown(Obj *pObj, const char *FileName, unsigned LineNr);
-
-#define Up(x)	Up(x, __FILE__, __LINE__)
-#define Down(x)	Down(x, __FILE__, __LINE__)
-#define GetSeqInfo()	GetSeqInfo(__FILE__, __LINE__)
-#define GetPathInfo()	GetPathInfo(__FILE__, __LINE__)
-#define GetAlignResult()	GetAlignResult(__FILE__, __LINE__)
-#endif
-
-#if	DEBUG
-	void Validate() const;
-#endif
 
 	Obj *AllocNew(ObjType Type);
 	void FreeObj(Obj *obj);
-	unsigned GetFreeCount(ObjType Type) const;
-	unsigned GetBusyCount(ObjType Type) const;
-	unsigned GetMaxRefCount(ObjType Type) const;
+	uint GetFreeCount(ObjType Type) const;
+	uint GetBusyCount(ObjType Type) const;
+	uint GetMaxRefCount(ObjType Type) const;
 	float GetTotalMem(ObjType Type) const;
+
+public:
+	static void LogGlobalStats();
+
 #if	DEBUG
 	void ValidateType(ObjType Type) const;
+	void Validate() const;
 #endif
 	};
 

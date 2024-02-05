@@ -9,7 +9,8 @@
 
 void InitGlobals(bool Nucleo);
 
-void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string> &InfoStrs)
+void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
+  vector<string> &InfoStrs)
 	{
 	IsChimeraVec.clear();
 	InfoStrs.clear();
@@ -36,7 +37,8 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string
 	GA->m_FailIfNoHSPs = false;
 	GA->m_FullDPAlways = false;
 
-	DeParser *DP = new DeParser;
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	DeParser *DP = new DeParser(OM);
 	DP->m_GA = GA;
 
 	double MinAbSkew = 16;
@@ -54,7 +56,7 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string
 	vector<unsigned> Sizes;
 	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = GetSizeFromLabel(Query->m_Label, UINT_MAX);
 		if (QSize > LastSize)
@@ -127,7 +129,7 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string
 			asserta(false);
 			}
 
-		ObjMgr::Down(Query);
+		Query->Down();
 
 		if (IsChimera)
 			++ChimeraCount;

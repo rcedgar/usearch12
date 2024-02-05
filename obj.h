@@ -29,10 +29,7 @@ Releasing reference:
 
 When objects contain references to other objects:
 	In Init/Create()-like function, m_xxx = OM->GetXxx().
-	In OnZeroRefCount(), call ObjMgr::Downm_xxx).
-
-There is one ObjMgr per thread, avoids need for mutexes etc.
-No Clear() member, this is confusing.
+	In OnZeroRefCount(), call ObjMgr::Down_xxx).
 
 Memory allocation convention (not enforced or expressed):
 	Objects use grow-only memory strategy.
@@ -52,22 +49,22 @@ public:
 
 public: // Ideally protected
 	ObjType m_Type;
-	unsigned m_RefCount;
-	uint m_ThreadIndex;
+	uint m_RefCount;
+	ObjMgr *m_Owner;
 	Obj *m_Fwd;
 	Obj *m_Bwd;
 #if	TRACE_OBJS
 public:
-	unsigned m_UID;
+	uint m_UID;
 	const char *m_SourceFileName;
-	unsigned m_SourceLineNr;
+	uint m_SourceLineNr;
 #endif
 
 protected:
 	Obj(ObjType Type)
 		{
 		m_Type = Type;
-		m_ThreadIndex = UINT_MAX;
+		m_Owner = 0;
 		m_RefCount = 0;
 		m_Fwd = 0;
 		m_Bwd = 0;
@@ -78,14 +75,17 @@ protected:
 		}
 
 public:
-	unsigned GetRefCount() const
+	uint GetRefCount() const
 		{
 		return m_RefCount;
 		}
 
+	void Up();
+	void Down();
+
 // Override if contains objects, must Down() them.
 	virtual void OnZeroRefCount() {}
-	virtual unsigned GetMemBytes() const = 0;
+	virtual uint GetMemBytes() const = 0;
 	};
 
 #if	TRACE_OBJ

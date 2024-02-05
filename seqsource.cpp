@@ -11,13 +11,11 @@ mutex SeqSource::m_Lock;
 
 SeqSource::SeqSource()
 	{
-	m_SI = ObjMgr::GetSeqInfo();
 	m_SeqCount = 0;
 	}
 
 SeqSource::~SeqSource()
 	{
-	ObjMgr::Down(m_SI);
 	}
 
 bool SeqSource::GetNext(SeqInfo *SI)

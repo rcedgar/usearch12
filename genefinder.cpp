@@ -748,8 +748,9 @@ void GeneFinder::Find(SeqInfo *Query)
 	m_Query = Query;
 	m_RawQuery = Query;
 
-	m_RCQuery = ObjMgr::GetSeqInfo();
-	m_CircQuery = ObjMgr::GetSeqInfo();
+	ObjMgr *OM = Query->m_Owner;
+	m_RCQuery = OM->GetSeqInfo();
+	m_CircQuery = OM->GetSeqInfo();
 
 	m_WinInfos.clear();
 	m_GeneInfos.clear();
@@ -770,8 +771,8 @@ void GeneFinder::Find(SeqInfo *Query)
 
 	Output();
 
-	ObjMgr::Down(m_RCQuery);
-	ObjMgr::Down(m_CircQuery);
+	m_RCQuery->Down();
+	m_CircQuery->Down();
 	m_RCQuery = 0;
 	m_CircQuery = 0;
 	}

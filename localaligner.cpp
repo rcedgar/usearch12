@@ -189,7 +189,8 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 		return 0;
 		}
 
-	PathInfo *PI = ObjMgr::GetPathInfo();
+	ObjMgr *OM = m_Query->m_Owner;
+	PathInfo *PI = OM->GetPathInfo();
 
 // Gapped extension
 	HSPData HSP;
@@ -200,21 +201,21 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	if (GappedScore <= 0.0f)
 		{
 		IncCounter(FailedGappedExtensions_DP);
-		ObjMgr::Down(PI);
+		PI->Down();
 		return 0;
 		}
 
 	double Evalue = g_ES->RawScoreToEvalue(GappedScore, QL, true);
 	if (Evalue > opt(evalue))
 		{
-		ObjMgr::Down(PI);
+		PI->Down();
 		IncCounter(FailedGappedExtensions_Evalue);
 		return 0;
 		}
 
-	AlignResult *AR = ObjMgr::GetAlignResult();
+	AlignResult *AR = OM->GetAlignResult();
 	AR->CreateLocalGapped(*m_Query, *m_Target, HSP, *PI, m_IsNucleo);
-	ObjMgr::Down(PI);
+	PI->Down();
 	return AR;
 	}
 
@@ -361,7 +362,8 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 		return 0;
 		}
 
-	PathInfo *PI = ObjMgr::GetPathInfo();
+	ObjMgr *OM = m_Query->m_Owner;
+	PathInfo *PI = OM->GetPathInfo();
 
 // Gapped extension
 	XDropAlignMem(m_Mem, Q, QL, T, TL,
@@ -371,20 +373,20 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 	if (GappedScore <= 0.0f)
 		{
 		IncCounter(FailedGappedExtensions_DP);
-		ObjMgr::Down(PI);
+		PI->Down();
 		return 0;
 		}
 
 	double Evalue = g_ES->RawScoreToEvalue(GappedScore, QL, true);
 	if (Evalue > opt(evalue))
 		{
-		ObjMgr::Down(PI);
+		PI->Down();
 		IncCounter(FailedGappedExtensions_Evalue);
 		return 0;
 		}
 
 	//AlignResult *AR = ObjMgr::GetAlignResult();
 	//AR->CreateLocalGapped(*m_Query, *m_Target, HSP, *PI, m_IsNucleo);
-	//ObjMgr::Down(PI);
+	//PI->Down();
 	return PI;
 	}

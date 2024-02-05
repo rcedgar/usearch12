@@ -7,10 +7,6 @@
 #define A(x)		STR_OPT(x)
 #include "cmds.h"
 
-#ifndef VECTOR_OPT
-#define VECTOR_OPT(x)	/* empty */
-#endif
-
 STR_OPT(log)			// Log file for informational messages.
 STR_OPT(userout)		// Hits in tabbed text as specified by -userfields.
 STR_OPT(uc)				// Top hit/centroid assignment in uc format.
@@ -96,6 +92,7 @@ STR_OPT(mapout)			//
 STR_OPT(rank)			//
 STR_OPT(dbcutout)			//
 STR_OPT(trimout)		//
+STR_OPT(fqdir)		//
 
 UNS_OPT(stepwords,			8,			0,			UINT_MAX)	// -
 UNS_OPT(bump,				50,			0,			100)		// -
@@ -318,10 +315,7 @@ FLAG_OPT(fasta)
 FLAG_OPT(fastq)
 FLAG_OPT(force_unique_labels)
 FLAG_OPT(allow_digits)
-
-VECTOR_OPT(fastq_mergepairs)
-VECTOR_OPT(fastq_filter)
-VECTOR_OPT(reverse)
+FLAG_OPT(log_objmgr_stats)
 
 #undef FLAG_OPT
 #undef UNS_OPT

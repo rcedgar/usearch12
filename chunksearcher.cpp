@@ -68,7 +68,8 @@ void ChunkSearcher::SearchImpl()
 	//if (m_Chunk == 0)
 	//	m_Chunk = ObjMgr::GetSeqInfo();
 	asserta(m_Chunk == 0);
-	m_Chunk = ObjMgr::GetSeqInfo();
+	ObjMgr *OM = m_Chunk->m_Owner;
+	m_Chunk = OM->GetSeqInfo();
 
 	unsigned QL = m_Query->m_L;
 	vector<unsigned> Los;
@@ -93,35 +94,19 @@ void ChunkSearcher::SearchImpl()
 		}
 
 	asserta(m_Chunk->GetRefCount() == 1);
-	ObjMgr::Down(m_Chunk);
+	m_Chunk->Down();
 	m_Chunk = 0;
-
-	if (opt(verbose))
-		{
-		Log("\n");
-		Log("%u chunk candidates (pre-align):\n", SIZE(SetTargetIndexes));
-		for (set<unsigned>::const_iterator p = SetTargetIndexes.begin();
-		  p!= SetTargetIndexes.end(); ++p)
-			{
-			unsigned TargetIndex = *p;
-			m_Target = ObjMgr::GetSeqInfo();
-			m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
-			SetTarget(m_Target);
-			Log(" >%s\n", m_Target->m_Label);
-			ObjMgr::Down(m_Target);
-			}
-		}
 
 	for (set<unsigned>::const_iterator p = SetTargetIndexes.begin();
 	  p!= SetTargetIndexes.end(); ++p)
 		{
 		unsigned TargetIndex = *p;
-		m_Target = ObjMgr::GetSeqInfo();
+		m_Target = OM->GetSeqInfo();
 		m_UDBData->m_SeqDB->GetSI(TargetIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 
 	// Hack to keep terminator happy
 		m_Terminator->m_AcceptCount = 0;

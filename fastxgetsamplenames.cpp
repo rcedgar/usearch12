@@ -11,7 +11,8 @@ void cmd_fastx_get_sample_names()
 
 	SeqSource &SS = *MakeSeqSource(InputFileName);
 
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM.GetSeqInfo();
 
 	FILE *fOut = 0;
 	if (optset_output)

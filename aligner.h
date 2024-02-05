@@ -61,9 +61,9 @@ public:
 	virtual ~Aligner()
 		{
 		if (m_Query != 0)
-			ObjMgr::Down(m_Query);
+			m_Query->Down();
 		if (m_Target != 0)
-			ObjMgr::Down(m_Target);
+			m_Target->Down();
 		}
 
 	void Init()
@@ -84,7 +84,7 @@ public:
 		{
 		asserta(m_Query == 0);
 		m_Query = Query;
-		ObjMgr::Up(m_Query);
+		m_Query->Up();
 		SetQueryImpl();
 		}
 
@@ -92,16 +92,16 @@ public:
 		{
 		asserta(m_Query == Query);
 		OnQueryDoneImpl();
-		ObjMgr::Down(m_Query);
+		m_Query->Down();
 		m_Query = 0;
 		}
 
 	void SetTarget(SeqInfo *Target)
 		{
 		if (m_Target != 0)
-			ObjMgr::Down(m_Target);
+			m_Target->Down();
 		m_Target = Target;
-		ObjMgr::Up(m_Target);
+		m_Target->Up();
 		SetTargetImpl();
 		}
 
@@ -109,7 +109,7 @@ public:
 		{
 		asserta(m_Target == Target);
 		OnTargetDoneImpl();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 		m_Target = 0;
 		}
 	};

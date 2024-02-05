@@ -108,7 +108,8 @@ static void Thread(FASTQSeqSource *aSS)
 	{
 	FASTQSeqSource &SS = *aSS;
 	unsigned ThreadIndex = GetThreadIndex();
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM.GetSeqInfo();
 
 	unsigned ShortCount = 0;
 	unsigned BadCount = 0;
@@ -217,7 +218,8 @@ void cmd_fastq_filter()
 	FASTQSeqSource SS;
 	SS.Open(InputFileName);
 
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM.GetSeqInfo();
 
 	g_fFastqOut = 0;
 	g_fFastaOut = 0;

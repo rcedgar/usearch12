@@ -73,10 +73,11 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 	unsigned BestDiffs = UINT_MAX;
 	unsigned AcceptCount = 0;
 	unsigned MaxAccepts = opt(maxaccepts);
+	ObjMgr *OM = Query->m_Owner;
 	for (unsigned HotIndex = 0; HotIndex < HotCount; ++HotIndex)
 		{
 		unsigned TargetIndex = g_TargetIndexes[HotIndex];
-		SeqInfo *Target = ObjMgr::GetSeqInfo();
+		SeqInfo *Target = OM->GetSeqInfo();
 		USS->GetTargetSeqInfo(TargetIndex, Target);
 		GA->SetTarget(Target);
 		AlignResult *AR = GA->Align();
@@ -93,11 +94,11 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 					BestDiffs = Diffs;
 					*ptrDiffs = Diffs;
 					}
-				ObjMgr::Down(AR);
+				AR->Down();
 				}
 			}
 		GA->OnTargetDone(Target);
-		ObjMgr::Down(Target);
+		Target->Down();
 		if (BestDiffs <= 1)
 			break;
 		if (AcceptCount >= MaxAccepts)
@@ -141,9 +142,10 @@ void cmd_unoise3()
 
 	UDBUsortedSearcher *USS = new UDBUsortedSearcher;
 	UDBParams Params;
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
 	Params.FromCmdLine(CMD_unoise3, true);
 	USS->m_UDBData->CreateEmpty(Params);
-	USS->InitSearcher(0, GA, 0, 0);
+	USS->InitSearcher(0, GA, 0, 0, OM);
 	USS->m_MinFractId = 0.9;
 
 	unsigned MinAmpSize = 8;
@@ -153,7 +155,7 @@ void cmd_unoise3()
 	unsigned UniqCount = InputSeqCount;
 	for (unsigned SeqIndex = 0; SeqIndex < InputSeqCount; ++SeqIndex)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = Query->GetSize();
 		if (QSize < MinAmpSize)
@@ -169,7 +171,7 @@ void cmd_unoise3()
 	vector<unsigned> UniqIndexToDiffs;
 	for (unsigned SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
 		{
-		SeqInfo *Query = ObjMgr::GetSeqInfo();
+		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = Query->GetSize();
 		asserta(QSize >= MinAmpSize);
@@ -222,7 +224,7 @@ void cmd_unoise3()
 			}
 		UniqIndexToAmpIndex.push_back(TargetIndex);
 		UniqIndexToDiffs.push_back(Diffs);
-		ObjMgr::Down(Query);
+		Query->Down();
 		}
 	asserta(SIZE(UniqIndexToAmpIndex) == UniqCount);
 

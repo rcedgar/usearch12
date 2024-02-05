@@ -319,7 +319,8 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	zero_array(m_UDBRows, m_SlotCount);
 
 	const unsigned SeqCount = DB.GetSeqCount();
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
+	ObjMgr *OM = ObjMgr::CreateObjMgr();
+	SeqInfo *SI = OM->GetSeqInfo();
 
 	uint64 LetterCount = DB.GetLetterCount();
 	uint64 LetterTotal = 0;

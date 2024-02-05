@@ -609,11 +609,10 @@ void SeqDB::GetMinMaxSeqLength(unsigned &Min, unsigned &Max) const
 		}
 	}
 
-void SeqDB::FromSS(SeqSource &SF, bool ShowProgress)
+void SeqDB::FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress)
 	{
 	const char *FileName = SF.GetFileNameC();
 	m_FileName = string(FileName);
-	SeqInfo *SI = ObjMgr::GetSeqInfo();
 	if (ShowProgress)
 		ProgressStep(0, 1000, "Reading %s", FileName);
 	for (;;)

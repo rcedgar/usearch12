@@ -404,12 +404,12 @@ void BitMapSearcher::SearchImpl()
 	for (unsigned i = 0; i < CandidateCount; ++i)
 		{
 		unsigned TargetSeqIndex = CandidateSeqIndexes[i];
-		m_Target = ObjMgr::GetSeqInfo();
+		m_Target = m_OM->GetSeqInfo();
 		m_UDBData->m_SeqDB->GetSI(TargetSeqIndex, *m_Target);
 		bool Ok = SetTarget(m_Target);
 		if (Ok)
 			Align();
-		ObjMgr::Down(m_Target);
+		m_Target->Down();
 
 	// Hack to keep terminator happy
 		m_Terminator->m_AcceptCount = 0;

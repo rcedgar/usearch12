@@ -74,13 +74,18 @@ public:
 	string m_R3;
 
 	ChimeHit m_Hit;
+	ObjMgr *m_OM;
+
+private:
+	DeParser();
 
 public:
-	DeParser()
+	DeParser(ObjMgr *OM)
 		{
 		m_Query = 0;
 		m_DB = 0;
 		m_GA = 0;
+		m_OM = OM;
 		ClearHit();
 		}
 

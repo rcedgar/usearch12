@@ -144,7 +144,7 @@ public:
 
 	void LogMe() const;
 
-	void FromSS(SeqSource &SF, bool ShowProgress = true);
+	void FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress = true);
 	void FromFastx(const string &FileName, bool StripGaps = true, bool ShowProgress = true);
 	void FromFasta(const string &FileName, bool StripGaps = true, bool ShowProgress = true);
 	void FromSeqDBSubset(const SeqDB &DB, const unsigned *SeqIndexes, unsigned N);

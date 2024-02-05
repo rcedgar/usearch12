@@ -186,7 +186,8 @@ bool GlobalAlign_AllOpts(XDPMem &Mem, const SeqInfo &Query, const SeqInfo &Targe
 		GlobalAlignBandMem(Mem, A, LA, B, LB, AP, BandRadius, PI);
 		return true;
 		}
-	PathInfo *SubPath = ObjMgr::GetPathInfo();
+	ObjMgr *OM = Query.m_Owner;
+	PathInfo *SubPath = OM->GetPathInfo();
 	SubPath->Alloc2(LA, LB);
 
 	//char *PathPtr = PI.m_Path;
@@ -236,130 +237,130 @@ bool GlobalAlign_AllOpts(XDPMem &Mem, const SeqInfo &Query, const SeqInfo &Targe
 	LogAlnPretty(A, B, PI.GetPath(), false);
 #endif
 
-	ObjMgr::Down(SubPath);
+	SubPath->Down();
 	SubPath = 0;
 
 	return true;
 	}
-
-static XDPMem **g_Mems;
-static HSPFinder **g_HFs;
-static PathInfo **g_PIs;
-static AlignResult **g_ARs;
-static unsigned g_Size;
-
-static void Alloc(unsigned ThreadIndex)
-	{
-	if (ThreadIndex < g_Size)
-		return;
-	unsigned NewSize = g_Size + 32;
-
-	XDPMem **Mems = myalloc(XDPMem *, NewSize);
-	HSPFinder **HFs = myalloc(HSPFinder *, NewSize);
-	PathInfo **PIs = myalloc(PathInfo *, NewSize);
-	AlignResult **ARs = myalloc(AlignResult *, NewSize);
-
-	zero_array(Mems, NewSize);
-	zero_array(HFs, NewSize);
-	zero_array(PIs, NewSize);
-	zero_array(ARs, NewSize);
-
-	if (g_Size > 0)
-		{
-		memcpy(Mems, g_Mems, g_Size*sizeof(XDPMem *));
-		memcpy(PIs, g_PIs, g_Size*sizeof(PathInfo *));
-		memcpy(HFs, g_HFs, g_Size*sizeof(HSPFinder *));
-		memcpy(ARs, g_ARs, g_Size*sizeof(AlignResult *));
-
-		myfree(g_Mems);
-		myfree(g_PIs);
-		myfree(g_HFs);
-		myfree(g_ARs);
-		}
-
-	g_Size = NewSize;
-	g_Mems = Mems;
-	g_PIs = PIs;
-	g_HFs = HFs;
-	g_ARs = ARs;
-	}
-
-XDPMem &GetDPMem_Thread()
-	{
-	unsigned ThreadIndex = GetThreadIndex();
-	Alloc(ThreadIndex);
-	if (g_Mems[ThreadIndex] == 0)
-		g_Mems[ThreadIndex] = new XDPMem;
-	return *g_Mems[ThreadIndex];
-	}
-
-static HSPFinder &GetHF_Thread()
-	{
-	unsigned ThreadIndex = GetThreadIndex();
-	Alloc(ThreadIndex);
-	if (g_HFs[ThreadIndex] == 0)
-		{
-		g_HFs[ThreadIndex] = new HSPFinder;
-		g_HFs[ThreadIndex]->Init(*AlnParams::GetGlobalAP(), *AlnHeuristics::GetGlobalAH());
-		}
-	return *g_HFs[ThreadIndex];
-	}
-
-static PathInfo &GetPI_Thread()
-	{
-	unsigned ThreadIndex = GetThreadIndex();
-	Alloc(ThreadIndex);
-	if (g_PIs[ThreadIndex] == 0)
-		g_PIs[ThreadIndex] = ObjMgr::GetPathInfo();
-	return *g_PIs[ThreadIndex];
-	}
-
-static AlignResult &GetAR_Thread()
-	{
-	unsigned ThreadIndex = GetThreadIndex();
-	Alloc(ThreadIndex);
-	if (g_ARs[ThreadIndex] == 0)
-		g_ARs[ThreadIndex] = ObjMgr::GetAlignResult();
-	return *g_ARs[ThreadIndex];
-	}
-
-bool GlobalAlign_Easy(SeqInfo &Query, SeqInfo &Target, AlignResult &AR)
-	{
-	XDPMem &Mem = GetDPMem_Thread();
-	HSPFinder &HF = GetHF_Thread();
-	PathInfo &PI = GetPI_Thread();
-
-	const AlnParams &AP = *AlnParams::GetGlobalAP();
-	const AlnHeuristics &AH = *AlnHeuristics::GetGlobalAH();
-
-	HF.SetA(&Query);
-	HF.SetB(&Target);
-
-	float HSPFractId;
-	bool Ok = GlobalAlign_AllOpts(Mem, Query, Target, AP, AH, HF, HSPFractId, PI, false, true);
-	if (!Ok)
-		return false;
-
-	AR.CreateGlobal(Query, Target, PI, true);
-	return true;
-	}
-
-void GlobalAlign_Easy_NeverFail(SeqInfo &Query, SeqInfo &Target, AlignResult &AR)
-	{
-	XDPMem &Mem = GetDPMem_Thread();
-	HSPFinder &HF = GetHF_Thread();
-	PathInfo &PI = GetPI_Thread();
-
-	const AlnParams &AP = *AlnParams::GetGlobalAP();
-	const AlnHeuristics &AH = *AlnHeuristics::GetGlobalAH();
-
-	HF.SetA(&Query);
-	HF.SetB(&Target);
-
-	float HSPFractId;
-	bool Ok = GlobalAlign_AllOpts(Mem, Query, Target, AP, AH, HF, HSPFractId, PI, false, true);
-	if (!Ok)
-		ViterbiFastMem(Mem, Query.m_Seq, Query.m_L, Target.m_Seq, Target.m_L, AP, PI);
-
-	AR.CreateGlobal(Query, Target, PI, true);
-	}
+//
+//static XDPMem **g_Mems;
+//static HSPFinder **g_HFs;
+//static PathInfo **g_PIs;
+//static AlignResult **g_ARs;
+//static unsigned g_Size;
+//
+//static void Alloc(unsigned ThreadIndex)
+//	{
+//	if (ThreadIndex < g_Size)
+//		return;
+//	unsigned NewSize = g_Size + 32;
+//
+//	XDPMem **Mems = myalloc(XDPMem *, NewSize);
+//	HSPFinder **HFs = myalloc(HSPFinder *, NewSize);
+//	PathInfo **PIs = myalloc(PathInfo *, NewSize);
+//	AlignResult **ARs = myalloc(AlignResult *, NewSize);
+//
+//	zero_array(Mems, NewSize);
+//	zero_array(HFs, NewSize);
+//	zero_array(PIs, NewSize);
+//	zero_array(ARs, NewSize);
+//
+//	if (g_Size > 0)
+//		{
+//		memcpy(Mems, g_Mems, g_Size*sizeof(XDPMem *));
+//		memcpy(PIs, g_PIs, g_Size*sizeof(PathInfo *));
+//		memcpy(HFs, g_HFs, g_Size*sizeof(HSPFinder *));
+//		memcpy(ARs, g_ARs, g_Size*sizeof(AlignResult *));
+//
+//		myfree(g_Mems);
+//		myfree(g_PIs);
+//		myfree(g_HFs);
+//		myfree(g_ARs);
+//		}
+//
+//	g_Size = NewSize;
+//	g_Mems = Mems;
+//	g_PIs = PIs;
+//	g_HFs = HFs;
+//	g_ARs = ARs;
+//	}
+//
+//XDPMem &GetDPMem_Thread()
+//	{
+//	unsigned ThreadIndex = GetThreadIndex();
+//	Alloc(ThreadIndex);
+//	if (g_Mems[ThreadIndex] == 0)
+//		g_Mems[ThreadIndex] = new XDPMem;
+//	return *g_Mems[ThreadIndex];
+//	}
+//
+//static HSPFinder &GetHF_Thread()
+//	{
+//	unsigned ThreadIndex = GetThreadIndex();
+//	Alloc(ThreadIndex);
+//	if (g_HFs[ThreadIndex] == 0)
+//		{
+//		g_HFs[ThreadIndex] = new HSPFinder;
+//		g_HFs[ThreadIndex]->Init(*AlnParams::GetGlobalAP(), *AlnHeuristics::GetGlobalAH());
+//		}
+//	return *g_HFs[ThreadIndex];
+//	}
+//
+//static PathInfo &GetPI_Thread()
+//	{
+//	unsigned ThreadIndex = GetThreadIndex();
+//	Alloc(ThreadIndex);
+//	if (g_PIs[ThreadIndex] == 0)
+//		g_PIs[ThreadIndex] = ObjMgr::GetPathInfo();
+//	return *g_PIs[ThreadIndex];
+//	}
+//
+//static AlignResult &GetAR_Thread()
+//	{
+//	unsigned ThreadIndex = GetThreadIndex();
+//	Alloc(ThreadIndex);
+//	if (g_ARs[ThreadIndex] == 0)
+//		g_ARs[ThreadIndex] = ObjMgr::GetAlignResult();
+//	return *g_ARs[ThreadIndex];
+//	}
+//
+//bool GlobalAlign_Easy(SeqInfo &Query, SeqInfo &Target, AlignResult &AR)
+//	{
+//	XDPMem &Mem = GetDPMem_Thread();
+//	HSPFinder &HF = GetHF_Thread();
+//	PathInfo &PI = GetPI_Thread();
+//
+//	const AlnParams &AP = *AlnParams::GetGlobalAP();
+//	const AlnHeuristics &AH = *AlnHeuristics::GetGlobalAH();
+//
+//	HF.SetA(&Query);
+//	HF.SetB(&Target);
+//
+//	float HSPFractId;
+//	bool Ok = GlobalAlign_AllOpts(Mem, Query, Target, AP, AH, HF, HSPFractId, PI, false, true);
+//	if (!Ok)
+//		return false;
+//
+//	AR.CreateGlobal(Query, Target, PI, true);
+//	return true;
+//	}
+//
+//void GlobalAlign_Easy_NeverFail(SeqInfo &Query, SeqInfo &Target, AlignResult &AR)
+//	{
+//	XDPMem &Mem = GetDPMem_Thread();
+//	HSPFinder &HF = GetHF_Thread();
+//	PathInfo &PI = GetPI_Thread();
+//
+//	const AlnParams &AP = *AlnParams::GetGlobalAP();
+//	const AlnHeuristics &AH = *AlnHeuristics::GetGlobalAH();
+//
+//	HF.SetA(&Query);
+//	HF.SetB(&Target);
+//
+//	float HSPFractId;
+//	bool Ok = GlobalAlign_AllOpts(Mem, Query, Target, AP, AH, HF, HSPFractId, PI, false, true);
+//	if (!Ok)
+//		ViterbiFastMem(Mem, Query.m_Seq, Query.m_L, Target.m_Seq, Target.m_L, AP, PI);
+//
+//	AR.CreateGlobal(Query, Target, PI, true);
+//	}
