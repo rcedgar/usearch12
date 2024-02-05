@@ -140,7 +140,7 @@ static const char *MyPCB()
 
 static void ProcessPending(OutputSink &OS)
 	{
-	BeginUpdate();
+	//BeginUpdate();
 	for (vector<pair<uint, SeqInfo *> >::const_iterator p = g_Pending.begin();
 	  p != g_Pending.end(); ++p)
 		{
@@ -155,7 +155,7 @@ static void ProcessPending(OutputSink &OS)
 		ObjMgr::ThreadDownByIndex(QueryThreadIndex, Query);
 		}
 	g_Pending.clear();
-	EndUpdate();
+	//EndUpdate();
 	}
 
 static void Thread(SeqSource *SS, bool Nucleo)
@@ -180,8 +180,6 @@ static void Thread(SeqSource *SS, bool Nucleo)
 
 	for (;;)
 		{
-		ProcessPending(OS);
-
 		SeqInfo *Query = ObjMgr::GetSeqInfo();
 		bool Ok = SS->GetNext(Query);
 		if (!Ok)
@@ -210,6 +208,7 @@ static void Thread(SeqSource *SS, bool Nucleo)
 			g_Pending.push_back(
 			  pair<uint, SeqInfo *>(ThreadIndex, Query));
 			asserta(g_State == AS_Updating);
+			ProcessPending(OS);
 			EndUpdate();
 			}
 		else
@@ -264,5 +263,7 @@ void cmd_cluster_mt()
 	ProgressCallback(999, 1000);
 
 	g_udb->ToFasta(opt(centroids));
-	ObjMgr::LogGlobalStats();
+//	ObjMgr::LogGlobalStats();
+	ProgressLog("%u clusters, %u members\n",
+	  g_ClusterCount, g_MemberCount);
 	}
