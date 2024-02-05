@@ -8,11 +8,10 @@
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
 #include "pcb.h"
-#include <chrono>
+#include "objmgr.h"
 
 static size_t MAX_PENDING = 128;
 
-static uint g_ProgressThreadIndex = UINT_MAX;
 static vector<vector<SeqInfo *> > g_PendingVec;
 static UDBData *g_udb;
 static unsigned g_ClusterCount;
@@ -43,7 +42,6 @@ static void ProcessPending(uint ThreadIndex)
 	ObjMgr *OM = g_OMs[ThreadIndex];
 	vector<SeqInfo *> &Pending = g_PendingVec[ThreadIndex];
 
-	Progress("Process pending (thread %u, %u)...\n", ThreadIndex, SIZE(Pending));
 	for (vector<SeqInfo *>::const_iterator p = Pending.begin();
 	  p != Pending.end(); ++p)
 		{
@@ -68,7 +66,7 @@ static void ProcessPending(uint ThreadIndex)
 		US->m_HitMgr->OnQueryDone(Query);
 		}
 	Pending.clear();
-	Progress("...process pending done\n");
+	g_TotalPendingCount = 0;
 	}
 
 static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
@@ -87,10 +85,6 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 			Query->Down();
 			break;
 			}
-		if (g_ProgressThreadIndex == UINT_MAX)
-			g_ProgressThreadIndex = ThreadIndex;
-		if (ThreadIndex == g_ProgressThreadIndex)
-			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
 		US->Search(Query, true);
 		AlignResult *AR = US->m_HitMgr->GetTopHit();
@@ -118,14 +112,11 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 		Query->Down();
 		Query = 0;
 		}
-
-	if (ThreadIndex == g_ProgressThreadIndex)
-		g_ProgressThreadIndex = UINT_MAX;
 	}
 
 static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 	{
-	Progress("FillPending...\n");
+	//Progress("FillPending...\n");
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
@@ -134,13 +125,12 @@ static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-	Progress("...FillPending done\n");
+	//Progress("...FillPending done\n");
 	}
 
 void cmd_cluster_mt()
 	{
 	const string &QueryFileName = opt(cluster_mt);
-	SetPCBQueryFileName(QueryFileName);
 	if (!optset_id)
 		Die("Must set -id");
 
@@ -157,8 +147,6 @@ void cmd_cluster_mt()
 
 	uint ThreadCount = GetRequestedThreadCount();
 	Progress("%u threads\n", ThreadCount);
-	g_ProgressThreadIndex = UINT_MAX;
-	ProgressCallback(0, 1000);
 	g_PendingVec.clear();
 	g_PendingVec.resize(ThreadCount);
 
@@ -179,19 +167,29 @@ void cmd_cluster_mt()
 		aligner->Init(AP, AH);
 		US->m_Aligner = aligner;
 		OutputSink *OS = new OutputSink(false, IsNucleo, IsNucleo);
+		ObjMgr *OM = ObjMgr::CreateObjMgr();
 
 		g_USs.push_back(US);
 		g_OSs.push_back(OS);
+		g_OMs.push_back(OM);
 		}
 
+	ProgressStep(0, 1001, "0 clusters, 0 members");
 	for (;;)
 		{
+		if (SS->m_EndOfFile)
+			break;
+		uint Pct10 = SS->GetPctDoneX10() + 1;
+		ProgressStep(Pct10+1, 1001, "%u clusters, %u members",
+		  g_ClusterCount, g_MemberCount);
 		FillPending(ThreadCount, SS, IsNucleo);
 		for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 			ProcessPending(ThreadIndex);
 		}
+	ProgressStep(1000, 1001, "%u clusters, %u members",
+		g_ClusterCount, g_MemberCount);
 
-	ProgressCallback(999, 1000);
+	ProgressCallback(999, 1001);
 
 	g_udb->ToFasta(opt(centroids));
 //	ObjMgr::LogGlobalStats();

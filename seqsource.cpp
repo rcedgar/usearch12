@@ -12,6 +12,7 @@ mutex SeqSource::m_Lock;
 SeqSource::SeqSource()
 	{
 	m_SeqCount = 0;
+	m_EndOfFile = false;
 	}
 
 SeqSource::~SeqSource()
@@ -24,7 +25,11 @@ bool SeqSource::GetNext(SeqInfo *SI)
 	bool Ok = GetNextLo(SI);
 	UNLOCK_CLASS();
 	if (!Ok)
+		{
+		m_EndOfFile = true;
 		return false;
+		}
+	m_EndOfFile = false;
 	++m_SeqCount;
 	return true;
 	}

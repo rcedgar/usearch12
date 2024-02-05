@@ -14,8 +14,9 @@ public:
 	static void LOCK_CLASS() { m_Lock.lock(); }
 	static void UNLOCK_CLASS() { m_Lock.unlock(); }
 
-protected:
+public:
 	unsigned m_SeqCount;
+	bool m_EndOfFile;
 
 public:
 	SeqSource();
