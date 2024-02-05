@@ -512,6 +512,9 @@
     <ClCompile Include="test.cpp">
       <Filter>C Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="progthread.cpp">
+      <Filter>C Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accepter.h">
@@ -569,9 +572,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="combo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="count.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="countsort.h">

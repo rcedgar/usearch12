@@ -2,7 +2,6 @@
 #include "cmd.h"
 #include "outputsink.h"
 #include "objmgr.h"
-#include "count.h"
 #include "alpha.h"
 #include "mx.h"
 #include "pcb.h"
@@ -12,6 +11,7 @@
 #endif
 
 bool g_LowerCaseWarning = false;
+bool g_AbortProgress = false;
 
 int main(int argc, char **argv)
 	{
@@ -50,6 +50,9 @@ int main(int argc, char **argv)
 	if (n > 2)
 		ShortCmdLine += " " + g_Argv[2];
 
+	void ProgressThread();
+	thread *pt = new thread(ProgressThread);
+
 	ProgressPrefix(false);
 	Progress("[%s]\n", ShortCmdLine.c_str() + 1);
 	ProgressPrefix(true);
@@ -69,9 +72,7 @@ int main(int argc, char **argv)
 		}
 
 	OutputSink::CloseOutputFiles();
-
-	LogCounters();
-
+	g_AbortProgress = true;
 	if (g_LowerCaseWarning)
 		Warning("Input has lower-case masked sequences");
 
@@ -80,5 +81,6 @@ int main(int argc, char **argv)
 
 	LogElapsedTimeAndRAM();
 	CheckUsedOpts(false);
+	pt->join();
 	return 0;
 	}

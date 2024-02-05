@@ -338,6 +338,7 @@
     <ClCompile Include="pattern.cpp" />
     <ClCompile Include="pcb.cpp" />
     <ClCompile Include="prime.cpp" />
+    <ClCompile Include="progthread.cpp" />
     <ClCompile Include="quarts.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
@@ -417,7 +418,6 @@
     <ClInclude Include="constaxf.h" />
     <ClInclude Include="constaxsink.h" />
     <ClInclude Include="constaxstr.h" />
-    <ClInclude Include="count.h" />
     <ClInclude Include="countsort.h" />
     <ClInclude Include="crc32.h" />
     <ClInclude Include="dbhitsink.h" />

@@ -4,7 +4,6 @@
 #include "seqinfo.h"
 #include "objmgr.h"
 #include "cpplock.h"
-#include <thread>
 
 void RevComp(const byte *Seq, unsigned L, byte *RCSeq);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
