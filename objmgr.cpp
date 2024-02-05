@@ -53,16 +53,11 @@ const char *ObjTypeToStr2(ObjType Type)
 
 ObjMgr::ObjMgr()
 	{
+#if DEBUG
+	m_Validate = false;
+#endif
 	zero_array(m_Free, OTCount);
 	zero_array(m_Busy, OTCount);
-
-#if	DEBUG || TRACE_OBJS
-	m_Validate = false;
-	zero_array(m_BusyCounts, OTCount);
-	zero_array(m_GetCallCounts, OTCount);
-	zero_array(m_AllocCallCounts, OTCount);
-	zero_array(m_FreeCallCounts, OTCount);
-#endif
 	}
 
 void ObjMgr::Up(Obj *pObj)
@@ -92,10 +87,6 @@ void ObjMgr::Down(Obj *pObj)
 	if (pObj->m_RefCount == 0)
 		{
 		ObjType Type = pObj->m_Type;
-#if	DEBUG
-		assert(m_BusyCounts[Type] > 0);
-		--(m_BusyCounts[Type]);
-#endif
 		FreeObj(pObj);
 		pObj->OnZeroRefCount();
 		}
@@ -108,9 +99,6 @@ void ObjMgr::Down(Obj *pObj)
 
 Obj *ObjMgr::AllocNew(ObjType Type)
 	{
-#if	DEBUG
-	++(m_AllocCallCounts[Type]);
-#endif
 	Obj *pObj = 0;
 	switch (Type)
 		{
@@ -125,12 +113,13 @@ Obj *ObjMgr::AllocNew(ObjType Type)
 	return pObj;
 	}
 
+#if TRACK_OBJS
+Obj *ObjMgr::GetObj(ObjType Type, const char *SrcFN, uint LineNr)
+#else
 Obj *ObjMgr::GetObj(ObjType Type)
-	{
-#if	DEBUG
-	++(m_GetCallCounts[Type]);
-	assert(Type < OTCount);
 #endif
+	{
+	assert(Type < OTCount);
 	Obj *NewObj = 0;
 	if (m_Free[Type] == 0)
 		NewObj = AllocNew(Type);
@@ -155,12 +144,13 @@ Obj *ObjMgr::GetObj(ObjType Type)
 	assert(NewObj != 0);
 	NewObj->m_RefCount = 1;
 
-#if	DEBUG || TRACE_OBJS
-	++(m_BusyCounts[Type]);
-#endif
 #if DEBUG
 	if (m_Validate)
 		Validate();
+#endif
+#if TRACK_OBJS
+	NewObj->m_SourceFileName = SrcFN;
+	NewObj->m_SourceLineNr = LineNr;
 #endif
 
 	return NewObj;
@@ -172,10 +162,6 @@ void ObjMgr::FreeObj(Obj *obj)
 
 	ObjType Type = obj->m_Type;
 	assert(Type < OTCount);
-
-#if	DEBUG
-	++(m_FreeCallCounts[Type]);
-#endif
 
 	if (obj == m_Busy[Type])
 		m_Busy[Type] = obj->m_Fwd;
@@ -279,14 +265,10 @@ float ObjMgr::GetTotalMem(ObjType Type) const
 #if	DEBUG
 void ObjMgr::ValidateType(ObjType Type) const
 	{
-	unsigned NA = m_AllocCallCounts[Type];
-	unsigned NF = m_FreeCallCounts[Type];
-
 	unsigned nb = 0;
 	for (const Obj *obj = m_Busy[Type]; obj; obj = obj->m_Fwd)
 		{
 		++nb;
-		assert(nb <= NA);
 		assert(obj->m_Type == Type);
 		assert(obj->m_RefCount > 0);
 		if (obj->m_Bwd)
@@ -299,7 +281,6 @@ void ObjMgr::ValidateType(ObjType Type) const
 	for (const Obj *obj = m_Free[Type]; obj; obj = obj->m_Fwd)
 		{
 		++nf;
-		assert(nf <= NF);
 		assert(obj->m_RefCount == 0);
 		assert(obj->m_Type == Type);
 		if (obj->m_Bwd)
@@ -307,8 +288,6 @@ void ObjMgr::ValidateType(ObjType Type) const
 		if (obj->m_Fwd)
 			assert(obj->m_Fwd->m_Bwd == obj);
 		}
-	assert(nb + nf == NA);
-	assert(nb == m_BusyCounts[Type]);
 	}
 
 void ObjMgr::Validate() const
@@ -455,12 +434,35 @@ uint ObjMgr::GetFreeCount(uint Type) const
 	return n;
 	}
 
+void ObjMgr::LogBusy() const
+	{
+#if TRACK_OBJS
+
+#else
+	Log("ObjMgr::LogBusy(), !TRACK_OBJS\n");
+#endif
+	for (uint iType = 0; iType < OTCount; ++iType)
+		{
+		for (const Obj *pObj = m_Busy[iType]; pObj; pObj = pObj->m_Fwd)
+			Log("%s:%d\n", pObj->m_SourceFileName, pObj->m_SourceLineNr);
+		}
+	}
+
 void ObjMgr::LogStats() const
 	{
 	Log("ObjMgr::LogStats() this=%p\n", this);
 #define T(x)	Log("  %7u busy  %7u free  %s\n", \
 	GetBusyCount(OT_##x), GetFreeCount(OT_##x), #x);
 #include "objtypes.h"	
+	}
+
+void ObjMgr::LogGlobalBusy()
+	{
+#if TRACK_OBJS
+	uint N = SIZE(m_OMs);
+	for (uint i = 0; i < N; ++i)
+		m_OMs[i]->LogBusy();
+#endif
 	}
 
 void ObjMgr::LogGlobalStats()
@@ -488,4 +490,7 @@ void ObjMgr::LogGlobalStats()
 			ObjTypeToStr(Type), BusyCount, FreeCount,
 			MaxRefCount, MemBytesToStr(TotalMem));
 		}
+#if TRACK_OBJS
+	LogGlobalBusy();
+#endif
 	}

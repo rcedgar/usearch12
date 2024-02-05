@@ -22,17 +22,12 @@ class ObjMgr
 public:
 	Obj *m_Free[OTCount];
 	Obj *m_Busy[OTCount];
+#if DEBUG
+	bool m_Validate;
+#endif
 
 private:
 	ObjMgr();
-
-#if	DEBUG || TRACE_OBJS
-	bool m_Validate;
-	uint m_BusyCounts[OTCount];
-	uint m_GetCallCounts[OTCount];
-	uint m_FreeCallCounts[OTCount];
-	uint m_AllocCallCounts[OTCount];
-#endif
 
 public:
 	static vector<ObjMgr *> m_OMs;
@@ -46,14 +41,23 @@ public:
 	uint GetBusyCount(uint Type) const;
 	uint GetFreeCount(uint Type) const;
 	void LogStats() const;
+#if TRACK_OBJS
+	Obj *GetObj(ObjType Type, const char *FileName, uint LineNr);
+#else
 	Obj *GetObj(ObjType Type);
-	//Obj *GetObj(ObjType Type, const char *FileName, uint LineNr);
+#endif
 
+#if TRACK_OBJS
 #define T(x)	\
+	x *__Get##x(const char *FileName, uint LineNr) \
+		{ return (x *) GetObj(OT_##x, FileName, LineNr); }
+#define GetSeqInfo()		__GetSeqInfo(__FILE__, __LINE__)
+#define GetPathInfo()		__GetPathInfo(__FILE__, __LINE__)
+#define GetAlignResult()	__GetAlignResult(__FILE__, __LINE__)
+#else
 	x *Get##x() \
-		{ return (x *) GetObj(OT_##x); } \
-	//x *Get##x(const char *FileName, uint LineNr) \
-	//	{ return (x *) GetObj(OT_##x, FileName, LineNr); }
+		{ return (x *) GetObj(OT_##x); }
+#endif
 #include "objtypes.h"
 
 	Obj *AllocNew(ObjType Type);
@@ -62,9 +66,11 @@ public:
 	uint GetBusyCount(ObjType Type) const;
 	uint GetMaxRefCount(ObjType Type) const;
 	float GetTotalMem(ObjType Type) const;
+	void LogBusy() const;
 
 public:
 	static void LogGlobalStats();
+	static void LogGlobalBusy();
 
 #if	DEBUG
 	void ValidateType(ObjType Type) const;

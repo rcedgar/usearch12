@@ -1,8 +1,7 @@
 #ifndef obj_h
 #define obj_h
 
-#define TRACE_OBJS			0
-#define TRACK_OBJ_THREAD	0
+#define TRACK_OBJS	1
 
 #include "objtype.h"
 
@@ -42,10 +41,6 @@ class ObjMgr;
 class Obj
 	{
 	friend class ObjMgr;
-#if	TRACK_OBJ_THREAD
-public:
-	int m_OMPThreadIndex;
-#endif
 
 public: // Ideally protected
 	ObjType m_Type;
@@ -53,9 +48,8 @@ public: // Ideally protected
 	ObjMgr *m_Owner;
 	Obj *m_Fwd;
 	Obj *m_Bwd;
-#if	TRACE_OBJS
+#if	TRACK_OBJS
 public:
-	uint m_UID;
 	const char *m_SourceFileName;
 	uint m_SourceLineNr;
 #endif

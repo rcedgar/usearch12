@@ -157,17 +157,18 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	TD.AP = AlnParams::GetGlobalAP();
 	TD.AH = AlnHeuristics::GetGlobalAH();
 	TD.HF->Init(*TD.AP, *TD.AH);
-	TD.PI = OM->GetPathInfo();
-	TD.SI1 = OM->GetSeqInfo();
-	TD.SI2 = OM->GetSeqInfo();
-	TD.SIOv = OM->GetSeqInfo();
-	TD.SI2RC = OM->GetSeqInfo();
 
 	for (;;)
 		{
 		if (ThreadIndex == 1)
 			ProgressStep(SS1.GetPctDoneX10(), 1000, "%.1f%% merged",
 			  GetPct(g_OutRecCount, g_InRecCount));
+
+		TD.PI = OM->GetPathInfo();
+		TD.SI1 = OM->GetSeqInfo();
+		TD.SI2 = OM->GetSeqInfo();
+		TD.SIOv = OM->GetSeqInfo();
+		TD.SI2RC = OM->GetSeqInfo();
 
 		LOCK();
 		bool Ok1 = SS1.GetNext(TD.SI1);
@@ -273,5 +274,16 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 			fprintf(g_fTab, Ok ? "\tresult=merged\n" : "\tresult=notmerged\n");
 			}
 		UNLOCK();
+
+		TD.PI->Down();
+		TD.SI1->Down();
+		TD.SI2->Down();
+		TD.SIOv->Down();
+		TD.SI2RC->Down();
 		}
+	TD.PI->Down();
+	TD.SI1->Down();
+	TD.SI2->Down();
+	TD.SIOv->Down();
+	TD.SI2RC->Down();
 	}
