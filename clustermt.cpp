@@ -7,144 +7,124 @@
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
 #include "pcb.h"
-#if 0
+#include <chrono>
+
 static uint g_ProgressThreadIndex = 0;
 static vector<SeqInfo *> g_Pending;
 static UDBData *g_udb;
 static unsigned g_ClusterCount;
 static unsigned g_MemberCount;
 
-static omp_lock_t g_OutputLock;
-static omp_lock_t g_UpdateLock;
-static omp_lock_t g_ReadLock;
-static omp_lock_t g_StateLock;
+static mutex g_StateLock;
+static mutex g_OutputLock;
 
-static uint g_ReaderCount;
-static uint g_UpdaterCount;
-
-static char *lockname(omp_lock_t *p)
+enum ALGO_STATE
 	{
-	if (p == &g_StateLock) return "State";
-	if (p == &g_UpdateLock) return "Update";
-	if (p == &g_ReadLock) return "Read";
-	if (p == &g_OutputLock) return "Output";
-	return "LOCK??";
-	}
+	AS_Reading,
+	AS_Idle,
+	AS_Updating,
+	} g_State;
+static uint g_NrReaders;
 
-static void set_lock(omp_lock_t *p, int linenr, const char *src)
+static void yield()
 	{
-	char *name = lockname(p);
-	char s[1024];
-	sprintf(s, "[%d] set_lock(%p=%s) %s:%d call\n", GetThreadIndex(), p, name, src, linenr);
-	::OutputDebugString(s);
-	omp_set_lock(p);
-	sprintf(s, "[%d] set_lock(%p=%s) %s:%d done\n", GetThreadIndex(), p, name, src, linenr);
-	::OutputDebugString("");
-	}
-
-static void unset_lock(omp_lock_t *p, int linenr, const char *src)
-	{
-	char *name = lockname(p);
-	char s[1024];
-	sprintf(s, "[%d] unset_lock(%p=%s) %s:%d call\n", GetThreadIndex(), p, name, src, linenr);
-	::OutputDebugString(s);
-	omp_unset_lock(p);
-	sprintf(s, "[%d] unset_lock(%p=%s) %s:%d done\n", GetThreadIndex(), p, name, src, linenr);
-	::OutputDebugString(s);
-	}
-
-#define omp_set_lock(x)	set_lock(x, __LINE__, __FILE__)
-#define omp_unset_lock(x)	unset_lock(x, __LINE__, __FILE__)
-
-static void InitLocks()
-	{
-	omp_init_lock(&g_OutputLock);
-	omp_init_lock(&g_UpdateLock);
-	omp_init_lock(&g_ReadLock);
-	omp_init_lock(&g_StateLock);
+	this_thread::sleep_for(chrono::milliseconds(1));
 	}
 
 static void BeginOutput()
 	{
-	omp_set_lock(&g_OutputLock);
+	g_OutputLock.lock();
 	}
 
 static void EndOutput()
 	{
-	omp_unset_lock(&g_OutputLock);
+	g_OutputLock.unlock();
 	}
 
 static void BeginRead()
 	{
 	for (;;)
 		{
-		bool Ok = false;
-		omp_set_lock(&g_StateLock);
-		if (g_UpdaterCount == 0)
+		bool OkToRead = false;
+		g_StateLock.lock();
+		switch (g_State)
 			{
-			if (g_ReaderCount == 0)
-				omp_set_lock(&g_ReadLock);
-			++g_ReaderCount;
-			Ok = true;
-			}
-		omp_unset_lock(&g_StateLock);
-		if (Ok)
-			return;
+		case AS_Idle:
+			asserta(g_NrReaders == 0);
+			g_NrReaders = 1;
+			g_State = AS_Reading;
+			OkToRead = true;
+			break;
 
-	// Block until update has completed
-		omp_set_lock(&g_UpdateLock);
-		omp_unset_lock(&g_UpdateLock);
+		case AS_Reading:
+			++g_NrReaders;
+			OkToRead = true;
+			break;
+
+		case AS_Updating:
+			break;
+
+		default:
+			asserta(false);
+			}
+		g_StateLock.unlock();
+		if (OkToRead)
+			return;
+		yield();
 		}
 	}
 
 static void EndRead()
 	{
-	omp_set_lock(&g_StateLock);
-	asserta(g_ReaderCount > 0);
-	asserta(g_UpdaterCount == 0);
-	--g_ReaderCount;
-	if (g_ReaderCount == 0)
-		omp_unset_lock(&g_ReadLock);
-	omp_unset_lock(&g_StateLock);
+	g_StateLock.lock();
+	asserta(g_State == AS_Reading);
+	asserta(g_NrReaders > 0);
+	--g_NrReaders;
+	if (g_NrReaders == 0)
+		g_State = AS_Idle;
+	g_StateLock.unlock();
 	}
 
-static void BeginUpdate(const char *s)
+static void BeginUpdate()
 	{
 	for (;;)
 		{
-		bool Ok = false;
-		omp_set_lock(&g_StateLock);
-		if (g_UpdaterCount > 1)
-			Die("g_UpdaterCount > 1");
-		asserta(g_UpdaterCount <= 1);
-		if (g_UpdaterCount == 0 && g_ReaderCount == 0)
+		bool OkToUpdate = false;
+		g_StateLock.lock();
+		switch (g_State)
 			{
-			Ok = true;
-			omp_set_lock(&g_UpdateLock);
-			++g_UpdaterCount;
-			}
-		omp_unset_lock(&g_StateLock);
-		if (Ok)
-			return;
+		case AS_Idle:
+			asserta(g_NrReaders == 0);
+			g_State = AS_Updating;
+			OkToUpdate = true;
+			break;
 
-	// Block until readers have completed
-		omp_set_lock(&g_ReadLock);
-		omp_unset_lock(&g_ReadLock);
+		case AS_Reading:
+			OkToUpdate = false;
+			break;
+
+		case AS_Updating:
+		// Another thread is updating
+			OkToUpdate = false;
+			break;
+
+		default:
+			asserta(false);
+			}
+		g_StateLock.unlock();
+		if (OkToUpdate)
+			return;
+		yield();
 		}
 	}
 
 static void EndUpdate()
 	{
-	omp_set_lock(&g_StateLock);
-	if (g_UpdaterCount != 1)
-		Die("g_UpdaterCount != 1");
-	if (g_ReaderCount != 0)
-		Die("g_UpdaterCount != 1");
-	asserta(g_UpdaterCount == 1);
-	asserta(g_ReaderCount == 0);
-	g_UpdaterCount = 0;
-	omp_unset_lock(&g_UpdateLock);
-	omp_unset_lock(&g_StateLock);
+	g_StateLock.lock();
+	asserta(g_State == AS_Updating);
+	asserta(g_NrReaders == 0);
+	g_State = AS_Idle;
+	g_StateLock.unlock();
 	}
 
 static const char *MyPCB()
@@ -159,9 +139,7 @@ static const char *MyPCB()
 
 static void ProcessPending(OutputSink &OS)
 	{
-	BeginUpdate("ProcessPending");
-	asserta(g_UpdaterCount == 1);
-	asserta(g_ReaderCount == 0);
+	BeginUpdate();
 	for (vector<SeqInfo *>::const_iterator p = g_Pending.begin();
 	  p != g_Pending.end(); ++p)
 		{
@@ -215,22 +193,20 @@ static void Thread(SeqSource *SS, bool Nucleo)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
 		BeginRead();
-		asserta(g_UpdaterCount == 0);
-		asserta(g_ReaderCount > 0);
+		asserta(g_NrReaders > 0);
+		asserta(g_State == AS_Reading);
 		US->Search(Query, true);
-		asserta(g_UpdaterCount == 0);
-		asserta(g_ReaderCount > 0);
+		asserta(g_NrReaders > 0);
+		asserta(g_State == AS_Reading);
 		EndRead();
 		AlignResult *AR = HM->GetTopHit();
 		if (AR == 0)
 			{
 			ObjMgr::Up(Query);
-			BeginUpdate("g_Pending.push()");
-			asserta(g_UpdaterCount == 1);
-			asserta(g_ReaderCount == 0);
+			BeginUpdate();
+			asserta(g_State == AS_Updating);
 			g_Pending.push_back(Query);
-			asserta(g_UpdaterCount == 1);
-			asserta(g_ReaderCount == 0);
+			asserta(g_State == AS_Updating);
 			EndUpdate();
 			}
 		else
@@ -259,7 +235,6 @@ void cmd_cluster_mt()
 	bool IsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &IsNucleo);
 	InitGlobals(IsNucleo);
-	InitLocks();
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	g_udb = new UDBData;
@@ -272,15 +247,20 @@ void cmd_cluster_mt()
 	Progress("%u threads\n", ThreadCount);
 	g_ProgressThreadIndex = 0;
 	ProgressCallback(0, 1000);
-#pragma omp parallel num_threads(ThreadCount)
-	{
-	Thread(SS, IsNucleo);
-	}
+
+	g_State = AS_Idle;
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, SS, IsNucleo);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
+
 	ProgressCallback(999, 1000);
 	g_ProgressThreadIndex = UINT_MAX;
 
 	g_udb->ToFasta(opt(centroids));
 	ObjMgr::LogGlobalStats();
 	}
-#endif // 0
-void cmd_cluster_mt() {}
