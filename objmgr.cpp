@@ -26,7 +26,7 @@ ObjMgr *ObjMgr::GetObjMgr()
 		m_ThreadCount = NewThreadCount;
 		}
 	if (m_OMs[ThreadIndex] == 0)
-		m_OMs[ThreadIndex] = new ObjMgr;
+		m_OMs[ThreadIndex] = new ObjMgr(ThreadIndex);
 	UNLOCK();
 	return m_OMs[ThreadIndex];
 	}
@@ -55,8 +55,9 @@ const char *ObjTypeToStr2(ObjType Type)
 	return "??";
 	}
 
-ObjMgr::ObjMgr()
+ObjMgr::ObjMgr(uint ThreadIndex)
 	{
+	m_ThreadIndex = ThreadIndex;
 	zero_array(m_Free, OTCount);
 	zero_array(m_Busy, OTCount);
 
@@ -92,16 +93,18 @@ Obj *ObjMgr::AllocNew(ObjType Type)
 #if	DEBUG
 	++(m_AllocCallCounts[Type]);
 #endif
+	Obj *pObj = 0;
 	switch (Type)
 		{
 
-#define	T(x)	case OT_##x: return new x;
+#define	T(x)	case OT_##x: pObj = new x; break;
 #include "objtypes.h"
 
 	default:
 		assert(false);
 		}
-	return 0;
+	pObj->m_ThreadIndex = m_ThreadIndex;
+	return pObj;
 	}
 
 Obj *ObjMgr::ThreadGetObj(ObjType Type)

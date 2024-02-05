@@ -19,6 +19,9 @@ class ObjMgr
 	{
 	friend class Obj;
 
+public:
+	uint m_ThreadIndex;
+
 private:
 	static ObjMgr **m_OMs;
 	static unsigned m_ThreadCount;
@@ -36,7 +39,7 @@ private:
 #endif
 
 private:
-	ObjMgr();
+	ObjMgr(uint ThreadIndex);
 
 public:
 	static void Up(Obj *pObj);

@@ -53,6 +53,7 @@ public:
 public: // Ideally protected
 	ObjType m_Type;
 	unsigned m_RefCount;
+	uint m_ThreadIndex;
 	Obj *m_Fwd;
 	Obj *m_Bwd;
 #if	TRACE_OBJS
@@ -66,6 +67,7 @@ protected:
 	Obj(ObjType Type)
 		{
 		m_Type = Type;
+		m_ThreadIndex = UINT_MAX;
 		m_RefCount = 0;
 		m_Fwd = 0;
 		m_Bwd = 0;

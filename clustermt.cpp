@@ -10,123 +10,20 @@
 #include "pcb.h"
 #include <chrono>
 
+static size_t MAX_PENDING = 128;
+
 static uint g_ProgressThreadIndex = UINT_MAX;
-static vector<pair<uint, SeqInfo *> > g_Pending;
+static vector<vector<SeqInfo *> > g_PendingVec;
 static UDBData *g_udb;
 static unsigned g_ClusterCount;
 static unsigned g_MemberCount;
+static atomic<uint> g_TotalPendingCount;
 
-static mutex g_StateLock;
 static mutex g_OutputLock;
+static mutex g_UpdateLock;
 
-enum ALGO_STATE
-	{
-	AS_Reading,
-	AS_Idle,
-	AS_Updating,
-	} g_State;
-static uint g_NrReaders;
-
-static void yield()
-	{
-	this_thread::sleep_for(chrono::milliseconds(1));
-	}
-
-static void BeginOutput()
-	{
-	g_OutputLock.lock();
-	}
-
-static void EndOutput()
-	{
-	g_OutputLock.unlock();
-	}
-
-static void BeginRead()
-	{
-	for (;;)
-		{
-		bool OkToRead = false;
-		g_StateLock.lock();
-		switch (g_State)
-			{
-		case AS_Idle:
-			asserta(g_NrReaders == 0);
-			g_NrReaders = 1;
-			g_State = AS_Reading;
-			OkToRead = true;
-			break;
-
-		case AS_Reading:
-			++g_NrReaders;
-			OkToRead = true;
-			break;
-
-		case AS_Updating:
-			break;
-
-		default:
-			asserta(false);
-			}
-		g_StateLock.unlock();
-		if (OkToRead)
-			return;
-		yield();
-		}
-	}
-
-static void EndRead()
-	{
-	g_StateLock.lock();
-	asserta(g_State == AS_Reading);
-	asserta(g_NrReaders > 0);
-	--g_NrReaders;
-	if (g_NrReaders == 0)
-		g_State = AS_Idle;
-	g_StateLock.unlock();
-	}
-
-static void BeginUpdate()
-	{
-	for (;;)
-		{
-		bool OkToUpdate = false;
-		g_StateLock.lock();
-		switch (g_State)
-			{
-		case AS_Idle:
-			asserta(g_NrReaders == 0);
-			g_State = AS_Updating;
-			OkToUpdate = true;
-			break;
-
-		case AS_Reading:
-			OkToUpdate = false;
-			break;
-
-		case AS_Updating:
-		// Another thread is updating
-			OkToUpdate = false;
-			break;
-
-		default:
-			asserta(false);
-			}
-		g_StateLock.unlock();
-		if (OkToUpdate)
-			return;
-		yield();
-		}
-	}
-
-static void EndUpdate()
-	{
-	g_StateLock.lock();
-	asserta(g_State == AS_Updating);
-	asserta(g_NrReaders == 0);
-	g_State = AS_Idle;
-	g_StateLock.unlock();
-	}
+static vector<UDBUsortedSearcher *> g_USs;
+static vector<OutputSink *> g_OSs;
 
 static const char *MyPCB()
 	{
@@ -138,45 +35,45 @@ static const char *MyPCB()
 	return s;
 	}
 
-static void ProcessPending(OutputSink &OS)
+static void ProcessPending(uint ThreadIndex)
 	{
-	//BeginUpdate();
-	for (vector<pair<uint, SeqInfo *> >::const_iterator p = g_Pending.begin();
-	  p != g_Pending.end(); ++p)
+	UDBUsortedSearcher *US = g_USs[ThreadIndex];
+	OutputSink *OS = g_OSs[ThreadIndex];
+	vector<SeqInfo *> &Pending = g_PendingVec[ThreadIndex];
+
+	Progress("Process pending (thread %u, %u)...\n", ThreadIndex, SIZE(Pending));
+	for (vector<SeqInfo *>::const_iterator p = Pending.begin();
+	  p != Pending.end(); ++p)
 		{
-		uint QueryThreadIndex = p->first;
-		SeqInfo *Query = p->second;
-		uint ClusterIndex = g_udb->AddSIToDB_CopyData(Query);
-		asserta(ClusterIndex == g_ClusterCount);
-		++g_ClusterCount;
-		g_udb->AddSeqNoncoded(ClusterIndex,
-			Query->m_Seq, Query->m_L, false);
-		OS.OutputMatchedFalse(Query, ClusterIndex);
-		ObjMgr::ThreadDownByIndex(QueryThreadIndex, Query);
+		SeqInfo *Query = *p;
+		US->Search(Query, true);
+		AlignResult *AR = US->m_HitMgr->GetTopHit();
+		if (AR == 0)
+			{
+			uint ClusterIndex = g_udb->AddSIToDB_CopyData(Query);
+			asserta(ClusterIndex == g_ClusterCount);
+			++g_ClusterCount;
+			g_udb->AddSeqNoncoded(ClusterIndex,
+				Query->m_Seq, Query->m_L, false);
+			OS->OutputMatchedFalse(Query, ClusterIndex);
+			ObjMgr::ThreadDownByIndex(ThreadIndex, Query);
+			}
+		else
+			{
+			++g_MemberCount;
+			OS->OutputAR(AR);
+			}
+		US->m_HitMgr->OnQueryDone(Query);
 		}
-	g_Pending.clear();
-	//EndUpdate();
+	Pending.clear();
+	Progress("...process pending done\n");
 	}
 
-static void Thread(SeqSource *SS, bool Nucleo)
+static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 	{
-	uint ThreadIndex = GetThreadIndex();
-
-	UDBUsortedSearcher *US = new UDBUsortedSearcher(g_udb);
-	US->m_MinFractId = (float) opt(id);
-
-	HitMgr *HM = new HitMgr(0);
-	US->m_HitMgr = HM;
-
-	US->m_Terminator = new Terminator(CMD_cluster_mt);
-	US->m_Accepter = new Accepter(true, false);
-
-	GlobalAligner *aligner = new GlobalAligner;
-	const AlnParams *AP = AlnParams::GetGlobalAP();
-	const AlnHeuristics *AH = AlnHeuristics::GetGlobalAH();
-	aligner->Init(AP, AH);
-	US->m_Aligner = aligner;
-	OutputSink OS(false, Nucleo, Nucleo);
+	UDBUsortedSearcher *US = g_USs[ThreadIndex];
+	OutputSink *OS = g_OSs[ThreadIndex];
+	vector<SeqInfo *> &Pending = g_PendingVec[ThreadIndex];
 
 	for (;;)
 		{
@@ -192,39 +89,49 @@ static void Thread(SeqSource *SS, bool Nucleo)
 		if (ThreadIndex == g_ProgressThreadIndex)
 			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
-		BeginRead();
-		asserta(g_NrReaders > 0);
-		asserta(g_State == AS_Reading);
 		US->Search(Query, true);
-		asserta(g_NrReaders > 0);
-		asserta(g_State == AS_Reading);
-		EndRead();
-		AlignResult *AR = HM->GetTopHit();
+		AlignResult *AR = US->m_HitMgr->GetTopHit();
 		if (AR == 0)
 			{
 			ObjMgr::Up(Query);
-			BeginUpdate();
-			asserta(g_State == AS_Updating);
-			g_Pending.push_back(
-			  pair<uint, SeqInfo *>(ThreadIndex, Query));
-			asserta(g_State == AS_Updating);
-			ProcessPending(OS);
-			EndUpdate();
+			Pending.push_back(Query);
+			++g_TotalPendingCount;
+			if (g_TotalPendingCount >= MAX_PENDING)
+				{
+				US->m_HitMgr->OnQueryDone(Query);
+				ObjMgr::Down(Query);
+				Query = 0;
+				break;
+				}
 			}
 		else
 			{
-			BeginOutput();
+			g_OutputLock.lock();
 			++g_MemberCount;
-			OS.OutputAR(AR);
-			EndOutput();
+			OS->OutputAR(AR);
+			g_OutputLock.unlock();
 			}
-		HM->OnQueryDone(Query);
+		US->m_HitMgr->OnQueryDone(Query);
 		ObjMgr::Down(Query);
 		Query = 0;
 		}
 
 	if (ThreadIndex == g_ProgressThreadIndex)
 		g_ProgressThreadIndex = UINT_MAX;
+	}
+
+static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
+	{
+	Progress("FillPending...\n");
+	vector<thread *> ts;
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		{
+		thread *t = new thread(Thread, ThreadIndex, SS, IsNucleo);
+		ts.push_back(t);
+		}
+	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+		ts[ThreadIndex]->join();
+	Progress("...FillPending done\n");
 	}
 
 void cmd_cluster_mt()
@@ -249,16 +156,37 @@ void cmd_cluster_mt()
 	Progress("%u threads\n", ThreadCount);
 	g_ProgressThreadIndex = UINT_MAX;
 	ProgressCallback(0, 1000);
+	g_PendingVec.clear();
+	g_PendingVec.resize(ThreadCount);
 
-	g_State = AS_Idle;
-	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
-		thread *t = new thread(Thread, SS, IsNucleo);
-		ts.push_back(t);
+		UDBUsortedSearcher *US = new UDBUsortedSearcher(g_udb);
+		US->m_MinFractId = (float) opt(id);
+
+		HitMgr *HM = new HitMgr(1);
+		US->m_HitMgr = HM;
+
+		US->m_Terminator = new Terminator(CMD_cluster_mt);
+		US->m_Accepter = new Accepter(true, false);
+
+		GlobalAligner *aligner = new GlobalAligner;
+		const AlnParams *AP = AlnParams::GetGlobalAP();
+		const AlnHeuristics *AH = AlnHeuristics::GetGlobalAH();
+		aligner->Init(AP, AH);
+		US->m_Aligner = aligner;
+		OutputSink *OS = new OutputSink(false, IsNucleo, IsNucleo);
+
+		g_USs.push_back(US);
+		g_OSs.push_back(OS);
 		}
-	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
-		ts[ThreadIndex]->join();
+
+	for (;;)
+		{
+		FillPending(ThreadCount, SS, IsNucleo);
+		for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
+			ProcessPending(ThreadIndex);
+		}
 
 	ProgressCallback(999, 1000);
 
