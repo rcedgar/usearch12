@@ -8,6 +8,7 @@
 #include "outputsink.h"
 #include "objmgr.h"
 #include "progress.h"
+#include <atomic>
 
 static size_t MAX_PENDING = 128;
 

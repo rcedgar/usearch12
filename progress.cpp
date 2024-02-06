@@ -49,7 +49,7 @@ void ProgressNote(const char *fmt, ...)
 	vsnprintf(g_str, MAXSTR-1, fmt, ArgList);
 	g_str[MAXSTR-1] = '\0';
 	va_end(ArgList);
-	fprintf(progout, g_str);
+	fputs(g_str, progout);
 	fputc('\n', progout);
 	}
 

@@ -2,7 +2,7 @@ BINDIR := ../bin
 OBJDIR := o
 BINPATH := $(BINDIR)/usearch12
 
-CPPFLAGS := $(CPPFLAGS) -DNDEBUG -pthread
+CPPFLAGS := $(CPPFLAGS) -pthread
 
 CC = ccache gcc
 CFLAGS := $(CFLAGS) -O3 -ffast-math -msse -mfpmath=sse
@@ -300,7 +300,6 @@ OBJS = \
 
 $(BINPATH) : $(BINDIR)/ $(OBJDIR)/ $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(BINPATH)
-	strip -d $(BINPATH)
 
 $(OBJDIR)/ :
 	mkdir -p $(OBJDIR)/

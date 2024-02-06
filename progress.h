@@ -2,10 +2,8 @@
 
 class SeqSource;
 
-extern bool g_AbortProgress;
-
-void StartProgressThread();
 void StopProgressThread();
+void StartProgressThread();
 
 typedef void (PTR_PROGRESS_CB)(string &s);
 

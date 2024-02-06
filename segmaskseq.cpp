@@ -26,7 +26,7 @@ static const unsigned char *aaflag = _aaflag;
 static const double *entray = _entray;
 
 static void stateon(SMSeq *win);
-static double entropy(register int *sv);
+static double entropy(int *sv);
 static struct SMSeq *openwin(SMSeq *parent, int start, int length);
 static bool shiftwin1(SMSeq *win);
 static void closewin(SMSeq *win);
@@ -51,12 +51,12 @@ static void appendseg(SMSegment *segs, SMSegment *seg)
 
    return;
   }
-static double lnass(register int *sv)
+static double lnass(int *sv)
 	{
 	double	ans;
-	register int	svi, svim1;
-	register int	Class, total;
-	register int    i;
+	int	svi, svim1;
+	int	Class, total;
+	int    i;
 
 	ans = lnfac[20];
 	if (sv[0] == 0)
@@ -221,9 +221,9 @@ static int state_cmp(const void *s1, const void *s2)
 	return *ps2 - *ps1;
 	}
 
-static void decrementsv(register int *sv, int Class)
+static void decrementsv(int *sv, int Class)
 	{
-	register int	svi;
+	int	svi;
 
 	while ((svi = *sv++) != 0)
 		{
@@ -235,7 +235,7 @@ static void decrementsv(register int *sv, int Class)
 		}
 	}
 
-static void incrementsv(register int *sv, int Class)
+static void incrementsv(int *sv, int Class)
 	{
 	for (;;)
 		{
@@ -249,8 +249,8 @@ static void incrementsv(register int *sv, int Class)
 
 static bool shiftwin1(SMSeq *win)
 	{
-	register int	j, length;
-	register int	*comp;
+	int	j, length;
+	int	*comp;
 
 	length = win->length;
 	comp = win->composition;
@@ -296,7 +296,7 @@ static bool shiftwin1(SMSeq *win)
 
 static bool hasdash(SMSeq *win)
 	{
-	register const char	*seq, *seqmax;
+	const char	*seq, *seqmax;
 	seq = win->seq;
 	seqmax = seq + win->length;
 	while (seq < seqmax)
@@ -307,13 +307,13 @@ static bool hasdash(SMSeq *win)
 	return false;
 	}
 
-static double entropy(register int *sv)
+static double entropy(int *sv)
 	{
 	int	*sv0 = sv;
-	register double	ent;
-	register int	i, total;
-	register int	*svmax;
-	register double	xtotrecip, xsv;
+	double	ent;
+	int	i, total;
+	int	*svmax;
+	double	xtotrecip, xsv;
 
 	for (total = 0; (i = *sv) != 0; ++sv)
 		total += i;
@@ -391,9 +391,9 @@ static void enton(SMSeq *win)
 
 static void compon(SMSeq *win)
 	{
-	register int	*comp;
-	register int	aa;
-	register const char	*seq, *seqmax;
+	int	*comp;
+	int	aa;
+	const char	*seq, *seqmax;
 
 	win->composition = comp = (int *) calloc(20*sizeof(*comp), 1);
 	seq = win->seq;
@@ -409,7 +409,7 @@ static void compon(SMSeq *win)
 
 static void stateon(SMSeq *win)
 	{
-	register int	aa, nel, c;
+	int	aa, nel, c;
 
 	if (win->composition == NULL)
 		compon(win);
