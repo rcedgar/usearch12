@@ -1,6 +1,7 @@
 #include "myutils.h"
 #include "otutab.h"
 #include <time.h>
+#include "progress.h"
 
 // {
 //      "id":"../mot/final.tx.1.subsample.1.pick.shared-1",
@@ -33,7 +34,7 @@ void OTUTable::ToJsonFile(const string &FileName) const
 	if (FileName == "")
 		return;
 
-	Progress("Writing %s ...", FileName.c_str());
+	ProgressStart("Writing %s", FileName.c_str());
 	FILE *f = CreateStdioFile(FileName);
 	bool Dense = false;
 	unsigned OTUCount = GetOTUCount();
@@ -98,5 +99,4 @@ void OTUTable::ToJsonFile(const string &FileName) const
 
 	fprintf(f, "	]\n");
 	fprintf(f, "}\n");
-	Progress("done.\n");
 	}

@@ -6,7 +6,7 @@
 #include "fastq.h"
 #include "label.h"
 #include "cpplock.h"
-#include <thread>
+#include "progress.h"
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -22,13 +22,10 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 	{
 	FASTQSeqSource &SS1 = *aSS1;
 	FASTQSeqSource &SS2 = *aSS2;
-	unsigned ThreadIndex = GetThreadIndex();
 	ObjMgr &OM = *ObjMgr::CreateObjMgr();
 	SeqInfo *SI1 = OM.GetSeqInfo();
 	SeqInfo *SI2 = OM.GetSeqInfo();
 
-	if (ThreadIndex == 1)
-		ProgressStep(0, 1000, "Filtering");
 	for (;;)
 		{
 		LOCK();
@@ -39,10 +36,6 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 		UNLOCK();
 		if (!Ok1)
 			break;
-
-		if (ThreadIndex == 1)
-			ProgressStep(SS1.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
-			  GetPct(g_OutCount, g_RecCount));
 
 		LOCK();
 		++g_RecCount;
@@ -82,6 +75,7 @@ void cmd_fastq_filter2()
 	FASTQSeqSource SS2;
 	SS1.Open(InputFileName);
 	SS2.Open(ReverseFileName);
+	ProgressStartSS(SS1, "filtering");
 
 	if (optset_fastqout)
 		{
@@ -99,15 +93,9 @@ void cmd_fastq_filter2()
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-
+	ProgressDone();
 	SS1.Close();
 	SS2.Close();
 	CloseStdioFile(g_fFastqOut1);
 	CloseStdioFile(g_fFastqOut2);
-
-	if (g_RecCount == 0)
-		return;
-
-	ProgressStep(999, 1000, "Filtering, %.1f%% passed",
-		GetPct(g_OutCount, g_RecCount));
 	}

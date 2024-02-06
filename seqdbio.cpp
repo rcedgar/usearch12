@@ -1,5 +1,6 @@
 #include "myutils.h"
 #include "seqdb.h"
+#include "progress.h"
 
 #define TRACE	0
 
@@ -20,7 +21,7 @@ void SeqDB::ToFile(FILE *f) const
 	Log("SeqDB::ToFile, pos %u\n", GetStdioFilePos64(f));
 	Log("SeqCount %u\n", m_SeqCount);
 #endif
-	Progress("Buffers (%u seqs)\n", m_SeqCount);
+	ProgressStart("writing seqdb");
 // padding for safety
 	const unsigned MAX_SIZE = UINT_MAX - 1024;
 
@@ -87,8 +88,6 @@ void SeqDB::ToFile(FILE *f) const
 	uint64 TotalSeqBytes = 0;
 	for (unsigned i = 0; i < m_SeqCount; ++i)
 		{
-		ProgressStep(i, m_SeqCount, "Seqs");
-
 		const byte *Seq = m_Seqs[i];
 		unsigned L = m_SeqLengths[i];
 		TotalSeqBytes += L;
@@ -158,6 +157,7 @@ static void SeqLengthsToBufferInfo(const uint32 *SeqLengths, unsigned SeqCount,
 
 void SeqDB::FromFile(FILE *f, const string &FileName)
 	{
+	ProgressStart("reading %s", FileName.c_str());
 #if	TRACE
 	Log("\n");
 	Log("SeqDB::FromFile, pos %u\n", GetStdioFilePos64(f));
@@ -188,7 +188,6 @@ void SeqDB::FromFile(FILE *f, const string &FileName)
 #if	TRACE
 	Log("Pos %u LabelOffsets\n", GetStdioFilePos64(f));
 #endif
-	Progress("Reading pointers...");
 	ReadStdioFile(f, LabelOffsets, m_SeqCount*sizeof(uint32));
 
 	m_LabelBuffer = myalloc(char, LabelBytes);
@@ -206,7 +205,6 @@ void SeqDB::FromFile(FILE *f, const string &FileName)
 	Log("Pos %u SeqLengths\n", GetStdioFilePos64(f));
 #endif
 	ReadStdioFile(f, m_SeqLengths, m_SeqCount*sizeof(uint32));
-	Progress("done.\n");
 
 #if	TRACE
 	Log("Pos %u Seqs\n", GetStdioFilePos64(f));
@@ -221,7 +219,6 @@ void SeqDB::FromFile(FILE *f, const string &FileName)
 	m_SeqBufferVec = myalloc(byte *, BufferCount);
 	m_Seqs = myalloc(byte *, m_SeqCount);
 	unsigned SeqIndex = 0;
-	Progress("Reading db seqs...");
 	for (unsigned BufferIndex = 0; BufferIndex < BufferCount; ++BufferIndex)
 		{
 		uint32 BufferBytes = BufferSizes[BufferIndex];
@@ -241,5 +238,5 @@ void SeqDB::FromFile(FILE *f, const string &FileName)
 	asserta(SeqIndex == m_SeqCount);
 
 	SetIsAligned();
-	Progress("done.\n");
+	ProgressDone();
 	}

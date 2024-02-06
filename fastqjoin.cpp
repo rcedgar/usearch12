@@ -4,6 +4,7 @@
 #include "seqinfo.h"
 #include "objmgr.h"
 #include "cpplock.h"
+#include "progress.h"
 
 void RevComp(const byte *Seq, unsigned L, byte *RCSeq);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
@@ -131,9 +132,6 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		if (ThreadIndex == 1)
-			ProgressStep(SS1.GetPctDoneX10(), 1000, "Joining");
-
 		LOCK();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
@@ -150,8 +148,8 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		if (!IlluminaLabelPairMatch(SI1->m_Label, SI2->m_Label))
 			{
-			ProgressLog("Label1 %s\n", SI1->m_Label);
-			ProgressLog("Label2 %s\n", SI2->m_Label);
+			ProgressNoteLog("Label1 %s", SI1->m_Label);
+			ProgressNoteLog("Label2 %s", SI2->m_Label);
 			Die("Label mismatch");
 			}
 
@@ -175,7 +173,7 @@ void cmd_fastq_join()
 	SS1.Open(opt(fastq_join));
 	SS2.Open(opt(reverse));
 
-	ProgressStep(0, 1000, "Joining");
+	ProgressStartSS(SS1, "joining");
 
 	if (optset_fastqout)
 		g_fFastqOut = CreateStdioFile(opt(fastqout));
@@ -193,7 +191,7 @@ void cmd_fastq_join()
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
 
-	ProgressStep(999, 1000, "Joining");
+	ProgressDone();
 
 	SS1.Close();
 	SS2.Close();

@@ -8,6 +8,8 @@
 #include "fastq.h"
 #include "seqhash.h"
 #include "constaxstr.h"
+#include "derep.h"
+#include "progress.h"
 
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 
@@ -66,8 +68,6 @@ void Thread(DerepThreadData *aTD)
 
 	for (unsigned i = 0; i < TDSeqCount; ++i)
 		{
-		if (ThreadIndex == 1)
-			ProgressStep(i, TDSeqCount, "DF");
 		unsigned SeqIndex = TDSeqIndexes[i];
 		assert(SeqIndex < SeqCount);
 
@@ -190,6 +190,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 	g_RevComp = RevComp;
 
 	vector<thread *> ts;
+	ProgressStart("derep");
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
 		DerepThreadData *TD = &TDs[ThreadIndex];

@@ -9,6 +9,7 @@
 #include "clustersink.h"
 #include "upclustersink.h"
 #include "seqdb.h"
+#include "progress.h"
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 
@@ -58,9 +59,6 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 			Die("-fastaout not supported, use -centroids");
 		}
 
-	void SetCmdPCB(CMD Cmd);
-	SetCmdPCB(Cmd);
-
 	DB_SORT SortOrder = DBS_None;
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
@@ -75,7 +73,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	SORT_ORDER SO = GetSortOrder();
 	if (Cmd == CMD_cluster_otus && SO != SO_Size)
 		Die("Must sort by size");
-	ProgressCallback(0, 1003);
+	ProgressStartSS(*SS, "clustering");
 	bool AllDone = false;
 	for (;;)
 		{
@@ -86,7 +84,6 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 			Query->Down();
 			break;
 			}
-		ProgressCallback(SS->GetPctDoneX10(), 1000);
 
 		switch (SO)
 			{
@@ -128,7 +125,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 		Query->Down();
 		Query = 0;
 		}
-	ProgressCallback(999, 1000);
+	ProgressDone();
 
 	if (Cmd == CMD_cluster_otus)
 		UPClusterSink::OnAllDone();

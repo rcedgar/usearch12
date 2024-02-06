@@ -391,7 +391,6 @@ void FastQ::SetBaseGuess(const string &FileName)
 		if (g_Base == 0)
 			{
 			g_Base = Base;
-			Progress("FASTQ base %u for file %s\n", Base, FileName.c_str());
 
 			byte MinQ = opt(fastq_qmin);
 			byte MaxQ  = opt(fastq_qmax);

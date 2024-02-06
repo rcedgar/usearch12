@@ -9,6 +9,7 @@
 #include "alignresult.h"
 #include "sort.h"
 #include "cpplock.h"
+#include "progress.h"
 
 #define	TRACE		0
 
@@ -23,8 +24,6 @@ static unsigned g_QueryCount;
 static unsigned g_PlusCount;
 static unsigned g_MinusCount;
 static unsigned g_NotCount;
-
-static unsigned g_ProgressThreadIndex = 0;
 
 void GetOrientCounts(unsigned &QueryCount, unsigned &PlusCount, unsigned &MinusCount,
   unsigned &NotCount)
@@ -155,19 +154,12 @@ static void Thread(SeqSource *SS, UDBData *udb)
 			Query->Down();
 			break;
 			}
-		if (g_ProgressThreadIndex == UINT_MAX)
-			g_ProgressThreadIndex = ThreadIndex;
-		if (ThreadIndex == g_ProgressThreadIndex)
-			ProgressCallback(SS->GetPctDoneX10(), 1000);
 
 		Query->GetRevComp(QueryRC);
 		Orient(Query, QueryRC, US);
 		Query->Down();
 		Query = 0;
 		}
-
-	if (ThreadIndex == g_ProgressThreadIndex)
-		g_ProgressThreadIndex = UINT_MAX;
 	}
 
 static void DoOrient(const string &QueryFileName)
@@ -193,9 +185,8 @@ static void DoOrient(const string &QueryFileName)
 	asserta(DB != 0);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
+	ProgressStartSS(*SS, "orienting");
 	unsigned ThreadCount = GetRequestedThreadCount();
-	g_ProgressThreadIndex = 0;
-	ProgressCallback(0, 1000);
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
@@ -204,9 +195,8 @@ static void DoOrient(const string &QueryFileName)
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
+	ProgressDone();
 
-	ProgressCallback(999, 1000);
-	g_ProgressThreadIndex = UINT_MAX;
 	CloseStdioFile(g_fOut);
 	CloseStdioFile(g_fFa);
 	CloseStdioFile(g_fFq);
@@ -214,7 +204,7 @@ static void DoOrient(const string &QueryFileName)
 
 	unsigned QueryCount, PlusCount, MinusCount, NotCount;
 	GetOrientCounts(QueryCount, PlusCount, MinusCount, NotCount);
-	Log("%u plus (%.1f%%), %u minus (%.1f%%), %u undet. (%.1f%%)\n",
+	ProgressNoteLog("%u plus (%.1f%%), %u minus (%.1f%%), %u undet. (%.1f%%)\n",
 	  PlusCount, GetPct(PlusCount, QueryCount),
 	  MinusCount, GetPct(MinusCount, QueryCount),
 	  NotCount, GetPct(NotCount, QueryCount));

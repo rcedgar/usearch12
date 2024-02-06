@@ -260,9 +260,6 @@
     <ClCompile Include="uparsesink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pcb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="seqdbseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -512,8 +509,8 @@
     <ClCompile Include="test.cpp">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="progthread.cpp">
-      <Filter>C Source Files</Filter>
+    <ClCompile Include="progress.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -733,9 +730,6 @@
     <ClInclude Include="pathinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pcb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="primes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -848,6 +842,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="constaxstr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="progress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

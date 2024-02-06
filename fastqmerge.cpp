@@ -9,6 +9,7 @@
 #include "alpha.h"
 #include "sort.h"
 #include "merge.h"
+#include "progress.h"
 
 #define STORECLASS	/* empty */
 #include "mergeglobals.h"
@@ -31,21 +32,18 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 	unsigned InRecCountStart = g_InRecCount;
 	unsigned OutRecCountStart = g_OutRecCount;
 
-	ProgressLog("\n");
-	ProgressLog("Merging\n");
-	ProgressLog("  Fwd %s\n", FwdFileName.c_str());
-	ProgressLog("  Rev %s\n", RevFileName.c_str());
+	Log("\n");
+	Log("Merging\n");
+	Log("  Fwd %s\n", FwdFileName.c_str());
+	Log("  Rev %s\n", RevFileName.c_str());
 
 	if (g_RelabelPrefix.empty())
-		ProgressLog("  Keep read labels");
+		Log("  Keep read labels");
 	else
-		ProgressLog("  Relabel reads as %s#", g_RelabelPrefix.c_str());
+		Log("  Relabel reads as %s#", g_RelabelPrefix.c_str());
 
 	if (g_SampleName != "")
-		ProgressLog("  Add sample=%s;", g_SampleName.c_str());
-
-	ProgressLog("\n");
-	ProgressLog("\n");
+		Log("  Add sample=%s;", g_SampleName.c_str());
 
 	if (g_fRep != 0)
 		{
@@ -72,7 +70,6 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 
 	FastQ::SetBaseGuess(FwdFileName);
 
-	ProgressStep(0, 1000, "0%% merged");
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
@@ -82,8 +79,6 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-
-	ProgressStep(999, 1000, "%.1f%% merged", GetPct(g_OutRecCount, g_InRecCount));
 
 	if (g_fRep != 0)
 		{
@@ -178,6 +173,7 @@ void cmd_fastq_mergepairs()
 	if (optset_fastaout_overlap_rev)
 		g_fFaOverlapRev = CreateStdioFile(opt(fastaout_overlap_rev));
 
+	ProgressStart("merging");
 	for (unsigned i = 0; i < N; ++i)
 		{
 		const string &FwdFileName = FwdFileNames[i];
@@ -189,6 +185,7 @@ void cmd_fastq_mergepairs()
 	if (!opt(quiet))
 		WriteMergeResults(stderr);
 	WriteMergeResults(g_fRep);
+	ProgressDone();
 
 	CloseStdioFile(g_fFastqOut);
 	CloseStdioFile(g_fFastaOut);

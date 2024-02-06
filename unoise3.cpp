@@ -10,6 +10,7 @@
 #include "alignresult.h"
 #include "label.h"
 #include "fastq.h"
+#include "progress.h"
 #include <math.h>
 
 void InitGlobals(bool Nucleo);
@@ -169,14 +170,14 @@ void cmd_unoise3()
 	unsigned CorrectedCount = 0;
 	vector<unsigned> UniqIndexToAmpIndex;
 	vector<unsigned> UniqIndexToDiffs;
-	for (unsigned SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
+	uint SeqIndex = 0;
+	ProgressLoop(&SeqIndex, UniqCount, "denoising");
+	for (SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
 		{
 		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = Query->GetSize();
 		asserta(QSize >= MinAmpSize);
-		ProgressStep(SeqIndex, UniqCount, "%u amplicons, %u bad (size >= %u)",
-		  GoodCount, CorrectedCount, QSize);
 		unsigned Diffs = UINT_MAX;
 		unsigned TargetIndex = SearchDenoise(Query, USS, &Diffs);
 		if (TargetIndex != UINT_MAX)
@@ -304,9 +305,10 @@ void cmd_unoise3()
 	if (optset_zotus)
 		{
 		FILE *f = CreateStdioFile(opt(zotus));
-		for (unsigned AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
+		uint AmpIndex = 0;
+		ProgressLoop(&AmpIndex, AmpCount, "writing zotus");
+		for (AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
 			{
-			ProgressStep(AmpIndex, AmpCount, "Writing zotus");
 			if (IsChimeraVec[AmpIndex])
 				continue;
 
@@ -327,6 +329,7 @@ void cmd_unoise3()
 
 			SeqToFasta(f, Seq, L, NewLabel.c_str());
 			}
+		ProgressDone();
 		CloseStdioFile(f);
 		}
 	CloseStdioFile(g_fTab);

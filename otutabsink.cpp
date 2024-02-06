@@ -3,6 +3,7 @@
 #include "alignresult.h"
 #include "hitmgr.h"
 #include "label.h"
+#include "progress.h"
 
 OTUTable *OTUTableSink::m_OT;
 unsigned OTUTableSink::m_AssignedCount;
@@ -55,7 +56,7 @@ void OTUTableSink::OnAllDone()
 	if (m_OT == 0)
 		return;
 
-	ProgressLog("%u / %u mapped to OTUs (%.1f%%)\n",
+	ProgressNoteLog("%u / %u mapped to OTUs (%.1f%%)\n",
 	  m_AssignedCount, m_QueryCount, GetPct(m_AssignedCount, m_QueryCount));
 
 	CloseStdioFile(m_fMap);
@@ -64,14 +65,14 @@ void OTUTableSink::OnAllDone()
 	if (optset_otutabout)
 		{
 		const string FileName = opt(otutabout);
-		Progress("Writing %s\n", FileName.c_str());
+		ProgressStart("writing %s", FileName.c_str());
 		m_OT->ToTabbedFile(FileName);
 		}
 
 	if (optset_biomout)
 		{
 		const string FileName = opt(biomout);
-		Progress("Writing %s\n", FileName.c_str());
+		ProgressStart("writing %s", FileName.c_str());
 		m_OT->ToJsonFile(FileName);
 		}
 	}

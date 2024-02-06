@@ -6,7 +6,7 @@
 #include "fastq.h"
 #include "label.h"
 #include "cpplock.h"
-#include <thread>
+#include "progress.h"
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -26,11 +26,6 @@ static unsigned g_BadCount = 0;
 static unsigned g_MaxNsCount = 0;
 static unsigned g_MinQCount = 0;
 static unsigned g_QiimeTrunc = 0;
-
-//static omp_lock_t g_FastqOutLock;
-//static omp_lock_t g_FastaOutLock;
-//static omp_lock_t g_TotalsLock;
-
 
 static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	{
@@ -116,17 +111,11 @@ static void Thread(FASTQSeqSource *aSS)
 	unsigned MaxNsCount = 0;
 	unsigned MinQCount = 0;
 
-	if (ThreadIndex == 1)
-		ProgressStep(0, 1000, "Filtering");
 	for (;;)
 		{
 		bool Ok = SS.GetNext(SI);
 		if (!Ok)
 			break;
-
-		if (ThreadIndex == 1)
-			ProgressStep(SS.GetPctDoneX10(), 1000, "Filtering, %.1f%% passed",
-			  GetPct(g_OutRecCount, g_RecCount));
 
 		LOCK();
 		++g_RecCount;
@@ -239,6 +228,7 @@ void cmd_fastq_filter()
 	if (optset_eetabbedout)
 		g_fEEOut = CreateStdioFile(opt(eetabbedout));
 
+	ProgressStartSS(SS, "filtering");
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
@@ -259,19 +249,16 @@ void cmd_fastq_filter()
 	if (g_RecCount == 0)
 		return;
 
-	ProgressStep(999, 1000, "Filtering, %.1f%% passed",
-		GetPct(g_OutRecCount, g_RecCount));
-
 	Log("\n");
-	ProgressLog("%10u  Reads (%s)\n", g_RecCount, IntToStr(g_RecCount));
+	ProgressNoteLog("%10u  Reads (%s)\n", g_RecCount, IntToStr(g_RecCount));
 	if (optset_fastq_minqual)
-		ProgressLog("%10u  Discared reads with Q < %u\n", g_MinQCount, opt(fastq_minqual));
+		ProgressNoteLog("%10u  Discared reads with Q < %u\n", g_MinQCount, opt(fastq_minqual));
 	if (optset_fastq_trunclen)
-		ProgressLog("%10u  Discarded reads length < %u\n", g_ShortCount, opt(fastq_trunclen));
+		ProgressNoteLog("%10u  Discarded reads length < %u\n", g_ShortCount, opt(fastq_trunclen));
 	if (optset_fastq_maxns)
-		ProgressLog("%10u  Discarded read with > %u Ns\n", g_MaxNsCount, opt(fastq_maxns));
+		ProgressNoteLog("%10u  Discarded read with > %u Ns\n", g_MaxNsCount, opt(fastq_maxns));
 	if (optset_fastq_maxee)
-		ProgressLog("%10u  Discarded reads with expected errs > %.2f\n", g_BadCount, opt(fastq_maxee));
-	ProgressLog("%10u  Filtered reads (%s, %.1f%%)\n",
+		ProgressNoteLog("%10u  Discarded reads with expected errs > %.2f\n", g_BadCount, opt(fastq_maxee));
+	ProgressNoteLog("%10u  Filtered reads (%s, %.1f%%)\n",
 	  g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_RecCount));
 	}

@@ -12,6 +12,7 @@
 #include "gobuff.h"
 #include "genefinder.h"
 #include "bitvec.h"
+#include "progress.h"
 
 #define	TIM		0
 
@@ -28,8 +29,6 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
   bool *ptrDBIsNucleo);
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 uint32 GetUniqueLetterCount(uint32 Word, uint32 w);
-
-static unsigned g_ProgressThreadIndex = UINT_MAX;
 
 static void Thread(SeqSource *SS, bool RevComp)
 	{
@@ -67,11 +66,6 @@ static void Thread(SeqSource *SS, bool RevComp)
 			Query->Down();
 			break;
 			}
-		if (g_ProgressThreadIndex == UINT_MAX)
-			g_ProgressThreadIndex = ThreadIndex;
-		if (ThreadIndex == g_ProgressThreadIndex)
-			ProgressStep(SS->GetPctDoneX10(), 1000, "Searching, %u genes found",
-			  GeneFinder::m_TotalGeneCount);
 
 #if	TIM
 		t1 = GetClockTicks();
@@ -84,9 +78,6 @@ static void Thread(SeqSource *SS, bool RevComp)
 		Query->Down();
 		Query = 0;
 		}
-
-	if (ThreadIndex == g_ProgressThreadIndex)
-		g_ProgressThreadIndex = UINT_MAX;
 
 #if TIM
 	{
@@ -178,8 +169,6 @@ void cmd_search_16s()
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	unsigned ThreadCount = GetRequestedThreadCount();
-	g_ProgressThreadIndex = 0;
-	ProgressCallback(0, 1000);
 
 #if TIM
 	time_t t1 = time(0);
@@ -201,14 +190,10 @@ void cmd_search_16s()
 	delete SS;
 	SS = 0;
 
-	ProgressStep(999, 1000, "Searching, %u genes found",
-	  GeneFinder::m_TotalGeneCount);
-	g_ProgressThreadIndex = UINT_MAX;
-
 	if (GeneFinder::m_MotifPairOverlapCount > 0)
-		ProgressLog("%u motif pair overlaps resolved\n", GeneFinder::m_MotifPairOverlapCount);
+		ProgressNoteLog("%u motif pair overlaps resolved", GeneFinder::m_MotifPairOverlapCount);
 	if (GeneFinder::m_GeneOverlapCount > 0)
-		ProgressLog("%u gene overlaps resolved\n", GeneFinder::m_GeneOverlapCount);
+		ProgressNoteLog("%u gene overlaps resolved", GeneFinder::m_GeneOverlapCount);
 
 	myfree(Vec);
 

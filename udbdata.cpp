@@ -5,6 +5,7 @@
 #include "sort.h"
 #include "seqinfo.h"
 #include "seqhash.h"
+#include "progress.h"
 
 #define Bytesof(x)	(sizeof(x[0]))
 #define Bitsof(x)	(Bytesof(x)*8)
@@ -82,6 +83,7 @@ static void GetBinLoHi(unsigned BinIndex, unsigned &Lo, unsigned &Hi)
 
 void UDBData::LogSizeHisto() const
 	{
+	ProgressStart("log udb size histo.");
 	bool IsVarCoded = m_Params.DBIsVarCoded();
 	asserta(SizeToBin(0) == 0);
 	asserta(SizeToBin(1) == 1);
@@ -107,9 +109,7 @@ void UDBData::LogSizeHisto() const
 
 	unsigned Lower;
 	unsigned Upper;
-	Progress("Mask stats...");
 	m_SeqDB->GetLetterCounts(Upper, Lower);
-	Progress("done.\n");
 
 	unsigned Bins[33];
 	double BinSizes[33];
@@ -125,7 +125,6 @@ void UDBData::LogSizeHisto() const
 	unsigned MaxWord = 0;
 
 	unsigned TotalWords = 0;
-	Progress("Bin sizes...");
 	for (unsigned Word = 0; Word < m_SlotCount; ++Word)
 		{
 		unsigned N = m_Sizes[Word];
@@ -144,7 +143,6 @@ void UDBData::LogSizeHisto() const
 		Bins[b] += 1;
 		BinSizes[b] += N;
 		}
-	Progress("done.\n");
 
 	Log("\n");
 	Log("\n");
@@ -214,6 +212,7 @@ void UDBData::LogSizeHisto() const
 	Log("%10u  Lower (%.1f%%)\n", Lower, GetPct(Lower, Lower+Upper));
 	Log("%10u  Total\n", Lower + Upper);
 	Log("%10.0f  Indexed words\n", SumSizes);
+	ProgressDone();
 	}
 
 unsigned UDBData::GetWordCountRowVarCoded(unsigned Word) const
@@ -238,15 +237,14 @@ unsigned UDBData::GetWordCountRowVarCoded(unsigned Word) const
 
 void UDBData::LogTopWords(unsigned N) const
 	{
+	ProgressStart("log top udb words");
 	Log("\n");
 
 	float DBSize = (float) m_SeqDB->GetLetterCount();
 	float TotalExpSize = 0;
 
 	unsigned *Order = myalloc(unsigned, m_SlotCount);
-	Progress("Sort words...");
 	QuickSortOrderDesc<unsigned>(m_Sizes, m_SlotCount, Order);
-	Progress("done.\n");
 
 	float SumSize = 0.0;
 	for (unsigned i = 0; i < m_SlotCount; ++i)
@@ -323,6 +321,7 @@ void UDBData::LogTopWords(unsigned N) const
 			Log("\n");
 			}
 		}
+	ProgressDone();
 	}
 
 void UDBData::ValidateRow(unsigned Word) const
@@ -404,11 +403,11 @@ void UDBData::ValidateRow(unsigned Word) const
 
 void UDBData::ValidateRows() const
 	{
-	for (unsigned Word = 0; Word < m_SlotCount; ++Word)
-		{
-		ProgressStep(Word, m_SlotCount, "Validating");
+	uint Word;
+	ProgressLoop(&Word, m_SlotCount, "validate udb rows");
+	for (Word = 0; Word < m_SlotCount; ++Word)
 		ValidateRow(Word);
-		}
+	ProgressDone();
 	}
 
 uint64 UDBData::GetTotalLetters()

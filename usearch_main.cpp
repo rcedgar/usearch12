@@ -4,7 +4,7 @@
 #include "objmgr.h"
 #include "alpha.h"
 #include "mx.h"
-#include "pcb.h"
+#include "progress.h"
 #include <time.h>
 #ifdef _MSC_VER
 #include <Windows.h>
@@ -50,17 +50,11 @@ int main(int argc, char **argv)
 	if (n > 2)
 		ShortCmdLine += " " + g_Argv[2];
 
-	void ProgressThread();
-	thread *pt = new thread(ProgressThread);
-
-	ProgressPrefix(false);
-	Progress("[%s]\n", ShortCmdLine.c_str() + 1);
-	ProgressPrefix(true);
+	StartProgressThread();
 
 	InitAlpha();
 
 	CMD Cmd = GetCmd();
-	SetCmdPCB(Cmd);
 	OutputSink::OpenOutputFiles(Cmd);
 
 	switch (Cmd)
@@ -70,9 +64,10 @@ int main(int argc, char **argv)
 	default:
 		asserta(false);
 		}
+	StopProgressThread();
 
 	OutputSink::CloseOutputFiles();
-	g_AbortProgress = true;
+
 	if (g_LowerCaseWarning)
 		Warning("Input has lower-case masked sequences");
 
@@ -81,6 +76,5 @@ int main(int argc, char **argv)
 
 	LogElapsedTimeAndRAM();
 	CheckUsedOpts(false);
-	pt->join();
 	return 0;
 	}

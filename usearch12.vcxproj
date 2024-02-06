@@ -336,9 +336,8 @@
     <ClCompile Include="outputuc.cpp" />
     <ClCompile Include="pathinfo.cpp" />
     <ClCompile Include="pattern.cpp" />
-    <ClCompile Include="pcb.cpp" />
     <ClCompile Include="prime.cpp" />
-    <ClCompile Include="progthread.cpp" />
+    <ClCompile Include="progress.cpp" />
     <ClCompile Include="quarts.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
@@ -471,8 +470,8 @@
     <ClInclude Include="otutabsink.h" />
     <ClInclude Include="outputsink.h" />
     <ClInclude Include="pathinfo.h" />
-    <ClInclude Include="pcb.h" />
     <ClInclude Include="primes.h" />
+    <ClInclude Include="progress.h" />
     <ClInclude Include="quarts.h" />
     <ClInclude Include="searcher.h" />
     <ClInclude Include="segmask.h" />

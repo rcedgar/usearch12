@@ -5,6 +5,7 @@
 #include "sort.h"
 #include "seqdb.h"
 #include "label.h"
+#include "progress.h"
 #include <map>
 #include <set>
 
@@ -134,13 +135,12 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
 	vector<string> Fields;
-	ProgressFileInit(f, "Reading %s, pass 1", FileName.c_str());
+	ProgressStart("read QIIME map file %s", FileName.c_str());
 	set<string> SampleNameSet;
 	vector<string> SampleNames;
 	vector<string> OTUNames;
 	while (ReadLineStdioFile(f, Line))
 		{
-		ProgressFileStep();
 		Split(Line, Fields, '\t');
 		unsigned FieldCount = SIZE(Fields);
 		const string &OTUName = Fields[0];
@@ -156,16 +156,13 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 				}
 			}
 		}
-	ProgressFileDone();
 
 	Init(SampleNames, OTUNames);
 
 	SetStdioFilePos(f, 0);
-	ProgressFileInit(f, "Reading %s, pass 2", FileName.c_str());
 	unsigned OTUIndex = 0;
 	while (ReadLineStdioFile(f, Line))
 		{
-		ProgressFileStep();
 		Split(Line, Fields, '\t');
 		unsigned FieldCount = SIZE(Fields);
 		const string &OTUName = Fields[0];
@@ -180,7 +177,7 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 			}
 		++OTUIndex;
 		}
-	ProgressFileDone();
+	ProgressDone();
 	}
 
 void OTUTable::FromTabbedFile(const string &FileName)
@@ -191,7 +188,7 @@ void OTUTable::FromTabbedFile(const string &FileName)
 	string Line;
 	vector<string> Fields;
 	unsigned TheFieldCount = UINT_MAX;
-	ProgressFileInit(f, "Reading %s", FileName.c_str());
+	ProgressStart("reading otutable %s", FileName.c_str());
 
 	ReadLineStdioFile(f, Line);
 	Split(Line, Fields, '\t');
@@ -222,7 +219,6 @@ void OTUTable::FromTabbedFile(const string &FileName)
 
 	while (ReadLineStdioFile(f, Line))
 		{
-		ProgressFileStep();
 		++LineNr;
 		Split(Line, Fields, '\t');
 		unsigned FieldCount = SIZE(Fields);
@@ -248,7 +244,7 @@ void OTUTable::FromTabbedFile(const string &FileName)
 			SetCount(OTUIndex, SampleIndex, Count);
 			}
 		}
-	ProgressFileDone();
+	ProgressDone();
 	CloseStdioFile(f);
 	}
 
@@ -259,7 +255,7 @@ void OTUTable::ToTabbedFile(const string &FileName, bool AsFreqs) const
 
 	const char *FreqFmt = "%.4g";
 
-	Progress("Writing %s ...", FileName.c_str());
+	ProgressStart("writing otutable %s", FileName.c_str());
 	FILE *f = CreateStdioFile(FileName);
 
 	unsigned SampleCount = GetSampleCount();
@@ -318,7 +314,7 @@ void OTUTable::ToTabbedFile(const string &FileName, bool AsFreqs) const
 		}
 
 	CloseStdioFile(f);
-	Progress("done.\n");
+	ProgressDone();
 	}
 
 void OTUTable::GetOTUSizes(vector<unsigned> &Sizes) const

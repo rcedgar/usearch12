@@ -7,6 +7,7 @@
 #include "hspfinder.h"
 #include "objmgr.h"
 #include "cpplock.h"
+#include "progress.h"
 
 void GetMergeAln(const MergeThreadData &TD, int &Left, unsigned &AlnLength, int &Right);
 
@@ -160,10 +161,6 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		if (ThreadIndex == 1)
-			ProgressStep(SS1.GetPctDoneX10(), 1000, "%.1f%% merged",
-			  GetPct(g_OutRecCount, g_InRecCount));
-
 		TD.PI = OM->GetPathInfo();
 		TD.SI1 = OM->GetSeqInfo();
 		TD.SI2 = OM->GetSeqInfo();
@@ -200,8 +197,8 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		if (!IlluminaLabelPairMatch(TD.SI1->m_Label, TD.SI2->m_Label))
 			{
-			ProgressLog("Label1 %s\n", TD.SI1->m_Label);
-			ProgressLog("Label2 %s\n", TD.SI2->m_Label);
+			ProgressNoteLog("Label1 %s\n", TD.SI1->m_Label);
+			ProgressNoteLog("Label2 %s\n", TD.SI2->m_Label);
 			Die("Label mismatch");
 			}
 

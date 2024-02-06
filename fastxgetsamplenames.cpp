@@ -4,6 +4,7 @@
 #include "seqsource.h"
 #include "label.h"
 #include <set>
+#include "progress.h"
 
 void cmd_fastx_get_sample_names()
 	{
@@ -19,7 +20,7 @@ void cmd_fastx_get_sample_names()
 		fOut = CreateStdioFile(opt(output));
 
 	set<string> Samples;
-	ProgressStep(0, 1000, "Processing");
+	ProgressStartSS(SS, "get_sample_names");
 	for (;;)
 		{
 		bool Ok = SS.GetNext(SI);
@@ -30,9 +31,8 @@ void cmd_fastx_get_sample_names()
 		if (Sample.empty())
 			Die("Empty sample name");
 		Samples.insert(Sample);
-		ProgressStep(SS.GetPctDoneX10(), 1000, "%u samples found", SIZE(Samples));
 		}
-	ProgressStep(999, 1000, "%u samples found", SIZE(Samples));
+	ProgressDone();
 
 	for (set<string>::const_iterator p = Samples.begin(); p != Samples.end(); ++p)
 		fprintf(fOut, "%s\n", (*p).c_str());

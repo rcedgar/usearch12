@@ -45,6 +45,7 @@
 #endif
 
 #include "myutils.h"
+#include "progress.h"
 
 unsigned g_AllocLine;
 const char *g_AllocFile;
@@ -123,10 +124,10 @@ void StringsFromFile(const string &FileName, set<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	Progress("Reading %s...", FileName.c_str());
+	ProgressStart("reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.insert(Line);
-	Progress("done.\n");
+	ProgressDone();
 	CloseStdioFile(f);
 	}
 
@@ -135,10 +136,10 @@ void StringsFromFile(const string &FileName, vector<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	Progress("Reading %s...", FileName.c_str());
+	ProgressStart("reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.push_back(Line);
-	Progress("done.\n");
+	ProgressDone();
 	CloseStdioFile(f);
 	}
 
@@ -167,7 +168,7 @@ unsigned GetRequestedThreadCount()
 		{
 		if (CoreCount > 10)
 			{
-			Progress("CPU has %u cores, defaulting to 10 threads\n", CoreCount);
+			ProgressNoteLog("CPU has %u cores, defaulting to 10 threads", CoreCount);
 			MsgDone = true;
 			N = 10;
 			}
@@ -183,7 +184,7 @@ unsigned GetRequestedThreadCount()
 	if (N == 0)
 		N = 1;
 	if (!MsgDone)
-		Progress("starting %u thread%s\n", N, N == 1 ? "" : "s");
+		ProgressNoteLog("starting %u thread%s", N, N == 1 ? "" : "s");
 	Done = true;
 	return N;
 	}
@@ -1568,41 +1569,41 @@ const char *GetMaxRAMStr(string &s)
 	return s.c_str();
 	}
 
-static bool g_ProgressPrefixOn = true;
-
-bool ProgressPrefix(bool On)
-	{
-	bool OldValue = g_ProgressPrefixOn;
-	g_ProgressPrefixOn = On;
-	return OldValue;
-	}
-
-void ProgressLog(const char *Format, ...)
-	{
-	string Str;
-	va_list ArgList;
-	va_start(ArgList, Format);
-	myvstrprintf(Str, Format, ArgList);
-	va_end(ArgList);
-
-	Log("%s", Str.c_str());
-	bool SavedPrefix = g_ProgressPrefixOn;
-	g_ProgressPrefixOn = false;
-	Progress("%s", Str.c_str());
-	g_ProgressPrefixOn = SavedPrefix;
-	}
-
-void ProgressLogPrefix(const char *Format, ...)
-	{
-	string Str;
-	va_list ArgList;
-	va_start(ArgList, Format);
-	myvstrprintf(Str, Format, ArgList);
-	va_end(ArgList);
-
-	Log("%s\n", Str.c_str());
-	Progress("%s\n", Str.c_str());
-	}
+//static bool g_ProgressPrefixOn = true;
+//
+//bool ProgressPrefix(bool On)
+//	{
+//	bool OldValue = g_ProgressPrefixOn;
+//	g_ProgressPrefixOn = On;
+//	return OldValue;
+//	}
+//
+//void ProgressLog(const char *Format, ...)
+//	{
+//	string Str;
+//	va_list ArgList;
+//	va_start(ArgList, Format);
+//	myvstrprintf(Str, Format, ArgList);
+//	va_end(ArgList);
+//
+//	Log("%s", Str.c_str());
+//	bool SavedPrefix = g_ProgressPrefixOn;
+//	g_ProgressPrefixOn = false;
+//	Progress("%s", Str.c_str());
+//	g_ProgressPrefixOn = SavedPrefix;
+//	}
+//
+//void ProgressLogPrefix(const char *Format, ...)
+//	{
+//	string Str;
+//	va_list ArgList;
+//	va_start(ArgList, Format);
+//	myvstrprintf(Str, Format, ArgList);
+//	va_end(ArgList);
+//
+//	Log("%s\n", Str.c_str());
+//	Progress("%s\n", Str.c_str());
+//	}
 
 void Pr(FILE *f, const char *Format, ...)
 	{
@@ -1615,64 +1616,64 @@ void Pr(FILE *f, const char *Format, ...)
 	va_end(args);
 	}
 
-void Progress(const char *Format, ...)
-	{
-	if (opt(quiet))
-		return;
-
-	string Str;
-	va_list ArgList;
-	va_start(ArgList, Format);
-	myvstrprintf(Str, Format, ArgList);
-	va_end(ArgList);
-
-#if	0
-	Log("Progress(");
-	for (unsigned i = 0; i < Str.size(); ++i)
-		{
-		char c = Str[i];
-		if (c == '\r')
-			Log("\\r");
-		else if (c == '\n')
-			Log("\\n");
-		else
-			Log("%c", c);
-		}
-	Log(")\n");
-#endif //0
-
-	for (unsigned i = 0; i < Str.size(); ++i)
-		{
-		if (g_ProgressPrefixOn && g_CurrProgressLineLength == 0)
-			{
-			string s;
-			GetProgressPrefixStr(s);
-			for (unsigned j = 0; j < s.size(); ++j)
-				{
-				fputc(s[j], stderr);
-				++g_CurrProgressLineLength;
-				}
-			}
-
-		char c = Str[i];
-		if (c == '\n' || c == '\r')
-			{
-			for (unsigned j = g_CurrProgressLineLength; j < g_LastProgressLineLength; ++j)
-				fputc(' ', stderr);
-			if (c == '\n')
-				g_LastProgressLineLength = 0;
-			else
-				g_LastProgressLineLength = g_CurrProgressLineLength;
-			g_CurrProgressLineLength = 0;
-			fputc(c, stderr);
-			}
-		else
-			{
-			fputc(c, stderr);
-			++g_CurrProgressLineLength;
-			}
-		}
-	}
+//void Progress(const char *Format, ...)
+//	{
+//	if (opt(quiet))
+//		return;
+//
+//	string Str;
+//	va_list ArgList;
+//	va_start(ArgList, Format);
+//	myvstrprintf(Str, Format, ArgList);
+//	va_end(ArgList);
+//
+//#if	0
+//	Log("Progress(");
+//	for (unsigned i = 0; i < Str.size(); ++i)
+//		{
+//		char c = Str[i];
+//		if (c == '\r')
+//			Log("\\r");
+//		else if (c == '\n')
+//			Log("\\n");
+//		else
+//			Log("%c", c);
+//		}
+//	Log(")\n");
+//#endif //0
+//
+//	for (unsigned i = 0; i < Str.size(); ++i)
+//		{
+//		if (g_ProgressPrefixOn && g_CurrProgressLineLength == 0)
+//			{
+//			string s;
+//			GetProgressPrefixStr(s);
+//			for (unsigned j = 0; j < s.size(); ++j)
+//				{
+//				fputc(s[j], stderr);
+//				++g_CurrProgressLineLength;
+//				}
+//			}
+//
+//		char c = Str[i];
+//		if (c == '\n' || c == '\r')
+//			{
+//			for (unsigned j = g_CurrProgressLineLength; j < g_LastProgressLineLength; ++j)
+//				fputc(' ', stderr);
+//			if (c == '\n')
+//				g_LastProgressLineLength = 0;
+//			else
+//				g_LastProgressLineLength = g_CurrProgressLineLength;
+//			g_CurrProgressLineLength = 0;
+//			fputc(c, stderr);
+//			}
+//		else
+//			{
+//			fputc(c, stderr);
+//			++g_CurrProgressLineLength;
+//			}
+//		}
+//	}
 
 void LogProgramInfoAndCmdLine()
 	{
@@ -1744,230 +1745,230 @@ string &GetProgressLevelStr(string &s)
 	return s;
 	}
 
-static const char *DefaultPCB()
-	{
-	return "Processing";
-	}
-static FN_PROGRESS_CALLBACK g_PCB = DefaultPCB;
+//static const char *DefaultPCB()
+//	{
+//	return "Processing";
+//	}
+//static FN_PROGRESS_CALLBACK g_PCB = DefaultPCB;
+//
+//void SetPCB(FN_PROGRESS_CALLBACK PCB)
+//	{
+//	g_PCB = PCB;
+//	}
 
-void SetPCB(FN_PROGRESS_CALLBACK PCB)
-	{
-	g_PCB = PCB;
-	}
-
-static FILE *g_fProg;
-static double g_ProgFileSize;
-static unsigned g_ProgFileTick;
-static const char *g_ProgFileMsg = "Processing";
-static string g_ProgFileStr;
-
-void ProgressFileInit(FILE *f, const char *Format, ...)
-	{
-	g_fProg = f;
-	g_ProgFileSize = (double) GetStdioFileSize64(f);
-	g_ProgFileTick = 0;
-	if (Format == 0)
-		g_ProgFileMsg = "Processing";
-	else
-		{
-		va_list ArgList;
-		va_start(ArgList, Format);
-		myvstrprintf(g_ProgFileStr, Format, ArgList);
-		va_end(ArgList);
-		g_ProgFileMsg = g_ProgFileStr.c_str();
-		}
-	ProgressStep(0, 1000, "%s", g_ProgFileMsg);
-	}
-
-void ProgressFileStep(const char *Format, ...)
-	{
-	double Pos = (double) GetStdioFilePos64(g_fProg);
-	unsigned Tick = (unsigned) ((Pos*998.0)/g_ProgFileSize);
-	if (Tick <= g_ProgFileTick)
-		return;
-	if (Format != 0)
-		{
-		va_list ArgList;
-		va_start(ArgList, Format);
-		myvstrprintf(g_ProgFileStr, Format, ArgList);
-		va_end(ArgList);
-		g_ProgFileMsg = g_ProgFileStr.c_str();
-		}
-	ProgressStep(Tick, 1000, "%s", g_ProgFileMsg);
-	g_ProgFileTick = Tick;
-	}
-
-void ProgressFileDone(const char *Format, ...)
-	{
-	if (Format != 0)
-		{
-		va_list ArgList;
-		va_start(ArgList, Format);
-		myvstrprintf(g_ProgFileStr, Format, ArgList);
-		va_end(ArgList);
-		g_ProgFileMsg = g_ProgFileStr.c_str();
-		}
-	ProgressStep(999, 1000, "%s", g_ProgFileMsg);
-	}
-
-#if TIMING
-static time_t g_LastLogTimerSecs; 
-#endif
-
-void ProgressCallback(unsigned i, unsigned N)
-	{
-	if (opt(quiet))
-		return;
-
-	if (i == 0)
-		{
-		g_ProgressIndex = 0;
-		g_ProgressCount = N;
-		g_CountsInterval = 1;
-		g_StepCalls = 0;
-		g_TimeLastOutputStep = 0;
-		if (g_CurrProgressLineLength > 0)
-			Progress("\n");
-		}
-
-	bool IsLastStep = (i == UINT_MAX || i + 1 == N);
-	if (!IsLastStep)
-		{
-		++g_StepCalls;
-		if (g_StepCalls%g_CountsInterval != 0)
-			return;
-
-		time_t Now = time(0);
-		if (Now == g_TimeLastOutputStep)
-			{
-			if (g_CountsInterval < 128)
-				g_CountsInterval = (g_CountsInterval*3)/2;
-			else
-				g_CountsInterval += 64;
-			return;
-			}
-		else
-			{
-			time_t Secs = Now - g_TimeLastOutputStep;
-			if (Secs > 1)
-				g_CountsInterval = unsigned(g_CountsInterval/(Secs*8));
-			}
-
-		if (g_CountsInterval < 1)
-			g_CountsInterval = 1;
-
-		g_TimeLastOutputStep = Now;
-		}
-
-	g_ProgressIndex = i;
-
-	Progress(" %s", PctStr(i+1, N));
-	Progress(" %s\r", (g_PCB)());
-
-	if (IsLastStep)
-		{
-		g_CountsInterval = 1;
-		fputc('\n', stderr);
-		}
-	}
-
-void ProgressStep64(uint64 i64, uint64 N64, const char *Msg)
-	{
-	unsigned i;
-	if (i64 == 0)
-		i = 0;
-	else if (i64 + 1 == N64)
-		i = 999;
-	else
-		i = unsigned(double(i64)*997.0/double(N64)) + 1;
-	ProgressStep(i, 1000, Msg);
-	}
-
-void ProgressStep(unsigned i, unsigned N, const char *Format, ...)
-	{
-	if (opt(quiet))
-		return;
-
-	if (i == 0)
-		{
-		string Str;
-		va_list ArgList;
-		va_start(ArgList, Format);
-		myvstrprintf(Str, Format, ArgList);
-		va_end(ArgList);
-		g_ProgressDesc = Str;
-		g_ProgressIndex = 0;
-		g_ProgressCount = N;
-		g_CountsInterval = 1;
-		g_StepCalls = 0;
-		g_TimeLastOutputStep = 0;
-		if (g_CurrProgressLineLength > 0)
-			Progress("\n");
-		}
-
-	assert(N == g_ProgressCount);
-	if (i >= N && i != UINT_MAX)
-		{
-		static bool WarningDone = false;
-		if (!WarningDone)
-			{
-			Warning("ProgressStep(%u,%u)", i, N);
-			WarningDone = true;
-			}
-		return;
-		}
-	bool IsLastStep = (i == UINT_MAX || i + 1 == N);
-	if (!IsLastStep)
-		{
-		++g_StepCalls;
-		if (g_StepCalls%g_CountsInterval != 0)
-			return;
-
-		time_t Now = time(0);
-		if (Now == g_TimeLastOutputStep)
-			{
-			if (g_CountsInterval < 128)
-				g_CountsInterval = (g_CountsInterval*3)/2;
-			else
-				g_CountsInterval += 64;
-			return;
-			}
-		else
-			{
-			time_t Secs = Now - g_TimeLastOutputStep;
-			if (Secs > 1)
-				g_CountsInterval = unsigned(g_CountsInterval/(Secs*8));
-			}
-
-		if (g_CountsInterval < 1)
-			g_CountsInterval = 1;
-
-		g_TimeLastOutputStep = Now;
-		}
-
-	g_ProgressIndex = i;
-
-	if (i > 0)
-		{
-		va_list ArgList;
-		va_start(ArgList, Format);
-		myvstrprintf(g_ProgressDesc, Format, ArgList);
-		}
-
-	string LevelStr;
-	GetProgressLevelStr(LevelStr);
-	Progress(" %s\r", LevelStr.c_str());
-
-	if (IsLastStep)
-		{
-		g_CountsInterval = 1;
-		fputc('\n', stderr);
-
-		string s;
-		GetProgressPrefixStr(s);
-		Log("%s %s\n", s.c_str(), LevelStr.c_str());
-		}
-	}
+//static FILE *g_fProg;
+//static double g_ProgFileSize;
+//static unsigned g_ProgFileTick;
+//static const char *g_ProgFileMsg = "Processing";
+//static string g_ProgFileStr;
+//
+//void ProgressFileInit(FILE *f, const char *Format, ...)
+//	{
+//	g_fProg = f;
+//	g_ProgFileSize = (double) GetStdioFileSize64(f);
+//	g_ProgFileTick = 0;
+//	if (Format == 0)
+//		g_ProgFileMsg = "Processing";
+//	else
+//		{
+//		va_list ArgList;
+//		va_start(ArgList, Format);
+//		myvstrprintf(g_ProgFileStr, Format, ArgList);
+//		va_end(ArgList);
+//		g_ProgFileMsg = g_ProgFileStr.c_str();
+//		}
+//	ProgressStep(0, 1000, "%s", g_ProgFileMsg);
+//	}
+//
+//void ProgressFileStep(const char *Format, ...)
+//	{
+//	double Pos = (double) GetStdioFilePos64(g_fProg);
+//	unsigned Tick = (unsigned) ((Pos*998.0)/g_ProgFileSize);
+//	if (Tick <= g_ProgFileTick)
+//		return;
+//	if (Format != 0)
+//		{
+//		va_list ArgList;
+//		va_start(ArgList, Format);
+//		myvstrprintf(g_ProgFileStr, Format, ArgList);
+//		va_end(ArgList);
+//		g_ProgFileMsg = g_ProgFileStr.c_str();
+//		}
+//	ProgressStep(Tick, 1000, "%s", g_ProgFileMsg);
+//	g_ProgFileTick = Tick;
+//	}
+//
+//void ProgressFileDone(const char *Format, ...)
+//	{
+//	if (Format != 0)
+//		{
+//		va_list ArgList;
+//		va_start(ArgList, Format);
+//		myvstrprintf(g_ProgFileStr, Format, ArgList);
+//		va_end(ArgList);
+//		g_ProgFileMsg = g_ProgFileStr.c_str();
+//		}
+//	ProgressStep(999, 1000, "%s", g_ProgFileMsg);
+//	}
+//
+//#if TIMING
+//static time_t g_LastLogTimerSecs; 
+//#endif
+//
+//void ProgressCallback(unsigned i, unsigned N)
+//	{
+//	if (opt(quiet))
+//		return;
+//
+//	if (i == 0)
+//		{
+//		g_ProgressIndex = 0;
+//		g_ProgressCount = N;
+//		g_CountsInterval = 1;
+//		g_StepCalls = 0;
+//		g_TimeLastOutputStep = 0;
+//		if (g_CurrProgressLineLength > 0)
+//			Progress("\n");
+//		}
+//
+//	bool IsLastStep = (i == UINT_MAX || i + 1 == N);
+//	if (!IsLastStep)
+//		{
+//		++g_StepCalls;
+//		if (g_StepCalls%g_CountsInterval != 0)
+//			return;
+//
+//		time_t Now = time(0);
+//		if (Now == g_TimeLastOutputStep)
+//			{
+//			if (g_CountsInterval < 128)
+//				g_CountsInterval = (g_CountsInterval*3)/2;
+//			else
+//				g_CountsInterval += 64;
+//			return;
+//			}
+//		else
+//			{
+//			time_t Secs = Now - g_TimeLastOutputStep;
+//			if (Secs > 1)
+//				g_CountsInterval = unsigned(g_CountsInterval/(Secs*8));
+//			}
+//
+//		if (g_CountsInterval < 1)
+//			g_CountsInterval = 1;
+//
+//		g_TimeLastOutputStep = Now;
+//		}
+//
+//	g_ProgressIndex = i;
+//
+//	Progress(" %s", PctStr(i+1, N));
+//	Progress(" %s\r", (g_PCB)());
+//
+//	if (IsLastStep)
+//		{
+//		g_CountsInterval = 1;
+//		fputc('\n', stderr);
+//		}
+//	}
+//
+//void ProgressStep64(uint64 i64, uint64 N64, const char *Msg)
+//	{
+//	unsigned i;
+//	if (i64 == 0)
+//		i = 0;
+//	else if (i64 + 1 == N64)
+//		i = 999;
+//	else
+//		i = unsigned(double(i64)*997.0/double(N64)) + 1;
+//	ProgressStep(i, 1000, Msg);
+//	}
+//
+//void ProgressStep(unsigned i, unsigned N, const char *Format, ...)
+//	{
+//	if (opt(quiet))
+//		return;
+//
+//	if (i == 0)
+//		{
+//		string Str;
+//		va_list ArgList;
+//		va_start(ArgList, Format);
+//		myvstrprintf(Str, Format, ArgList);
+//		va_end(ArgList);
+//		g_ProgressDesc = Str;
+//		g_ProgressIndex = 0;
+//		g_ProgressCount = N;
+//		g_CountsInterval = 1;
+//		g_StepCalls = 0;
+//		g_TimeLastOutputStep = 0;
+//		if (g_CurrProgressLineLength > 0)
+//			Progress("\n");
+//		}
+//
+//	assert(N == g_ProgressCount);
+//	if (i >= N && i != UINT_MAX)
+//		{
+//		static bool WarningDone = false;
+//		if (!WarningDone)
+//			{
+//			Warning("ProgressStep(%u,%u)", i, N);
+//			WarningDone = true;
+//			}
+//		return;
+//		}
+//	bool IsLastStep = (i == UINT_MAX || i + 1 == N);
+//	if (!IsLastStep)
+//		{
+//		++g_StepCalls;
+//		if (g_StepCalls%g_CountsInterval != 0)
+//			return;
+//
+//		time_t Now = time(0);
+//		if (Now == g_TimeLastOutputStep)
+//			{
+//			if (g_CountsInterval < 128)
+//				g_CountsInterval = (g_CountsInterval*3)/2;
+//			else
+//				g_CountsInterval += 64;
+//			return;
+//			}
+//		else
+//			{
+//			time_t Secs = Now - g_TimeLastOutputStep;
+//			if (Secs > 1)
+//				g_CountsInterval = unsigned(g_CountsInterval/(Secs*8));
+//			}
+//
+//		if (g_CountsInterval < 1)
+//			g_CountsInterval = 1;
+//
+//		g_TimeLastOutputStep = Now;
+//		}
+//
+//	g_ProgressIndex = i;
+//
+//	if (i > 0)
+//		{
+//		va_list ArgList;
+//		va_start(ArgList, Format);
+//		myvstrprintf(g_ProgressDesc, Format, ArgList);
+//		}
+//
+//	string LevelStr;
+//	GetProgressLevelStr(LevelStr);
+//	Progress(" %s\r", LevelStr.c_str());
+//
+//	if (IsLastStep)
+//		{
+//		g_CountsInterval = 1;
+//		fputc('\n', stderr);
+//
+//		string s;
+//		GetProgressPrefixStr(s);
+//		Log("%s %s\n", s.c_str(), LevelStr.c_str());
+//		}
+//	}
 
 static unsigned GetStructPack()
 	{

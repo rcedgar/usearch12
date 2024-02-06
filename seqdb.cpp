@@ -7,6 +7,7 @@
 #include "seqinfo.h"
 #include "mask.h"
 #include "sort.h"
+#include "progress.h"
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 
@@ -427,8 +428,9 @@ void SeqDB::Mask(MASK_TYPE Type)
 		sMsg = string("Masking (") + sType + string(")");
 		}
 	const char *Msg = sMsg.c_str();
-	ProgressStep(0, 1000, Msg);
-	for (unsigned i = 0; i < m_SeqCount; ++i)
+	uint i = 0;
+	ProgressLoop(&i, m_SeqCount, Msg);
+	for (i = 0; i < m_SeqCount; ++i)
 		{
 		double dTicks = (LetterTotal*999.0)/LetterCount;
 		unsigned Ticks = unsigned(dTicks);
@@ -436,13 +438,12 @@ void SeqDB::Mask(MASK_TYPE Type)
 			Ticks = 1;
 		else if (Ticks == 999)
 			Ticks = 998;
-		ProgressStep(Ticks, 1000, Msg);
 		byte *Seq = m_Seqs[i];
 		unsigned L = m_SeqLengths[i];
 		LetterTotal += L;
 		MaskSeq(Seq, L, Type, Seq);
 		}
-	ProgressStep(999, 1000, Msg);
+	ProgressDone();
 	}
 
 byte *SeqDB::GetCol(unsigned ColIndex, byte *Col) const
@@ -546,9 +547,10 @@ void SeqDB::GetLabels(vector<string> &Labels) const
 
 void SeqDB::Relabel(const string &Prefix, bool KeepSizes)
 	{
-	for (unsigned SeqIndex = 0; SeqIndex < m_SeqCount; ++SeqIndex)
+	uint SeqIndex = 0;
+	ProgressLoop(&SeqIndex, m_SeqCount, "relabel");
+	for (SeqIndex = 0; SeqIndex < m_SeqCount; ++SeqIndex)
 		{
-		ProgressStep(SeqIndex, m_SeqCount, "Relabel");
 		const char *Label = GetLabel(SeqIndex);
 
 		if (KeepSizes)
@@ -565,6 +567,7 @@ void SeqDB::Relabel(const string &Prefix, bool KeepSizes)
 			m_Labels[SeqIndex] = mystrsave(NewLabel.c_str());
 			}
 		}
+	ProgressDone();
 	}
 
 unsigned SeqDB::GetMinSeqLength() const
@@ -608,19 +611,16 @@ void SeqDB::FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress)
 	const char *FileName = SF.GetFileNameC();
 	m_FileName = string(FileName);
 	if (ShowProgress)
-		ProgressStep(0, 1000, "Reading %s", FileName);
+		ProgressStartSS(SF, "reading seqs");
 	for (;;)
 		{
 		bool Ok = SF.GetNext(SI);
 		if (!Ok)
 			break;
-
-		if (ShowProgress)
-			ProgressStep(SF.GetPctDoneX10(), 1000, "Reading %s", FileName);
 		AddSeq_CopyData(SI->m_Label, SI->m_Seq, SI->m_L, SI->m_Qual);
 		}
 	if (ShowProgress)
-		ProgressStep(999, 1000, "Reading %s", FileName);
+		ProgressDone();
 	}
 
 void SeqDB::Sort(DB_SORT SortType)
@@ -642,7 +642,7 @@ void SeqDB::Sort(DB_SORT SortType)
 
 void SeqDB::SortBySize(unsigned *SizeOrder)
 	{
-	Progress("Sorting by size\n");
+	ProgressStart("sorting seqs. by abundance (size=)");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	unsigned *Sizes = myalloc(unsigned, m_SeqCount);
 
@@ -673,6 +673,7 @@ void SeqDB::SortBySize(unsigned *SizeOrder)
 		NewSeqs[i] = m_Seqs[Order[i]];
 	myfree(m_Seqs);
 	m_Seqs = NewSeqs;
+	ProgressDone();
 	}
 
 void SeqDB::SortByLength()
@@ -691,7 +692,7 @@ void SeqDB::SortByLength()
 	if (Sorted)
 		return;
 
-	Progress("Sorting\n");
+	ProgressStart("sorting seqs. by length");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	QuickSortOrderDesc(m_SeqLengths, m_SeqCount, Order);
 
@@ -712,6 +713,7 @@ void SeqDB::SortByLength()
 		NewSeqs[i] = m_Seqs[Order[i]];
 	myfree(m_Seqs);
 	m_Seqs = NewSeqs;
+	ProgressDone();
 	}
 
 void StripGapsSeq(const byte *GappedSeq, unsigned L,

@@ -6,6 +6,7 @@
 #include "seqinfo.h"
 #include "objmgr.h"
 #include "label.h"
+#include "progress.h"
 
 void InitGlobals(bool Nucleo);
 
@@ -54,7 +55,9 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	unsigned SearchSeqCount = 0;
 	unsigned LastSize = UINT_MAX;
 	vector<unsigned> Sizes;
-	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint SeqIndex = 0;
+	ProgressLoop(&SeqIndex, SeqCount, "UCHIME de novo");
+	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
@@ -140,8 +143,8 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 		LastSize = QSize;
 
 		unsigned QueryCount = SeqIndex + 1;
-		ProgressStep(SeqIndex, SeqCount, "%u good, %u chimeras", GoodCount, ChimeraCount);
 		}
+	ProgressDone();
 
 	CloseStdioFile(fUCA);
 	CloseStdioFile(DeParser::m_fTab);
@@ -177,15 +180,17 @@ void cmd_uchime3_denovo()
 	if (optset_nonchimeras)
 		fNonCh = CreateStdioFile(opt(nonchimeras));
 
-	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint SeqIndex = 0;
+	ProgressLoop(&SeqIndex, SeqCount, "writing results");
+	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
-		ProgressStep(SeqIndex, SeqCount, "Writing output");
 		bool IsChimera = IsChimeraVec[SeqIndex];
 		if (IsChimera)
 			Input.SeqToFasta(fCh, SeqIndex);
 		else
 			Input.SeqToFasta(fNonCh, SeqIndex);
 		}
+	ProgressDone();
 
 	CloseStdioFile(fCh);
 	CloseStdioFile(fNonCh);

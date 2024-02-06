@@ -10,6 +10,7 @@
 #include <time.h>
 #include "cmd.h"
 #include "cpplock.h"
+#include "progress.h"
 
 #define TRACE		0
 
@@ -75,7 +76,7 @@ void DerepThreadData::Validate(const SeqDB &Input, bool FullLength) const
 
 		asserta(SeqEq(Seq, L, UniqueSeq, L));
 		}
-	ProgressLog("DerepThreadData::Validate(this=%p, FullLength %c) OK\n",
+	ProgressNoteLog("DerepThreadData::Validate(this=%p, FullLength %c) OK",
 	  this, tof(FullLength));
 	}
 
@@ -204,7 +205,7 @@ void DerepResult::Validate(bool FullLength, unsigned M) const
 		}
 	asserta(TooShortCount == m_TooShortCount);
 
-	ProgressLog("DerepResult::Validate(this=%p, FullLength %c, M %d) OK\n",
+	ProgressNoteLog("DerepResult::Validate(this=%p, FullLength %c, M %d) OK",
 	  this, tof(FullLength), M);
 	}
 
@@ -228,9 +229,11 @@ void DerepResult::ToSeqDB(SeqDB &DB, bool WithSizes) const
 	{
 	bool WithQuals = (m_Input->m_Quals != 0);
 	DB.Alloc(m_ClusterCount, WithQuals);
-	for (unsigned ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
+
+	uint ClusterIndex = 0;
+	ProgressLoop(&ClusterIndex, m_ClusterCount, "convert uniques");
+	for (ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
-		ProgressStep(ClusterIndex, m_ClusterCount, "DB");
 		unsigned SeqIndex = GetSeedSeqIndex(ClusterIndex);
 
 		string Label = m_Input->m_Labels[SeqIndex];
@@ -246,6 +249,7 @@ void DerepResult::ToSeqDB(SeqDB &DB, bool WithSizes) const
 		if (WithQuals)
 			DB.m_Quals[ClusterIndex] = m_Input->m_Quals[SeqIndex];
 		}
+	ProgressDone();
 	DB.m_SeqCount = m_ClusterCount;
 	}
 
@@ -313,10 +317,10 @@ void DerepResult::ToTabbed(const string &FileName)
 
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
-	for (unsigned k = 0; k < m_ClusterCount; ++k)
+	uint k = 0;
+	ProgressLoop(&k, m_ClusterCount, "write clusters tsv");
+	for (k = 0; k < m_ClusterCount; ++k)
 		{
-		ProgressStep(k, m_ClusterCount, "Writing %s", FileName.c_str());
-
 		unsigned ClusterIndex = m_Order[k];
 		unsigned Size = GetClusterMemberCount(ClusterIndex);
 		unsigned UniqueSeqIndex = GetSeqIndex(ClusterIndex, 0);
@@ -343,7 +347,7 @@ void DerepResult::ToTabbed(const string &FileName)
 			  TargetLabel);
 			}
 		}
-
+	ProgressDone();
 	CloseStdioFile(f);
 	}
 
@@ -357,8 +361,8 @@ void DerepResult::ToUC(const string &FileName)
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
 	const unsigned Total = SeqCount + m_ClusterCount;
-	unsigned Counter = 0;
-	for (unsigned ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
+	ProgressStart("writing uc file");
+	for (uint ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
 		unsigned Size = GetClusterMemberCount(ClusterIndex);
 		unsigned UniqueSeqIndex = GetSeqIndex(ClusterIndex, 0);
@@ -367,7 +371,6 @@ void DerepResult::ToUC(const string &FileName)
 
 		for (unsigned i = 0; i < Size; ++i)
 			{
-			ProgressStep(Counter++, Total, "Writing %s", FileName.c_str());
 			if (i == 0)
 				{
 			// S record
@@ -396,7 +399,6 @@ void DerepResult::ToUC(const string &FileName)
 // C records
 	for (unsigned ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
-		ProgressStep(Counter++, Total, "Writing %s", FileName.c_str());
 		unsigned Size = GetClusterMemberCount(ClusterIndex);
 		unsigned UniqueSeqIndex = GetSeqIndex(ClusterIndex, 0);
 		const char *UniqueLabel = DB.GetLabel(UniqueSeqIndex);
@@ -405,6 +407,7 @@ void DerepResult::ToUC(const string &FileName)
 		  Size,
 		  UniqueLabel);
 		}
+	ProgressDone();
 
 	CloseStdioFile(f);
 	}
@@ -683,20 +686,20 @@ void DerepResult::ProgressResult()
 	unsigned MedianSize = m_Sizes[m_Order[N/2]];
 	unsigned MaxSize = m_Sizes[m_Order[0]];
 	if (optset_sizein)
-		ProgressLogPrefix("%u seqs (tot.size %.0f), %u uniques, %u singletons (%.1f%%)",
+		ProgressNoteLog("%u seqs (tot.size %.0f), %u uniques, %u singletons (%.1f%%)",
 		  SeqCount,
 		  m_SumSize,
 		  m_ClusterCount,
 		  m_SingletonCount,
 		  PctSin);
 	else
-		ProgressLogPrefix("%u seqs, %u uniques, %u singletons (%.1f%%)",
+		ProgressNoteLog("%u seqs, %u uniques, %u singletons (%.1f%%)",
 		  SeqCount,
 		  m_ClusterCount,
 		  m_SingletonCount,
 		  PctSin);
 
-	ProgressLogPrefix("Min size %u, median %u, max %u, avg %.2f",
+	ProgressNoteLog("Min size %u, median %u, max %u, avg %.2f",
 	  MinSize, MedianSize, MaxSize, AvgSize);
 	}
 
@@ -725,18 +728,13 @@ void DerepResult::ToFastx(const string &FileName, bool DoFastq)
 	unsigned Counter = 0;
 	for (unsigned k = 0; k < N; ++k)
 		{
-		ProgressStep(k, N, "Writing %s", FileName.c_str());
-
 		unsigned ClusterIndex = m_Order[k];
 		unsigned Size = m_Sizes[ClusterIndex];
 		asserta(Size <= LastSize);
 		LastSize = Size;
 		if (Size < opt(minuniquesize))
 			{
-			ProgressStep(ClusterIndex, N, "Writing %s", FileName.c_str());
 			unsigned TooSmallCount = m_ClusterCount - ClusterIndex;
-			ProgressLog("%u uniques written, %u clusters size < %u discarded (%.1f%%)\n",
-			  k, TooSmallCount, opt(minuniquesize), GetPct(TooSmallCount, m_ClusterCount));
 			break;
 			}
 
@@ -818,12 +816,13 @@ void DerepResult::WriteConsTaxReport()
 
 	const string &FileName = opt(constax_report);
 	FILE *f = CreateStdioFile(FileName);
+	ProgressStart("writing cons. tax. report");
 	for (unsigned k = 0; k < m_ClusterCount; ++k)
 		{
-		ProgressStep(k, m_ClusterCount, "Writing %s", FileName.c_str());
 		unsigned ClusterIndex = m_Order[k];
 		WriteConsTaxReport1(f, ClusterIndex);
 		}
+	ProgressDone();
 	CloseStdioFile(f);
 	}
 

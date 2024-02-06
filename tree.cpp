@@ -1,7 +1,8 @@
 #include "myutils.h"
 #include "tree.h"
-#include <math.h>
+#include "progress.h"
 #include "sort.h"
+#include <math.h>
 #include <set>
 
 void StringsFromFile(const string &FileName, vector<string> &Strings);
@@ -515,7 +516,7 @@ void Tree::FromVectors2(const vector<string> &Labels, vector<unsigned> &Parents,
 void Tree::MakeSubset(const vector<unsigned> &LeafNodeIndexes, Tree &T)
 	{
 	const unsigned N = SIZE(LeafNodeIndexes);
-	ProgressLog("Subset %u leaves\n", N);
+	ProgressStart("tree subset");
 	asserta(N > 0);
 	const unsigned NodeCount = GetNodeCount();
 	vector<bool> KeepLeaf(NodeCount, false);
@@ -563,7 +564,6 @@ void Tree::MakeSubset(const vector<unsigned> &LeafNodeIndexes, Tree &T)
 
 	const unsigned NewNodeCount = NewNodeIndex;
 	asserta(SIZE(KeepNodeIndexes) == NewNodeIndex);
-	ProgressLog("Subset %u nodes\n", NewNodeCount);
 
 	vector<unsigned> NewParents;
 	vector<string> NewLabels;
@@ -602,5 +602,5 @@ void Tree::MakeSubset(const vector<unsigned> &LeafNodeIndexes, Tree &T)
 		NewParents.push_back(NewParent);
 		}
 	T.FromVectors2(NewLabels, NewParents, NewLengths);
+	ProgressDone();
 	}
-

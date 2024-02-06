@@ -1,14 +1,13 @@
 #include "myutils.h"
 #include "udbdata.h"
-#include "pcb.h"
 #include "objmgr.h"
 #include "hitmgr.h"
 #include "accepter.h"
 #include "globalaligner.h"
 #include "udbusortedsearcher.h"
 #include "outputsink.h"
-#include "pcb.h"
 #include "objmgr.h"
+#include "progress.h"
 
 static size_t MAX_PENDING = 128;
 
@@ -143,10 +142,8 @@ void cmd_cluster_mt()
 	UDBParams Params;
 	Params.FromCmdLine(CMD_cluster_mt, IsNucleo);
 	g_udb->CreateEmpty(Params);
-	SetPCB(MyPCB);
 
 	uint ThreadCount = GetRequestedThreadCount();
-	Progress("%u threads\n", ThreadCount);
 	g_PendingVec.clear();
 	g_PendingVec.resize(ThreadCount);
 
@@ -174,25 +171,20 @@ void cmd_cluster_mt()
 		g_OMs.push_back(OM);
 		}
 
-	ProgressStep(0, 1001, "0 clusters, 0 members");
+	ProgressStart("clustering");
 	for (;;)
 		{
 		if (SS->m_EndOfFile)
 			break;
 		uint Pct10 = SS->GetPctDoneX10() + 1;
-		ProgressStep(Pct10+1, 1001, "%u clusters, %u members",
-		  g_ClusterCount, g_MemberCount);
 		FillPending(ThreadCount, SS, IsNucleo);
 		for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 			ProcessPending(ThreadIndex);
 		}
-	ProgressStep(1000, 1001, "%u clusters, %u members",
-		g_ClusterCount, g_MemberCount);
-
-	ProgressCallback(999, 1001);
+	ProgressDone();
 
 	g_udb->ToFasta(opt(centroids));
 //	ObjMgr::LogGlobalStats();
-	ProgressLog("%u clusters, %u members\n",
+	ProgressNoteLog("%u clusters, %u members\n",
 	  g_ClusterCount, g_MemberCount);
 	}

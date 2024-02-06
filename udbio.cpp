@@ -8,6 +8,7 @@
 #include "seqinfo.h"
 #include "objmgr.h"
 #include "sort.h"
+#include "progress.h"
 
 void UDBFileHdr::FromParams(const UDBParams &Params, uint64 SeqCount)
 	{
@@ -141,6 +142,7 @@ bool UDBIsNucleo(FILE *f)
 
 void UDBData::ReadRowsVarCoded(FILE *f)
 	{
+	ProgressStart("read udb rows var-coded");
 	unsigned SlotLo = 0;
 	const uint64 MAX_SUM_SIZE = 1024*1024*1024;
 	unsigned ChunkCount = 0;
@@ -186,8 +188,6 @@ void UDBData::ReadRowsVarCoded(FILE *f)
 		uint32 SumBytes = 0;
 		for (unsigned Slot = SlotLo; Slot < SlotHi; ++Slot)
 			{
-			if (Slot%1000 == 0)
-				ProgressStep(Slot, m_SlotCount+1, "Reading rows");
 		// +1 for end-of-row
 			uint32 Bytes = m_Sizes[Slot];
 			if (Bytes == 0)
@@ -211,16 +211,14 @@ void UDBData::ReadRowsVarCoded(FILE *f)
 		asserta(SumBytes == SumSize32);
 		SlotLo = SlotHi;
 		}
-	ProgressStep(m_SlotCount, m_SlotCount+1, "Reading rows");
-	//Log("%u row chunks, %.0f total bytes (%s)\n",
-	//  ChunkCount, (double) TotalRowBytes, MemBytesToStr(TotalRowBytes));
+	ProgressDone();
 	}
 
 void UDBData::ReadRowsNotVarCoded(FILE *f) const
 	{
+	ProgressStart("read udb rows");
 	for (unsigned i = 0; i < m_SlotCount; ++i)
 		{
-		ProgressStep(i, m_SlotCount, "Rows");
 		unsigned N = m_Sizes[i];
 		if (N == 0)
 			{
@@ -231,6 +229,7 @@ void UDBData::ReadRowsNotVarCoded(FILE *f) const
 		m_UDBRows[i] = myalloc(uint32, N);
 		ReadStdioFile(f, m_UDBRows[i], N*sizeof(uint32));
 		}
+	ProgressDone();
 	}
 
 void UDBData::FromUDBFile(const string &FileName)
@@ -288,6 +287,7 @@ void UDBData::FromUDBFile(FILE *f, const string &FileName)
 
 void UDBData::ToUDBFile(FILE *f) const
 	{
+	ProgressStart("writing udb");
 	if (opt(validate))
 		ValidateRows();
 
@@ -308,10 +308,8 @@ void UDBData::ToUDBFile(FILE *f) const
 		Sizes = SizesBuffer;
 		zero_array(Sizes, m_SlotCount);
 
-		Progress("Sort rows, dbaccel %u%%...", DBAccelPct);
 		unsigned *Order = myalloc(unsigned, m_SlotCount);
 		QuickSortOrder<unsigned>(m_Sizes, m_SlotCount, Order);
-		Progress("done.\n");
 
 		unsigned TotalSize = 0;
 		for (unsigned i = 0; i < m_SlotCount; ++i)
@@ -373,14 +371,13 @@ void UDBData::ToUDBFile(FILE *f) const
 	SetStdioFilePos64(f, StartPos);
 	WriteStdioFile(f, &Hdr, sizeof(Hdr));
 	SetStdioFilePos64(f, EndPos);
+	ProgressDone();
 	}
 
 void UDBData::WriteRowsVarCoded(FILE *f, const uint32 *Sizes) const
 	{
 	for (unsigned i = 0; i < m_SlotCount; ++i)
 		{
-		ProgressStep(i, m_SlotCount, "Rows");
-
 		unsigned N = Sizes[i];
 		if (N == 0)
 			continue;
@@ -400,9 +397,6 @@ void UDBData::WriteRowsNotVarCoded(FILE *f, const uint32 *Sizes) const
 	unsigned TotalSize3 = 0;
 	for (unsigned i = 0; i < m_SlotCount; ++i)
 		{
-		if (i%1000 == 0)
-			ProgressStep(i, m_SlotCount, "Rows");
-
 		unsigned N = Sizes[i];
 		if (N == 0)
 			continue;

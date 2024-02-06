@@ -6,6 +6,7 @@
 #include "sort.h"
 #include "seqinfo.h"
 #include "objmgr.h"
+#include "progress.h"
 
 static uint64 Blockize(const uint32 *Sizes, unsigned N,
   vector<unsigned> &Starts, vector<unsigned> &BlockSizes,
@@ -318,8 +319,9 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	uint64 LetterCount = DB.GetLetterCount();
 	uint64 LetterTotal = 0;
 	bool IsVarCoded = m_Params.DBIsVarCoded();
-	ProgressStep(0, 1000, "Word stats");
-	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint SeqIndex = 0;
+	ProgressLoop(&SeqIndex, SeqCount, "udb seqs");
+	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		double dTicks = (LetterTotal*999.0)/LetterCount;
 		unsigned Ticks = unsigned(dTicks);
@@ -327,13 +329,12 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 			Ticks = 1;
 		else if (Ticks == 999)
 			Ticks = 998;
-		ProgressStep(Ticks, 1000, "Word stats");
 		DB.GetSI(SeqIndex, *SI);
 		unsigned L = SI->m_L;
 		LetterTotal += L;
 		AddSeq(SeqIndex, SI->m_Seq, SI->m_L, true);
 		}
-	ProgressStep(999, 1000, "Word stats");
+	ProgressDone();
 
 	vector<unsigned> Starts;
 	vector<unsigned> BlockSizes;
@@ -344,9 +345,10 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	const unsigned N = SIZE(Starts);
 	asserta(SIZE(BlockSizes) == N);
 	uint64 Total = 0;
-	for (unsigned i = 0; i < N; ++i)
+	uint i = 0;
+	ProgressLoop(&i, N, "alloc rows");
+	for (i = 0; i < N; ++i)
 		{
-		ProgressStep(i, N, "Alloc rows");
 		unsigned Start = Starts[i];
 		unsigned BlockSize = BlockSizes[i];
 		unsigned BlockBytes = BlockSize;
@@ -375,10 +377,12 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 		}
 	asserta(Total == TotalSize);
 	m_Prealloced = true;
+	ProgressDone();
 
 	LetterTotal = 0;
-	ProgressStep(0, 1000, "Build index");
-	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	SeqIndex = 0;
+	ProgressLoop(&SeqIndex, SeqCount, "build udb index");
+	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		double dTicks = (LetterTotal*999.0)/LetterCount;
 		unsigned Ticks = unsigned(dTicks);
@@ -386,15 +390,14 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 			Ticks = 1;
 		else if (Ticks == 999)
 			Ticks = 998;
-		ProgressStep(Ticks, 1000, "Build index");
 		DB.GetSI(SeqIndex, *SI);
 		AddSeq(SeqIndex, SI->m_Seq, SI->m_L, false);
 		LetterTotal += SI->m_L;
 		}
-	ProgressStep(999, 1000, "Build index");
 
 	for (unsigned Slot = 0; Slot < m_SlotCount; ++Slot)
 		asserta(m_Sizes[Slot] == m_Capacities[Slot]);
+	ProgressDone();
 
 	myfree(m_Capacities);
 	m_Capacities = 0;

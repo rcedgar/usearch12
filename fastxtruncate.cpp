@@ -2,6 +2,7 @@
 #include "objmgr.h"
 #include "seqinfo.h"
 #include "seqsource.h"
+#include "progress.h"
 
 static unsigned g_ConvertedCount;
 
@@ -51,21 +52,12 @@ void cmd_fastx_truncate()
 	unsigned MaxL = opt(maxseqlength);
 	char Tmp[16];
 
-	ProgressStep(0, 1000, "Processing");
-	uint Counter = 0;
+	ProgressStartSS(SS, "truncating");
 	for (;;)
 		{
 		bool Ok = SS.GetNext(SI);
 		if (!Ok)
 			break;
-		++Counter;
-		if (Counter%1000 == 0)
-			{
-			uint m = SS.GetPctDoneX10();
-			if (m > 0)
-				ProgressStep(m, 1000, "Processing, %u (%.1f%%) too short",
-				  TooShort, GetPct(TooShort, SeqCount));
-			}
 
 		++SeqCount;
 		if (optset_stripleft)
@@ -142,13 +134,10 @@ void cmd_fastx_truncate()
 		SI->ToFasta(fFa);
 		SI->ToFastq(fFq);
 		}
-	if (optset_maxseqlength)
-		ProgressStep(999, 1000, "Processing, %u (%.1f%%) too short, %u (%.1f%%) too long",
-		  TooShort, GetPct(TooShort, SeqCount),
-		  TooLong, GetPct(TooLong, SeqCount));
-	else
-		ProgressStep(999, 1000, "Processing, %u (%.1f%%) too short",
-		  TooShort, GetPct(TooShort, SeqCount));
+	ProgressDone();
+	ProgressNote("%u (%.1f%%) too short, %u (%.1f%%) too long",
+		TooShort, GetPct(TooShort, SeqCount),
+		TooLong, GetPct(TooLong, SeqCount));
 
 	CloseStdioFile(fFa);
 	CloseStdioFile(fFq);

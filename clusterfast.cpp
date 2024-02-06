@@ -11,6 +11,7 @@
 #include "objmgr.h"
 #include "sort.h"
 #include "fastq.h"
+#include "progress.h"
 
 DerepResult *g_DR;
 
@@ -64,9 +65,9 @@ unsigned *GetSeqOrder(const DerepResult &DR,
 	else
 		Die("Invalid sort name %s", OrderName.c_str());
 
-	Progress("Sort %s...", OrderName.c_str());
+	ProgressStart("Sort %s", OrderName.c_str());
 	QuickSortOrderDesc(v, UniqueCount, Order);
-	Progress(" done.\n");
+	ProgressDone();
 #if	DEBUG
 	{
 	for (unsigned i = 0; i < UniqueCount; ++i)
@@ -117,23 +118,19 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);
 		}
 
-	ProgressStep(0, UniqueCount+1, "Clustering");
-	for (unsigned UniqueIndex = 0; UniqueIndex < UniqueCount; ++UniqueIndex)
+	uint32 UniqueIndex = 0;
+	ProgressLoop(&UniqueIndex, UniqueCount, "clustering");
+	for (UniqueIndex = 0; UniqueIndex < UniqueCount; ++UniqueIndex)
 		{
 		unsigned SeqIndex = Order ? Order[UniqueIndex] : UniqueIndex;
-
-		ProgressStep(UniqueIndex, UniqueCount+1, "%u clusters, max size %u, avg %.1f",
-		  ClusterSink::GetClusterCount(), ClusterSink::GetMaxSize(), ClusterSink::GetAvgSize());
-
 		SeqInfo *Query = OM->GetSeqInfo();
 		UniqueDB.GetSI(SeqIndex, *Query);
 		ptrSearcher->Search(Query);
 		Query->Down();
 		Query = 0;
 		}
+	ProgressDone();
 
-	ProgressStep(UniqueCount, UniqueCount+1, "%u clusters, max size %u, avg %.1f",
-	  ClusterSink::GetClusterCount(), ClusterSink::GetMaxSize(), ClusterSink::GetAvgSize());
 	ClusterSink::OnAllDone(&Input, &UniqueDB);
 	}
 
