@@ -304,22 +304,6 @@ void Warning_(const char *szFormat, ...);
 #define Warning Warning_
 #endif
 
-//typedef const char *(*FN_PROGRESS_CALLBACK)();
-//void SetPCB(FN_PROGRESS_CALLBACK PCB);
-//void ProgressCallback(unsigned i, unsigned N);
-//
-//bool ProgressPrefix(bool On);
-//void ProgressStep(unsigned i, unsigned N, const char *Format, ...);
-//void ProgressStep64(uint64 i, uint64 N, const char *Msg);
-//void Progress(const char *szFormat, ...);
-//void Progress(const string &Str);
-//void ProgressLog(const char *szFormat, ...);
-//void ProgressLogPrefix(const char *Format, ...);
-//
-//void ProgressFileInit(FILE *f, const char *Format = 0, ...);
-//void ProgressFileStep(const char *Format = 0, ...);
-//void ProgressFileDone(const char *Format = 0, ...);
-
 void LogElapsedTimeAndRAM();
 void LogProgramInfoAndCmdLine();
 void Help();
@@ -388,6 +372,7 @@ const char *GetElapsedTimeStr(string &s);
 const char *GetMaxRAMStr(string &s);
 
 const char *BaseName(const char *PathName);
+const char *FastqBaseName(const char *PathName, string &s);
 
 const char *IntToStr(uint64 i);
 const char *IntToStr2(uint64 i);

@@ -44,7 +44,7 @@ static void MergeCB(string &s)
 
 static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 	{
-	g_CurrentFileName = basenm(FwdFileName);
+	FastqBaseName(FwdFileName.c_str(), g_CurrentFileName);
 	InitFastqRelabel(FwdFileName);
 
 	unsigned InRecCountStart = g_InRecCount;

@@ -231,6 +231,15 @@ const char *BaseName(const char *PathName)
 	return PathName;
 	}
 
+const char *FastqBaseName(const char *PathName, string &s)
+	{
+	s = string(BaseName(PathName));
+	size_t n = s.find("_R1");
+	if (n != string::npos)
+		s = s.substr(0, n);
+	return s.c_str();
+	}
+
 static void AllocBuffer(FILE *f)
 	{
 #if	DEBUG
@@ -1581,19 +1590,14 @@ void LogElapsedTimeAndRAM()
 	{
 	time_t Now = time(0);
 	struct tm *t = localtime(&Now);
-	const char *s = asctime(t);
+	string st = string(asctime(t));
+	st[24] = 0;
 	unsigned Secs = GetElapsedSecs();
 
 	Log("\n");
-	Log("Finished %s", s); // there is a newline in s
-	Log("Elapsed time %s\n", SecsToHHMMSS((int) Secs));
-	Log("Max memory %s\n", MemBytesToStr(g_PeakMemUseBytes));
-#if	WIN32 && DEBUG
-// Skip exit(), which can be very slow in DEBUG build
-// VERY DANGEROUS practice, because it skips global destructors.
-// But if you know the rules, you can break 'em, right?
-	ExitProcess(0);
-#endif
+	Log("Finished %s\n", st.c_str()); // there is a newline in s
+	Log("Elapsed time %s", SecsToHHMMSS((int) Secs));
+	Log("Max memory %s", MemBytesToStr(g_PeakMemUseBytes));
 	}
 
 const char *PctStr(double x, double y)

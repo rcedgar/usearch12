@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 	default:
 		asserta(false);
 		}
-	StopProgressThread();
+	LogElapsedTimeAndRAM();
 
 	OutputSink::CloseOutputFiles();
 
@@ -74,7 +74,8 @@ int main(int argc, char **argv)
 	if (opt(log_objmgr_stats))
 		ObjMgr::LogGlobalStats();
 
-	LogElapsedTimeAndRAM();
 	CheckUsedOpts(false);
+	ProgressNote("Exiting");
+	StopProgressThread();
 	return 0;
 	}

@@ -112,7 +112,7 @@ void ClusterCB(string &str)
 
 void UPARSECB(string &str)
 	{
-	Ps(str, "%d OTUS, %u chimeras",
+	Ps(str, "%d OTUs, %u chimeras",
 		UPClusterSink::m_OTUCount,
 		UPClusterSink::m_ChimeraCount);
 	}
@@ -213,18 +213,15 @@ static void OutputPendingLines()
 		last_TT = TT;
 		size_t n = Line.size();
 		uint col = 0;
-		Log("TT=%s %s Line=", (c == '\n' ? "\\n" : "\\r"), TTToStr(TT));//@@
 		for (uint i = 0; i < n; ++i)
 			{
 			char c = Line[i];
 			asserta(c != '\n' && c != '\r');
 			ppc(c);
-			Log("%c", c);
 			}
 		for (size_t i = n; i < rhs; ++i)
 			ppc(' ');
 		rhs = n;
-		Log("\n");//@@
 		g_PendingLines.pop_front();
 		g_PendingTTs.pop_front();
 		}
@@ -375,6 +372,7 @@ static void ProgressThread()
 	g_ftxt = CreateStdioFile("prog.txt");
 	setbuf(g_ftxt, 0);
 #endif
+	setbuf(prog_stream, 0);
 	for (;;)
 		{
 		LOCK();
@@ -382,13 +380,7 @@ static void ProgressThread()
 		OutputPendingLines();
 		UNLOCK();
 		if (g_AbortProgress)
-			{
-			LOCK();
-			OutputPendingLines();
-			UNLOCK();
-			ppc('\n');
 			break;
-			}
 		this_thread::sleep_for(chrono::milliseconds(TICKms));
 		}
 	}
@@ -403,6 +395,7 @@ void StopProgressThread()
 	LOCK();
 	g_AbortProgress = true;
 	OutputPendingLines();
+	fputc('\n', prog_stream);
 	UNLOCK();
 	}
 
@@ -434,6 +427,7 @@ void ProgressNoteLog(const char *fmt, ...)
 	vsnprintf(s, MAXSTR-1, fmt, ArgList);
 	s[MAXSTR-1] = '\0';
 	va_end(ArgList);
+	Log("%s\n", s);
 
 	string Line;
 	AppendPrefix(Line);
