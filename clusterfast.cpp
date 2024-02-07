@@ -116,7 +116,7 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);
 		}
 
-	uint32 *ptrLoopIdx = ProgressStartLoop(UniqueCount, "Clustering");
+	uint32 *ptrLoopIdx = ProgressStartLoop(UniqueCount, "Unique seqs.");
 	for (uint UniqueIndex = 0; UniqueIndex < UniqueCount; ++UniqueIndex)
 		{
 		*ptrLoopIdx = UniqueIndex;

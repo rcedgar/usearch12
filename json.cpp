@@ -34,7 +34,7 @@ void OTUTable::ToJsonFile(const string &FileName) const
 	if (FileName == "")
 		return;
 
-	ProgressStartOther("Writing %s", FileName.c_str());
+	ProgressStartOther("Writing " + basenm(FileName));
 	FILE *f = CreateStdioFile(FileName);
 	bool Dense = false;
 	unsigned OTUCount = GetOTUCount();
@@ -99,4 +99,6 @@ void OTUTable::ToJsonFile(const string &FileName) const
 
 	fprintf(f, "	]\n");
 	fprintf(f, "}\n");
+
+	ProgressDoneOther();
 	}

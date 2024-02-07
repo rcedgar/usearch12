@@ -25,6 +25,12 @@ void InitFastqRelabel(const string &FileName);
 
 static byte g_Base;
 
+static void MergeCB(string &s)
+	{
+	double Pct = GetPct(g_OutRecCount, g_InRecCount);
+	Ps(s, "%s merged (%.1f%%)", IntToStr(g_OutRecCount), Pct);
+	}
+
 static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 	{
 	InitFastqRelabel(FwdFileName);
@@ -173,7 +179,7 @@ void cmd_fastq_mergepairs()
 	if (optset_fastaout_overlap_rev)
 		g_fFaOverlapRev = CreateStdioFile(opt(fastaout_overlap_rev));
 
-	ProgressStartOther("Merging");
+	ProgressStartOther("Merging", MergeCB);
 	for (unsigned i = 0; i < N; ++i)
 		{
 		const string &FwdFileName = FwdFileNames[i];

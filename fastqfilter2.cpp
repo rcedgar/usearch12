@@ -18,6 +18,16 @@ static FILE *g_fFastqOut2 = 0;
 static unsigned g_OutCount = 0;
 static unsigned g_RecCount = 0;
 
+static void FastqFilter2CB(string &str)
+	{
+	double Pct = GetPct(g_OutCount, g_RecCount);
+
+	char cs[32];
+	snprintf(cs, 32-1, "%s passed (%.1f%%)",
+	  IntToStr(g_OutCount), Pct);
+	str = string(cs); 
+	}
+
 static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 	{
 	FASTQSeqSource &SS1 = *aSS1;
@@ -75,7 +85,7 @@ void cmd_fastq_filter2()
 	FASTQSeqSource &SS2 = *new FASTQSeqSource;
 	SS1.Open(InputFileName);
 	SS2.Open(ReverseFileName);
-	ProgressStartSS(SS1, "Filtering");
+	ProgressStartSS(SS1, "Filtering", FastqFilter2CB);
 
 	if (optset_fastqout)
 		{

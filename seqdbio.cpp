@@ -159,7 +159,7 @@ static void SeqLengthsToBufferInfo(const uint32 *SeqLengths, unsigned SeqCount,
 
 void SeqDB::FromFile(FILE *f, const string &FileName)
 	{
-	ProgressStartOther("Reading %s", FileName.c_str());
+	ProgressStartOther("Reading " + basenm(FileName));
 #if	TRACE
 	Log("\n");
 	Log("SeqDB::FromFile, pos %u\n", GetStdioFilePos64(f));

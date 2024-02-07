@@ -73,7 +73,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	SORT_ORDER SO = GetSortOrder();
 	if (Cmd == CMD_cluster_otus && SO != SO_Size)
 		Die("Must sort by size");
-	ProgressStartSS(*SS, "UCLUST small-mem");
+	ProgressStartSS(*SS, "UCLUST", ClusterCB);
 	bool AllDone = false;
 	for (;;)
 		{

@@ -108,8 +108,7 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	bool Xlat = GetXlat(QueryIsNucleo, DBIsNucleo);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
-	ProgressStartSS(*SS, "Searching");
-	ProgressSetCB(SearcherCB);
+	ProgressStartSS(*SS, "Searching", SearcherCB);
 
 	unsigned t1 = GetElapsedSecs();
 	unsigned ThreadCount = GetRequestedThreadCount();

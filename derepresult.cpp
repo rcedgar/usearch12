@@ -318,7 +318,7 @@ void DerepResult::ToTabbed(const string &FileName)
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
 	uint *ptrLoopIdx = ProgressStartLoop(m_ClusterCount,
-	  "Write %s", FileName.c_str());
+	  "Write " + basenm(FileName));
 	for (uint k = 0; k < m_ClusterCount; ++k)
 		{
 		*ptrLoopIdx = k;
@@ -362,7 +362,7 @@ void DerepResult::ToUC(const string &FileName)
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
 	const unsigned Total = SeqCount + m_ClusterCount;
-	ProgressStartOther("Writing %s", FileName.c_str());
+	ProgressStartOther("Writing " + basenm(FileName));
 	for (uint ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
 		unsigned Size = GetClusterMemberCount(ClusterIndex);
@@ -396,7 +396,6 @@ void DerepResult::ToUC(const string &FileName)
 			  UniqueLabel);
 			}
 		}
-	ProgressDoneLoop();
 // C records
 	for (unsigned ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{

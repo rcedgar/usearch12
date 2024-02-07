@@ -206,7 +206,7 @@ void ClusterSink::WriteConsTaxReport()
 	const unsigned *Order = 0;
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
-	ProgressStartOther("Write cons. tax. report");
+	ProgressStartOther("Write " + basenm(FileName));
 	for (unsigned k = 0; k < SeqCount; ++k)
 		{
 		unsigned ClusterIndex = (Order == 0 ? k : Order[k]);
@@ -267,7 +267,7 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 	bool ForceUniqueLabels = opt(force_unique_labels);
 	set<string> LabelSet;
 	uint32 *ptrLoopIdx = 
-	  ProgressStartLoop(SeqCount, FileName.c_str(), "Writing centroids");
+	  ProgressStartLoop(SeqCount, "Writing " + basenm(FileName));
 	for (uint k = 0; k < SeqCount; ++k)
 		{
 		*ptrLoopIdx = k;
@@ -317,7 +317,7 @@ void ClusterSink::CentroidsToFASTQ(const string &FileName)
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
 	uint32 *ptrLoopIdx = ProgressStartLoop(SeqCount,
-	  "Writing centroids to %s", FileName.c_str());
+	  "Writing " + basenm(FileName));
 	for (uint k = 0; k < SeqCount; ++k)
 		{
 		*ptrLoopIdx = k;
@@ -601,7 +601,7 @@ void ClusterSink::ClustersOut(const string &Prefix)
 
 		FILE *f = CreateStdioFile(FileName);
 		uint32 *ptrLoopIdx = 
-		  ProgressStartLoop(N, "Writing cluster FASTAs");
+		  ProgressStartLoop(N, "Writing " + basenm(FileName));
 		for (uint i = 0; i < N; ++i)
 			{
 			*ptrLoopIdx = i;

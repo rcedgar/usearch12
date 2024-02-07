@@ -228,6 +228,7 @@ void cmd_unoise3()
 		Query->Down();
 		}
 	asserta(SIZE(UniqIndexToAmpIndex) == UniqCount);
+	ProgressDoneLoop();
 
 	SeqDB AmpDB;
 	const SeqDB &DB = *USS->m_UDBData->m_SeqDB;

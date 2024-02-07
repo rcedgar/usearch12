@@ -27,6 +27,16 @@ static unsigned g_MaxNsCount = 0;
 static unsigned g_MinQCount = 0;
 static unsigned g_QiimeTrunc = 0;
 
+static void FastqFilterCB(string &str)
+	{
+	double Pct = GetPct(g_OutRecCount, g_RecCount);
+
+	char cs[32];
+	snprintf(cs, 32-1, "%s passed (%.1f%%)",
+	  IntToStr(g_OutRecCount), Pct);
+	str = string(cs); 
+	}
+
 static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	{
 	unsigned L = SI->m_L;
@@ -228,7 +238,7 @@ void cmd_fastq_filter()
 	if (optset_eetabbedout)
 		g_fEEOut = CreateStdioFile(opt(eetabbedout));
 
-	ProgressStartSS(SS, "Filtering");
+	ProgressStartSS(SS, "Filtering", FastqFilterCB);
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
@@ -240,6 +250,8 @@ void cmd_fastq_filter()
 		ts[ThreadIndex]->join();
 
 	SS.Close();
+	ProgressDoneSS();
+
 	CloseStdioFile(g_fFastaOut);
 	CloseStdioFile(g_fFastqOut);
 	CloseStdioFile(g_fEEOut);
