@@ -262,15 +262,15 @@ void cmd_fastq_filter()
 		return;
 
 	Log("\n");
-	ProgressNoteLog("%10u  Reads (%s)\n", g_RecCount, IntToStr(g_RecCount));
+	ProgressNoteLog("%10u  Reads (%s)", g_RecCount, IntToStr(g_RecCount));
 	if (optset_fastq_minqual)
-		ProgressNoteLog("%10u  Discared reads with Q < %u\n", g_MinQCount, opt(fastq_minqual));
+		ProgressNoteLog("%10u  Discared reads with Q < %u", g_MinQCount, opt(fastq_minqual));
 	if (optset_fastq_trunclen)
-		ProgressNoteLog("%10u  Discarded reads length < %u\n", g_ShortCount, opt(fastq_trunclen));
+		ProgressNoteLog("%10u  Discarded reads length < %u", g_ShortCount, opt(fastq_trunclen));
 	if (optset_fastq_maxns)
-		ProgressNoteLog("%10u  Discarded read with > %u Ns\n", g_MaxNsCount, opt(fastq_maxns));
+		ProgressNoteLog("%10u  Discarded read with > %u Ns", g_MaxNsCount, opt(fastq_maxns));
 	if (optset_fastq_maxee)
-		ProgressNoteLog("%10u  Discarded reads with expected errs > %.2f\n", g_BadCount, opt(fastq_maxee));
-	ProgressNoteLog("%10u  Filtered reads (%s, %.1f%%)\n",
+		ProgressNoteLog("%10u  Discarded reads with expected errs > %.2f", g_BadCount, opt(fastq_maxee));
+	ProgressNoteLog("%10u  Filtered reads (%s, %.1f%%)",
 	  g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_RecCount));
 	}

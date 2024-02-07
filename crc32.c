@@ -384,7 +384,7 @@ local uLong crc32_combine_(crc1, crc2, len2)
     if (len2 <= 0)
         return crc1;
 
-    /* put operator for one zero_array bit in odd */
+    /* put operator for one zero bit in odd */
     odd[0] = 0xedb88320UL;          /* CRC-32 polynomial */
     row = 1;
     for (n = 1; n < GF2_DIM; n++) {
@@ -392,14 +392,14 @@ local uLong crc32_combine_(crc1, crc2, len2)
         row <<= 1;
     }
 
-    /* put operator for two zero_array bits in even */
+    /* put operator for two zero bits in even */
     gf2_matrix_square(even, odd);
 
-    /* put operator for four zero_array bits in odd */
+    /* put operator for four zero bits in odd */
     gf2_matrix_square(odd, even);
 
     /* apply len2 zeros to crc1 (first square will put the operator for one
-       zero_array byte, eight zero_array bits, in even) */
+       zerobyte, eight zero bits, in even) */
     do {
         /* apply zeros operator for this bit of len2 */
         gf2_matrix_square(even, odd);

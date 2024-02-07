@@ -36,7 +36,7 @@ void WriteMergeResults(FILE *f)
 	if (g_InRecCount == 0)
 		return;
 
-	fprintf(f, "%10u  Alignments with zero_array diffs (%.2f%%)\n", g_ExactOverlapCount, GetPct(g_ExactOverlapCount, g_InRecCount));
+	fprintf(f, "%10u  Alignments with zero diffs (%.2f%%)\n", g_ExactOverlapCount, GetPct(g_ExactOverlapCount, g_InRecCount));
 
 	fprintf(f, "%10u  Too many diffs (> %u) (%.2f%%)\n",
 	  g_MaxDiffsCount, opt(fastq_maxdiffs), GetPct(g_MaxDiffsCount, g_InRecCount));

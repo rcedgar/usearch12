@@ -1562,7 +1562,7 @@ local void fill_window(s)
     } while (s->lookahead < MIN_LOOKAHEAD && s->strm->avail_in != 0);
 
     /* If the WIN_INIT bytes after the end of the current data have never been
-     * written, then zero_array those bytes in order to avoid memory check reports of
+     * written, then zero those bytes in order to avoid memory check reports of
      * the use of uninitialized (or uninitialised as Julian writes) bytes by
      * the longest match routines.  Update the high water mark for the next
      * time through here.  WIN_INIT is set to MAX_MATCH since the longest match
@@ -1573,7 +1573,7 @@ local void fill_window(s)
         ulg init;
 
         if (s->high_water < curr) {
-            /* Previous high water mark below current data -- zero_array WIN_INIT
+            /* Previous high water mark below current data -- zero WIN_INIT
              * bytes or up to end of window, whichever is less.
              */
             init = s->window_size - curr;
@@ -1584,7 +1584,7 @@ local void fill_window(s)
         }
         else if (s->high_water < (ulg)curr + WIN_INIT) {
             /* High water mark at or above current data, but below current data
-             * plus WIN_INIT -- zero_array out to current data plus WIN_INIT, or up
+             * plus WIN_INIT -- zero out to current data plus WIN_INIT, or up
              * to end of window, whichever is less.
              */
             init = (ulg)curr + WIN_INIT - s->high_water;
@@ -1630,7 +1630,7 @@ local void fill_window(s)
  * Copy without compression as much as possible from the input stream, return
  * the current block state.
  *
- * In case deflateParams() is used to later switch to a non-zero_array compression
+ * In case deflateParams() is used to later switch to a non-zero compression
  * level, s->matches (otherwise unused when storing) keeps track of the number
  * of hash table slides to perform. If s->matches is 1, then one hash table
  * slide will be done when switching. If s->matches is 2, the maximum value
@@ -1732,7 +1732,7 @@ local block_state deflate_stored(s, flush)
      * data, or append all of the copied data to the existing window if less
      * than s->w_size bytes were copied. Also update the number of bytes to
      * insert in the hash tables, in the event that deflateParams() switches to
-     * a non-zero_array compression level.
+     * a non-zero compression level.
      */
     used -= s->strm->avail_in;      /* number of input bytes directly copied */
     if (used) {

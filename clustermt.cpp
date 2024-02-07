@@ -183,6 +183,6 @@ void cmd_cluster_mt()
 
 	g_udb->ToFasta(opt(centroids));
 //	ObjMgr::LogGlobalStats();
-	ProgressNoteLog("%u clusters, %u members\n",
+	ProgressNoteLog("%u clusters, %u members",
 	  g_ClusterCount, g_MemberCount);
 	}

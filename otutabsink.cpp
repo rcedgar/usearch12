@@ -56,7 +56,7 @@ void OTUTableSink::OnAllDone()
 	if (m_OT == 0)
 		return;
 
-	ProgressNoteLog("%u / %u mapped to OTUs (%.1f%%)\n",
+	ProgressNoteLog("%u / %u mapped to OTUs (%.1f%%)",
 	  m_AssignedCount, m_QueryCount, GetPct(m_AssignedCount, m_QueryCount));
 
 	CloseStdioFile(m_fMap);

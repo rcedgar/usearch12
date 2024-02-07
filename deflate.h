@@ -85,7 +85,7 @@ typedef struct static_tree_desc_s  static_tree_desc;
 
 typedef struct tree_desc_s {
     ct_data *dyn_tree;           /* the dynamic tree */
-    int     max_code;            /* largest code with non zero_array frequency */
+    int     max_code;            /* largest code with non zero frequency */
     const static_tree_desc *stat_desc;  /* the corresponding static tree */
 } FAR tree_desc;
 
@@ -268,7 +268,7 @@ typedef struct internal_state {
 
     ulg high_water;
     /* High water mark offset in window for initialized bytes -- bytes above
-     * this are set to zero_array in order to avoid memory check warnings when
+     * this are set to zero in order to avoid memory check warnings when
      * longest match routines access bytes past the input.  This is then
      * updated to the new high water mark.
      */

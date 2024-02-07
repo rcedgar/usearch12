@@ -24,15 +24,27 @@ void GetFastqs2(const string &FwdOpt, const string &RevOpt, vector <string> &Fwd
 void InitFastqRelabel(const string &FileName);
 
 static byte g_Base;
+static string g_CurrentFileName;
+static uint g_NrToMerge;
+static uint g_MergeIdx;
 
 static void MergeCB(string &s)
 	{
 	double Pct = GetPct(g_OutRecCount, g_InRecCount);
-	Ps(s, "%s merged (%.1f%%)", IntToStr(g_OutRecCount), Pct);
+	Ps(s, "%s merged (%.1f%%)",
+	  IntToStr(g_OutRecCount), Pct);
+	s += " " + g_CurrentFileName;
+	if (g_NrToMerge > 1)
+		{
+		string tmp;
+		Ps(tmp, " (%u/%u)", g_MergeIdx+1, g_NrToMerge);
+		s += tmp;
+		}
 	}
 
 static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 	{
+	g_CurrentFileName = basenm(FwdFileName);
 	InitFastqRelabel(FwdFileName);
 
 	unsigned InRecCountStart = g_InRecCount;
@@ -116,6 +128,7 @@ void cmd_fastq_mergepairs()
 	GetFastqs2(opt(fastq_mergepairs), opt(reverse), FwdFileNames, RevFileNames);
 
 	const unsigned N = SIZE(FwdFileNames);
+	g_NrToMerge = N;
 	asserta(SIZE(RevFileNames) == N);
 	if (N == 0)
 		Die("No input files specified / found");
@@ -182,6 +195,7 @@ void cmd_fastq_mergepairs()
 	ProgressStartOther("Merging", MergeCB);
 	for (unsigned i = 0; i < N; ++i)
 		{
+		g_MergeIdx = i;
 		const string &FwdFileName = FwdFileNames[i];
 		const string &RevFileName = RevFileNames[i];
 		MergeFiles(FwdFileName, RevFileName);

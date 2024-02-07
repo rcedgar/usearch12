@@ -273,10 +273,10 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm, int flush));
     Before the call of deflate(), the application should ensure that at least
   one of the actions is possible, by providing more input and/or consuming more
   output, and updating avail_in or avail_out accordingly; avail_out should
-  never be zero_array before the call.  The application can consume the compressed
+  never be zero before the call.  The application can consume the compressed
   output when it wants, for example when the output buffer is full (avail_out
   == 0), or after each call of deflate().  If deflate returns Z_OK and with
-  zero_array avail_out, it must be called again after making room in the output
+  zero avail_out, it must be called again after making room in the output
   buffer because there might be more output pending. See deflatePending(),
   which can be used if desired to determine whether or not there is more ouput
   in that case.
@@ -288,7 +288,7 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm, int flush));
     If the parameter flush is set to Z_SYNC_FLUSH, all pending output is
   flushed to the output buffer and the output is aligned on a byte boundary, so
   that the decompressor can get all input data available so far.  (In
-  particular avail_in is zero_array after the call if enough output space has been
+  particular avail_in is zero after the call if enough output space has been
   provided before the call.) Flushing may degrade compression for some
   compression algorithms and so it should be used only when necessary.  This
   completes the current deflate block and follows it with an empty stored block
@@ -427,7 +427,7 @@ ZEXTERN int ZEXPORT inflate OF((z_streamp strm, int flush));
   output space, it is possible that there will be no progress made.  The
   application can consume the uncompressed output when it wants, for example
   when the output buffer is full (avail_out == 0), or after each call of
-  inflate().  If inflate returns Z_OK and with zero_array avail_out, it must be
+  inflate().  If inflate returns Z_OK and with zero avail_out, it must be
   called again after making room in the output buffer because there might be
   more output pending.
 
@@ -816,7 +816,7 @@ ZEXTERN int ZEXPORT deflateSetHeader OF((z_streamp strm,
    in the provided gz_header structure are written to the gzip header (xflag is
    ignored -- the extra flags are set according to the compression level).  The
    caller must assure that, if not Z_NULL, name and comment are terminated with
-   a zero_array byte, and that if extra is not Z_NULL, that extra_len bytes are
+   a zero byte, and that if extra is not Z_NULL, that extra_len bytes are
    available there.  If hcrc is true, a gzip header crc is included.  Note that
    the current versions of the command-line version of gzip (up through version
    1.3.x) do not support header crc's, and will report that it is a "multi-part
@@ -847,7 +847,7 @@ ZEXTERN int ZEXPORT inflateInit2 OF((z_streamp strm,
    size is given as input, inflate() will return with the error code
    Z_DATA_ERROR instead of trying to allocate a larger window.
 
-     windowBits can also be zero_array to request that inflate use the window size in
+     windowBits can also be zero to request that inflate use the window size in
    the zlib header of the compressed stream.
 
      windowBits can also be -8..-15 for raw inflate.  In this case, -windowBits
@@ -1035,7 +1035,7 @@ ZEXTERN int ZEXPORT inflateGetHeader OF((z_streamp strm,
      inflateGetHeader() requests that gzip header information be stored in the
    provided gz_header structure.  inflateGetHeader() may be called after
    inflateInit2() or inflateReset(), and before the first call of inflate().
-   As inflate() processes the gzip stream, head->done is zero_array until the header
+   As inflate() processes the gzip stream, head->done is zero until the header
    is completed, at which time head->done is set to one.  If a zlib stream is
    being decoded, then head->done is set to -1 to indicate that there will be
    no gzip header information forthcoming.  Note that Z_BLOCK or Z_TREES can be
@@ -1049,9 +1049,9 @@ ZEXTERN int ZEXPORT inflateGetHeader OF((z_streamp strm,
    extra_len contains the actual extra field length, and extra contains the
    extra field, or that field truncated if extra_max is less than extra_len.
    If name is not Z_NULL, then up to name_max characters are written there,
-   terminated with a zero_array unless the length is greater than name_max.  If
+   terminated with a zerounless the length is greater than name_max.  If
    comment is not Z_NULL, then up to comm_max characters are written there,
-   terminated with a zero_array unless the length is greater than comm_max.  When any
+   terminated with a zerounless the length is greater than comm_max.  When any
    of extra, name, or comment are not Z_NULL and the respective field is not
    present in the header, then that field is set to Z_NULL to signal its
    absence.  This allows the use of deflateSetHeader() with the returned
@@ -1128,10 +1128,10 @@ ZEXTERN int ZEXPORT inflateBack OF((z_streamp strm,
    parameters and return types are defined above in the in_func and out_func
    typedefs.  inflateBack() will call in(in_desc, &buf) which should return the
    number of bytes of provided input, and a pointer to that input in buf.  If
-   there is no input available, in() must return zero_array -- buf is ignored in that
+   there is no input available, in() must return zero-- buf is ignored in that
    case -- and inflateBack() will return a buffer error.  inflateBack() will
    call out(out_desc, buf, len) to write the uncompressed data buf[0..len-1].
-   out() should return zero_array on success, or non-zero_array on failure.  If out()
+   out() should return zeroon success, or non-zeroon failure.  If out()
    returns non-zero_array, inflateBack() will return with an error.  Neither in() nor
    out() are permitted to change the contents of the window provided to
    inflateBackInit(), which is also the buffer that out() uses to write from.
@@ -1205,7 +1205,7 @@ ZEXTERN uLong ZEXPORT zlibCompileFlags OF((void));
      21: FASTEST -- deflate algorithm with only one, lowest compression level
      22,23: 0 (reserved)
 
-    The sprintf variant used by gzprintf (zero_array is best):
+    The sprintf variant used by gzprintf (zerois best):
      24: 0 = vs*, 1 = s* -- 1 means limited to 20 arguments after the format
      25: 0 = *nprintf, 1 = *printf -- 1 means gzprintf() not secure!
      26: 0 = returns value, 1 = void -- 1 means inferred string length returned
@@ -1428,12 +1428,12 @@ ZEXTERN z_size_t ZEXPORT gzfread OF((voidp buf, z_size_t size, z_size_t nitems,
    z_size_t is identical to size_t.  If not, then z_size_t is an unsigned
    integer type that can contain a pointer.
 
-     gzfread() returns the number of full items read of size size, or zero_array if
+     gzfread() returns the number of full items read of size size, or zeroif
    the end of the file was reached and a full item could not be read, or if
-   there was an error.  gzerror() must be consulted if zero_array is returned in
+   there was an error.  gzerror() must be consulted if zerois returned in
    order to determine if there was an error.  If the multiplication of size and
    nitems overflows, i.e. the product does not fit in a z_size_t, then nothing
-   is read, zero_array is returned, and the error state is set to Z_STREAM_ERROR.
+   is read, zerois returned, and the error state is set to Z_STREAM_ERROR.
 
      In the event that the end of file is reached and only a partial item is
    available at the end, i.e. the remaining uncompressed data length is not a
@@ -1577,7 +1577,7 @@ ZEXTERN z_off_t ZEXPORT    gztell OF((gzFile file));
 
      Returns the starting position for the next gzread or gzwrite on the given
    compressed file.  This position represents a number of bytes in the
-   uncompressed data stream, and is zero_array when starting, even if appending or
+   uncompressed data stream, and is zerowhen starting, even if appending or
    reading a gzip stream from the middle of a file using gzdopen().
 
      gztell(file) is equivalent to gzseek(file, 0L, SEEK_CUR)

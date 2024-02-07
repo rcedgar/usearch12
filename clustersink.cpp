@@ -459,23 +459,23 @@ void ClusterSink::LogResults()
 
 	double Throughput = double(m_QueryCount)/double(Secs);
 
-	ProgressNoteLog("\n");
-	ProgressNoteLog("      Seqs  %s\n", IntToStr2(m_QueryCount));
-	ProgressNoteLog("  Clusters  %s\n", IntToStr2(ClusterCount));
-	ProgressNoteLog("  Max size  %s\n", IntToStr2(MaxSize));
-	ProgressNoteLog("  Avg size  %.1f\n", AvgSize);
-	ProgressNoteLog("  Min size  %u\n", MinSize);
-	ProgressNoteLog("Singletons  %s, %.1f%% of seqs, %.1f%% of clusters\n",
+	ProgressNoteLog("");
+	ProgressNoteLog("      Seqs  %s", IntToStr2(m_QueryCount));
+	ProgressNoteLog("  Clusters  %s", IntToStr2(ClusterCount));
+	ProgressNoteLog("  Max size  %s", IntToStr2(MaxSize));
+	ProgressNoteLog("  Avg size  %.1f", AvgSize);
+	ProgressNoteLog("  Min size  %u", MinSize);
+	ProgressNoteLog("Singletons  %s, %.1f%% of seqs, %.1f%% of clusters",
 	  IntToStr2(SingletonCount),
 	  GetPct(SingletonCount, m_QueryCount),
 	  GetPct(SingletonCount, ClusterCount));
-	ProgressNoteLog("   Max mem  %s\n", MemBytesToStr(GetPeakMemUseBytes()));
-	ProgressNoteLog("      Time  %s\n", SecsToStr((double) Secs));
+	ProgressNoteLog("   Max mem  %s", MemBytesToStr(GetPeakMemUseBytes()));
+	ProgressNoteLog("      Time  %s", SecsToStr((double) Secs));
 	if (Throughput > 1000.0)
-		ProgressNoteLog("Throughput  %s seqs/sec.\n", FloatToStr(Throughput));
+		ProgressNoteLog("Throughput  %s seqs/sec.", FloatToStr(Throughput));
 	else
-		ProgressNoteLog("Throughput  %.1f seqs/sec.\n", Throughput);
-	ProgressNoteLog("\n");
+		ProgressNoteLog("Throughput  %.1f seqs/sec.", Throughput);
+	ProgressNoteLog("");
 	}
 
 const unsigned *ClusterSink::GetClusterSizeOrder()

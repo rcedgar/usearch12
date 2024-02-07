@@ -197,8 +197,8 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		if (!IlluminaLabelPairMatch(TD.SI1->m_Label, TD.SI2->m_Label))
 			{
-			ProgressNoteLog("Label1 %s\n", TD.SI1->m_Label);
-			ProgressNoteLog("Label2 %s\n", TD.SI2->m_Label);
+			ProgressNoteLog("Label1 %s", TD.SI1->m_Label);
+			ProgressNoteLog("Label2 %s", TD.SI2->m_Label);
 			Die("Label mismatch");
 			}
 

@@ -893,6 +893,9 @@ void DerepResult::ToOTUTable(OTUTable &OT) const
 
 void DerepResult::Write()
 	{
+	string Msg;
+	Ps(Msg, "Writing %s uniques", IntToStr(m_ClusterCount));
+	ProgressStartOther(Msg);
 	ToFastx(opt(fastaout), false);
 	ToFastx(opt(fastqout), true);
 	ToUC(opt(uc));
@@ -905,4 +908,5 @@ void DerepResult::Write()
 		OT.ToTabbedFile(opt(otutabout));
 		OT.ToJsonFile(opt(biomout));
 		}
+	ProgressDoneOther();
 	}

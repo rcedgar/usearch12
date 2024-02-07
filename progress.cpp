@@ -4,6 +4,7 @@
 #include "cpplock.h"
 #include "hitmgr.h"
 #include "clustersink.h"
+#include "upclustersink.h"
 #include <chrono>
 #include <list>
 
@@ -109,6 +110,13 @@ void ClusterCB(string &str)
 	Ps(str, "%s clusters, avg size %.1f", IntToStr(N), a);
 	}
 
+void UPARSECB(string &str)
+	{
+	Ps(str, "%d OTUS, %u chimeras",
+		UPClusterSink::m_OTUCount,
+		UPClusterSink::m_ChimeraCount);
+	}
+
 static const char *PctStr(char *Str, double x, double y)
 	{
 	if (y == 0)
@@ -176,6 +184,8 @@ static char nl_or_lf(TEXT_TYPE TT1, TEXT_TYPE TT2)
 	x(LoopLast, LoopFirst, '\n');
 	x(LoopLast, Note, '\n');
 
+	x(Note, Idle, '\n');
+	x(Note, Note, '\n');
 	x(Note, LoopFirst, '\n');
 	x(Note, LoopMiddle, '\n');
 	x(Note, LoopLast, '\n');

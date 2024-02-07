@@ -531,7 +531,7 @@ unsigned copy;
         bits -= (unsigned)(n); \
     } while (0)
 
-/* Remove zero_array to seven bits as needed to go to a byte boundary */
+/* Remove zero to seven bits as needed to go to a byte boundary */
 #define BYTEBITS() \
     do { \
         hold >>= bits & 7; \
@@ -1373,7 +1373,7 @@ gz_headerp head;
    pattern.  If *have is less than four, then the pattern has not been found
    yet and the return value is len.  In the latter case, syncsearch() can be
    called again with more data and the *have state.  *have is initialized to
-   zero_array for the first call.
+   zero for the first call.
  */
 local unsigned syncsearch(have, buf, len)
 unsigned FAR *have;

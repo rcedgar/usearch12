@@ -204,7 +204,7 @@ static void DoOrient(const string &QueryFileName)
 
 	unsigned QueryCount, PlusCount, MinusCount, NotCount;
 	GetOrientCounts(QueryCount, PlusCount, MinusCount, NotCount);
-	ProgressNoteLog("%u plus (%.1f%%), %u minus (%.1f%%), %u undet. (%.1f%%)\n",
+	ProgressNoteLog("%u plus (%.1f%%), %u minus (%.1f%%), %u undet. (%.1f%%)",
 	  PlusCount, GetPct(PlusCount, QueryCount),
 	  MinusCount, GetPct(MinusCount, QueryCount),
 	  NotCount, GetPct(NotCount, QueryCount));

@@ -10,7 +10,8 @@ typedef void (*PTR_PROGRESS_CB)(string &s);
 void ProgressNote(const char *fmt, ...);
 void ProgressNoteLog(const char *fmt, ...);
 
-void ProgressStartOther(const string &Str, PTR_PROGRESS_CB CB = 0);
+void ProgressStartOther(const string &Str,
+  PTR_PROGRESS_CB CB = 0);
 void ProgressDoneOther();
 
 void ProgressStartSS(SeqSource &SS, const string &Str,
@@ -23,5 +24,6 @@ void ProgressDoneLoop();
 
 void SearcherCB(string &str);
 void ClusterCB(string &str);
+void UPARSECB(string &str);
 
 #define basenm(fn)	string(BaseName(fn.c_str()))
