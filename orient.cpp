@@ -195,7 +195,7 @@ static void DoOrient(const string &QueryFileName)
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-	ProgressDone();
+	ProgressDoneSS();
 
 	CloseStdioFile(g_fOut);
 	CloseStdioFile(g_fFa);

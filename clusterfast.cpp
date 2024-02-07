@@ -65,9 +65,7 @@ unsigned *GetSeqOrder(const DerepResult &DR,
 	else
 		Die("Invalid sort name %s", OrderName.c_str());
 
-	ProgressStart("Sort %s", OrderName.c_str());
 	QuickSortOrderDesc(v, UniqueCount, Order);
-	ProgressDone();
 #if	DEBUG
 	{
 	for (unsigned i = 0; i < UniqueCount; ++i)
@@ -118,10 +116,10 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);
 		}
 
-	uint32 UniqueIndex = 0;
-	ProgressLoop(&UniqueIndex, UniqueCount, "clustering");
-	for (UniqueIndex = 0; UniqueIndex < UniqueCount; ++UniqueIndex)
+	uint32 *ptrLoopIdx = ProgressStartLoop(UniqueCount, "clustering");
+	for (uint UniqueIndex = 0; UniqueIndex < UniqueCount; ++UniqueIndex)
 		{
+		*ptrLoopIdx = UniqueIndex;
 		unsigned SeqIndex = Order ? Order[UniqueIndex] : UniqueIndex;
 		SeqInfo *Query = OM->GetSeqInfo();
 		UniqueDB.GetSI(SeqIndex, *Query);
@@ -129,7 +127,7 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 		Query->Down();
 		Query = 0;
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 
 	ClusterSink::OnAllDone(&Input, &UniqueDB);
 	}

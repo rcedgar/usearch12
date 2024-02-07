@@ -135,7 +135,6 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
 	vector<string> Fields;
-	ProgressStart("read QIIME map file %s", FileName.c_str());
 	set<string> SampleNameSet;
 	vector<string> SampleNames;
 	vector<string> OTUNames;
@@ -177,7 +176,6 @@ void OTUTable::GetQiimeSampleNameFromLabel(const string &Label, string &SampleNa
 			}
 		++OTUIndex;
 		}
-	ProgressDone();
 	}
 
 void OTUTable::FromTabbedFile(const string &FileName)
@@ -188,7 +186,6 @@ void OTUTable::FromTabbedFile(const string &FileName)
 	string Line;
 	vector<string> Fields;
 	unsigned TheFieldCount = UINT_MAX;
-	ProgressStart("reading otutable %s", FileName.c_str());
 
 	ReadLineStdioFile(f, Line);
 	Split(Line, Fields, '\t');
@@ -244,7 +241,6 @@ void OTUTable::FromTabbedFile(const string &FileName)
 			SetCount(OTUIndex, SampleIndex, Count);
 			}
 		}
-	ProgressDone();
 	CloseStdioFile(f);
 	}
 
@@ -255,7 +251,6 @@ void OTUTable::ToTabbedFile(const string &FileName, bool AsFreqs) const
 
 	const char *FreqFmt = "%.4g";
 
-	ProgressStart("writing otutable %s", FileName.c_str());
 	FILE *f = CreateStdioFile(FileName);
 
 	unsigned SampleCount = GetSampleCount();
@@ -314,7 +309,6 @@ void OTUTable::ToTabbedFile(const string &FileName, bool AsFreqs) const
 		}
 
 	CloseStdioFile(f);
-	ProgressDone();
 	}
 
 void OTUTable::GetOTUSizes(vector<unsigned> &Sizes) const

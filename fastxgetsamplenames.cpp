@@ -32,7 +32,7 @@ void cmd_fastx_get_sample_names()
 			Die("Empty sample name");
 		Samples.insert(Sample);
 		}
-	ProgressDone();
+	ProgressDoneSS();
 
 	for (set<string>::const_iterator p = Samples.begin(); p != Samples.end(); ++p)
 		fprintf(fOut, "%s\n", (*p).c_str());

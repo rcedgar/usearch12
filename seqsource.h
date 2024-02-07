@@ -24,7 +24,7 @@ public:
 
 public:
 	virtual bool GetIsNucleo() = 0;
-	virtual unsigned GetPctDoneX10() = 0;
+	virtual double GetPctDone() = 0;
 	virtual const char *GetFileNameC() const = 0;
 	virtual void Rewind() = 0;
 

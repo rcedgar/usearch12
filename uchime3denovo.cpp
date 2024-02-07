@@ -55,10 +55,10 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	unsigned SearchSeqCount = 0;
 	unsigned LastSize = UINT_MAX;
 	vector<unsigned> Sizes;
-	uint SeqIndex = 0;
-	ProgressLoop(&SeqIndex, SeqCount, "UCHIME de novo");
-	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "UCHIME de novo");
+	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
+		*ptrLoopIdx = SeqIndex;
 		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = GetSizeFromLabel(Query->m_Label, UINT_MAX);
@@ -144,7 +144,7 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 
 		unsigned QueryCount = SeqIndex + 1;
 		}
-	ProgressDone();
+	ProgressDoneOther();
 
 	CloseStdioFile(fUCA);
 	CloseStdioFile(DeParser::m_fTab);
@@ -180,17 +180,17 @@ void cmd_uchime3_denovo()
 	if (optset_nonchimeras)
 		fNonCh = CreateStdioFile(opt(nonchimeras));
 
-	uint SeqIndex = 0;
-	ProgressLoop(&SeqIndex, SeqCount, "writing results");
-	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "writing results");
+	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
+		*ptrLoopIdx = SeqIndex;
 		bool IsChimera = IsChimeraVec[SeqIndex];
 		if (IsChimera)
 			Input.SeqToFasta(fCh, SeqIndex);
 		else
 			Input.SeqToFasta(fNonCh, SeqIndex);
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 
 	CloseStdioFile(fCh);
 	CloseStdioFile(fNonCh);

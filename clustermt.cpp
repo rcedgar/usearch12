@@ -172,17 +172,16 @@ void cmd_cluster_mt()
 		g_OMs.push_back(OM);
 		}
 
-	ProgressStart("clustering");
+	ProgressStartSS(*SS, "clustering");
 	for (;;)
 		{
 		if (SS->m_EndOfFile)
 			break;
-		uint Pct10 = SS->GetPctDoneX10() + 1;
 		FillPending(ThreadCount, SS, IsNucleo);
 		for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 			ProcessPending(ThreadIndex);
 		}
-	ProgressDone();
+	ProgressDoneSS();
 
 	g_udb->ToFasta(opt(centroids));
 //	ObjMgr::LogGlobalStats();

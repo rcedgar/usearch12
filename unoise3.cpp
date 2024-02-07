@@ -170,10 +170,10 @@ void cmd_unoise3()
 	unsigned CorrectedCount = 0;
 	vector<unsigned> UniqIndexToAmpIndex;
 	vector<unsigned> UniqIndexToDiffs;
-	uint SeqIndex = 0;
-	ProgressLoop(&SeqIndex, UniqCount, "denoising");
-	for (SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
+	uint32 *ptrLoopIdx = ProgressStartLoop(UniqCount, "denoising");
+	for (uint SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
 		{
+		*ptrLoopIdx = SeqIndex;
 		SeqInfo *Query = OM->GetSeqInfo();
 		Input.GetSI(SeqIndex, *Query);
 		unsigned QSize = Query->GetSize();
@@ -305,10 +305,10 @@ void cmd_unoise3()
 	if (optset_zotus)
 		{
 		FILE *f = CreateStdioFile(opt(zotus));
-		uint AmpIndex = 0;
-		ProgressLoop(&AmpIndex, AmpCount, "writing zotus");
-		for (AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
+		uint32 *ptrLoopIdx = ProgressStartLoop(AmpCount, "writing zotus");
+		for (uint AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
 			{
+			*ptrLoopIdx = AmpIndex;
 			if (IsChimeraVec[AmpIndex])
 				continue;
 
@@ -329,7 +329,7 @@ void cmd_unoise3()
 
 			SeqToFasta(f, Seq, L, NewLabel.c_str());
 			}
-		ProgressDone();
+		ProgressDoneLoop();
 		CloseStdioFile(f);
 		}
 	CloseStdioFile(g_fTab);

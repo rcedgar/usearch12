@@ -30,24 +30,13 @@ void LineReader::Open(const string &FileName)
 		m_FileSize = GetStdioFileSize_NoFail(m_f);
 	}
 
-unsigned LineReader::GetPctDoneX10()
+double LineReader::GetPctDone()
 	{
 	if (m_FileSize == UINT64_MAX || m_FileSize == 0)
 		return 0;
 	uint64 Pos = GetPos();
 	double f = double(m_LastBufferPos + m_BufferOffset)/double(m_FileSize);
-	uint n = uint(f*1000);
-	if (n >= 999)
-		n = 998;
-	return n;
-	}
-
-double LineReader::GetPctDoneDbl()
-	{
-	if (m_FileSize == UINT64_MAX || m_FileSize == 0)
-		return 0;
-	uint64 Pos = GetPos();
-	double Pct = double(Pos)*100.0/double(m_FileSize);
+	double Pct = f*100;
 	return Pct;
 	}
 

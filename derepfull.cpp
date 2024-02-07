@@ -190,7 +190,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 	g_RevComp = RevComp;
 
 	vector<thread *> ts;
-	ProgressStart("derep");
+	ProgressStartOther("derep");
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
 		DerepThreadData *TD = &TDs[ThreadIndex];
@@ -208,6 +208,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 		asserta(TD.Done);
 		TD.Free();
 		}
+	ProgressDoneOther();
 	}
 
 static void Derep(const string &FileName)

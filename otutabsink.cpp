@@ -65,14 +65,12 @@ void OTUTableSink::OnAllDone()
 	if (optset_otutabout)
 		{
 		const string FileName = opt(otutabout);
-		ProgressStart("writing %s", FileName.c_str());
 		m_OT->ToTabbedFile(FileName);
 		}
 
 	if (optset_biomout)
 		{
 		const string FileName = opt(biomout);
-		ProgressStart("writing %s", FileName.c_str());
 		m_OT->ToJsonFile(FileName);
 		}
 	}

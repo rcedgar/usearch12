@@ -124,10 +124,10 @@ void StringsFromFile(const string &FileName, set<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	ProgressStart("reading %s", FileName.c_str());
+	ProgressStartOther("reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.insert(Line);
-	ProgressDone();
+	ProgressDoneOther();
 	CloseStdioFile(f);
 	}
 
@@ -136,10 +136,10 @@ void StringsFromFile(const string &FileName, vector<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	ProgressStart("reading %s", FileName.c_str());
+	ProgressStartOther("reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.push_back(Line);
-	ProgressDone();
+	ProgressDoneOther();
 	CloseStdioFile(f);
 	}
 

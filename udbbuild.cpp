@@ -319,22 +319,16 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	uint64 LetterCount = DB.GetLetterCount();
 	uint64 LetterTotal = 0;
 	bool IsVarCoded = m_Params.DBIsVarCoded();
-	uint SeqIndex = 0;
-	ProgressLoop(&SeqIndex, SeqCount, "udb seqs");
-	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "udb seqs");
+	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
-		double dTicks = (LetterTotal*999.0)/LetterCount;
-		unsigned Ticks = unsigned(dTicks);
-		if (Ticks == 0)
-			Ticks = 1;
-		else if (Ticks == 999)
-			Ticks = 998;
+		*ptrLoopIdx = SeqIndex;
 		DB.GetSI(SeqIndex, *SI);
 		unsigned L = SI->m_L;
 		LetterTotal += L;
 		AddSeq(SeqIndex, SI->m_Seq, SI->m_L, true);
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 
 	vector<unsigned> Starts;
 	vector<unsigned> BlockSizes;
@@ -345,10 +339,10 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	const unsigned N = SIZE(Starts);
 	asserta(SIZE(BlockSizes) == N);
 	uint64 Total = 0;
-	uint i = 0;
-	ProgressLoop(&i, N, "alloc rows");
-	for (i = 0; i < N; ++i)
+	ptrLoopIdx = ProgressStartLoop(N, "alloc rows");
+	for (uint i = 0; i < N; ++i)
 		{
+		*ptrLoopIdx = i;
 		unsigned Start = Starts[i];
 		unsigned BlockSize = BlockSizes[i];
 		unsigned BlockBytes = BlockSize;
@@ -377,13 +371,13 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 		}
 	asserta(Total == TotalSize);
 	m_Prealloced = true;
-	ProgressDone();
+	ProgressDoneLoop();
 
 	LetterTotal = 0;
-	SeqIndex = 0;
-	ProgressLoop(&SeqIndex, SeqCount, "build udb index");
-	for (SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
+	ptrLoopIdx = ProgressStartLoop(SeqCount, "build udb index");
+	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
+		*ptrLoopIdx = SeqIndex;
 		double dTicks = (LetterTotal*999.0)/LetterCount;
 		unsigned Ticks = unsigned(dTicks);
 		if (Ticks == 0)
@@ -397,7 +391,7 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 
 	for (unsigned Slot = 0; Slot < m_SlotCount; ++Slot)
 		asserta(m_Sizes[Slot] == m_Capacities[Slot]);
-	ProgressDone();
+	ProgressDoneLoop();
 
 	myfree(m_Capacities);
 	m_Capacities = 0;

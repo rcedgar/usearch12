@@ -206,13 +206,13 @@ void ClusterSink::WriteConsTaxReport()
 	const unsigned *Order = 0;
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
-	ProgressStart("write cons. tax. report");
+	ProgressStartOther("write cons. tax. report");
 	for (unsigned k = 0; k < SeqCount; ++k)
 		{
 		unsigned ClusterIndex = (Order == 0 ? k : Order[k]);
 		WriteConsTaxReport1(f, ClusterIndex);
 		}
-	ProgressDone();
+	ProgressDoneOther();
 	CloseStdioFile(f);
 	}
 
@@ -266,10 +266,10 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 	const unsigned *Order = GetClusterSizeOrder();
 	bool ForceUniqueLabels = opt(force_unique_labels);
 	set<string> LabelSet;
-	uint k = 0;
-	ProgressLoop(&k, SeqCount, FileName.c_str(), "writing centroids");
-	for (k = 0; k < SeqCount; ++k)
+	uint32 *ptrLoopIdx = ProgressStartLoop(SeqCount, FileName.c_str(), "writing centroids");
+	for (uint k = 0; k < SeqCount; ++k)
 		{
+		*ptrLoopIdx = k;
 		unsigned SeqIndex = Order ? Order[k] : k;
 
 		unsigned Size = GetClusterSize(SeqIndex);
@@ -299,7 +299,7 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 			}
 		m_CentroidDB->SeqToFastaLabel(f, SeqIndex, Label.c_str());
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 	CloseStdioFile(f);
 	}
 
@@ -315,10 +315,10 @@ void ClusterSink::CentroidsToFASTQ(const string &FileName)
 	const unsigned *Order = 0;
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
-	uint k = 0;
-	ProgressLoop(&k, SeqCount, "writing centroids to %s", FileName.c_str());
-	for (k = 0; k < SeqCount; ++k)
+	uint32 *ptrLoopIdx = ProgressStartLoop(SeqCount, "writing centroids to %s", FileName.c_str());
+	for (uint k = 0; k < SeqCount; ++k)
 		{
+		*ptrLoopIdx = k;
 		unsigned SeqIndex = Order ? Order[k] : k;
 
 		unsigned Size = GetClusterSize(SeqIndex);
@@ -329,7 +329,7 @@ void ClusterSink::CentroidsToFASTQ(const string &FileName)
 		MakeCentroidLabel(SeqIndex, Label);
 		m_CentroidDB->SeqToFastqLabel(f, SeqIndex, Label.c_str());
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 	CloseStdioFile(f);
 	}
 
@@ -598,14 +598,14 @@ void ClusterSink::ClustersOut(const string &Prefix)
 		Psa(FileName, "%u", ClusterIndex);
 
 		FILE *f = CreateStdioFile(FileName);
-		uint i = 0;
-		ProgressLoop(&i, N, "writing clusters");
-		for (i = 0; i < N; ++i)
+		uint32 *ptrLoopIdx = ProgressStartLoop(N, "writing clusters");
+		for (uint i = 0; i < N; ++i)
 			{
+			*ptrLoopIdx = i;
 			unsigned SeqIndex = SeqIndexes[i];
 			m_InputDB->SeqToFasta(f, SeqIndex);
 			}
-		ProgressDone();
+		ProgressDoneLoop();
 		CloseStdioFile(f);
 		}
 	asserta(OutSeqCount == InputSeqCount);

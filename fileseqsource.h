@@ -19,7 +19,7 @@ public:
 public:
 	virtual bool GetIsNucleo() = 0;
 	virtual void Rewind() { m_LR.Rewind(); }
-	virtual unsigned GetPctDoneX10() { return m_LR.GetPctDoneX10(); }
+	virtual double GetPctDone() { return m_LR.GetPctDone(); }
 
 public:
 	virtual const char *GetFileNameC() const { return m_LR.m_FileName.c_str(); }

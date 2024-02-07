@@ -447,6 +447,7 @@ inline char mytolower(char c) { return c | (0x20); }
 inline char mytoupper(byte c) { return c & (~0x20); }
 inline bool myislower(byte c) { return (c & 0x20) != 0; }
 inline bool myislower(char c) { return (c & 0x20) != 0; }
+const char *PctStr(double x, double y);
 
 #define NO_TRACE		0
 #define TMP_TRACE		2	// true but not 1, for grep_trace

@@ -516,7 +516,7 @@ void Tree::FromVectors2(const vector<string> &Labels, vector<unsigned> &Parents,
 void Tree::MakeSubset(const vector<unsigned> &LeafNodeIndexes, Tree &T)
 	{
 	const unsigned N = SIZE(LeafNodeIndexes);
-	ProgressStart("tree subset");
+	ProgressStartOther("tree subset");
 	asserta(N > 0);
 	const unsigned NodeCount = GetNodeCount();
 	vector<bool> KeepLeaf(NodeCount, false);
@@ -602,5 +602,5 @@ void Tree::MakeSubset(const vector<unsigned> &LeafNodeIndexes, Tree &T)
 		NewParents.push_back(NewParent);
 		}
 	T.FromVectors2(NewLabels, NewParents, NewLengths);
-	ProgressDone();
+	ProgressDoneOther();
 	}

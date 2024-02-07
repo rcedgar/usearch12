@@ -142,7 +142,7 @@ bool UDBIsNucleo(FILE *f)
 
 void UDBData::ReadRowsVarCoded(FILE *f)
 	{
-	ProgressStart("read udb rows var-coded");
+	ProgressStartOther("read udb rows var-coded");
 	unsigned SlotLo = 0;
 	const uint64 MAX_SUM_SIZE = 1024*1024*1024;
 	unsigned ChunkCount = 0;
@@ -211,12 +211,12 @@ void UDBData::ReadRowsVarCoded(FILE *f)
 		asserta(SumBytes == SumSize32);
 		SlotLo = SlotHi;
 		}
-	ProgressDone();
+	ProgressDoneOther();
 	}
 
 void UDBData::ReadRowsNotVarCoded(FILE *f) const
 	{
-	ProgressStart("read udb rows");
+	ProgressStartOther("read udb rows");
 	for (unsigned i = 0; i < m_SlotCount; ++i)
 		{
 		unsigned N = m_Sizes[i];
@@ -229,7 +229,7 @@ void UDBData::ReadRowsNotVarCoded(FILE *f) const
 		m_UDBRows[i] = myalloc(uint32, N);
 		ReadStdioFile(f, m_UDBRows[i], N*sizeof(uint32));
 		}
-	ProgressDone();
+	ProgressDoneOther();
 	}
 
 void UDBData::FromUDBFile(const string &FileName)
@@ -287,7 +287,7 @@ void UDBData::FromUDBFile(FILE *f, const string &FileName)
 
 void UDBData::ToUDBFile(FILE *f) const
 	{
-	ProgressStart("writing udb");
+	ProgressStartOther("writing udb");
 	if (opt(validate))
 		ValidateRows();
 
@@ -371,7 +371,7 @@ void UDBData::ToUDBFile(FILE *f) const
 	SetStdioFilePos64(f, StartPos);
 	WriteStdioFile(f, &Hdr, sizeof(Hdr));
 	SetStdioFilePos64(f, EndPos);
-	ProgressDone();
+	ProgressDoneOther();
 	}
 
 void UDBData::WriteRowsVarCoded(FILE *f, const uint32 *Sizes) const

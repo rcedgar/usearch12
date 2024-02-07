@@ -125,7 +125,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 		Query->Down();
 		Query = 0;
 		}
-	ProgressDone();
+	ProgressDoneSS();
 
 	if (Cmd == CMD_cluster_otus)
 		UPClusterSink::OnAllDone();

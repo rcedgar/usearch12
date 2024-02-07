@@ -83,7 +83,6 @@ static void GetBinLoHi(unsigned BinIndex, unsigned &Lo, unsigned &Hi)
 
 void UDBData::LogSizeHisto() const
 	{
-	ProgressStart("log udb size histo.");
 	bool IsVarCoded = m_Params.DBIsVarCoded();
 	asserta(SizeToBin(0) == 0);
 	asserta(SizeToBin(1) == 1);
@@ -212,7 +211,6 @@ void UDBData::LogSizeHisto() const
 	Log("%10u  Lower (%.1f%%)\n", Lower, GetPct(Lower, Lower+Upper));
 	Log("%10u  Total\n", Lower + Upper);
 	Log("%10.0f  Indexed words\n", SumSizes);
-	ProgressDone();
 	}
 
 unsigned UDBData::GetWordCountRowVarCoded(unsigned Word) const
@@ -237,7 +235,6 @@ unsigned UDBData::GetWordCountRowVarCoded(unsigned Word) const
 
 void UDBData::LogTopWords(unsigned N) const
 	{
-	ProgressStart("log top udb words");
 	Log("\n");
 
 	float DBSize = (float) m_SeqDB->GetLetterCount();
@@ -321,7 +318,6 @@ void UDBData::LogTopWords(unsigned N) const
 			Log("\n");
 			}
 		}
-	ProgressDone();
 	}
 
 void UDBData::ValidateRow(unsigned Word) const
@@ -404,10 +400,8 @@ void UDBData::ValidateRow(unsigned Word) const
 void UDBData::ValidateRows() const
 	{
 	uint Word;
-	ProgressLoop(&Word, m_SlotCount, "validate udb rows");
 	for (Word = 0; Word < m_SlotCount; ++Word)
 		ValidateRow(Word);
-	ProgressDone();
 	}
 
 uint64 UDBData::GetTotalLetters()

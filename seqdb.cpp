@@ -428,10 +428,10 @@ void SeqDB::Mask(MASK_TYPE Type)
 		sMsg = string("Masking (") + sType + string(")");
 		}
 	const char *Msg = sMsg.c_str();
-	uint i = 0;
-	ProgressLoop(&i, m_SeqCount, Msg);
-	for (i = 0; i < m_SeqCount; ++i)
+	uint *ptrLoopIdx = ProgressStartLoop(m_SeqCount, Msg);
+	for (uint i = 0; i < m_SeqCount; ++i)
 		{
+		*ptrLoopIdx = i;
 		double dTicks = (LetterTotal*999.0)/LetterCount;
 		unsigned Ticks = unsigned(dTicks);
 		if (Ticks == 0)
@@ -443,7 +443,7 @@ void SeqDB::Mask(MASK_TYPE Type)
 		LetterTotal += L;
 		MaskSeq(Seq, L, Type, Seq);
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 	}
 
 byte *SeqDB::GetCol(unsigned ColIndex, byte *Col) const
@@ -547,10 +547,10 @@ void SeqDB::GetLabels(vector<string> &Labels) const
 
 void SeqDB::Relabel(const string &Prefix, bool KeepSizes)
 	{
-	uint SeqIndex = 0;
-	ProgressLoop(&SeqIndex, m_SeqCount, "relabel");
-	for (SeqIndex = 0; SeqIndex < m_SeqCount; ++SeqIndex)
+	uint *ptrLoopIdx = ProgressStartLoop(m_SeqCount, "relabel");
+	for (uint SeqIndex = 0; SeqIndex < m_SeqCount; ++SeqIndex)
 		{
+		*ptrLoopIdx = SeqIndex;
 		const char *Label = GetLabel(SeqIndex);
 
 		if (KeepSizes)
@@ -567,7 +567,7 @@ void SeqDB::Relabel(const string &Prefix, bool KeepSizes)
 			m_Labels[SeqIndex] = mystrsave(NewLabel.c_str());
 			}
 		}
-	ProgressDone();
+	ProgressDoneLoop();
 	}
 
 unsigned SeqDB::GetMinSeqLength() const
@@ -611,7 +611,7 @@ void SeqDB::FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress)
 	const char *FileName = SF.GetFileNameC();
 	m_FileName = string(FileName);
 	if (ShowProgress)
-		ProgressStartSS(SF, "reading seqs");
+		ProgressStartOther("loading seqs.");
 	for (;;)
 		{
 		bool Ok = SF.GetNext(SI);
@@ -620,7 +620,7 @@ void SeqDB::FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress)
 		AddSeq_CopyData(SI->m_Label, SI->m_Seq, SI->m_L, SI->m_Qual);
 		}
 	if (ShowProgress)
-		ProgressDone();
+		ProgressDoneOther();
 	}
 
 void SeqDB::Sort(DB_SORT SortType)
@@ -642,7 +642,7 @@ void SeqDB::Sort(DB_SORT SortType)
 
 void SeqDB::SortBySize(unsigned *SizeOrder)
 	{
-	ProgressStart("sorting seqs. by abundance (size=)");
+	ProgressStartOther("sorting seqs. by abundance (size=)");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	unsigned *Sizes = myalloc(unsigned, m_SeqCount);
 
@@ -673,7 +673,7 @@ void SeqDB::SortBySize(unsigned *SizeOrder)
 		NewSeqs[i] = m_Seqs[Order[i]];
 	myfree(m_Seqs);
 	m_Seqs = NewSeqs;
-	ProgressDone();
+	ProgressDoneOther();
 	}
 
 void SeqDB::SortByLength()
@@ -692,7 +692,7 @@ void SeqDB::SortByLength()
 	if (Sorted)
 		return;
 
-	ProgressStart("sorting seqs. by length");
+	ProgressStartOther("sorting seqs. by length");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	QuickSortOrderDesc(m_SeqLengths, m_SeqCount, Order);
 
@@ -713,7 +713,7 @@ void SeqDB::SortByLength()
 		NewSeqs[i] = m_Seqs[Order[i]];
 	myfree(m_Seqs);
 	m_Seqs = NewSeqs;
-	ProgressDone();
+	ProgressDoneOther();
 	}
 
 void StripGapsSeq(const byte *GappedSeq, unsigned L,

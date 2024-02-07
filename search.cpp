@@ -122,6 +122,8 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
 
+	ProgressDoneSS();
+
 	unsigned t2 = GetElapsedSecs();
 	unsigned SearchSecs = t2 - t1;
 	Log("Search time %u secs (%s)\n", SearchSecs, SecsToStr(SearchSecs));

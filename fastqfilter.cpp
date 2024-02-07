@@ -204,7 +204,7 @@ void cmd_fastq_filter()
 	InitFastqRelabel(InputFileName);
 	FastQ::SetBaseGuess(InputFileName);
 
-	FASTQSeqSource SS;
+	FASTQSeqSource &SS = *new FASTQSeqSource;
 	SS.Open(InputFileName);
 
 	ObjMgr &OM = *ObjMgr::CreateObjMgr();

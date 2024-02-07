@@ -71,8 +71,8 @@ void cmd_fastq_filter2()
 	InitFastqRelabel(InputFileName);
 	FastQ::SetBaseGuess(InputFileName);
 
-	FASTQSeqSource SS1;
-	FASTQSeqSource SS2;
+	FASTQSeqSource &SS1 = *new FASTQSeqSource;
+	FASTQSeqSource &SS2 = *new FASTQSeqSource;
 	SS1.Open(InputFileName);
 	SS2.Open(ReverseFileName);
 	ProgressStartSS(SS1, "filtering");
@@ -93,7 +93,7 @@ void cmd_fastq_filter2()
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-	ProgressDone();
+	ProgressDoneSS();
 	SS1.Close();
 	SS2.Close();
 	CloseStdioFile(g_fFastqOut1);

@@ -168,8 +168,8 @@ void cmd_fastq_join()
 	FastQ::InitFromCmdLine();
 //	FastQ::InitMerge();
 
-	FASTQSeqSource SS1;
-	FASTQSeqSource SS2;
+	FASTQSeqSource &SS1 = *new FASTQSeqSource;
+	FASTQSeqSource &SS2 = *new FASTQSeqSource;
 	SS1.Open(opt(fastq_join));
 	SS2.Open(opt(reverse));
 
@@ -191,7 +191,7 @@ void cmd_fastq_join()
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
 
-	ProgressDone();
+	ProgressDoneSS();
 
 	SS1.Close();
 	SS2.Close();

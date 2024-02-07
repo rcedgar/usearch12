@@ -21,7 +21,7 @@ void SeqDB::ToFile(FILE *f) const
 	Log("SeqDB::ToFile, pos %u\n", GetStdioFilePos64(f));
 	Log("SeqCount %u\n", m_SeqCount);
 #endif
-	ProgressStart("writing seqdb");
+	ProgressStartOther("writing seqdb");
 // padding for safety
 	const unsigned MAX_SIZE = UINT_MAX - 1024;
 
@@ -121,6 +121,8 @@ void SeqDB::ToFile(FILE *f) const
 	SetStdioFilePos64(f, HdrPos);
 	WriteStdioFile(f, &Hdr, sizeof(Hdr));
 	SetStdioFilePos64(f, EndPos);
+
+	ProgressDoneOther();
 	}
 
 static void SeqLengthsToBufferInfo(const uint32 *SeqLengths, unsigned SeqCount,
@@ -157,7 +159,7 @@ static void SeqLengthsToBufferInfo(const uint32 *SeqLengths, unsigned SeqCount,
 
 void SeqDB::FromFile(FILE *f, const string &FileName)
 	{
-	ProgressStart("reading %s", FileName.c_str());
+	ProgressStartOther("reading %s", FileName.c_str());
 #if	TRACE
 	Log("\n");
 	Log("SeqDB::FromFile, pos %u\n", GetStdioFilePos64(f));
@@ -238,5 +240,5 @@ void SeqDB::FromFile(FILE *f, const string &FileName)
 	asserta(SeqIndex == m_SeqCount);
 
 	SetIsAligned();
-	ProgressDone();
+	ProgressDoneOther();
 	}

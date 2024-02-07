@@ -134,7 +134,7 @@ void cmd_fastx_truncate()
 		SI->ToFasta(fFa);
 		SI->ToFastq(fFq);
 		}
-	ProgressDone();
+	ProgressDoneSS();
 	ProgressNote("%u (%.1f%%) too short, %u (%.1f%%) too long",
 		TooShort, GetPct(TooShort, SeqCount),
 		TooLong, GetPct(TooLong, SeqCount));
