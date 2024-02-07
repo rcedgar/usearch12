@@ -13,11 +13,12 @@ void ProgressNoteLog(const char *fmt, ...);
 void ProgressStartOther(const char *fmt, ...);
 void ProgressDoneOther();
 
-void ProgressStartCB(PTR_PROGRESS_CB CB, const char *fmt, ...);
-void ProgressDoneCB();
+void ProgressSetCB(PTR_PROGRESS_CB CB);
 
 void ProgressStartSS(SeqSource &SS, const char *fmt, ...);
 void ProgressDoneSS();
 
 uint32 *ProgressStartLoop(uint32 N, const char *fmt, ...);
 void ProgressDoneLoop();
+
+void SearcherCB(string &str);

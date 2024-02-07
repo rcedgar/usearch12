@@ -109,6 +109,7 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
 	ProgressStartSS(*SS, "Searching");
+	ProgressSetCB(SearcherCB);
 
 	unsigned t1 = GetElapsedSecs();
 	unsigned ThreadCount = GetRequestedThreadCount();

@@ -2,6 +2,7 @@
 #include "progress.h"
 #include "seqsource.h"
 #include "cpplock.h"
+#include "hitmgr.h"
 #include <chrono>
 #include <list>
 
@@ -15,7 +16,6 @@ enum PROG_STATE
 	PS_Idle,
 	PS_Other,
 	PS_SS,
-	PS_CB,
 	PS_Loop,
 	};
 static PROG_STATE g_State = PS_Idle;
@@ -46,6 +46,15 @@ static uint g_LoopN = UINT_MAX;
 static SeqSource *g_SS;
 static PTR_PROGRESS_CB g_CB;
 
+void SearcherCB(string &str)
+	{
+	double Pct = HitMgr::GetPctMatched();
+	uint Hits = HitMgr::m_QueryWithHitCount;
+	char cs[MAXSTR];
+	snprintf(cs, MAXSTR-1, "%s hits (%.1f%%)", IntToStr(Hits), Pct);
+	str = string(cs); 
+	}
+
 static const char *StateToStr(PROG_STATE State)
 	{
 	switch (State)
@@ -53,7 +62,6 @@ static const char *StateToStr(PROG_STATE State)
 	case PS_Idle: return "Idle";
 	case PS_Other: return "Other";
 	case PS_SS: return "SS";
-	case PS_CB: return "CB";
 	case PS_Loop: return "Loop";
 		}
 	return "PS_???";
@@ -162,7 +170,6 @@ static char nl_or_lf(TEXT_TYPE TT1, TEXT_TYPE TT2)
 	x(Note, LoopFirst, '\n');
 	x(Note, LoopMiddle, '\n');
 	x(Note, LoopLast, '\n');
-
 #undef x
 
 	Die("TT1=%u TT2=%u", TT1, TT2);
@@ -269,7 +276,9 @@ static void AppendSSAmount(string &Line, bool Done = false)
 
 static void AppendCB(string &Line)
 	{
-	asserta(g_CB != 0);
+	if (g_CB == 0)
+		return;
+	Line += "  ";
 	string s;
 	g_CB(s);
 	Line += s;
@@ -283,16 +292,7 @@ static void MakeOtherLine(string &Line, bool Done = false)
 	AppendSpinner(Line, Done);
 	Line += "  ";
 	Line += g_Activity;
-	}
-
-static void MakeCBLine(string &Line)
-	{
-	Line.clear();
-	AppendPrefix(Line);
-	Line += "  ";
 	AppendCB(Line);
-	Line += "  ";
-	Line += g_Activity;
 	}
 
 static void MakeSSLine(string &Line, bool Done = false)
@@ -302,6 +302,7 @@ static void MakeSSLine(string &Line, bool Done = false)
 	AppendSSAmount(Line, Done);
 	Line += "  ";
 	Line += g_Activity;
+	AppendCB(Line);
 	}
 
 static void MakeLoopLine(string &Line, bool Done = false)
@@ -311,49 +312,42 @@ static void MakeLoopLine(string &Line, bool Done = false)
 	AppendLoopAmount(Line, Done);
 	Line += "  ";
 	Line += g_Activity;
+	AppendCB(Line);
+	}
+
+static void MakeIdleLine(string &Line)
+	{
+	Line.clear();
+	AppendPrefix(Line);
+	Line += "  ";
+	AppendSpinner(Line);
+	Line += "  ";
+	Line += g_Activity;
 	}
 
 // Output from progress thread, no newline
 static void PushBackgroundLine()
 	{
 	string Line;
-	AppendPrefix(Line);
-	Line += "  ";
-
 	switch (g_State)
 		{
 	case PS_Idle:
-		AppendSpinner(Line);
-		Line += "  ";
-		Line += g_Activity;
+		MakeIdleLine(Line);
 		PushText(Line, TT_Idle);
 		break;
 
 	case PS_Other:
-		AppendSpinner(Line);
-		Line += "  ";
-		Line += g_Activity;
-		PushText(Line, TT_LoopMiddle);
-		break;
-
-	case PS_CB:
-		AppendCB(Line);
-		Line += "  ";
-		Line += g_Activity;
+		MakeOtherLine(Line);
 		PushText(Line, TT_LoopMiddle);
 		break;
 
 	case PS_Loop:
-		AppendLoopAmount(Line);
-		Line += "  ";
-		Line += g_Activity;
+		MakeLoopLine(Line);
 		PushText(Line, TT_LoopMiddle);
 		break;
 
 	case PS_SS:
-		AppendSSAmount(Line);
-		Line += "  ";
-		Line += g_Activity;
+		MakeSSLine(Line);
 		PushText(Line, TT_LoopMiddle);
 		break;
 
@@ -459,26 +453,6 @@ void ProgressStartOther(const char *fmt, ...)
 	UNLOCK();
 	}
 
-void ProgressStartCB(PTR_PROGRESS_CB CB, const char *fmt, ...)
-	{
-	LOCK();
-	asserta(g_State == PS_Idle);
-	va_list ArgList;
-	va_start(ArgList, fmt);
-	char s[MAXSTR];
-	vsnprintf(s, MAXSTR-1, fmt, ArgList);
-	s[MAXSTR-1] = '\0';
-	va_end(ArgList);
-	g_Activity = string(s);
-
-	string Line;
-	MakeCBLine(Line);
-	PushText(Line, TT_LoopFirst);
-
-	g_State = PS_CB;
-	UNLOCK();
-	}
-
 uint32 *ProgressStartLoop(uint32 N, const char *fmt, ...)
 	{
 	LOCK();
@@ -497,11 +471,6 @@ uint32 *ProgressStartLoop(uint32 N, const char *fmt, ...)
 
 	string Line;
 	MakeLoopLine(Line);
-	//AppendPrefix(Line);
-	//Line += "  ";
-	//AppendLoopAmount(Line);
-	//Line += "  ";
-	//Line += string(s);
 	PushText(Line, TT_LoopFirst);
 
 	g_State = PS_Loop;
@@ -541,6 +510,7 @@ void ProgressDoneOther()
 
 	g_State = PS_Idle;
 	g_Activity = "(Processing)";
+	g_CB = 0;
 	UNLOCK();
 	}
 
@@ -557,6 +527,7 @@ void ProgressDoneLoop()
 
 	g_State = PS_Idle;
 	g_Activity = "(Processing)";
+	g_CB = 0;
 	UNLOCK();
 	}
 
@@ -573,24 +544,13 @@ void ProgressDoneSS()
 	g_SS = 0;
 	g_State = PS_Idle;
 	g_Activity = "(Processing)";
+	g_CB = 0;
 	UNLOCK();
 	}
 
-void ProgressDoneCB()
+void ProgressSetCB(PTR_PROGRESS_CB CB)
 	{
 	LOCK();
-	asserta(g_State == PS_CB);
-
-	string s;
-	asserta(g_CB != 0);
-	g_CB(s);
-
-	string Line;
-	MakeCBLine(Line);
-	PushText(Line, TT_LoopLast);
-
-	g_CB = 0;
-	g_State = PS_Idle;
-	g_Activity = "(Processing)";
+	g_CB = CB;
 	UNLOCK();
 	}
