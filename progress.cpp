@@ -46,15 +46,6 @@ static uint g_LoopN = UINT_MAX;
 static SeqSource *g_SS;
 static PTR_PROGRESS_CB g_CB;
 
-void SearcherCB(string &str)
-	{
-	double Pct = HitMgr::GetPctMatched();
-	uint Hits = HitMgr::m_QueryWithHitCount;
-	char cs[MAXSTR];
-	snprintf(cs, MAXSTR-1, "%s hits (%.1f%%)", IntToStr(Hits), Pct);
-	str = string(cs); 
-	}
-
 static const char *StateToStr(PROG_STATE State)
 	{
 	switch (State)
@@ -91,13 +82,25 @@ static void ppc(char c)
 
 static const char *PctStr(char *Str, double p)
 	{
-	if (p >= 10)
+	if (p == 0)
+		strcpy(Str, "  0.0%");
+	else if (p >= 10)
 		sprintf(Str, "%5.1f%%", p);
-	else if ( p >= 1)
+	else if (p >= 1)
 		sprintf(Str, "%5.2f%%", p);
 	else
 		sprintf(Str, "%5.3f%%", p);
 	return Str;
+	}
+
+void SearcherCB(string &str)
+	{
+	double Pct = HitMgr::GetPctMatched();
+	uint Hits = HitMgr::m_QueryWithHitCount;
+
+	char cs[MAXSTR];
+	snprintf(cs, MAXSTR-1, "%s hits (%.1f%%)", IntToStr(Hits), Pct);
+	str = string(cs); 
 	}
 
 static const char *PctStr(char *Str, double x, double y)
