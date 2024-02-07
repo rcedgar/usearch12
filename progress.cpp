@@ -5,7 +5,7 @@
 #include <chrono>
 #include <list>
 
-#define TEXTOUT		1
+#define TEXTOUT		0
 #if TEXTOUT
 FILE *g_ftxt;
 #endif
@@ -121,6 +121,16 @@ static void PushText(const string &Line, TEXT_TYPE TT)
 		return;
 		}
 
+	if (!g_PendingTTs.empty())
+		{
+		TEXT_TYPE TT = g_PendingTTs.front();
+		if (TT == TT_Idle || TT == TT_None)
+			{
+			g_PendingTTs.pop_front();
+			g_PendingLines.pop_front();
+			}
+		}
+
 	g_PendingLines.push_back(Line);
 	g_PendingTTs.push_back(TT);
 	}
@@ -128,14 +138,14 @@ static void PushText(const string &Line, TEXT_TYPE TT)
 static char nl_or_lf(TEXT_TYPE TT1, TEXT_TYPE TT2)
 	{
 #define x(t1, t2, c)	if (TT1 == TT_##t1 && TT2 == TT_##t2) return c;
-	x(None, LoopFirst, '\n');
-	x(None, Idle, '\n');
-	x(None, Note, '\n');
-	x(None, Idle, '\n');
+	x(None, LoopFirst, '\r');
+	x(None, Idle, '\r');
+	x(None, Note, '\r');
+	x(None, Idle, '\r');
 
 	x(Idle, Idle, '\r');
-	x(Idle, Note, '\n');
-	x(Idle, LoopFirst, '\n');
+	x(Idle, Note, '\r');
+	x(Idle, LoopFirst, '\r');
 
 	x(LoopFirst, LoopMiddle, '\r');
 	x(LoopFirst, LoopLast, '\r');

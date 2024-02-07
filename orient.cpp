@@ -185,7 +185,7 @@ static void DoOrient(const string &QueryFileName)
 	asserta(DB != 0);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
-	ProgressStartSS(*SS, "orienting");
+	ProgressStartSS(*SS, "Orienting");
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)

@@ -142,7 +142,7 @@ bool UDBIsNucleo(FILE *f)
 
 void UDBData::ReadRowsVarCoded(FILE *f)
 	{
-	ProgressStartOther("read udb rows var-coded");
+	ProgressStartOther("Read udb rows var-coded");
 	unsigned SlotLo = 0;
 	const uint64 MAX_SUM_SIZE = 1024*1024*1024;
 	unsigned ChunkCount = 0;
@@ -216,7 +216,7 @@ void UDBData::ReadRowsVarCoded(FILE *f)
 
 void UDBData::ReadRowsNotVarCoded(FILE *f) const
 	{
-	ProgressStartOther("read udb rows");
+	ProgressStartOther("Read udb rows");
 	for (unsigned i = 0; i < m_SlotCount; ++i)
 		{
 		unsigned N = m_Sizes[i];
@@ -287,7 +287,7 @@ void UDBData::FromUDBFile(FILE *f, const string &FileName)
 
 void UDBData::ToUDBFile(FILE *f) const
 	{
-	ProgressStartOther("writing udb");
+	ProgressStartOther("Writing udb");
 	if (opt(validate))
 		ValidateRows();
 

@@ -190,7 +190,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 	g_RevComp = RevComp;
 
 	vector<thread *> ts;
-	ProgressStartOther("derep");
+	ProgressStartOther("Unique seqs.");
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
 		DerepThreadData *TD = &TDs[ThreadIndex];

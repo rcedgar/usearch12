@@ -116,7 +116,6 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 
 static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 	{
-	//Progress("FillPending...\n");
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
@@ -125,7 +124,6 @@ static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		ts[ThreadIndex]->join();
-	//Progress("...FillPending done\n");
 	}
 
 void cmd_cluster_mt()
@@ -172,7 +170,7 @@ void cmd_cluster_mt()
 		g_OMs.push_back(OM);
 		}
 
-	ProgressStartSS(*SS, "clustering");
+	ProgressStartSS(*SS, "Clustering");
 	for (;;)
 		{
 		if (SS->m_EndOfFile)

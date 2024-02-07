@@ -170,7 +170,7 @@ void cmd_unoise3()
 	unsigned CorrectedCount = 0;
 	vector<unsigned> UniqIndexToAmpIndex;
 	vector<unsigned> UniqIndexToDiffs;
-	uint32 *ptrLoopIdx = ProgressStartLoop(UniqCount, "denoising");
+	uint32 *ptrLoopIdx = ProgressStartLoop(UniqCount, "Denoising");
 	for (uint SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
@@ -305,7 +305,7 @@ void cmd_unoise3()
 	if (optset_zotus)
 		{
 		FILE *f = CreateStdioFile(opt(zotus));
-		uint32 *ptrLoopIdx = ProgressStartLoop(AmpCount, "writing zotus");
+		uint32 *ptrLoopIdx = ProgressStartLoop(AmpCount, "Writing zotus");
 		for (uint AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
 			{
 			*ptrLoopIdx = AmpIndex;

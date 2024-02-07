@@ -173,7 +173,7 @@ void cmd_fastq_join()
 	SS1.Open(opt(fastq_join));
 	SS2.Open(opt(reverse));
 
-	ProgressStartSS(SS1, "joining");
+	ProgressStartSS(SS1, "Joining");
 
 	if (optset_fastqout)
 		g_fFastqOut = CreateStdioFile(opt(fastqout));

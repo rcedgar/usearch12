@@ -21,7 +21,7 @@ void SeqDB::ToFile(FILE *f) const
 	Log("SeqDB::ToFile, pos %u\n", GetStdioFilePos64(f));
 	Log("SeqCount %u\n", m_SeqCount);
 #endif
-	ProgressStartOther("writing seqdb");
+	ProgressStartOther("Writing seqdb");
 // padding for safety
 	const unsigned MAX_SIZE = UINT_MAX - 1024;
 
@@ -159,7 +159,7 @@ static void SeqLengthsToBufferInfo(const uint32 *SeqLengths, unsigned SeqCount,
 
 void SeqDB::FromFile(FILE *f, const string &FileName)
 	{
-	ProgressStartOther("reading %s", FileName.c_str());
+	ProgressStartOther("Reading %s", FileName.c_str());
 #if	TRACE
 	Log("\n");
 	Log("SeqDB::FromFile, pos %u\n", GetStdioFilePos64(f));

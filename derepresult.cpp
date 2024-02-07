@@ -230,7 +230,7 @@ void DerepResult::ToSeqDB(SeqDB &DB, bool WithSizes) const
 	bool WithQuals = (m_Input->m_Quals != 0);
 	DB.Alloc(m_ClusterCount, WithQuals);
 
-	uint *ptrLoopIdx = ProgressStartLoop(m_ClusterCount, "convert uniques");
+	uint *ptrLoopIdx = ProgressStartLoop(m_ClusterCount, "Convert uniques");
 	for (uint ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
 		*ptrLoopIdx = ClusterIndex;
@@ -317,7 +317,8 @@ void DerepResult::ToTabbed(const string &FileName)
 
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
-	uint *ptrLoopIdx = ProgressStartLoop(m_ClusterCount, "write clusters tsv");
+	uint *ptrLoopIdx = ProgressStartLoop(m_ClusterCount,
+	  "Write %s", FileName.c_str());
 	for (uint k = 0; k < m_ClusterCount; ++k)
 		{
 		*ptrLoopIdx = k;
@@ -361,7 +362,7 @@ void DerepResult::ToUC(const string &FileName)
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const SeqDB &DB = *m_Input;
 	const unsigned Total = SeqCount + m_ClusterCount;
-	ProgressStartOther("writing uc file");
+	ProgressStartOther("Writing %s", FileName.c_str());
 	for (uint ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
 		{
 		unsigned Size = GetClusterMemberCount(ClusterIndex);

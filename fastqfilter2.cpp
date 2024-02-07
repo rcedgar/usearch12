@@ -75,7 +75,7 @@ void cmd_fastq_filter2()
 	FASTQSeqSource &SS2 = *new FASTQSeqSource;
 	SS1.Open(InputFileName);
 	SS2.Open(ReverseFileName);
-	ProgressStartSS(SS1, "filtering");
+	ProgressStartSS(SS1, "Filtering");
 
 	if (optset_fastqout)
 		{

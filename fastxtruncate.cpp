@@ -52,7 +52,7 @@ void cmd_fastx_truncate()
 	unsigned MaxL = opt(maxseqlength);
 	char Tmp[16];
 
-	ProgressStartSS(SS, "truncating");
+	ProgressStartSS(SS, "Truncating");
 	for (;;)
 		{
 		bool Ok = SS.GetNext(SI);

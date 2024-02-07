@@ -124,7 +124,7 @@ void StringsFromFile(const string &FileName, set<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	ProgressStartOther("reading %s", FileName.c_str());
+	ProgressStartOther("Reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.insert(Line);
 	ProgressDoneOther();
@@ -136,7 +136,7 @@ void StringsFromFile(const string &FileName, vector<string> &Strings)
 	Strings.clear();
 	FILE *f = OpenStdioFile(FileName);
 	string Line;
-	ProgressStartOther("reading %s", FileName.c_str());
+	ProgressStartOther("Reading %s", FileName.c_str());
 	while (ReadLineStdioFile(f, Line))
 		Strings.push_back(Line);
 	ProgressDoneOther();
@@ -184,7 +184,7 @@ unsigned GetRequestedThreadCount()
 	if (N == 0)
 		N = 1;
 	if (!MsgDone)
-		ProgressNoteLog("starting %u thread%s", N, N == 1 ? "" : "s");
+		ProgressNoteLog("Starting %u thread%s", N, N == 1 ? "" : "s");
 	Done = true;
 	return N;
 	}

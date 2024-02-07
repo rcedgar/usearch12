@@ -228,7 +228,7 @@ void cmd_fastq_filter()
 	if (optset_eetabbedout)
 		g_fEEOut = CreateStdioFile(opt(eetabbedout));
 
-	ProgressStartSS(SS, "filtering");
+	ProgressStartSS(SS, "Filtering");
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)

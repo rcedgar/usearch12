@@ -173,7 +173,7 @@ void cmd_fastq_mergepairs()
 	if (optset_fastaout_overlap_rev)
 		g_fFaOverlapRev = CreateStdioFile(opt(fastaout_overlap_rev));
 
-	ProgressStartOther("merging");
+	ProgressStartOther("Merging");
 	for (unsigned i = 0; i < N; ++i)
 		{
 		const string &FwdFileName = FwdFileNames[i];

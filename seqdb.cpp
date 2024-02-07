@@ -547,7 +547,7 @@ void SeqDB::GetLabels(vector<string> &Labels) const
 
 void SeqDB::Relabel(const string &Prefix, bool KeepSizes)
 	{
-	uint *ptrLoopIdx = ProgressStartLoop(m_SeqCount, "relabel");
+	uint *ptrLoopIdx = ProgressStartLoop(m_SeqCount, "Relabel");
 	for (uint SeqIndex = 0; SeqIndex < m_SeqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
@@ -611,7 +611,7 @@ void SeqDB::FromSS(SeqSource &SF, SeqInfo *SI, bool ShowProgress)
 	const char *FileName = SF.GetFileNameC();
 	m_FileName = string(FileName);
 	if (ShowProgress)
-		ProgressStartOther("loading seqs.");
+		ProgressStartOther("Loading seqs.");
 	for (;;)
 		{
 		bool Ok = SF.GetNext(SI);
@@ -642,7 +642,7 @@ void SeqDB::Sort(DB_SORT SortType)
 
 void SeqDB::SortBySize(unsigned *SizeOrder)
 	{
-	ProgressStartOther("sorting seqs. by abundance (size=)");
+	ProgressStartOther("Sorting by size");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	unsigned *Sizes = myalloc(unsigned, m_SeqCount);
 
@@ -692,7 +692,7 @@ void SeqDB::SortByLength()
 	if (Sorted)
 		return;
 
-	ProgressStartOther("sorting seqs. by length");
+	ProgressStartOther("Sorting by length");
 	unsigned *Order = myalloc(unsigned, m_SeqCount);
 	QuickSortOrderDesc(m_SeqLengths, m_SeqCount, Order);
 

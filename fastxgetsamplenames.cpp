@@ -20,7 +20,7 @@ void cmd_fastx_get_sample_names()
 		fOut = CreateStdioFile(opt(output));
 
 	set<string> Samples;
-	ProgressStartSS(SS, "get_sample_names");
+	ProgressStartSS(SS, "Sample names");
 	for (;;)
 		{
 		bool Ok = SS.GetNext(SI);

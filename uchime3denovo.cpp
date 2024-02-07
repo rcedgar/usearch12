@@ -180,7 +180,7 @@ void cmd_uchime3_denovo()
 	if (optset_nonchimeras)
 		fNonCh = CreateStdioFile(opt(nonchimeras));
 
-	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "writing results");
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "Writing results");
 	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;

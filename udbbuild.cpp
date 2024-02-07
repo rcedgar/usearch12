@@ -319,7 +319,7 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	uint64 LetterCount = DB.GetLetterCount();
 	uint64 LetterTotal = 0;
 	bool IsVarCoded = m_Params.DBIsVarCoded();
-	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "udb seqs");
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "Udb seqs");
 	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
@@ -339,7 +339,7 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	const unsigned N = SIZE(Starts);
 	asserta(SIZE(BlockSizes) == N);
 	uint64 Total = 0;
-	ptrLoopIdx = ProgressStartLoop(N, "alloc rows");
+	ptrLoopIdx = ProgressStartLoop(N, "Alloc rows");
 	for (uint i = 0; i < N; ++i)
 		{
 		*ptrLoopIdx = i;
@@ -374,7 +374,7 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	ProgressDoneLoop();
 
 	LetterTotal = 0;
-	ptrLoopIdx = ProgressStartLoop(SeqCount, "build udb index");
+	ptrLoopIdx = ProgressStartLoop(SeqCount, "Build udb index");
 	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
