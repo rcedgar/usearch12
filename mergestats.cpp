@@ -2,10 +2,8 @@
 #include "merge.h"
 #include "quarts.h"
 
-static void WriteLengthDist(FILE *f)
+static void AppendLengthDistStrs(vector<string> &Strs)
 	{
-	if (f == 0)
-		return;
 	if (g_MergeLengths == 0)
 		return;
 
@@ -13,71 +11,95 @@ static void WriteLengthDist(FILE *f)
 	Quarts Q;
 	GetQuarts(Ls, Q);
 
-	fprintf(f, "\n");
-	fprintf(f, "Merged length distribution:\n");
-	fprintf(f, "%10u  Min\n", Q.Min);
-	fprintf(f, "%10u  Low quartile\n", Q.LoQ);
-	fprintf(f, "%10u  Median\n", Q.Med);
-	fprintf(f, "%10u  High quartile\n", Q.HiQ);
-	fprintf(f, "%10u  Max\n", Q.Max);
+	string s;
+	Strs.push_back("");
+	Strs.push_back("Merged length distribution:");
+	Ps(s, "%10u  Min", Q.Min); Strs.push_back(s);
+	Ps(s, "%10u  Low quartile", Q.LoQ); Strs.push_back(s);
+	Ps(s, "%10u  Median", Q.Med); Strs.push_back(s);
+	Ps(s, "%10u  High quartile", Q.HiQ); Strs.push_back(s);
+	Ps(s, "%10u  Max", Q.Max); Strs.push_back(s);
 	}
 
-void WriteMergeResults(FILE *f)
+void GetMergeStatsStrs(vector<string> &Strs)
 	{
-	if (f == 0)
-		return;
+	AppendLengthDistStrs(Strs);
 
-	WriteLengthDist(f);
+	string s;
+	Strs.push_back("");
+	Ps(s, "%10u  Read pairs (%s)", g_InRecCount, IntToStr(g_InRecCount));
+	Strs.push_back(s);
 
-	fprintf(f, "\n");
-	fprintf(f, "Totals:\n");
-	fprintf(f, "%10u  Pairs (%s)\n", g_InRecCount, IntToStr(g_InRecCount));
-	fprintf(f, "%10u  Merged (%s, %.2f%%)\n", g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_InRecCount));
+	Ps(s, "%10u  Merged (%s, %.2f%%)", g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_InRecCount));
+	Strs.push_back(s);
 	if (g_InRecCount == 0)
 		return;
 
-	fprintf(f, "%10u  Alignments with zero diffs (%.2f%%)\n", g_ExactOverlapCount, GetPct(g_ExactOverlapCount, g_InRecCount));
+	Ps(s, "%10u  Alignments with zero diffs (%.2f%%)", g_ExactOverlapCount, GetPct(g_ExactOverlapCount, g_InRecCount));
+	Strs.push_back(s);
 
-	fprintf(f, "%10u  Too many diffs (> %u) (%.2f%%)\n",
+	Ps(s, "%10u  Too many diffs (> %u) (%.2f%%)",
 	  g_MaxDiffsCount, opt(fastq_maxdiffs), GetPct(g_MaxDiffsCount, g_InRecCount));
+	Strs.push_back(s);
 
 	if (g_TailCount1 > 0 || g_TailCount2 > 0)
 		{
-		fprintf(f, "%10u  Fwd tails Q <= %u trimmed (%.2f%%)\n", g_TailCount1, opt(fastq_trunctail), GetPct(g_TailCount1, g_InRecCount));
-		fprintf(f, "%10u  Rev tails Q <= %u trimmed (%.2f%%)\n", g_TailCount2, opt(fastq_trunctail), GetPct(g_TailCount2, g_InRecCount));
+		Ps(s, "%10u  Fwd tails Q <= %u trimmed (%.2f%%)", g_TailCount1, opt(fastq_trunctail), GetPct(g_TailCount1, g_InRecCount));
+		Strs.push_back(s);
+		Ps(s, "%10u  Rev tails Q <= %u trimmed (%.2f%%)", g_TailCount2, opt(fastq_trunctail), GetPct(g_TailCount2, g_InRecCount));
+		Strs.push_back(s);
 		}
 
 	if (g_TooShortCount1 > 0 || g_TooShortCount2 > 0)
 		{
-		fprintf(f, "%10u  Fwd too short (< %u) after tail trimming (%.2f%%)\n", g_TooShortCount1, opt(fastq_minlen), GetPct(g_TooShortCount1, g_InRecCount));
-		fprintf(f, "%10u  Rev too short (< %u) after tail trimming (%.2f%%)\n", g_TooShortCount2, opt(fastq_minlen), GetPct(g_TooShortCount2, g_InRecCount));
+		Ps(s, "%10u  Fwd too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount1, opt(fastq_minlen), GetPct(g_TooShortCount1, g_InRecCount));
+		Strs.push_back(s);
+		Ps(s, "%10u  Rev too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount2, opt(fastq_minlen), GetPct(g_TooShortCount2, g_InRecCount));
+		Strs.push_back(s);
 		}
 
-	fprintf(f, "%10u  No alignment found (%.2f%%)\n", g_NotAlignedCount, GetPct(g_NotAlignedCount, g_InRecCount));
-	fprintf(f, "%10u  Alignment too short (< %u) (%.2f%%)\n", g_OvTooShortCount, opt(fastq_minovlen), GetPct(g_OvTooShortCount, g_InRecCount));
+	Ps(s, "%10u  No alignment found (%.2f%%)", g_NotAlignedCount, GetPct(g_NotAlignedCount, g_InRecCount));
+	Strs.push_back(s);
+	Ps(s, "%10u  Alignment too short (< %u) (%.2f%%)", g_OvTooShortCount, opt(fastq_minovlen), GetPct(g_OvTooShortCount, g_InRecCount));
+	Strs.push_back(s);
 
 	if (optset_fastq_minmergelen)
-		fprintf(f, "%10u  Merged too short (< %u)\n", g_MergedTooShortCount, opt(fastq_minmergelen));
+		{
+		Ps(s, "%10u  Merged too short (< %u)", g_MergedTooShortCount, opt(fastq_minmergelen));
+		Strs.push_back(s);
+		}
 
 	if (optset_fastq_maxmergelen)
-		fprintf(f, "%10u  Merged too long (> %u)\n", g_MergedTooLongCount, opt(fastq_maxmergelen));
+		{
+		Ps(s, "%10u  Merged too long (> %u)", g_MergedTooLongCount, opt(fastq_maxmergelen));
+		Strs.push_back(s);
+		}
 
 	if (optset_fastq_minqual)
-		fprintf(f, "%10u  Min Q too low (<%u) (%.2f%%)\n",
+		{
+		Ps(s, "%10u  Min Q too low (<%u) (%.2f%%)",
 		  g_MinQCount, opt(fastq_minqual), GetPct(g_MinQCount, g_InRecCount));
+		Strs.push_back(s);
+		}
 
-	fprintf(f, "%10u  Staggered pairs (%.2f%%)", g_StaggeredCount, GetPct(g_StaggeredCount, g_InRecCount));
+	Ps(s, "%10u  Staggered pairs (%.2f%%)", g_StaggeredCount, GetPct(g_StaggeredCount, g_InRecCount));
 	if (opt(fastq_nostagger))
-		fprintf(f, " discarded\n");
+		Psa(s, " discarded");
 	else
-		fprintf(f, " merged & trimmed\n");
+		Psa(s, " merged & trimmed");
+	Strs.push_back(s);
 
 	if (g_OutRecCount == 0)
 		return;
 
-	fprintf(f, "%10.2f  Mean alignment length\n", g_SumOvLength/g_OutRecCount);
-	fprintf(f, "%10.2f  Mean merged length\n", g_SumMergedLength/g_OutRecCount);
-	fprintf(f, "%10.2f  Mean fwd expected errors\n", g_SumEE1/g_OutRecCount);
-	fprintf(f, "%10.2f  Mean rev expected errors\n", g_SumEE2/g_OutRecCount);
-	fprintf(f, "%10.2f  Mean merged expected errors\n", g_SumMergedEE/g_OutRecCount);
+	Ps(s, "%10.2f  Mean alignment length", g_SumOvLength/g_OutRecCount);
+	Strs.push_back(s);
+	Ps(s, "%10.2f  Mean merged length", g_SumMergedLength/g_OutRecCount);
+	Strs.push_back(s);
+	Ps(s, "%10.2f  Mean fwd expected errors", g_SumEE1/g_OutRecCount);
+	Strs.push_back(s);
+	Ps(s, "%10.2f  Mean rev expected errors", g_SumEE2/g_OutRecCount);
+	Strs.push_back(s);
+	Ps(s, "%10.2f  Mean merged expected errors", g_SumMergedEE/g_OutRecCount);
+	Strs.push_back(s);
 	}

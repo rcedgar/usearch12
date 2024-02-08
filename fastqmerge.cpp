@@ -31,7 +31,7 @@ static uint g_MergeIdx;
 static void MergeCB(string &s)
 	{
 	double Pct = GetPct(g_OutRecCount, g_InRecCount);
-	Ps(s, "%s merged (%.1f%%)",
+	Ps(s, "%s assembled (%.1f%%)",
 	  IntToStr(g_OutRecCount), Pct);
 	s += " " + g_CurrentFileName;
 	if (g_NrToMerge > 1)
@@ -200,12 +200,19 @@ void cmd_fastq_mergepairs()
 		const string &RevFileName = RevFileNames[i];
 		MergeFiles(FwdFileName, RevFileName);
 		}
-
-	WriteMergeResults(g_fLog);
-	if (!opt(quiet))
-		WriteMergeResults(stderr);
-	WriteMergeResults(g_fRep);
 	ProgressDoneOther();
+
+	//WriteMergeResults(g_fLog);
+	//WriteMergeResults(g_fRep);
+	vector<string> Strs;
+	GetMergeStatsStrs(Strs);
+	for (uint i = 0; i < SIZE(Strs); ++i)
+		{
+		const string &s = Strs[i];
+		if (g_fLog != 0) fprintf(g_fLog, "%s\n", s.c_str());
+		if (g_fRep != 0) fprintf(g_fRep, "%s\n", s.c_str());
+		ProgressNoteNoPrefix("%s", s.c_str());
+		}
 
 	CloseStdioFile(g_fFastqOut);
 	CloseStdioFile(g_fFastaOut);

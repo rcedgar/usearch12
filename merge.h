@@ -47,21 +47,17 @@ struct MergeThreadData
 		}
 	};
 
-void IncMergeLengthCount(unsigned L);
-void LogMergeLengthDist(const vector<unsigned> &LengthToCount);
 bool IlluminaLabelPairMatch(const char *Label1, const char *Label2);
 void WriteAlnPretty(FILE *f, const byte *A, const byte *B, const char *Path,
 	bool StripTermGaps);
-unsigned MergeUpdateQualStats(const SeqInfo *SI1, const SeqInfo *SI2,
-  const string &Path, unsigned *ptrOverlapLength);
 void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2);
 bool MergePair(MergeThreadData &TD);
-void WriteMergeResults(FILE *f);
 bool MergePre(SeqInfo *SI, bool Fwd);
 bool MergePost(MergeThreadData &TD);
 bool MergeAlign(MergeThreadData &TD);
 void WriteAln(FILE *f, AlignResult *AR);
 void MergeLogVAln(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP);
 bool MergePost(MergeThreadData &TD);
+void GetMergeStatsStrs(vector<string> &Strs);
 
 #endif // merge_h
