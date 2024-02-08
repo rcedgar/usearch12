@@ -117,11 +117,8 @@ void cmd_fastq_mergepairs()
 	if (optset_output)
 		Die("Use -fastqout and/or -fastaout, not -output");
 
-	if (!optset_notrunclabels)
-		{
-		optset_trunclabels = true;
-		opt_trunclabels = true;
-		}
+	if (!opt(notrunclabels))
+		oset_flag(OPT_trunclabels);
 
 	vector<string> FwdFileNames;
 	vector<string> RevFileNames;
@@ -133,11 +130,7 @@ void cmd_fastq_mergepairs()
 	if (N == 0)
 		Die("No input files specified / found");
 
-	if (!optset_fastq_minlen)
-		{
-		opt_fastq_minlen = 64;
-		optset_fastq_minlen = true;
-		}
+	oset_uintd(OPT_fastq_minlen, 64);
 
 	if (optset_fastq_minovlen && opt(minhsp) > opt(fastq_minovlen))
 		Warning("-fastq_minovlen %u is less than -minhsp %u", opt(fastq_minovlen), opt(minhsp));

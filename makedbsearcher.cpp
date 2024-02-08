@@ -144,18 +144,9 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		}
 
 	if (Cmd == CMD_uparse_ref)
-		{
-		opt(id) = 0.0;
-		optset_id = true;
-		}
+		oset_fltd(OPT_id, 0);
 	else if (Cmd == CMD_sintax)
-		{
-		if (!optset_id)
-			{
-			opt(id) = 0.5;
-			optset_id = true;
-			}
-		}
+		oset_fltd(OPT_id, 0.5);
 
 	bool AcceptAll = false;
 	if (Cmd == CMD_cluster_otus)

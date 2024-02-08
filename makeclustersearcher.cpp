@@ -20,8 +20,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		{
 		if (optset_id)
 			Die("-id not supported by cluster_otus");
-		opt(id) = 0.0;
-		optset_id = true;
+		oset_fltd(OPT_id, 0);
 		break;
 		}
 
@@ -65,8 +64,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		if (!optset_maxhits)
 			{
 		// hack, not sure what is going on here...
-			opt(maxhits) = 99;
-			optset_maxhits = true;
+			oset_uintd(OPT_maxhits, 99);
 			}
 		US = new ChunkSearcher;
 		}

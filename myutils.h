@@ -438,4 +438,6 @@ const char *PctStr(double x, double y);
 #define TMP_TRACE		2	// true but not 1, for grep_trace
 #define REMOVEME		1
 
+#include "opts.h"
+
 #endif	// myutils_h

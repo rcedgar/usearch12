@@ -37,12 +37,7 @@ PathInfo *FragAligner::AlignTargetPos(const byte *TargetSeq, unsigned TL,
 
 void FragAligner::InitImpl()
 	{
-	if (!optset_maxdiffs)
-		{
-		opt_maxdiffs = 2;
-		optused_maxdiffs = true;
-		optset_maxdiffs = true;
-		}
+	oset_uintd(OPT_maxdiffs, 2);
 	}
 
 AlignResult *FragAligner::Align()

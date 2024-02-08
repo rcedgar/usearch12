@@ -164,11 +164,7 @@ void cmd_uchime3_denovo()
 	{
 	const string &InputFileName = opt(uchime3_denovo);
 
-	if (!optset_abskew)
-		{
-		optset_abskew = true;
-		opt_abskew = 16.0;
-		}
+	oset_fltd(OPT_abskew, 16.0);
 
 	InitGlobals(true);
 

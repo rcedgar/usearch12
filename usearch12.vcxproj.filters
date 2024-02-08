@@ -506,10 +506,13 @@
     <ClCompile Include="makeclustersearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>C Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="progress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -845,6 +848,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="progress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="opt_enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="o_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="opts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -123,11 +123,7 @@ void cmd_unoise3()
 	if (optset_fastaout)
 		Die("-fastaout not supported, use -zotus");
 
-	if (!optset_abskew)
-		{
-		optset_abskew = true;
-		opt_abskew = 16.0;
-		}
+	oset_fltd(OPT_abskew, 16.0);
 
 	if (optset_tabbedout)
 		g_fTab = CreateStdioFile(opt(tabbedout));

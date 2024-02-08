@@ -309,11 +309,7 @@ void SintaxSearcher::Init()
 	if (m_BootSubset == 0)
 		Die("Invalid -boot_subset");
 
-	if (!optset_randseed)
-		{
-		optset_randseed = true;
-		opt_randseed = 1;
-		}
+	oset_uintd(OPT_randseed, 1);
 	OpenOutputFiles();
 	}
 

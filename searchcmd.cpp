@@ -18,22 +18,23 @@ void cmd_closed_ref()
 
 void cmd_otutab()
 	{
-	default_opt(id, 0.97);
-	default_opt(maxaccepts, 8);
-	default_opt(maxrejects, 256);
-	default_opt(stepwords, 0);
-	default_opt(strand, "both");
-	if (optset_otus)
-		{
-		optset_db = true;
-		opt_db = opt(otus);
-		}
+	oset_fltd(OPT_id, 0.97);
+	oset_uintd(OPT_maxaccepts, 8);
+	oset_uintd(OPT_maxrejects, 256);
+	oset_uintd(OPT_stepwords, 0);
+	oset_strd(OPT_strand, "both");
+
+	string DBFileName;
+	if (optset_db)
+		DBFileName = oget_str(OPT_db);
+	else if (optset_otus)
+		DBFileName = oget_str(OPT_otus);
 	else if (optset_zotus)
-		{
-		optset_db = true;
-		opt_db = opt(zotus);
-		}
-	Search(CMD_otutab, opt(otutab), opt(db));
+		DBFileName = oget_str(OPT_zotus);
+	else
+		Die("Must specify OTU FASTA -db, -otus or -zotus");
+
+	Search(CMD_otutab, opt(otutab), DBFileName);
 	}
 
 void cmd_usearch_local()

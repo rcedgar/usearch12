@@ -113,13 +113,7 @@ void LoadUDB(CMD Cmd, const string &FileName, UDBData &udb)
 		bool Nucleo = seqdb->GetIsNucleo();
 
 		if (CmdNoMask(Cmd))
-			{
-			if (!optset_dbmask)
-				{
-				opt_dbmask = "none";
-				optset_dbmask = true;
-				}
-			}
+			oset_strd(OPT_dbmask, "none");
 		void MaskDB(SeqDB &DB);
 		MaskDB(*seqdb);
 

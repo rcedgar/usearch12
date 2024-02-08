@@ -328,6 +328,7 @@
     <ClCompile Include="newick.cpp" />
     <ClCompile Include="objmgr.cpp" />
     <ClCompile Include="fragaligner.cpp" />
+    <ClCompile Include="opts.cpp" />
     <ClCompile Include="orffinder.cpp" />
     <ClCompile Include="orient.cpp" />
     <ClCompile Include="otutab.cpp" />
@@ -465,10 +466,13 @@
     <ClInclude Include="objtype.h" />
     <ClInclude Include="objtypes.h" />
     <ClInclude Include="cpplock.h" />
+    <ClInclude Include="opts.h" />
+    <ClInclude Include="opt_enum.h" />
     <ClInclude Include="orffinder.h" />
     <ClInclude Include="otutab.h" />
     <ClInclude Include="otutabsink.h" />
     <ClInclude Include="outputsink.h" />
+    <ClInclude Include="o_all.h" />
     <ClInclude Include="pathinfo.h" />
     <ClInclude Include="primes.h" />
     <ClInclude Include="progress.h" />
