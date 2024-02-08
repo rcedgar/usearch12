@@ -287,7 +287,7 @@ void DeParser::FindAllExactBimeras()
 					FinalR = SeqIndexR;
 					}
 				++SolutionCount;
-				if (opt(maxskew))
+				if (oget_flag(OPT_maxskew)) //src_refactor_opts
 					break;
 				}
 			}
@@ -411,7 +411,7 @@ DEP_CLASS DeParser::Parse(SeqInfo *Query, SeqDB *DB)
 	WriteTabbed(m_fTab);
 	WriteAln(m_fAln);
 
-	if (m_Class == DEP_perfect_chimera && opt(allxch))
+	if (m_Class == DEP_perfect_chimera && oget_flag(OPT_allxch)) //src_refactor_opts
 		FindAllExactBimeras();
 
 	return m_Class;
@@ -437,7 +437,7 @@ void DeParser::ParseLo()
 		AlignResult *AR = m_GA->Align();
 		m_GA->OnTargetDone(SI);
 		asserta(AR != 0);
-		if (opt(self) && AR->GetDiffCount() == 0)
+		if (oget_flag(OPT_self) && AR->GetDiffCount() == 0) //src_refactor_opts
 			{
 			m_Paths.push_back("");
 			continue;
@@ -950,7 +950,7 @@ bool DeParser::IsChimera() const
 	{
 	if (m_Class == DEP_perfect_chimera)
 		return true;
-	if (m_Class == DEP_off_by_one_chimera && opt(offby1))
+	if (m_Class == DEP_off_by_one_chimera && oget_flag(OPT_offby1)) //src_refactor_opts
 		return true;
 	return false;
 	}
@@ -969,7 +969,7 @@ void DeParser::Classify()
 		m_Class = DEP_perfect_chimera;
 		return;
 		}
-	if (m_DiffsQM == 1 && m_DiffsQT > 4 && opt(offby1))
+	if (m_DiffsQM == 1 && m_DiffsQT > 4 && oget_flag(OPT_offby1)) //src_refactor_opts
 		{
 		m_Class = DEP_off_by_one_chimera;
 		return;

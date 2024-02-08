@@ -64,53 +64,53 @@ void UDBParams::FromCmdLine(CMD Cmd, bool Nucleo)
 	{
 	SetCmdDefaults(Cmd, Nucleo);
 
-	if (optset_wordlength && optset_pattern)
+	if (ofilled_uns(OPT_wordlength) && ofilled_str(OPT_pattern)) //src_refactor_opts
 		Die("Cannot set both wordlength and pattern");
 
-	if (optset_wordlength)
+	if (ofilled_uns(OPT_wordlength)) //src_refactor_opts
 		{
-		SetWordLength(opt(wordlength));
-		if (!optset_slots)
+		SetWordLength(oget_uns(OPT_wordlength)); //src_refactor_opts
+		if (!ofilled_uns(OPT_slots)) //src_refactor_opts
 			SetSlots(0);
 		}
 
-	if (optset_alpha)
-		SetAlphaStr(opt(alpha));
+	if (ofilled_str(OPT_alpha)) //src_refactor_opts
+		SetAlphaStr(oget_str(OPT_alpha)); //src_refactor_opts
 
-	if (optset_pattern)
-		SetPattern(sopt(pattern));
+	if (ofilled_str(OPT_pattern)) //src_refactor_opts
+		SetPattern(oget_cstr(OPT_pattern)); //src_refactor_opts
 
-	if (optset_dbstep)
-		m_DBStep = opt(dbstep);
+	if (ofilled_uns(OPT_dbstep)) //src_refactor_opts
+		m_DBStep = oget_uns(OPT_dbstep); //src_refactor_opts
 
-	if (optset_dbstep)
-		SetStep(opt(dbstep), 0);
+	if (ofilled_uns(OPT_dbstep)) //src_refactor_opts
+		SetStep(oget_uns(OPT_dbstep), 0); //src_refactor_opts
 
-	if (optset_dbaccelpct)
-		SetAccel(opt(dbaccelpct));
+	if (ofilled_uns(OPT_dbaccelpct)) //src_refactor_opts
+		SetAccel(oget_uns(OPT_dbaccelpct)); //src_refactor_opts
 
-	if (optset_slots)
-		SetSlots(opt(slots));
+	if (ofilled_uns(OPT_slots)) //src_refactor_opts
+		SetSlots(oget_uns(OPT_slots)); //src_refactor_opts
 	else if (m_SlotCount == 0)
 		SetSlots(0);
 
-	if (optset_posbits)
+	if (ofilled_uns(OPT_posbits)) //src_refactor_opts
 		{
-		if (opt(posbits) == 255)
-			SetCoding(0, opt(posbits));
+		if (oget_uns(OPT_posbits) == 255) //src_refactor_opts
+			SetCoding(0, oget_uns(OPT_posbits)); //src_refactor_opts
 		else
 			{
-			asserta(opt(posbits) < 32);
-			unsigned IndexBits = 32 - opt(posbits);
-			SetCoding(IndexBits, opt(posbits));
+			asserta(oget_uns(OPT_posbits) < 32); //src_refactor_opts
+			unsigned IndexBits = 32 - oget_uns(OPT_posbits); //src_refactor_opts
+			SetCoding(IndexBits, oget_uns(OPT_posbits)); //src_refactor_opts
 			}
 		}
 	else
 		SetCoding(32, 0);
 
-	if (optset_end_of_row)
+	if (ofilled_flag(OPT_end_of_row)) //src_refactor_opts
 		{
-		if (opt(posbits) != 255)
+		if (oget_uns(OPT_posbits) != 255) //src_refactor_opts
 			Die("-end_of_row not supported");
 		m_EndOfRow = 1;
 		}

@@ -114,7 +114,7 @@ unsigned FastMaskSeq(const byte *Seq, unsigned L, byte *MaskedSeq, bool Nucleo)
 			if (n1 >= k1)
 				{
 				MaskedCount += n1;
-				if (opt(hardmask))
+				if (oget_flag(OPT_hardmask)) //src_refactor_opts
 					for (unsigned j = Start + j1; j < i; ++j)
 						MaskedSeq[j] = HardMaskChar;
 				else
@@ -142,7 +142,7 @@ unsigned FastMaskSeq(const byte *Seq, unsigned L, byte *MaskedSeq, bool Nucleo)
 				if (n2 >= k2)
 					{
 					MaskedCount += n2;
-					if (opt(hardmask))
+					if (oget_flag(OPT_hardmask)) //src_refactor_opts
 						for (unsigned j = Start + j2; j < i; ++j)
 							MaskedSeq[j] = HardMaskChar;
 					else

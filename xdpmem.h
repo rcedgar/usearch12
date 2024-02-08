@@ -80,7 +80,7 @@ public:
 		{
 		if (LA + 8 > m_TBBit.m_AllocatedRowCount || LB + 8 > m_TBBit.m_AllocatedColCount)
 			{
-			if (opt(logmemgrows))
+			if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 				{
 				Log("XDPMem::Alloc(LA=%u, LB=%u) m_TBBit %u,%u\n",
 				  LA,
@@ -94,7 +94,7 @@ public:
 
 		if (LA > m_MaxLA)
 			{
-			if (opt(logmemgrows))
+			if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 				Log("XDPMem::Alloc(LA=%u, LB=%u) m_MaxLA %u\n", LA, LB, m_MaxLA);
 
 			m_MaxLA = LA + 128;
@@ -104,7 +104,7 @@ public:
 
 		if (LB > m_MaxLB)
 			{
-			if (opt(logmemgrows))
+			if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 				Log("XDPMem::Alloc(LA=%u, LB=%u) m_MaxLB %u\n", LA, LB, m_MaxLB);
 
 			myfree(m_Buffer1);

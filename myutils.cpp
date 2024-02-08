@@ -162,8 +162,8 @@ unsigned GetRequestedThreadCount()
 	unsigned MaxN = std::thread::hardware_concurrency();
 	unsigned CoreCount = GetCPUCoreCount();
 	bool MsgDone = false;
-	if (optset_threads)
-		N = opt(threads);
+	if (ofilled_uns(OPT_threads)) //src_refactor_opts
+		N = oget_uns(OPT_threads); //src_refactor_opts
 	else
 		{
 		if (CoreCount > 10)
@@ -1007,7 +1007,7 @@ void Die_(const char *Format, ...)
 
 void Warning_(const char *Format, ...)
 	{
-	if (opt(quiet))
+	if (oget_flag(OPT_quiet)) //src_refactor_opts
 		return;
 
 	string Msg;
@@ -1972,8 +1972,8 @@ static void InitRand()
 	g_InitRandDone = true;
 
 	unsigned Seed;
-	if (optset_randseed)
-		Seed = opt(randseed);
+	if (ofilled_uns(OPT_randseed)) //src_refactor_opts
+		Seed = oget_uns(OPT_randseed); //src_refactor_opts
 	else
 		Seed = (unsigned) (time(0)*getpid());
 	ResetRand(Seed);

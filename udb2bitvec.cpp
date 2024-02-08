@@ -4,8 +4,8 @@
 
 void cmd_udb2bitvec()
 	{
-	const string &InputFileName = opt(udb2bitvec);
-	const string &OutputFileName = opt(output);
+	const string &InputFileName = oget_str(OPT_udb2bitvec); //src_refactor_opts
+	const string &OutputFileName = oget_str(OPT_output); //src_refactor_opts
 	if (InputFileName == "")
 		Die("Missing input filename");
 	if (OutputFileName == "")

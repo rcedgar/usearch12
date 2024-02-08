@@ -45,8 +45,8 @@ Rev: ---XXXXXXXxxx
 static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP,
   SeqInfo *SIOv)
 	{
-	bool Ambig = opt(merge_ambig);
-	bool OverlapOnly = opt(overlap_only);
+	bool Ambig = oget_flag(OPT_merge_ambig); //src_refactor_opts
+	bool OverlapOnly = oget_flag(OPT_overlap_only); //src_refactor_opts
 
 	unsigned Lmax = SI1->m_L + SI2RC->m_L;
 	SIOv->AllocSeq(Lmax);
@@ -137,7 +137,7 @@ static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData 
 	SIOv->m_L = PosOv;
 	SIOv->m_Label = SI1->m_Label;
 
-	if (opt(fastq_logvaln))
+	if (oget_flag(OPT_fastq_logvaln)) //src_refactor_opts
 		MergeLogVAln(SI1, SI2RC, HSP);
 	return DiffCount;
 	}
@@ -266,7 +266,7 @@ bool MergeAlign(MergeThreadData &TD)
 	GetMergeAln(TD, Left, AlnLength, Right);
 	if (g_fTab)
 		fprintf(g_fTab, "\taln=%d-%u-%d", Left, AlnLength, Right);
-	if (AlnLength < opt(fastq_minovlen))
+	if (AlnLength < oget_uns(OPT_fastq_minovlen)) //src_refactor_opts
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\talntooshort");
@@ -286,7 +286,7 @@ bool MergeAlign(MergeThreadData &TD)
 		UNLOCK();
 		}
 
-	if (opt(fastq_nostagger) && Stag)
+	if (oget_flag(OPT_fastq_nostagger) && Stag) //src_refactor_opts
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\tnostagger");
@@ -319,7 +319,7 @@ bool MergeAlign(MergeThreadData &TD)
 		UNLOCK();
 		}
 
-	if (TD.DiffCount > opt(fastq_maxdiffs))
+	if (TD.DiffCount > oget_uns(OPT_fastq_maxdiffs)) //src_refactor_opts
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\ttoo_many_diffs");
@@ -332,7 +332,7 @@ bool MergeAlign(MergeThreadData &TD)
 	double PctId = GetPct(AlnLength - TD.DiffCount, AlnLength);
 	if (g_fTab)
 		fprintf(g_fTab, "\tpctid=%.1f", PctId);
-	if (PctId < (double) opt(fastq_pctid))
+	if (PctId < (double) oget_uns(OPT_fastq_pctid)) //src_refactor_opts
 		{
 		if (g_fTab)
 			fprintf(g_fTab, "\tpctid_too_low");

@@ -32,7 +32,7 @@ void SeqToFastaRC(FILE *f, const byte *Seq, unsigned L, const char *Label)
 
 	if (Label != 0)
 		fprintf(f, ">%s\n", Label);
-	const unsigned ROWLEN = opt(fasta_cols);
+	const unsigned ROWLEN = oget_uns(OPT_fasta_cols); //src_refactor_opts
 	if (ROWLEN == 0)
 		{
 		WriteStdioFile(f, Seq, L);
@@ -66,7 +66,7 @@ void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label)
 
 	if (Label != 0)
 		fprintf(f, ">%s\n", Label);
-	const unsigned ROWLEN = opt(fasta_cols);
+	const unsigned ROWLEN = oget_uns(OPT_fasta_cols); //src_refactor_opts
 	if (ROWLEN == 0)
 		{
 		WriteStdioFile(f, Seq, L);
@@ -649,7 +649,7 @@ void SeqDB::SortBySize(unsigned *SizeOrder)
 	for (unsigned i = 0; i < m_SeqCount; ++i)
 		{
 		const char *Label = GetLabel(i);
-		Sizes[i] = GetSizeFromLabel(Label, opt(default_size));
+		Sizes[i] = GetSizeFromLabel(Label, oget_uns(OPT_default_size)); //src_refactor_opts
 		}
 
 	QuickSortOrderDesc(Sizes, m_SeqCount, Order);

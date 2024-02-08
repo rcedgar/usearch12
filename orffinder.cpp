@@ -11,13 +11,13 @@ ORFFinder::ORFFinder()
 	m_EndOfInput = false;
 	m_Frame = 0;
 	m_Pos = 0;
-	m_PlusOnly = opt(orf_plusonly);
-	m_MinCodons = opt(mincodons);
+	m_PlusOnly = oget_flag(OPT_orf_plusonly); //src_refactor_opts
+	m_MinCodons = oget_uns(OPT_mincodons); //src_refactor_opts
 
-	m_ORFStartAtSeqStart = (opt(orfstyle) & 1) != 0;
-	m_ORFStartAfterStop = (opt(orfstyle) & 2) != 0;
-	m_ORFEndAtSeqEnd = (opt(orfstyle) & 4) != 0;
-	m_ORFIncludeStop = (opt(orfstyle) & 8) != 0;
+	m_ORFStartAtSeqStart = (oget_uns(OPT_orfstyle) & 1) != 0; //src_refactor_opts
+	m_ORFStartAfterStop = (oget_uns(OPT_orfstyle) & 2) != 0; //src_refactor_opts
+	m_ORFEndAtSeqEnd = (oget_uns(OPT_orfstyle) & 4) != 0; //src_refactor_opts
+	m_ORFIncludeStop = (oget_uns(OPT_orfstyle) & 8) != 0; //src_refactor_opts
 	}
 
 ORFFinder::~ORFFinder()
@@ -138,7 +138,7 @@ bool ORFFinder::GetNextORF(SeqInfo *ORFSI)
 		if (Stop)
 			{
 #if	TRACE
-			Log("  Stop, %u codons (min %u)\n", ORFSI->m_L, opt(mincodons));
+			Log("  Stop, %u codons (min %u)\n", ORFSI->m_L, oget_uns(OPT_mincodons)); //src_refactor_opts
 #endif
 			if (m_InORF && ORFSI->m_L >= m_MinCodons)
 				{

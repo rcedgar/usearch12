@@ -16,7 +16,7 @@ bool FASTQSeqSource::GetNextLo(SeqInfo *SI)
 	unsigned n = m_LineBuff.Size;
 	const char *Line = m_LineBuff.Data;
 
-	bool TruncLabels = opt(trunclabels);
+	bool TruncLabels = oget_flag(OPT_trunclabels); //src_refactor_opts
 
 #if	TRACE
 	{

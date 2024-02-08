@@ -10,9 +10,9 @@ Accepter::Accepter(bool Global, bool AcceptAll)
 	{
 	m_Global = Global;
 	m_AcceptAll = AcceptAll;
-	opt(notermgapsq);
-	opt(leftjust);
-	opt(rightjust);
+	oget_flag(OPT_notermgapsq); //src_refactor_opts
+	oget_flag(OPT_leftjust); //src_refactor_opts
+	oget_flag(OPT_rightjust); //src_refactor_opts
 	}
 
 Accepter::~Accepter()
@@ -37,51 +37,51 @@ bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
 	if (RejectPair(AR->m_Query, AR->m_Target))
 		return false;
 
-	if (optset_id)
+	if (ofilled_flt(OPT_id)) //src_refactor_opts
 		{
 		double FractId = AR->GetFractId();
-		if (FractId < opt(id))
+		if (FractId < oget_flt(OPT_id)) //src_refactor_opts
 			return false;
 
-		if (FractId < opt(id) && optset_weak_id)
+		if (FractId < oget_flt(OPT_id) && ofilled_flt(OPT_weak_id)) //src_refactor_opts
 			{
-			if (FractId >= opt(weak_id))
+			if (FractId >= oget_flt(OPT_weak_id)) //src_refactor_opts
 				*ptrWeak = true;
 			return false;
 			}
-		if (optset_maxid && FractId > opt(maxid))
+		if (ofilled_flt(OPT_maxid) && FractId > oget_flt(OPT_maxid)) //src_refactor_opts
 			return false;
 		}
 	
-	if (optset_mid)
+	if (ofilled_flt(OPT_mid)) //src_refactor_opts
 		{
 		double Mid = AR->GetPctMatchId();
-		if (Mid < opt(mid))
+		if (Mid < oget_flt(OPT_mid)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_mincols)
+	if (ofilled_uns(OPT_mincols)) //src_refactor_opts
 		{
 		unsigned Cols = AR->GetAlnLength();
-		if (Cols < opt(mincols))
+		if (Cols < oget_uns(OPT_mincols)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_maxsubs)
+	if (ofilled_uns(OPT_maxsubs)) //src_refactor_opts
 		{
 		unsigned Subs = AR->GetMismatchCount();
-		if (Subs > opt(maxsubs))
+		if (Subs > oget_uns(OPT_maxsubs)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_maxgaps)
+	if (ofilled_uns(OPT_maxgaps)) //src_refactor_opts
 		{
 		unsigned Gaps = AR->GetGapCount();
-		if (Gaps > opt(maxgaps))
+		if (Gaps > oget_uns(OPT_maxgaps)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_notermgapsq)
+	if (ofilled_flag(OPT_notermgapsq)) //src_refactor_opts
 		{
 		const char *Path = AR->GetPath();
 		if (Path[0] == 'I')
@@ -92,13 +92,13 @@ bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
 			return false;
 		}
 
-	if (optset_leftjust || optset_rightjust)
+	if (ofilled_flag(OPT_leftjust) || ofilled_flag(OPT_rightjust)) //src_refactor_opts
 		{
 		const char *Path = AR->GetPath();
-		if (opt(leftjust) && Path[0] != 'M')
+		if (oget_flag(OPT_leftjust) && Path[0] != 'M') //src_refactor_opts
 			return false;
 
-		if (opt(rightjust))
+		if (oget_flag(OPT_rightjust)) //src_refactor_opts
 			{
 			unsigned n = ustrlen(Path);
 			if (n > 0 && Path[n-1] != 'M')
@@ -106,50 +106,50 @@ bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
 			}
 		}
 
-	if (optset_evalue)
+	if (ofilled_flt(OPT_evalue)) //src_refactor_opts
 		{
 		double Evalue = AR->GetEvalue();
-		if (Evalue > opt(evalue))
+		if (Evalue > oget_flt(OPT_evalue)) //src_refactor_opts
 			{
-			if (optset_weak_evalue && Evalue <= opt(weak_evalue))
+			if (ofilled_flt(OPT_weak_evalue) && Evalue <= oget_flt(OPT_weak_evalue)) //src_refactor_opts
 				*ptrWeak = true;
 			return false;
 			}
 		}
 
-	if (optset_query_cov || optset_max_query_cov)
+	if (ofilled_flt(OPT_query_cov) || ofilled_flt(OPT_max_query_cov)) //src_refactor_opts
 		{
 		double Cov = AR->GetQueryCov();
-		if (optset_query_cov && Cov < opt(query_cov))
+		if (ofilled_flt(OPT_query_cov) && Cov < oget_flt(OPT_query_cov)) //src_refactor_opts
 			return false;
-		if (optset_max_query_cov && Cov > opt(max_query_cov))
+		if (ofilled_flt(OPT_max_query_cov) && Cov > oget_flt(OPT_max_query_cov)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_target_cov || optset_max_target_cov)
+	if (ofilled_flt(OPT_target_cov) || ofilled_flt(OPT_max_target_cov)) //src_refactor_opts
 		{
 		double Cov = AR->GetTargetCov();
-		if (optset_target_cov && Cov < opt(target_cov))
+		if (ofilled_flt(OPT_target_cov) && Cov < oget_flt(OPT_target_cov)) //src_refactor_opts
 			return false;
-		if (optset_max_target_cov && Cov > opt(max_target_cov))
+		if (ofilled_flt(OPT_max_target_cov) && Cov > oget_flt(OPT_max_target_cov)) //src_refactor_opts
 			return false;
 		}
 
-	if (optset_maxdiffs && AR->GetDiffCount() > opt(maxdiffs))
+	if (ofilled_uns(OPT_maxdiffs) && AR->GetDiffCount() > oget_uns(OPT_maxdiffs)) //src_refactor_opts
 		return false;
 
-	if (optset_mindiffs && AR->GetDiffCount() < opt(mindiffs))
+	if (ofilled_uns(OPT_mindiffs) && AR->GetDiffCount() < oget_uns(OPT_mindiffs)) //src_refactor_opts
 		return false;
 
-	if (optset_abskew && AR->GetAbSkew() < opt(abskew))
+	if (ofilled_flt(OPT_abskew) && AR->GetAbSkew() < oget_flt(OPT_abskew)) //src_refactor_opts
 		return false;
 
-	if (optset_mindiffsa || optset_maxdiffsa)
+	if (ofilled_uns(OPT_mindiffsa) || ofilled_uns(OPT_maxdiffsa)) //src_refactor_opts
 		{
 		unsigned d = AR->GetDiffCountA();
-		if (optset_mindiffsa && d < opt(mindiffsa))
+		if (ofilled_uns(OPT_mindiffsa) && d < oget_uns(OPT_mindiffsa)) //src_refactor_opts
 			return false;
-		if (optset_maxdiffsa && d > opt(maxdiffsa))
+		if (ofilled_uns(OPT_maxdiffsa) && d > oget_uns(OPT_maxdiffsa)) //src_refactor_opts
 			return false;
 		}
 
@@ -205,33 +205,33 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 	if (m_AcceptAll)
 		return false;
 
-	if (opt(self) && strcmp(Query->m_Label, Target->m_Label) == 0)
+	if (oget_flag(OPT_self) && strcmp(Query->m_Label, Target->m_Label) == 0) //src_refactor_opts
 		return true;
 
-	if (opt(notself) && strcmp(Query->m_Label, Target->m_Label) != 0)
+	if (oget_flag(OPT_notself) && strcmp(Query->m_Label, Target->m_Label) != 0) //src_refactor_opts
 		return true;
 
-	if (opt(selfid) && m_Global)
+	if (oget_flag(OPT_selfid) && m_Global) //src_refactor_opts
 		{
 		unsigned L = Query->m_L;
 		if (Target->m_L == L && memcmp(Query->m_Seq, Target->m_Seq, L) == 0)
 			return true;
 		}
 
-	if (optset_min_sizeratio)
+	if (ofilled_flt(OPT_min_sizeratio)) //src_refactor_opts
 		{
 		unsigned QuerySize = GetSizeFromLabel(Query->m_Label, UINT_MAX);
 		unsigned TargetSize = GetSizeFromLabel(Target->m_Label, UINT_MAX);
 		asserta(QuerySize > 0);
 		asserta(TargetSize > 0);
 		double Ratio = double(TargetSize)/double(QuerySize);
-		if (Ratio < opt(min_sizeratio))
+		if (Ratio < oget_flt(OPT_min_sizeratio)) //src_refactor_opts
 			return true;
 		}
 
-	if (optset_idprefix)
+	if (ofilled_uns(OPT_idprefix)) //src_refactor_opts
 		{
-		unsigned PL = opt(idprefix);
+		unsigned PL = oget_uns(OPT_idprefix); //src_refactor_opts
 		PL = min(PL, Query->m_L);
 		PL = min(PL, Target->m_L);
 
@@ -243,9 +243,9 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 				return true;
 		}
 
-	if (optset_idsuffix)
+	if (ofilled_uns(OPT_idsuffix)) //src_refactor_opts
 		{
-		unsigned SL = opt(idsuffix);
+		unsigned SL = oget_uns(OPT_idsuffix); //src_refactor_opts
 		unsigned QL = Query->m_L;
 		unsigned TL = Target->m_L;
 		SL = min(SL, QL);
@@ -259,7 +259,7 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 				return true;
 		}
 
-	if (optset_minqt || optset_maxqt || optset_minsl || optset_maxsl)
+	if (ofilled_flt(OPT_minqt) || ofilled_flt(OPT_maxqt) || ofilled_flt(OPT_minsl) || ofilled_flt(OPT_maxsl)) //src_refactor_opts
 		{
 		unsigned QL = Query->m_L;
 		unsigned TL = Target->m_L;
@@ -273,16 +273,16 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 		double qt = q/t;
 		double sl = s/l;
 
-		if (optset_minqt && qt < opt(minqt))
+		if (ofilled_flt(OPT_minqt) && qt < oget_flt(OPT_minqt)) //src_refactor_opts
 			return true;
 
-		if (optset_maxqt && qt > opt(maxqt))
+		if (ofilled_flt(OPT_maxqt) && qt > oget_flt(OPT_maxqt)) //src_refactor_opts
 			return true;
 
-		if (optset_minsl && sl < opt(minsl))
+		if (ofilled_flt(OPT_minsl) && sl < oget_flt(OPT_minsl)) //src_refactor_opts
 			return true;
 
-		if (optset_maxsl && sl > opt(maxsl))
+		if (ofilled_flt(OPT_maxsl) && sl > oget_flt(OPT_maxsl)) //src_refactor_opts
 			return true;
 		}
 

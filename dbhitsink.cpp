@@ -30,7 +30,7 @@ DBHitSink::DBHitSink(SeqDB *DB, bool Local, bool QueryNucleo, bool TargetNucleo)
 	unsigned SeqCount = DB->GetSeqCount();
 	m_HitCounts.clear();
 	m_HitCounts.resize(SeqCount, 0);
-	if (optset_dbcutout)
+	if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
 		{
 		m_LosVec.resize(SeqCount);
 		m_HisVec.resize(SeqCount);
@@ -42,12 +42,12 @@ DBHitSink::DBHitSink(SeqDB *DB, bool Local, bool QueryNucleo, bool TargetNucleo)
 
 void DBHitSink::OnAllDone()
 	{
-	if (optset_dbmatched)
-		ToFASTA(opt(dbmatched), true);
-	if (optset_dbnotmatched)
-		ToFASTA(opt(dbnotmatched), false);
-	if (optset_dbcutout)
-		CutToFASTA(opt(dbcutout));
+	if (ofilled_str(OPT_dbmatched)) //src_refactor_opts
+		ToFASTA(oget_str(OPT_dbmatched), true); //src_refactor_opts
+	if (ofilled_str(OPT_dbnotmatched)) //src_refactor_opts
+		ToFASTA(oget_str(OPT_dbnotmatched), false); //src_refactor_opts
+	if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
+		CutToFASTA(oget_str(OPT_dbcutout)); //src_refactor_opts
 	}
 
 unsigned DBHitSink::GetMedian(vector<unsigned> &v)
@@ -114,7 +114,7 @@ void DBHitSink::ToFASTA(const string &FileName, bool Matched)
 		const byte *Seq = m_SeqDB->GetSeq(SeqIndex);
 		unsigned L = m_SeqDB->GetSeqLength(SeqIndex);
 		string Label = m_SeqDB->GetLabel(SeqIndex);
-		if (opt(sizeout) && Matched)
+		if (oget_flag(OPT_sizeout) && Matched) //src_refactor_opts
 			{
 			void StripSize(string &Label);
 			void AppendSize(string &Label, unsigned Size);
@@ -142,13 +142,13 @@ void DBHitSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
 		unsigned TargetIndex = AR->m_Target->m_Index;
 		asserta(TargetIndex < SeqCount);
 		unsigned N = 1;
-		if (opt(sizein))
+		if (oget_flag(OPT_sizein)) //src_refactor_opts
 			{
 			unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 			N = GetSizeFromLabel(Query->m_Label, 1);
 			}
 		m_HitCounts[TargetIndex] += N;
-		if (optset_dbcutout)
+		if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
 			{
 			unsigned Lo = AR->GetTLo();
 			unsigned Hi = AR->GetTHi();

@@ -128,7 +128,7 @@ void SintaxSearcher::Classify_KTop()
 		Die("Reverse strand not supported");
 
 	unsigned SelfIndex = UINT_MAX;
-	if (opt(self))
+	if (oget_flag(OPT_self)) //src_refactor_opts
 		{
 		asserta(GetThreadIndex() == 0);
 		SelfIndex = m_Query->m_Index;
@@ -179,7 +179,7 @@ void SintaxSearcher::Classify()
 	asserta(!m_UDBData->m_Params.DBIsCoded());
 
 	unsigned SelfIndex = UINT_MAX;
-	if (opt(self))
+	if (oget_flag(OPT_self)) //src_refactor_opts
 		SelfIndex = m_Query->m_Index;
 
 	const unsigned SeqCount = GetSeqCount();
@@ -193,8 +193,8 @@ void SintaxSearcher::Classify()
 
 	map<string, unsigned> TaxStrToCount;
 
-	m_r = opt(randseed);
-	const unsigned BOOT_ITERS = opt(boots);
+	m_r = oget_uns(OPT_randseed); //src_refactor_opts
+	const unsigned BOOT_ITERS = oget_uns(OPT_boots); //src_refactor_opts
 	vector<unsigned> TopTargetIndexes;
 	TopTargetIndexes.reserve(SeqCount);
 	for (unsigned Boot = 0; Boot < BOOT_ITERS; ++Boot)
@@ -246,10 +246,10 @@ void SintaxSearcher::Classify()
 
 	GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
 
-	bool Prod = opt(tax_prod);
+	bool Prod = oget_flag(OPT_tax_prod); //src_refactor_opts
 	double ProdP = 1.0;
 	const unsigned Depth = SIZE(m_Pred);
-	double Cutoff = opt(sintax_cutoff);
+	double Cutoff = oget_flt(OPT_sintax_cutoff); //src_refactor_opts
 	for (unsigned i = 0; i < Depth; ++i)
 		{
 		const string &PredName = m_Pred[i];
@@ -290,10 +290,10 @@ void SintaxSearcher::Init()
 		}
 	UNLOCK_CLASS();
 
-	m_KTop = opt(ktop);
+	m_KTop = oget_flag(OPT_ktop); //src_refactor_opts
 	optused_randseed = true;
 	optused_tax_prod = true;
-	string s = (optset_boot_subset ? opt(boot_subset) : "32");
+	string s = (ofilled_str(OPT_boot_subset) ? oget_str(OPT_boot_subset) : "32"); //src_refactor_opts
 	if (s.empty())
 		s = "32";
 	if (s[0] == '/')
@@ -309,15 +309,15 @@ void SintaxSearcher::Init()
 	if (m_BootSubset == 0)
 		Die("Invalid -boot_subset");
 
-	oset_uintd(OPT_randseed, 1);
+	oset_unsd(OPT_randseed, 1);
 	OpenOutputFiles();
 	}
 
 void SintaxSearcher::OpenOutputFiles()
 	{
 	LOCK_CLASS();
-	if (optset_tabbedout && m_f == 0)
-		m_f = CreateStdioFile(opt(tabbedout));
+	if (ofilled_str(OPT_tabbedout) && m_f == 0) //src_refactor_opts
+		m_f = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 	UNLOCK_CLASS();
 	}
 
@@ -355,7 +355,7 @@ void SintaxSearcher::WriteTabbed(FILE *f)
 
 	fprintf(f, "\t%c", m_cStrand);
 
-	double Cutoff = opt(sintax_cutoff);
+	double Cutoff = oget_flt(OPT_sintax_cutoff); //src_refactor_opts
 	fprintf(f, "\t");
 	for (unsigned i = 0; i < n; ++i)
 		{

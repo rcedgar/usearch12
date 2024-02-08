@@ -30,8 +30,8 @@ UPClusterSink::UPClusterSink(CMD Cmd, SeqDB *seqdb, UDBData *udbdata)
 	//else if (udbdata != 0)
 	//	m_UPSink->m_OTUDB = udbdata->m_SeqDB;
 
-	if (optset_otus)
-		g_fOTUs = CreateStdioFile(opt(otus));
+	if (ofilled_str(OPT_otus)) //src_refactor_opts
+		g_fOTUs = CreateStdioFile(oget_str(OPT_otus)); //src_refactor_opts
 	}
 
 void UPClusterSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
@@ -59,7 +59,7 @@ unsigned UPClusterSink::AddCentroidToDB(SeqInfo *Centroid, bool Chimera)
 	const char *SavedLabel = Centroid->m_Label;
 	string Label = string(SavedLabel);
 	unsigned Size = GetSizeFromLabel(Label, UINT_MAX);
-	if (optset_relabel)
+	if (ofilled_str(OPT_relabel)) //src_refactor_opts
 		{
 		asserta(m_UDBData != 0);
 		unsigned OTUIndex = m_UDBData->GetSeqCount() + 1;
@@ -72,7 +72,7 @@ unsigned UPClusterSink::AddCentroidToDB(SeqInfo *Centroid, bool Chimera)
 		else
 			{
 			sprintf(Tmp, "%u", m_OTUCount);
-			Label = opt(relabel) + string(Tmp);
+			Label = oget_str(OPT_relabel) + string(Tmp); //src_refactor_opts
 			}
 		}
 	Centroid->m_Label = Label.c_str();
@@ -110,5 +110,5 @@ void UPClusterSink::CentroidsToFASTA(const string &FileName)
 
 void UPClusterSink::OnAllDone()
 	{
-	CentroidsToFASTA(opt(otus));
+	CentroidsToFASTA(oget_str(OPT_otus)); //src_refactor_opts
 	}

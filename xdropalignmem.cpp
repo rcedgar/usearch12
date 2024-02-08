@@ -38,11 +38,11 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	Log("%*.*s\n", LB, LB, B);
 	Log("\n");
 #endif
-	if (optset_xdrop_save)
+	if (ofilled_str(OPT_xdrop_save)) //src_refactor_opts
 		{
 		static FILE *f = 0;
 		if (f == 0)
-			f = CreateStdioFile(opt(xdrop_save));
+			f = CreateStdioFile(oget_str(OPT_xdrop_save)); //src_refactor_opts
 		fprintf(f, ">A;AncLoi=%u;AncLoj=%u;AncLen=%u;\n", AncLoi, AncLoj, AncLen);
 		fprintf(f, "%*.*s\n", LA, LA, A);
 		fprintf(f, ">B\n");
@@ -348,30 +348,3 @@ unsigned GetIntField(const string &Label, const string &Name)
 	Die("Field '%s' not found in label '%s'", Name.c_str(), Label.c_str());
 	return 0;
 	}
-
-#if	0
-void cmd_testxdrop()
-	{
-	SeqDB Input;
-//	Input.FromFasta(opt(testxdrop));
-	const unsigned SeqCount = Input.GetSeqCount();
-	asserta(SeqCount%2 == 0);
-
-	for (unsigned i = 0; i < SeqCount; i += 2)
-		{
-		const char *LabelA = Input.GetLabel(i);
-
-		const byte *A = Input.GetSeq(i);
-		const byte *B = Input.GetSeq(i+1);
-
-		unsigned LA = Input.GetSeqLength(i);
-		unsigned LB = Input.GetSeqLength(i+1);
-
-		unsigned AncLoi = GetIntField(LabelA, "AncLoi");
-		unsigned AncLoj = GetIntField(LabelA, "AncLoj");
-		unsigned AncLen = GetIntField(LabelA, "AncLen");
-
-		TestXDrop2(A, LA, B, LB, AncLoi, AncLoj, AncLen);
-		}
-	}
-#endif // 0

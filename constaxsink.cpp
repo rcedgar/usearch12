@@ -12,11 +12,11 @@ FILE *ConsTaxSink::m_fTab;
 ConsTaxSink::ConsTaxSink(bool Local, bool QueryNucleo, bool TargetNucleo)
   : HitSink(Local, QueryNucleo, TargetNucleo)
 	{
-	m_Maj = (float) opt(maj);
+	m_Maj = (float) oget_flt(OPT_maj); //src_refactor_opts
 
 	LOCK_CLASS();
-	if (optset_tabbedout && m_fTab == 0)
-		m_fTab = CreateStdioFile(opt(tabbedout));
+	if (ofilled_str(OPT_tabbedout) && m_fTab == 0) //src_refactor_opts
+		m_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 	UNLOCK_CLASS();
 	}
 

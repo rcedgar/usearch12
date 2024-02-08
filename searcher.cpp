@@ -66,7 +66,7 @@ bool Searcher::OnAR(AlignResult *AR)
 		m_HitMgr->AppendHit(AR);
 	bool Terminate = m_Terminator->Terminate(m_HitMgr, Accept);
 
-	if (opt(log_searcher_alns))
+	if (oget_flag(OPT_log_searcher_alns)) //src_refactor_opts
 		{
 		static bool HdrDone = false;
 		static string CurrQ;
@@ -94,7 +94,7 @@ bool Searcher::OnAR(AlignResult *AR)
 bool Searcher::AlignPos(unsigned QueryPos, unsigned TargetPos)
 	{
 	bool Alignable = m_Accepter->AreAlignable(m_Query, m_Target);
-	if (opt(log_searcher_alns))
+	if (oget_flag(OPT_log_searcher_alns)) //src_refactor_opts
 		Log("Alignable(%s, %s) = %c\n",
 		  m_Query->m_Label, m_Target->m_Label, tof(Alignable));
 
@@ -323,7 +323,7 @@ bool Searcher::MosaicMask(SeqInfo *Query, SeqInfo *MaskedSI, bool RevComp)
 	Log("Max seg %u: %*.*s\n", MaxUnmaskedSegLength, QL, QL, MaskedSeq);
 #endif
 
-	if (MaxUnmaskedSegLength < opt(mosaic_minseg))
+	if (MaxUnmaskedSegLength < oget_uns(OPT_mosaic_minseg)) //src_refactor_opts
 		return false;
 
 	if (RevComp)

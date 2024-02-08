@@ -235,13 +235,13 @@ void FastQ::InitFromCmdLine()
 		return;
 	InitDone = true;
 
-	byte Base = opt(fastq_ascii);
-	byte MinQ = opt(fastq_qmin);
-	byte MaxQ  = opt(fastq_qmax);
-	byte MaxQOut = opt(fastq_qmaxout);
+	byte Base = oget_uns(OPT_fastq_ascii); //src_refactor_opts
+	byte MinQ = oget_uns(OPT_fastq_qmin); //src_refactor_opts
+	byte MaxQ  = oget_uns(OPT_fastq_qmax); //src_refactor_opts
+	byte MaxQOut = oget_uns(OPT_fastq_qmaxout); //src_refactor_opts
 
 	Init(Base, MinQ, MaxQ, MaxQOut);
-	FastQ::m_ForceQ = opt(fastq_forceq);
+	FastQ::m_ForceQ = oget_flag(OPT_fastq_forceq); //src_refactor_opts
 	}
 
 double FastQ::GetEE(const char *Qual, unsigned L)
@@ -382,7 +382,7 @@ static byte g_Base;
 
 void FastQ::SetBaseGuess(const string &FileName)
 	{
-	if (opt(fastq_ascii) || opt(fastq_noguess))
+	if (oget_uns(OPT_fastq_ascii) || oget_flag(OPT_fastq_noguess)) //src_refactor_opts
 		return;
 
 	byte Base = FastQ::GuessBase(FileName);
@@ -392,9 +392,9 @@ void FastQ::SetBaseGuess(const string &FileName)
 			{
 			g_Base = Base;
 
-			byte MinQ = opt(fastq_qmin);
-			byte MaxQ  = opt(fastq_qmax);
-			byte MaxQOut = opt(fastq_qmaxout);
+			byte MinQ = oget_uns(OPT_fastq_qmin); //src_refactor_opts
+			byte MaxQ  = oget_uns(OPT_fastq_qmax); //src_refactor_opts
+			byte MaxQOut = oget_uns(OPT_fastq_qmaxout); //src_refactor_opts
 
 			FastQ::Init(Base, MinQ, MaxQ, MaxQOut);
 			}

@@ -280,7 +280,7 @@ void LocalAligner2::OnTargetDoneImpl()
 void TestLocalAligner2()
 	{
 	SeqDB Input;
-	Input.FromFasta(opt(input));
+	Input.FromFasta(oget_str(OPT_input)); //src_refactor_opts
 	bool Nucleo = Input.GetIsNucleo();
 
 	AlnParams AP;

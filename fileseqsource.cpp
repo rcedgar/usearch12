@@ -3,7 +3,7 @@
 
 FileSeqSource::FileSeqSource()
 	{
-	m_StripGaps = !opt(keepgaps);
+	m_StripGaps = !oget_flag(OPT_keepgaps); //src_refactor_opts
 	memset_zero(m_BadByteCounts, 256);
 	}
 
@@ -15,7 +15,7 @@ FileSeqSource::~FileSeqSource()
 void FileSeqSource::Open(const string &FileName)
 	{
 	m_LR.Open(FileName);
-	if (opt(keepgaps))
+	if (oget_flag(OPT_keepgaps)) //src_refactor_opts
 		m_StripGaps = false;
 	}
 

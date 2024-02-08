@@ -11,7 +11,7 @@ void OutputSink::OutputUCNoHits(SeqInfo *Query, unsigned ClusterIndex)
 	{
 	if (m_fUC == 0)
 		return;
-	if (opt(uc_hitsonly))
+	if (oget_flag(OPT_uc_hitsonly)) //src_refactor_opts
 		return;
 
 	const char *QueryLabel = Query->m_Label;

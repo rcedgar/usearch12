@@ -15,12 +15,13 @@ const string &oget_str(OPT_ENUM oe)
 	static string str;
 	return str;
 	}
-unsigned oget_uint(OPT_ENUM oe)
+
+unsigned oget_uns(OPT_ENUM oe)
 	{
 	return 0;
 	}
 
-double oget_float(OPT_ENUM oe)
+double oget_flt(OPT_ENUM oe)
 	{
 	return 0;
 	}
@@ -35,7 +36,7 @@ const string &oget_strd(OPT_ENUM oe, const string &dflt)
 	return dflt;
 	}
 
-unsigned oget_uintd(OPT_ENUM oe, unsigned dflt)
+unsigned oget_unsd(OPT_ENUM oe, unsigned dflt)
 	{
 	return dflt;
 	}
@@ -49,7 +50,11 @@ void oset_strd(OPT_ENUM oe, const string &dflt)
 	{
 	}
 
-void oset_uintd(OPT_ENUM oe, unsigned dflt)
+void oset_unsd(OPT_ENUM oe, unsigned dflt)
+	{
+	}
+
+void oset_uns(OPT_ENUM oe, unsigned dflt)
 	{
 	}
 
@@ -59,4 +64,29 @@ void oset_fltd(OPT_ENUM oe, double dflt)
 
 void oset_flag(OPT_ENUM oe)
 	{
+	}
+
+bool ofilled_str(OPT_ENUM oe)
+	{
+	return false;
+	}
+
+bool ofilled_uns(OPT_ENUM oe)
+	{
+	return false;
+	}
+
+bool ofilled_flt(OPT_ENUM oe)
+	{
+	return false;
+	}
+
+bool ofilled_flag(OPT_ENUM oe)
+	{
+	return false;
+	}
+
+const char *oget_cstr(OPT_ENUM oe)
+	{
+	return 0;
 	}

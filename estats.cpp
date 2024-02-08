@@ -43,15 +43,15 @@ EStats::EStats(bool Nucleo, double DBSize, double MaxEvalue)
 		}
 
 
-	if (optset_ka_ungapped_k)
-		m_UngappedK = (double) opt(ka_ungapped_k);
-	if (optset_ka_ungapped_lambda)
-		m_UngappedLambda = (double) opt(ka_ungapped_lambda);
+	if (ofilled_flt(OPT_ka_ungapped_k)) //src_refactor_opts
+		m_UngappedK = (double) oget_flt(OPT_ka_ungapped_k); //src_refactor_opts
+	if (ofilled_flt(OPT_ka_ungapped_lambda)) //src_refactor_opts
+		m_UngappedLambda = (double) oget_flt(OPT_ka_ungapped_lambda); //src_refactor_opts
 
-	if (optset_ka_gapped_k)
-		m_GappedK = (double) opt(ka_gapped_k);
-	if (optset_ka_gapped_lambda)
-		m_GappedLambda = (double) opt(ka_gapped_lambda);
+	if (ofilled_flt(OPT_ka_gapped_k)) //src_refactor_opts
+		m_GappedK = (double) oget_flt(OPT_ka_gapped_k); //src_refactor_opts
+	if (ofilled_flt(OPT_ka_gapped_lambda)) //src_refactor_opts
+		m_GappedLambda = (double) oget_flt(OPT_ka_gapped_lambda); //src_refactor_opts
 
 
 	m_LogGappedK = log(m_GappedK);

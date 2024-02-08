@@ -17,7 +17,7 @@ void HSPFinder::UngappedBlast(float X, bool StaggerOk, unsigned MinLength, float
 #endif
 
 	if (MinScore < 0)
-		MinScore = (float) ComputeMinScoreGivenEvalueQUngapped(opt(evalue), m_SA->m_L);
+		MinScore = (float) ComputeMinScoreGivenEvalueQUngapped(oget_flt(OPT_evalue), m_SA->m_L); //src_refactor_opts
 	m_UngappedHSPCount = 0;
 
 	if (m_SB->m_L < 2*m_WordLength)

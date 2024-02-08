@@ -38,9 +38,9 @@ SeqSource *MakeSeqSource(const string &FileName)
 	{
 	bool Nucleo;
 	FILE_TYPE FileType = FT_FASTA;
-	if (opt(fasta))
+	if (oget_flag(OPT_fasta)) //src_refactor_opts
 		FileType = FT_FASTA;
-	else if (opt(fastq))
+	else if (oget_flag(OPT_fastq)) //src_refactor_opts
 		FileType = FT_FASTQ;
 	else
 		FileType = GetFileType(FileName, &Nucleo);

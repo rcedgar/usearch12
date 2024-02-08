@@ -12,7 +12,7 @@ void MaskDB(SeqDB &DB)
 	{
 	bool Nucleo = DB.GetIsNucleo();
 	MASK_TYPE Default = Nucleo ? MT_FastNucleo : MT_FastAmino;
-	MASK_TYPE MaskType = StrToMaskType(sopt(dbmask), Default);
+	MASK_TYPE MaskType = StrToMaskType(oget_cstr(OPT_dbmask), Default); //src_refactor_opts
 	if (MaskType == MT_Default)
 		{
 		if (DB.GetIsNucleo())
@@ -26,22 +26,22 @@ void MaskDB(SeqDB &DB)
 
 static void MakeUDB(CMD Cmd, const string &InputFileName)
 	{
-	const string &OutputFileName = opt(output);
+	const string &OutputFileName = oget_str(OPT_output); //src_refactor_opts
 	if (InputFileName == "" || OutputFileName == "")
 		Die("Missing input or output filename");
 
-	if (optset_accel)
+	if (ofilled_flt(OPT_accel)) //src_refactor_opts
 		Die("Use --dbaccel, not --accel");
 
-	if (optset_slots)
+	if (ofilled_uns(OPT_slots)) //src_refactor_opts
 		{
 		asserta(sizeof(uint32 *) >= sizeof(uint32));
-		if (double(sizeof(uint32*))*double(opt(slots)) >= double(UINT_MAX))
+		if (double(sizeof(uint32*))*double(oget_uns(OPT_slots)) >= double(UINT_MAX)) //src_refactor_opts
 			{
 			double MaxBytes = double(UINT_MAX) + 1;
 			double PtrBytes = double(sizeof(uint32 *));
 			double MaxSlots = MaxBytes/PtrBytes;
-			Die("-slots %u > max %.0f (%s)", opt(slots), MaxSlots, FloatToStr(MaxSlots));
+			Die("-slots %u > max %.0f (%s)", oget_uns(OPT_slots), MaxSlots, FloatToStr(MaxSlots)); //src_refactor_opts
 			}
 		}
 
@@ -61,5 +61,5 @@ static void MakeUDB(CMD Cmd, const string &InputFileName)
 
 void cmd_makeudb_usearch()
 	{
-	MakeUDB(CMD_makeudb_usearch, opt(makeudb_usearch));
+	MakeUDB(CMD_makeudb_usearch, oget_str(OPT_makeudb_usearch)); //src_refactor_opts
 	}

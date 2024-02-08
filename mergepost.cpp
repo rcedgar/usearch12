@@ -11,7 +11,7 @@ bool MergePost(MergeThreadData &TD)
 	if (g_fTab)
 		fprintf(g_fTab, "\tmergelen=%u", L);
 
-	if (optset_fastq_minmergelen && L < opt(fastq_minmergelen))
+	if (ofilled_uns(OPT_fastq_minmergelen) && L < oget_uns(OPT_fastq_minmergelen)) //src_refactor_opts
 		{
 		LOCK();
 		++g_MergedTooShortCount;
@@ -21,7 +21,7 @@ bool MergePost(MergeThreadData &TD)
 		return false;
 		}
 
-	if (optset_fastq_maxmergelen && L > opt(fastq_maxmergelen))
+	if (ofilled_uns(OPT_fastq_maxmergelen) && L > oget_uns(OPT_fastq_maxmergelen)) //src_refactor_opts
 		{
 		LOCK();
 		++g_MergedTooLongCount;
@@ -31,10 +31,10 @@ bool MergePost(MergeThreadData &TD)
 		return false;
 		}
 
-	if (optset_fastq_minqual)
+	if (ofilled_uns(OPT_fastq_minqual)) //src_refactor_opts
 		{
 		byte MinIntQual = SI.GetMinIntQual();
-		if (MinIntQual < opt(fastq_minqual))
+		if (MinIntQual < oget_uns(OPT_fastq_minqual)) //src_refactor_opts
 			{
 			LOCK();
 			if (g_fTab)

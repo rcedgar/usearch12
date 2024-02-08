@@ -13,9 +13,9 @@
 
 void UParseSink::DP()
 	{
-	const float MatchScore = (float) opt(uparse_match);
-	const float MismatchScore = (float) opt(uparse_mismatch);
-	const float BreakScore = (float) opt(uparse_break);
+	const float MatchScore = (float) oget_flt(OPT_uparse_match); //src_refactor_opts
+	const float MismatchScore = (float) oget_flt(OPT_uparse_mismatch); //src_refactor_opts
+	const float BreakScore = (float) oget_flt(OPT_uparse_break); //src_refactor_opts
 
 	if (BreakScore > 0.0)
 		Warning("break penalty should be < 0");

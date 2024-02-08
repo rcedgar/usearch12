@@ -9,7 +9,7 @@ static void Thread(uint i)
 
 void cmd_test()
 	{
-	opt(test);
+	oget_str(OPT_test); //src_refactor_opts
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)

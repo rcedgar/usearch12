@@ -21,7 +21,7 @@ in. Any name may also be empty.
 
 const char *Tree::NameToNewick(const string &Name, string &NewickName)
 	{
-	if (!opt(strict_newick))
+	if (!oget_flag(OPT_strict_newick)) //src_refactor_opts
 		{
 		NewickName = Name;
 		return NewickName.c_str();

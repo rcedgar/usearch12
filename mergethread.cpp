@@ -86,19 +86,19 @@ void GetSampleNameFromIlluminaFileName(const string &FileName, string &SampleNam
 
 void InitFastqRelabel(const string &FileName)
 	{
-	if (optset_sample)
-		g_SampleName = opt(sample);
+	if (ofilled_str(OPT_sample)) //src_refactor_opts
+		g_SampleName = oget_str(OPT_sample); //src_refactor_opts
 	else
 		g_SampleName.clear();
 
-	if (opt(relabel) == "@")
+	if (oget_str(OPT_relabel) == "@") //src_refactor_opts
 		{
 		GetSampleNameFromIlluminaFileName(FileName, g_RelabelPrefix);
 		g_RelabelPrefix += ".";
 		}
 	else
 		{
-		g_RelabelPrefix = opt(relabel);
+		g_RelabelPrefix = oget_str(OPT_relabel); //src_refactor_opts
 		if (g_RelabelPrefix == "-")
 			g_RelabelPrefix.clear();
 		}
@@ -116,14 +116,14 @@ void FastqRelabel(SeqInfo *SI)
 		Label = g_RelabelPrefix + string(Tmp);
 		}
 
-	if (optset_sample)
+	if (ofilled_str(OPT_sample)) //src_refactor_opts
 		{
 		if (!EndsWith(Label, ";"))
 			Label += string(";");
 		Label += string("sample=") + g_SampleName + ";";
 		}
 
-	if (opt(fastq_eeout))
+	if (oget_flag(OPT_fastq_eeout)) //src_refactor_opts
 		{
 		unsigned L = SI->m_L;
 		double EE = FastQ::GetEE(SI->m_Qual, L);
@@ -133,8 +133,8 @@ void FastqRelabel(SeqInfo *SI)
 		AppendStrField(Label, "ee=", Tmp);
 		}
 
-	if (optset_label_suffix)
-		Label += string(opt(label_suffix));
+	if (ofilled_str(OPT_label_suffix)) //src_refactor_opts
+		Label += string(oget_str(OPT_label_suffix)); //src_refactor_opts
 
 	if (g_fTab)
 		fprintf(g_fTab, "\trelabel=%s", Label.c_str());
@@ -191,7 +191,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		if (!Ok2)
 			{
-			Warning("Premature EOF in %s", sopt(reverse));
+			Warning("Premature EOF in %s", oget_cstr(OPT_reverse)); //src_refactor_opts
 			break;
 			}
 
@@ -218,7 +218,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 			g_SumMergedEE += EE;
 
 			FastqRelabel(TD.SIOv);
-			if (opt(merge_annot))
+			if (oget_flag(OPT_merge_annot)) //src_refactor_opts
 				{
 				string Annot;
 				MakeAnnot(TD, Annot, EE);
@@ -237,7 +237,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 				g_MergeLengths->push_back(TD.SIOv->m_L);
 				}
 
-			if (optset_fastqout_overlap_fwd || optset_fastaout_overlap_fwd)
+			if (ofilled_str(OPT_fastqout_overlap_fwd) || ofilled_str(OPT_fastaout_overlap_fwd)) //src_refactor_opts
 				{
 				unsigned Lo;
 				unsigned Len;
@@ -246,7 +246,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 				SeqToFasta(g_fFaOverlapFwd, TD.SI1->m_Seq + Lo, Len, TD.SIOv->m_Label);
 				}
 
-			if (optset_fastqout_overlap_rev || optset_fastaout_overlap_rev)
+			if (ofilled_str(OPT_fastqout_overlap_rev) || ofilled_str(OPT_fastaout_overlap_rev)) //src_refactor_opts
 				{
 				unsigned Lo;
 				unsigned Len;

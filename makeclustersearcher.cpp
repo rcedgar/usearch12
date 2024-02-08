@@ -18,7 +18,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		{
 	case CMD_cluster_otus:
 		{
-		if (optset_id)
+		if (ofilled_flt(OPT_id)) //src_refactor_opts
 			Die("-id not supported by cluster_otus");
 		oset_fltd(OPT_id, 0);
 		break;
@@ -27,7 +27,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
 		{
-		if (!optset_id)
+		if (!ofilled_flt(OPT_id)) //src_refactor_opts
 			Die("Must specify -id");
 		break;
 		}
@@ -61,16 +61,16 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	UDBUsortedSearcher *US = 0;
 	if (Cmd == CMD_cluster_otus)
 		{
-		if (!optset_maxhits)
+		if (!ofilled_uns(OPT_maxhits)) //src_refactor_opts
 			{
 		// hack, not sure what is going on here...
-			oset_uintd(OPT_maxhits, 99);
+			oset_unsd(OPT_maxhits, 99);
 			}
 		US = new ChunkSearcher;
 		}
 	else
 		US = new UDBUsortedSearcher;
-	US->m_MinFractId = (float) opt(id);
+	US->m_MinFractId = (float) oget_flt(OPT_id); //src_refactor_opts
 	UDBParams Params;
 	Params.FromCmdLine(Cmd, Nucleo);
 	US->m_UDBData->CreateEmpty(Params);

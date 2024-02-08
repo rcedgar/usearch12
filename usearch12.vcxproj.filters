@@ -188,9 +188,6 @@
     <ClCompile Include="localaligner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lockobj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="udbusortedsearcherbig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -67,12 +67,6 @@ bool ChimeHit::IsGood() const
 
 bool ChimeHit::IsChimeraDenoised() const
 	{
-	//if (opt(all_perfect_chimeras))
-	//	{
-	//	if (DiffsQM == 0 && DiffsQT > 0)
-	//		return true;
-	//	}
-
 	if (DiffsQM == 0 && DiffsQT > 0)
 		return true;
 	if (DiffsQT == 1 && DiffsQT > 4) // needed??
@@ -103,11 +97,11 @@ bool ChimeHit::IsChimeraHighConfidence() const
 bool ChimeHit::IsChimeraParams() const
 	{
 	double Div = GetDivPct();
-	if (Div < opt(mindiv) || LY < opt(mindiffs) || RY < opt(mindiffs))
+	if (Div < oget_flt(OPT_mindiv) || LY < oget_uns(OPT_mindiffs) || RY < oget_uns(OPT_mindiffs)) //src_refactor_opts
 		return false;
-	if (DiffsQM > opt(maxdqm) || DiffsQT < opt(mindqt))
+	if (DiffsQM > oget_uns(OPT_maxdqm) || DiffsQT < oget_uns(OPT_mindqt)) //src_refactor_opts
 		return false;
-	if (Score < opt(minh))
+	if (Score < oget_flt(OPT_minh)) //src_refactor_opts
 		return false;
 	return true;
 	}

@@ -647,7 +647,7 @@ void SegMaskSeq(const byte *Seq, unsigned L, byte *MaskedSeq)
 		unsigned hi = (unsigned) Seg->end;
 		asserta(lo < L);
 		asserta(hi < L);
-		if (opt(hardmask))
+		if (oget_flag(OPT_hardmask)) //src_refactor_opts
 			{
 			for (unsigned i = lo; i <= hi; ++i)
 				MaskedSeq[i] = 'x';

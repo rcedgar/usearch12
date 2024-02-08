@@ -23,7 +23,7 @@ enum SORT_ORDER
 
 static SORT_ORDER GetSortOrder()
 	{
-	if (!optset_sortedby)
+	if (!ofilled_str(OPT_sortedby)) //src_refactor_opts
 		{
 		if (g_Cmd == CMD_cluster_smallmem)
 			return SO_Length;
@@ -32,7 +32,7 @@ static SORT_ORDER GetSortOrder()
 		else
 			Die("Must set -sortedby");
 		}
-	const string s = string(opt(sortedby));
+	const string s = string(oget_str(OPT_sortedby)); //src_refactor_opts
 	if (s == "length")
 		return SO_Length;
 	else if (s == "size")
@@ -51,7 +51,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 	if (QueryFileName == "")
 		Die("Missing input filename");
 
-	if (optset_fastaout)
+	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
 		{
 		if (Cmd == CMD_cluster_otus)
 			Die("-fastaout not supported, use -otus");
@@ -100,7 +100,7 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 		case SO_Size:
 			{
 			unsigned Size = GetSizeFromLabel(Query->m_Label, UINT_MAX);
-			if (optset_minsize && Size < opt(minsize))
+			if (ofilled_uns(OPT_minsize) && Size < oget_uns(OPT_minsize)) //src_refactor_opts
 				{
 				AllDone = true;
 				break;
@@ -136,13 +136,13 @@ void ClusterSmallmem(CMD Cmd, const string &QueryFileName)
 
 void cmd_cluster_smallmem()
 	{
-	ClusterSmallmem(CMD_cluster_smallmem, opt(cluster_smallmem));
+	ClusterSmallmem(CMD_cluster_smallmem, oget_str(OPT_cluster_smallmem)); //src_refactor_opts
 	}
 
 void cmd_cluster_otus()
 	{
-	if (optset_sizein || optset_sizeout)
+	if (ofilled_flag(OPT_sizein) || ofilled_flag(OPT_sizeout)) //src_refactor_opts
 		Die("-sizein/out not supported");
 	default_opt(minsize, 2);
-	ClusterSmallmem(CMD_cluster_otus, opt(cluster_otus));
+	ClusterSmallmem(CMD_cluster_otus, oget_str(OPT_cluster_otus)); //src_refactor_opts
 	}

@@ -5,7 +5,7 @@
 bool MergePre(SeqInfo *SI, bool Fwd)
 	{
 	unsigned L = SI->m_L;
-	SI->TruncateTail(opt(fastq_trunctail));
+	SI->TruncateTail(oget_uns(OPT_fastq_trunctail)); //src_refactor_opts
 	if (SI->m_L < L)
 		{
 		LOCK();
@@ -18,7 +18,7 @@ bool MergePre(SeqInfo *SI, bool Fwd)
 		UNLOCK();
 		}
 
-	if (optset_fastq_minlen && SI->m_L < opt(fastq_minlen))
+	if (ofilled_uns(OPT_fastq_minlen) && SI->m_L < oget_uns(OPT_fastq_minlen)) //src_refactor_opts
 		{
 		LOCK();
 		if (Fwd)

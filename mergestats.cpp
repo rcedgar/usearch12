@@ -39,51 +39,51 @@ void GetMergeStatsStrs(vector<string> &Strs)
 	Strs.push_back(s);
 
 	Ps(s, "%10u  Too many diffs (> %u) (%.2f%%)",
-	  g_MaxDiffsCount, opt(fastq_maxdiffs), GetPct(g_MaxDiffsCount, g_InRecCount));
+	  g_MaxDiffsCount, oget_uns(OPT_fastq_maxdiffs), GetPct(g_MaxDiffsCount, g_InRecCount)); //src_refactor_opts
 	Strs.push_back(s);
 
 	if (g_TailCount1 > 0 || g_TailCount2 > 0)
 		{
-		Ps(s, "%10u  Fwd tails Q <= %u trimmed (%.2f%%)", g_TailCount1, opt(fastq_trunctail), GetPct(g_TailCount1, g_InRecCount));
+		Ps(s, "%10u  Fwd tails Q <= %u trimmed (%.2f%%)", g_TailCount1, oget_uns(OPT_fastq_trunctail), GetPct(g_TailCount1, g_InRecCount)); //src_refactor_opts
 		Strs.push_back(s);
-		Ps(s, "%10u  Rev tails Q <= %u trimmed (%.2f%%)", g_TailCount2, opt(fastq_trunctail), GetPct(g_TailCount2, g_InRecCount));
+		Ps(s, "%10u  Rev tails Q <= %u trimmed (%.2f%%)", g_TailCount2, oget_uns(OPT_fastq_trunctail), GetPct(g_TailCount2, g_InRecCount)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
 	if (g_TooShortCount1 > 0 || g_TooShortCount2 > 0)
 		{
-		Ps(s, "%10u  Fwd too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount1, opt(fastq_minlen), GetPct(g_TooShortCount1, g_InRecCount));
+		Ps(s, "%10u  Fwd too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount1, oget_uns(OPT_fastq_minlen), GetPct(g_TooShortCount1, g_InRecCount)); //src_refactor_opts
 		Strs.push_back(s);
-		Ps(s, "%10u  Rev too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount2, opt(fastq_minlen), GetPct(g_TooShortCount2, g_InRecCount));
+		Ps(s, "%10u  Rev too short (< %u) after tail trimming (%.2f%%)", g_TooShortCount2, oget_uns(OPT_fastq_minlen), GetPct(g_TooShortCount2, g_InRecCount)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
 	Ps(s, "%10u  No alignment found (%.2f%%)", g_NotAlignedCount, GetPct(g_NotAlignedCount, g_InRecCount));
 	Strs.push_back(s);
-	Ps(s, "%10u  Alignment too short (< %u) (%.2f%%)", g_OvTooShortCount, opt(fastq_minovlen), GetPct(g_OvTooShortCount, g_InRecCount));
+	Ps(s, "%10u  Alignment too short (< %u) (%.2f%%)", g_OvTooShortCount, oget_uns(OPT_fastq_minovlen), GetPct(g_OvTooShortCount, g_InRecCount)); //src_refactor_opts
 	Strs.push_back(s);
 
-	if (optset_fastq_minmergelen)
+	if (ofilled_uns(OPT_fastq_minmergelen)) //src_refactor_opts
 		{
-		Ps(s, "%10u  Merged too short (< %u)", g_MergedTooShortCount, opt(fastq_minmergelen));
+		Ps(s, "%10u  Merged too short (< %u)", g_MergedTooShortCount, oget_uns(OPT_fastq_minmergelen)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
-	if (optset_fastq_maxmergelen)
+	if (ofilled_uns(OPT_fastq_maxmergelen)) //src_refactor_opts
 		{
-		Ps(s, "%10u  Merged too long (> %u)", g_MergedTooLongCount, opt(fastq_maxmergelen));
+		Ps(s, "%10u  Merged too long (> %u)", g_MergedTooLongCount, oget_uns(OPT_fastq_maxmergelen)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
-	if (optset_fastq_minqual)
+	if (ofilled_uns(OPT_fastq_minqual)) //src_refactor_opts
 		{
 		Ps(s, "%10u  Min Q too low (<%u) (%.2f%%)",
-		  g_MinQCount, opt(fastq_minqual), GetPct(g_MinQCount, g_InRecCount));
+		  g_MinQCount, oget_uns(OPT_fastq_minqual), GetPct(g_MinQCount, g_InRecCount)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
 	Ps(s, "%10u  Staggered pairs (%.2f%%)", g_StaggeredCount, GetPct(g_StaggeredCount, g_InRecCount));
-	if (opt(fastq_nostagger))
+	if (oget_flag(OPT_fastq_nostagger)) //src_refactor_opts
 		Psa(s, " discarded");
 	else
 		Psa(s, " merged & trimmed");

@@ -51,7 +51,7 @@ def f(d, x):
 
 	double Skew = double(TSize)/double(QSize);
 
-	const double Alpha = opt(unoise_alpha);
+	const double Alpha = oget_flt(OPT_unoise_alpha); //src_refactor_opts
 	double v = DiffsQT*Alpha + 1.0;
 	double MinSkew = pow(2.0, v);
 	bool Accept = (Skew >= MinSkew);
@@ -80,7 +80,7 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 	unsigned BestTargetIndex = UINT_MAX;
 	unsigned BestDiffs = UINT_MAX;
 	unsigned AcceptCount = 0;
-	unsigned MaxAccepts = opt(maxaccepts);
+	unsigned MaxAccepts = oget_uns(OPT_maxaccepts); //src_refactor_opts
 	ObjMgr *OM = Query->m_Owner;
 	for (unsigned HotIndex = 0; HotIndex < HotCount; ++HotIndex)
 		{
@@ -118,15 +118,15 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 
 void cmd_unoise3()
 	{
-	string InputFileName = opt(unoise3);
+	string InputFileName = oget_str(OPT_unoise3); //src_refactor_opts
 
-	if (optset_fastaout)
+	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
 		Die("-fastaout not supported, use -zotus");
 
 	oset_fltd(OPT_abskew, 16.0);
 
-	if (optset_tabbedout)
-		g_fTab = CreateStdioFile(opt(tabbedout));
+	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+		g_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 
 	InitGlobals(true);
 
@@ -153,8 +153,8 @@ void cmd_unoise3()
 	USS->m_MinFractId = 0.9;
 
 	unsigned MinAmpSize = 8;
-	if (optset_minsize)
-		MinAmpSize = opt(minsize);
+	if (ofilled_uns(OPT_minsize)) //src_refactor_opts
+		MinAmpSize = oget_uns(OPT_minsize); //src_refactor_opts
 	g_MinQSize = MinAmpSize;
 	unsigned UniqCount = InputSeqCount;
 	for (unsigned SeqIndex = 0; SeqIndex < InputSeqCount; ++SeqIndex)
@@ -265,8 +265,8 @@ void cmd_unoise3()
 	asserta(SIZE(IsChimeraVec) == DBSeqCount);
 
 	FILE *fAmp = 0;
-	if (optset_ampout)
-		fAmp = CreateStdioFile(opt(ampout));
+	if (ofilled_str(OPT_ampout)) //src_refactor_opts
+		fAmp = CreateStdioFile(oget_str(OPT_ampout)); //src_refactor_opts
 	vector<unsigned> AmpIndexToOTUIndex;
 	unsigned OTUCount = 0;
 	unsigned ChimeraCount = 0;
@@ -306,9 +306,9 @@ void cmd_unoise3()
 	CloseStdioFile(fAmp);
 	fAmp = 0;
 
-	if (optset_zotus)
+	if (ofilled_str(OPT_zotus)) //src_refactor_opts
 		{
-		FILE *f = CreateStdioFile(opt(zotus));
+		FILE *f = CreateStdioFile(oget_str(OPT_zotus)); //src_refactor_opts
 		uint32 *ptrLoopIdx = ProgressStartLoop(AmpCount, "Writing zotus");
 		for (uint AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)
 			{

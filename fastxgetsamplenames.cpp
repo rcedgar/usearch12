@@ -8,7 +8,7 @@
 
 void cmd_fastx_get_sample_names()
 	{
-	const string InputFileName(opt(fastx_get_sample_names));
+	const string InputFileName(oget_str(OPT_fastx_get_sample_names)); //src_refactor_opts
 
 	SeqSource &SS = *MakeSeqSource(InputFileName);
 
@@ -16,8 +16,8 @@ void cmd_fastx_get_sample_names()
 	SeqInfo *SI = OM.GetSeqInfo();
 
 	FILE *fOut = 0;
-	if (optset_output)
-		fOut = CreateStdioFile(opt(output));
+	if (ofilled_str(OPT_output)) //src_refactor_opts
+		fOut = CreateStdioFile(oget_str(OPT_output)); //src_refactor_opts
 
 	set<string> Samples;
 	ProgressStartSS(SS, "Sample names");

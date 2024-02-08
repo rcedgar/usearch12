@@ -243,7 +243,7 @@ public:
 
 	virtual void AllocData(unsigned RowCount, unsigned ColCount)
 		{
-		if (opt(logmemgrows))
+		if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 			Log("MxBase::AllocData(%u,%u) %s bytes, Name=%s\n",
 			  RowCount, ColCount, IntToStr(GetTotalBytes()), m_Name.c_str());
 
@@ -260,7 +260,7 @@ public:
 		unsigned RowBytes = sizeof(T *)*RowCount;
 		unsigned DataBytes = sizeof(T)*RowCount*ColCount;
 
-		if (opt(logmemgrows))
+		if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 			Log("MxBase::AllocData(%u,%u) RowBytes=%u, DataBytes=%u, myalloc(%u), name %s\n",
 			  RowCount, ColCount, RowBytes, DataBytes, RowBytes + DataBytes, m_Name.c_str());
 

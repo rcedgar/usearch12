@@ -257,7 +257,7 @@ void MyCmdLine(int argc, char **argv)
 		}
 
 #if	TIMING
-	if (opt_threads > 1)
+	if (oget_uns(OPT_threads) > 1) //src_refactor_opts
 		Die("--threads > 1 && TIMING");
 #endif
 	}

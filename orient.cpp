@@ -36,8 +36,8 @@ void GetOrientCounts(unsigned &QueryCount, unsigned &PlusCount, unsigned &MinusC
 
 static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 	{
-	double WordX = opt(orient_wordx);
-	double StrandX = opt(orient_strandx);
+	double WordX = oget_flt(OPT_orient_wordx); //src_refactor_opts
+	double StrandX = oget_flt(OPT_orient_strandx); //src_refactor_opts
 
 	US->m_Query = Query;
 	US->SetQueryImpl();
@@ -167,19 +167,19 @@ static void DoOrient(const string &QueryFileName)
 	void InitGlobals(bool Nucleo);
 	InitGlobals(true);
 
-	if (optset_tabbedout)
-		g_fOut = CreateStdioFile(opt(tabbedout));
-	if (optset_fastaout)
-		g_fFa = CreateStdioFile(opt(fastaout));
-	if (optset_fastqout)
-		g_fFq = CreateStdioFile(opt(fastqout));
-	if (optset_notmatched)
-		g_fNot = CreateStdioFile(opt(notmatched));
+	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+		g_fOut = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
+	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+		g_fFa = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
+	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+		g_fFq = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
+	if (ofilled_str(OPT_notmatched)) //src_refactor_opts
+		g_fNot = CreateStdioFile(oget_str(OPT_notmatched)); //src_refactor_opts
 
 	bool DBIsNucleo;
 	UDBData *udb;
 	SeqDB *seqdb;
-	LoadDB(opt(db), CMD_fastx_orient, &seqdb, &udb, &DBIsNucleo);
+	LoadDB(oget_str(OPT_db), CMD_fastx_orient, &seqdb, &udb, &DBIsNucleo); //src_refactor_opts
 
 	const SeqDB *DB = udb->m_SeqDB;
 	asserta(DB != 0);
@@ -212,6 +212,6 @@ static void DoOrient(const string &QueryFileName)
 
 void cmd_fastx_orient()
 	{
-	const string QueryFileName = opt(fastx_orient);
+	const string QueryFileName = oget_str(OPT_fastx_orient); //src_refactor_opts
 	DoOrient(QueryFileName);
 	}

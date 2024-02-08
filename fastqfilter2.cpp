@@ -68,13 +68,13 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 
 void cmd_fastq_filter2()
 	{
-	const string &InputFileName = opt(fastq_filter2);
-	const string &ReverseFileName = opt(reverse);
+	const string &InputFileName = oget_str(OPT_fastq_filter2); //src_refactor_opts
+	const string &ReverseFileName = oget_str(OPT_reverse); //src_refactor_opts
 	asserta(InputFileName != "" && ReverseFileName != "");
 
 	double MaxEE = 1.0;
-	if (optset_fastq_maxee)
-		MaxEE = opt(fastq_maxee);
+	if (ofilled_flt(OPT_fastq_maxee)) //src_refactor_opts
+		MaxEE = oget_flt(OPT_fastq_maxee); //src_refactor_opts
 
 	FastQ::InitFromCmdLine();
 	
@@ -87,11 +87,11 @@ void cmd_fastq_filter2()
 	SS2.Open(ReverseFileName);
 	ProgressStartSS(SS1, "Filtering", FastqFilter2CB);
 
-	if (optset_fastqout)
+	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
 		{
-		g_fFastqOut1 = CreateStdioFile(opt(fastqout));
-		asserta(optset_output2);
-		g_fFastqOut2 = CreateStdioFile(opt(output2));
+		g_fFastqOut1 = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
+		asserta(ofilled_str(OPT_output2)); //src_refactor_opts
+		g_fFastqOut2 = CreateStdioFile(oget_str(OPT_output2)); //src_refactor_opts
 		}
 
 	unsigned ThreadCount = GetRequestedThreadCount();

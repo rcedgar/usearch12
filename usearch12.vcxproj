@@ -312,7 +312,6 @@
     <ClCompile Include="localaligner.cpp" />
     <ClCompile Include="localaligner2.cpp" />
     <ClCompile Include="localmulti.cpp" />
-    <ClCompile Include="lockobj.cpp" />
     <ClCompile Include="logaln.cpp" />
     <ClCompile Include="make3way.cpp" />
     <ClCompile Include="makedbsearcher.cpp" />

@@ -11,7 +11,7 @@ void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
 
 bool IlluminaLabelPairMatch(const char *Label1, const char *Label2)
 	{
-	if (opt(ignore_label_mismatches))
+	if (oget_flag(OPT_ignore_label_mismatches)) //src_refactor_opts
 		return true;
 	unsigned n1 = (unsigned) strlen(Label1);
 	unsigned n2 = (unsigned) strlen(Label2);
@@ -56,17 +56,17 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 	{
 	SI2->GetRevComp(SI2RC);
 
-	if (optset_stripleft)
-		SI1->StripLeft(opt(stripleft));
-	if (optset_stripright)
-		SI2RC->StripRight(opt(stripright));
+	if (ofilled_uns(OPT_stripleft)) //src_refactor_opts
+		SI1->StripLeft(oget_uns(OPT_stripleft)); //src_refactor_opts
+	if (ofilled_uns(OPT_stripright)) //src_refactor_opts
+		SI2RC->StripRight(oget_uns(OPT_stripright)); //src_refactor_opts
 
 	const char *Pad = "NNNNNNNN";
 	const char *PadQ = "IIIIIIII";
-	if (optset_join_padgap)
-		Pad = sopt(join_padgap);
-	if (optset_join_padgap)
-		PadQ = sopt(join_padgapq);
+	if (ofilled_str(OPT_join_padgap)) //src_refactor_opts
+		Pad = oget_cstr(OPT_join_padgap); //src_refactor_opts
+	if (ofilled_str(OPT_join_padgap)) //src_refactor_opts
+		PadQ = oget_cstr(OPT_join_padgapq); //src_refactor_opts
 	unsigned PadL = ustrlen(Pad);
 	if (ustrlen(PadQ) != PadL)
 		Die("padq length != padgap");
@@ -89,17 +89,17 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	string Label = string(SIJ->m_Label);
 	char Tmp[16];
-	if (optset_relabel)
+	if (ofilled_str(OPT_relabel)) //src_refactor_opts
 		{
 		LOCK();
 		++g_Count;
 		UNLOCK();
 
 		sprintf(Tmp, "%u", g_Count);
-		if (opt(relabel)[0] == '+')
-			Label += opt(relabel) + string(Tmp);
+		if (oget_str(OPT_relabel)[0] == '+') //src_refactor_opts
+			Label += oget_str(OPT_relabel) + string(Tmp); //src_refactor_opts
 		else
-			Label = opt(relabel) + string(Tmp);
+			Label = oget_str(OPT_relabel) + string(Tmp); //src_refactor_opts
 		SIJ->m_Label = Label.c_str();
 		}
 
@@ -142,7 +142,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		if (!Ok2)
 			{
-			Warning("Premature EOF in %s", sopt(reverse));
+			Warning("Premature EOF in %s", oget_cstr(OPT_reverse)); //src_refactor_opts
 			break;
 			}
 
@@ -159,10 +159,10 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 void cmd_fastq_join()
 	{
-	if (optset_output)
+	if (ofilled_str(OPT_output)) //src_refactor_opts
 		Die("Use -fastqout and/or -fastaout, not -output");
 
-	if (!optset_fastq_join || !optset_reverse)
+	if (!ofilled_str(OPT_fastq_join) || !ofilled_str(OPT_reverse)) //src_refactor_opts
 		Die("Missing filename");
 
 	FastQ::InitFromCmdLine();
@@ -170,16 +170,16 @@ void cmd_fastq_join()
 
 	FASTQSeqSource &SS1 = *new FASTQSeqSource;
 	FASTQSeqSource &SS2 = *new FASTQSeqSource;
-	SS1.Open(opt(fastq_join));
-	SS2.Open(opt(reverse));
+	SS1.Open(oget_str(OPT_fastq_join)); //src_refactor_opts
+	SS2.Open(oget_str(OPT_reverse)); //src_refactor_opts
 
 	ProgressStartSS(SS1, "Joining");
 
-	if (optset_fastqout)
-		g_fFastqOut = CreateStdioFile(opt(fastqout));
+	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+		g_fFastqOut = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 
-	if (optset_fastaout)
-		g_fFastaOut = CreateStdioFile(opt(fastaout));
+	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+		g_fFastaOut = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
 
 	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;

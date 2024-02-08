@@ -9,13 +9,13 @@ GlobalAligner::GlobalAligner()
 	m_IsNucleo = false;
 	m_FullDPAlways = false;
 	m_FailIfNoHSPs = true;
-	if (opt(gaforce))
+	if (oget_flag(OPT_gaforce)) //src_refactor_opts
 		m_FailIfNoHSPs = false;
 	}
 
 void GlobalAligner::InitImpl()
 	{
-	m_FullDPAlways = opt(fulldp);
+	m_FullDPAlways = oget_flag(OPT_fulldp); //src_refactor_opts
 	asserta(m_AP != 0);
 	asserta(m_AH != 0);
 	if (!m_FullDPAlways)

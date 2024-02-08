@@ -43,31 +43,31 @@ static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	if (L == 0)
 		return FF_Short;
 
-	if (optset_fastq_truncqual)
-		SI->TruncateQual(opt(fastq_truncqual));
+	if (ofilled_uns(OPT_fastq_truncqual)) //src_refactor_opts
+		SI->TruncateQual(oget_uns(OPT_fastq_truncqual)); //src_refactor_opts
 
-	if (optset_fastq_trunctail)
-		SI->TruncateTail(opt(fastq_trunctail));
+	if (ofilled_uns(OPT_fastq_trunctail)) //src_refactor_opts
+		SI->TruncateTail(oget_uns(OPT_fastq_trunctail)); //src_refactor_opts
 
-	if (optset_fastq_stripleft)
+	if (ofilled_uns(OPT_fastq_stripleft)) //src_refactor_opts
 		{
-		unsigned n = opt(fastq_stripleft);
+		unsigned n = oget_uns(OPT_fastq_stripleft); //src_refactor_opts
 		if (SI->m_L <= n)
 			return FF_Short;
 		SI->StripLeft(n);
 		}
 
-	if (optset_fastq_stripright)
+	if (ofilled_uns(OPT_fastq_stripright)) //src_refactor_opts
 		{
-		unsigned n = opt(fastq_stripright);
+		unsigned n = oget_uns(OPT_fastq_stripright); //src_refactor_opts
 		if (SI->m_L <= n)
 			return FF_Short;
-		SI->StripRight(opt(fastq_stripright));
+		SI->StripRight(oget_uns(OPT_fastq_stripright)); //src_refactor_opts
 		}
 
-	if (optset_fastq_maxns)
+	if (ofilled_uns(OPT_fastq_maxns)) //src_refactor_opts
 		{
-		unsigned maxns = opt(fastq_maxns);
+		unsigned maxns = oget_uns(OPT_fastq_maxns); //src_refactor_opts
 		unsigned NCount = SI->GetNCount();
 		if (NCount > maxns)
 			return FF_MaxNs;
@@ -77,32 +77,32 @@ static FASTQ_FILTER FastqFilter(SeqInfo *SI)
 	if (L == 0)
 		return FF_Short;
 
-	if (optset_fastq_minlen && L < opt(fastq_minlen))
+	if (ofilled_uns(OPT_fastq_minlen) && L < oget_uns(OPT_fastq_minlen)) //src_refactor_opts
 		return FF_Short;
 
-	if (optset_fastq_trunclen)
+	if (ofilled_uns(OPT_fastq_trunclen)) //src_refactor_opts
 		{
-		if (L < opt(fastq_trunclen))
+		if (L < oget_uns(OPT_fastq_trunclen)) //src_refactor_opts
 			return FF_Short;
 
-		SI->TruncateLength(opt(fastq_trunclen));
+		SI->TruncateLength(oget_uns(OPT_fastq_trunclen)); //src_refactor_opts
 		unsigned NewL = SI->m_L;
-		asserta(NewL == opt(fastq_trunclen));
+		asserta(NewL == oget_uns(OPT_fastq_trunclen)); //src_refactor_opts
 		}
 
-	if (optset_fastq_minqual)
+	if (ofilled_uns(OPT_fastq_minqual)) //src_refactor_opts
 		{
 		byte MinQ = SI->GetMinIntQual();
-		if (MinQ < opt(fastq_minqual))
+		if (MinQ < oget_uns(OPT_fastq_minqual)) //src_refactor_opts
 			return FF_MinQ;
 		}
 
-	if (optset_fastq_maxee || optset_fastq_maxee_rate)
+	if (ofilled_flt(OPT_fastq_maxee) || ofilled_flt(OPT_fastq_maxee_rate)) //src_refactor_opts
 		{
 		double ExErr = FastQ::GetEE(SI->m_Qual, SI->m_L);
-		if (optset_fastq_maxee && ExErr > opt(fastq_maxee))
+		if (ofilled_flt(OPT_fastq_maxee) && ExErr > oget_flt(OPT_fastq_maxee)) //src_refactor_opts
 			return FF_HighErr;
-		if (optset_fastq_maxee_rate && ExErr > opt(fastq_maxee_rate)*SI->m_L)
+		if (ofilled_flt(OPT_fastq_maxee_rate) && ExErr > oget_flt(OPT_fastq_maxee_rate)*SI->m_L) //src_refactor_opts
 			return FF_HighErr;
 		}
 
@@ -204,7 +204,7 @@ static void Thread(FASTQSeqSource *aSS)
 
 void cmd_fastq_filter()
 	{
-	const string &InputFileName = opt(fastq_filter);
+	const string &InputFileName = oget_str(OPT_fastq_filter); //src_refactor_opts
 
 	if (InputFileName == "")
 		Die("Missing input");
@@ -223,20 +223,20 @@ void cmd_fastq_filter()
 	g_fFastqOut = 0;
 	g_fFastaOut = 0;
 
-	if (optset_fastaout)
-		g_fFastaOut = CreateStdioFile(opt(fastaout));
+	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+		g_fFastaOut = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
 
-	if (optset_fastqout)
-		g_fFastqOut = CreateStdioFile(opt(fastqout));
+	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+		g_fFastqOut = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 
-	if (optset_fastaout_discarded)
-		g_fDiscFa = CreateStdioFile(opt(fastaout_discarded));
+	if (ofilled_str(OPT_fastaout_discarded)) //src_refactor_opts
+		g_fDiscFa = CreateStdioFile(oget_str(OPT_fastaout_discarded)); //src_refactor_opts
 
-	if (optset_fastqout_discarded)
-		g_fDiscFq = CreateStdioFile(opt(fastqout_discarded));
+	if (ofilled_str(OPT_fastqout_discarded)) //src_refactor_opts
+		g_fDiscFq = CreateStdioFile(oget_str(OPT_fastqout_discarded)); //src_refactor_opts
 
-	if (optset_eetabbedout)
-		g_fEEOut = CreateStdioFile(opt(eetabbedout));
+	if (ofilled_str(OPT_eetabbedout)) //src_refactor_opts
+		g_fEEOut = CreateStdioFile(oget_str(OPT_eetabbedout)); //src_refactor_opts
 
 	ProgressStartSS(SS, "Filtering", FastqFilterCB);
 	unsigned ThreadCount = GetRequestedThreadCount();
@@ -263,14 +263,14 @@ void cmd_fastq_filter()
 
 	Log("\n");
 	ProgressNoteLog("%10u  Reads (%s)", g_RecCount, IntToStr(g_RecCount));
-	if (optset_fastq_minqual)
-		ProgressNoteLog("%10u  Discared reads with Q < %u", g_MinQCount, opt(fastq_minqual));
-	if (optset_fastq_trunclen)
-		ProgressNoteLog("%10u  Discarded reads length < %u", g_ShortCount, opt(fastq_trunclen));
-	if (optset_fastq_maxns)
-		ProgressNoteLog("%10u  Discarded read with > %u Ns", g_MaxNsCount, opt(fastq_maxns));
-	if (optset_fastq_maxee)
-		ProgressNoteLog("%10u  Discarded reads with expected errs > %.2f", g_BadCount, opt(fastq_maxee));
+	if (ofilled_uns(OPT_fastq_minqual)) //src_refactor_opts
+		ProgressNoteLog("%10u  Discared reads with Q < %u", g_MinQCount, oget_uns(OPT_fastq_minqual)); //src_refactor_opts
+	if (ofilled_uns(OPT_fastq_trunclen)) //src_refactor_opts
+		ProgressNoteLog("%10u  Discarded reads length < %u", g_ShortCount, oget_uns(OPT_fastq_trunclen)); //src_refactor_opts
+	if (ofilled_uns(OPT_fastq_maxns)) //src_refactor_opts
+		ProgressNoteLog("%10u  Discarded read with > %u Ns", g_MaxNsCount, oget_uns(OPT_fastq_maxns)); //src_refactor_opts
+	if (ofilled_flt(OPT_fastq_maxee)) //src_refactor_opts
+		ProgressNoteLog("%10u  Discarded reads with expected errs > %.2f", g_BadCount, oget_flt(OPT_fastq_maxee)); //src_refactor_opts
 	ProgressNoteLog("%10u  Filtered reads (%s, %.1f%%)",
 	  g_OutRecCount, IntToStr(g_OutRecCount), GetPct(g_OutRecCount, g_RecCount));
 	}

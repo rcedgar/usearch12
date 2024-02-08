@@ -396,6 +396,6 @@ void UDBData::FromSeqDB(SeqDB &DB, UDBParams &Params)
 	myfree(m_Capacities);
 	m_Capacities = 0;
 
-	if (opt(validate))
+	if (oget_flag(OPT_validate)) //src_refactor_opts
 		ValidateRows();
 	}

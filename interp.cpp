@@ -22,4 +22,4 @@ double Interp(const double *xs, const double *ys, unsigned n, double x)
 	asserta(false);
 	return 0.0;
 	}
- 
+

@@ -227,7 +227,7 @@ c(qtrimhi,	"%u",		QTrimHi)
 
 	case UF_qsegf:
 		{
-		unsigned f = opt(flank);
+		unsigned f = oget_uns(OPT_flank); //src_refactor_opts
 		const byte *Q = AR->m_Query->m_Seq;
 		unsigned QL = AR->m_Query->m_L;
 		unsigned QLo = AR->m_HSP.Loi;
@@ -248,7 +248,7 @@ c(qtrimhi,	"%u",		QTrimHi)
 
 	case UF_tsegf:
 		{
-		unsigned f = opt(flank);
+		unsigned f = oget_uns(OPT_flank); //src_refactor_opts
 		const byte *T = AR->m_Target->m_Seq;
 		unsigned TL = AR->m_Target->m_L;
 		unsigned TLo = AR->m_HSP.Loj;

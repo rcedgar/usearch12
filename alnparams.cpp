@@ -330,20 +330,20 @@ void AlnParams::SetPenalties(const string &OpenStr, const string &ExtStr)
 void AlnParams::SetMxFromCmdLine(bool IsNucleo)
 	{
 	if (IsNucleo)
-		SetNucSubstMx(opt(match), opt(mismatch));
+		SetNucSubstMx(oget_flt(OPT_match), oget_flt(OPT_mismatch)); //src_refactor_opts
 	else
 		{
-		if (!optset_matrix)
+		if (!ofilled_str(OPT_matrix)) //src_refactor_opts
 			{
 			SubstMxName = "BLOSUM62";
 			SetBLOSUM62();
 			}
 		else
 			{
-			ReadSubstMx(opt(matrix), g_SubstMxf);
+			ReadSubstMx(oget_str(OPT_matrix), g_SubstMxf); //src_refactor_opts
 			g_SubstMx = g_SubstMxf.GetData();
 			g_SubstMxf.LogMe();
-			SubstMxName = sopt(matrix);
+			SubstMxName = oget_cstr(OPT_matrix); //src_refactor_opts
 			}
 		}
 	SubstMx = g_SubstMx;
@@ -359,13 +359,13 @@ void AlnParams::InitFromCmdLine(bool IsNucleo)
 	SetMxFromCmdLine(IsNucleo);
 
 // Local
-	if (optset_lopen || optset_lext)
+	if (ofilled_flt(OPT_lopen) || ofilled_flt(OPT_lext)) //src_refactor_opts
 		{
-		if (!optset_lopen || !optset_lext)
+		if (!ofilled_flt(OPT_lopen) || !ofilled_flt(OPT_lext)) //src_refactor_opts
 			Die("Must set both --lopen and --lext");
-		if (opt(lopen) < 0.0 || opt(lext) < 0.0)
+		if (oget_flt(OPT_lopen) < 0.0 || oget_flt(OPT_lext) < 0.0) //src_refactor_opts
 			Die("Invalid --lopen/--lext, gap penalties must be >= 0");
-		SetLocal(float(-opt(lopen)), float(-opt(lext)));
+		SetLocal(float(-oget_flt(OPT_lopen)), float(-oget_flt(OPT_lext))); //src_refactor_opts
 		}
 	else
 		{
@@ -381,7 +381,7 @@ void AlnParams::InitFromCmdLine(bool IsNucleo)
 		Init4(g_SubstMx, -10.0, -1.0, -0.5, -0.5);
 	else
 		Init4(g_SubstMx, -17.0, -1.0, -0.5, -0.5);
-	SetPenalties(opt(gapopen), opt(gapext));
+	SetPenalties(oget_str(OPT_gapopen), oget_str(OPT_gapext)); //src_refactor_opts
 	}
 
 float AlnParams::GetLocalOpen() const

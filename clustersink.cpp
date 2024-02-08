@@ -118,7 +118,7 @@ ClusterSink::ClusterSink(SeqDB *seqdb, UDBData *udbdata) :
 unsigned ClusterSink::GetSize(SeqInfo *SI)
 	{
 	unsigned Size = 1;
-	bool SizeIn = opt(sizein);
+	bool SizeIn = oget_flag(OPT_sizein); //src_refactor_opts
 	if (SizeIn)
 		{
 		const char *Label = SI->m_Label;
@@ -195,14 +195,14 @@ void ClusterSink::WriteConsTaxReport1(FILE *f, unsigned ClusterIndex)
 
 void ClusterSink::WriteConsTaxReport()
 	{
-	if (!optset_constax_report)
+	if (!ofilled_str(OPT_constax_report)) //src_refactor_opts
 		return;
 
-	string FileName = opt(constax_report);
+	string FileName = oget_str(OPT_constax_report); //src_refactor_opts
 	FILE *f = CreateStdioFile(FileName);
 	const unsigned SeqCount = m_CentroidDB->GetSeqCount();
-	bool SizeIn = opt(sizein);
-	bool SizeOut = opt(sizeout);
+	bool SizeIn = oget_flag(OPT_sizein); //src_refactor_opts
+	bool SizeOut = oget_flag(OPT_sizeout); //src_refactor_opts
 	const unsigned *Order = 0;
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
@@ -219,27 +219,27 @@ void ClusterSink::WriteConsTaxReport()
 const char *ClusterSink::MakeCentroidLabel(unsigned ClusterIndex, string &Label)
 	{
 	Label = m_CentroidDB->GetLabel(ClusterIndex);
-	if (opt(sizein) || opt(sizeout))
+	if (oget_flag(OPT_sizein) || oget_flag(OPT_sizeout)) //src_refactor_opts
 		StripSize(Label);
 
-	if (optset_relabel)
+	if (ofilled_str(OPT_relabel)) //src_refactor_opts
 		{
 		static unsigned g_RelabelCounter;
 
 		LOCK();
 		char Tmp[16];
 		sprintf(Tmp, "%u", ++g_RelabelCounter);
-		Label = opt(relabel) + string(Tmp);
+		Label = oget_str(OPT_relabel) + string(Tmp); //src_refactor_opts
 		UNLOCK();
 		}
 
-	if (opt(sizeout))
+	if (oget_flag(OPT_sizeout)) //src_refactor_opts
 		{
 		unsigned Size = GetClusterSize(ClusterIndex);
 		AppendSize(Label, Size);
 		}
 
-	if (opt(constax))
+	if (oget_flag(OPT_constax)) //src_refactor_opts
 		{
 		StripTax(Label);
 
@@ -261,10 +261,10 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 	asserta(m_CentroidDB != 0);
 	FILE *f = CreateStdioFile(FileName);
 	const unsigned SeqCount = m_CentroidDB->GetSeqCount();
-	bool SizeIn = opt(sizein);
-	bool SizeOut = opt(sizeout);
+	bool SizeIn = oget_flag(OPT_sizein); //src_refactor_opts
+	bool SizeOut = oget_flag(OPT_sizeout); //src_refactor_opts
 	const unsigned *Order = GetClusterSizeOrder();
-	bool ForceUniqueLabels = opt(force_unique_labels);
+	bool ForceUniqueLabels = oget_flag(OPT_force_unique_labels); //src_refactor_opts
 	set<string> LabelSet;
 	uint32 *ptrLoopIdx = 
 	  ProgressStartLoop(SeqCount, "Writing " + basenm(FileName));
@@ -274,7 +274,7 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 		unsigned SeqIndex = Order ? Order[k] : k;
 
 		unsigned Size = GetClusterSize(SeqIndex);
-		if (Size < opt(minsize))
+		if (Size < oget_uns(OPT_minsize)) //src_refactor_opts
 			break;
 
 		string Label;
@@ -311,8 +311,8 @@ void ClusterSink::CentroidsToFASTQ(const string &FileName)
 	asserta(m_CentroidDB != 0);
 	FILE *f = CreateStdioFile(FileName);
 	const unsigned SeqCount = m_CentroidDB->GetSeqCount();
-	bool SizeIn = opt(sizein);
-	bool SizeOut = opt(sizeout);
+	bool SizeIn = oget_flag(OPT_sizein); //src_refactor_opts
+	bool SizeOut = oget_flag(OPT_sizeout); //src_refactor_opts
 	const unsigned *Order = 0;
 	if (SizeOut)
 		Order = GetClusterSizeOrder();
@@ -324,7 +324,7 @@ void ClusterSink::CentroidsToFASTQ(const string &FileName)
 		unsigned SeqIndex = Order ? Order[k] : k;
 
 		unsigned Size = GetClusterSize(SeqIndex);
-		if (Size < opt(minsize))
+		if (Size < oget_uns(OPT_minsize)) //src_refactor_opts
 			continue;
 
 		string Label;
@@ -517,7 +517,7 @@ void ClusterSink::WriteUC_CRecs(FILE *f)
 		{
 		unsigned Size = m_ClusterSizes[ClusterIndex];
 		const char *Label = 0;
-		if (opt(constax))
+		if (oget_flag(OPT_constax)) //src_refactor_opts
 			Label = MakeCentroidLabel(ClusterIndex, s);
 		else
 			Label = m_CentroidDB->GetLabel(ClusterIndex);
@@ -621,15 +621,15 @@ void ClusterSink::OnAllDone(const SeqDB *InputDB, const SeqDB *UniqueDB)
 
 	WriteUC_CRecs(OutputSink::m_fUC);
 	if (g_Cmd == CMD_cluster_otus)
-		CentroidsToFASTA(opt(otus));
+		CentroidsToFASTA(oget_str(OPT_otus)); //src_refactor_opts
 	else
 		{
-		CentroidsToFASTA(opt(centroids));
-		CentroidsToFASTQ(opt(centroids_fastq));
+		CentroidsToFASTA(oget_str(OPT_centroids)); //src_refactor_opts
+		CentroidsToFASTQ(oget_str(OPT_centroids_fastq)); //src_refactor_opts
 		}
 
 	if (InputDB != 0)
-		ClustersOut(opt(clusters));
+		ClustersOut(oget_str(OPT_clusters)); //src_refactor_opts
 
 	WriteConsTaxReport();
 	LogResults();

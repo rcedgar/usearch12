@@ -4,7 +4,7 @@ void GetSampleNameFromIlluminaFileName(const string &FileName, string &SampleNam
 
 void MakeR2FileName(const string &R1FileName, string &R2FileName)
 	{
-	if (opt(interleaved))
+	if (oget_flag(OPT_interleaved)) //src_refactor_opts
 		{
 		R2FileName.clear();
 		return;
@@ -23,7 +23,7 @@ void GetFastqs2(const string &FwdOpt, const string &RevOpt,
 	{
 	FwdFileNames.clear();
 	RevFileNames.clear();
-	string FqDir = opt(fqdir);
+	string FqDir = oget_str(OPT_fqdir); //src_refactor_opts
 	if (!FqDir.empty() && !EndsWith(FqDir, "/"))
 		FqDir += '/';
 

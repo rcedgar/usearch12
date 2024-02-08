@@ -41,7 +41,7 @@ void UDBUsortedSearcher::SetQueryImpl()
 	if (!m_Big)
 		{
 		unsigned SeqCount = GetSeqCount();
-		m_Big = (SeqCount > opt(big));
+		m_Big = (SeqCount > oget_uns(OPT_big)); //src_refactor_opts
 		uint32 *U = m_U.Data;
 		if (m_Big)
 			{
@@ -95,14 +95,14 @@ void UDBUsortedSearcher::UDBSearchInit()
 
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
-	if (!optset_id)
+	if (!ofilled_flt(OPT_id)) //src_refactor_opts
 		Die("--id not set");
 
-	m_MinFractId = float(opt(id));
+	m_MinFractId = float(oget_flt(OPT_id)); //src_refactor_opts
 	if (m_MinFractId > 1.0)
 		Die("-id out of range, should be 0.0 to 1.0");
 
-	m_Self = opt(self);
+	m_Self = oget_flag(OPT_self); //src_refactor_opts
 	}
 
 // Input: m_Query, Output: m_TopOrder, m_TopTargetIndexes
@@ -191,12 +191,12 @@ void UDBUsortedSearcher::AlignAll()
 
 void UDBUsortedSearcher::SortTop()
 	{
-	if (opt(quicksort))
+	if (oget_flag(OPT_quicksort)) //src_refactor_opts
 		QuickSortTop();
 	else
 		CountSortTop();
 
-	if (opt(log_sortedu))
+	if (oget_flag(OPT_log_sortedu)) //src_refactor_opts
 		{
 		const unsigned SeqCount = GetSeqCount();
 		Log("\n");
@@ -299,19 +299,19 @@ void UDBUsortedSearcher::SetTop(unsigned MinU)
 	if (MinU == 0)
 		MinU = 1;
 
-	if (opt(bump) != 0)
-		SetTopBump(MinU, opt(bump));
+	if (oget_uns(OPT_bump) != 0) //src_refactor_opts
+		SetTopBump(MinU, oget_uns(OPT_bump)); //src_refactor_opts
 	else
 		SetTopNoBump(MinU);
 
-	if (opt(log_u))
+	if (oget_flag(OPT_log_u)) //src_refactor_opts
 		{
 		Log("\n");
 		Log(" TopU Q>%s\n", m_Query->m_Label);
-		if (opt(bump) == 0)
+		if (oget_uns(OPT_bump) == 0) //src_refactor_opts
 			Log(" nobump\n");
 		else
-			Log(" bump %u\n", opt(bump));
+			Log(" bump %u\n", oget_uns(OPT_bump)); //src_refactor_opts
 		Log("  SeqIx      U  Target\n");
 		Log("-------  -----  ------\n");
 		const unsigned *TopU = m_TopU.Data;
@@ -335,7 +335,7 @@ void UDBUsortedSearcher::SetU(unsigned QueryStep)
 		SetU_Coded(QueryStep);
 	else
 		SetU_NonCoded(QueryStep);
-	if (opt(log_u))
+	if (oget_flag(OPT_log_u)) //src_refactor_opts
 		{
 		const unsigned SeqCount = GetSeqCount();
 		Log("\n");
@@ -610,7 +610,7 @@ unsigned UDBUsortedSearcher::GetHot(SeqInfo *Query, unsigned MaxHot, unsigned Ma
 	if (N == 0)
 		return 0;
 
-	if (opt(log_u))
+	if (oget_flag(OPT_log_u)) //src_refactor_opts
 		{
 		Log("\n");
 		Log(" HotU Q>%s\n", m_Query->m_Label);

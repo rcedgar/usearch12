@@ -305,7 +305,7 @@ const char *AlignResult::GetCompressedPath()
 const char *AlignResult::GetQueryRow()
 	{
 	AllocAlnLength();
-	if (opt(show_termgaps))
+	if (oget_flag(OPT_show_termgaps)) //src_refactor_opts
 		return GetQueryRowWithTermGaps();
 
 	const byte *Q = GetQuerySeg();
@@ -326,7 +326,7 @@ const char *AlignResult::GetQueryRow()
 const char *AlignResult::GetQueryQualRow()
 	{
 	AllocAlnLength();
-	asserta(!opt(show_termgaps));
+	asserta(!oget_flag(OPT_show_termgaps)); //src_refactor_opts
 
 	const char *Qual = GetQueryQualSeg();
 	const char *Path = GetPath();
@@ -480,7 +480,7 @@ const char *AlignResult::GetAnnotRowWithTermGaps(bool Nucleo)
 
 const char *AlignResult::GetAnnotRow(bool Nucleo)
 	{
-	if (opt(show_termgaps))
+	if (oget_flag(OPT_show_termgaps)) //src_refactor_opts
 		return GetAnnotRowWithTermGaps(Nucleo);
 
 	const char *Path = GetPath();
@@ -506,7 +506,7 @@ const char *AlignResult::GetAnnotRow(bool Nucleo)
 const char *AlignResult::GetTargetRow()
 	{
 	AllocAlnLength();
-	if (opt(show_termgaps))
+	if (oget_flag(OPT_show_termgaps)) //src_refactor_opts
 		return GetTargetRowWithTermGaps();
 
 	const byte *T = GetTargetSeg();
@@ -883,7 +883,7 @@ double AlignResult::GetKmerId()
 	{
 	Fill();
 
-	const unsigned w = (optset_wordlength ? opt(wordlength) : 8);
+	const unsigned w = (ofilled_uns(OPT_wordlength) ? oget_uns(OPT_wordlength) : 8); //src_refactor_opts
 	const unsigned MinL = min(m_Query->m_L, m_Target->m_L);
 	if (MinL < w)
 		return 0.0;

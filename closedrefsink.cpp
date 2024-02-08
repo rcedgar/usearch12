@@ -26,7 +26,7 @@ ClosedRefSink::ClosedRefSink() : HitSink(false, true, true)
 		m_RefSeqIndexToOTUIndex = new vector<unsigned>;
 		m_OTUIndexToTotalSize = new vector<unsigned>;
 		m_OTUIndexToMemberCount = new vector<unsigned>;
-		m_fTab = CreateStdioFile(opt(tabbedout));
+		m_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 		}
 	UNLOCK_CLASS();
 	}
@@ -125,7 +125,7 @@ void ClosedRefSink::OnAllDone()
 	m_fTab = 0;
 
 	const unsigned OTUCount = SIZE(*m_OTUIndexToTotalSize);
-	if (!optset_dbotus && !optset_dataotus)
+	if (!ofilled_str(OPT_dbotus) && !ofilled_str(OPT_dataotus)) //src_refactor_opts
 		return;
 
 	const vector<unsigned> &v = (*m_OTUIndexToTotalSize);
@@ -135,10 +135,10 @@ void ClosedRefSink::OnAllDone()
 
 	FILE *fDb = 0;
 	FILE *fData = 0;
-	if (optset_dbotus)
-		fDb = CreateStdioFile(opt(dbotus));
-	if (optset_dataotus)
-		fData = CreateStdioFile(opt(dataotus));
+	if (ofilled_str(OPT_dbotus)) //src_refactor_opts
+		fDb = CreateStdioFile(oget_str(OPT_dbotus)); //src_refactor_opts
+	if (ofilled_str(OPT_dataotus)) //src_refactor_opts
+		fData = CreateStdioFile(oget_str(OPT_dataotus)); //src_refactor_opts
 
 	for (unsigned k = 0; k < N; ++k)
 		{

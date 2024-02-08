@@ -10,12 +10,6 @@
 #define CMP			0 // with simple
 #define TRACESTATE	0
 
-#if	TRACE
-static string opt(tracestate);
-static unsigned opt(itrace);
-static unsigned opt(jtrace);
-#endif
-
 static inline char GetTBBitM(byte **TB, unsigned i, unsigned j)
 	{
 	byte c = TB[i][j];
@@ -198,11 +192,6 @@ static void LogDP()
 
 static void SAVE_DPM(unsigned i, unsigned j, float x, float PrevM, float PrevD, float PrevI)
 	{
-#if	TRACESTATE
-	if (!opt(tracestate).empty() && opt(tracestate)[0] == 'M' && opt(itrace) == i && opt(jtrace) == j)
-		Log("TRACESTATE Fast DPM[%u][%u] = %.1f, M %.1f D %.1f I %.1f\n",
-		  i, j, x, PrevM, PrevD, PrevI);
-#endif
 #if	TRACE
 	Log("Fast: DPM[%u][%u] = %.1f, PM %.1f PD %.1f PI %.1f\n",
 	  i, j, x, PrevM, PrevD, PrevI);
@@ -219,11 +208,6 @@ static void SAVE_DPM(unsigned i, unsigned j, float x, float PrevM, float PrevD, 
 
 static void SAVE_DPD(unsigned i, unsigned j, float x, float PrevM, float PrevD)
 	{
-#if	TRACESTATE
-	if (!opt(tracestate).empty() && opt(tracestate)[0] == 'D' && opt(itrace) == i && opt(jtrace) == j)
-		Log("TRACESTATE Fast DPD[%u][%u] = %.1f, M %.1f D %.1f\n",
-		  i, j, x, PrevM, PrevD);
-#endif
 #if	TRACE
 	Log("Fast: DPD[%u][%u] = %.1f, PM %.1f PD %.1f\n",
 	  i, j, x, PrevM, PrevD);
@@ -241,11 +225,6 @@ static void SAVE_DPD(unsigned i, unsigned j, float x, float PrevM, float PrevD)
 
 static void SAVE_DPI(unsigned i, unsigned j, float x, float PrevM, float PrevI)
 	{
-#if	TRACESTATE
-	if (!opt(tracestate).empty() && opt(tracestate)[0] == 'I' && opt(itrace) == i && opt(jtrace) == j)
-		Log("TRACESTATE Fast DPI[%u][%u] = %.1f, M %.1f I %.1f\n",
-		  i, j, x, PrevM, PrevI);
-#endif
 #if	TRACE
 	Log("Fast: DPI[%u][%u] = %.1f, PM %.1f PI %.1f\n",
 	  i, j, x, PrevM, PrevI);
@@ -621,11 +600,7 @@ float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 		// I0 = DPI[i][j]
 			cmpm(i, j, SavedM0);
 			cmpi(i, j, I0);
-#if	TRACESTATE
-			float SavedI0 = I0;
-#else
 #define		SavedI0	0
-#endif
 			float mi = SavedM0 + Open;
 			I0 += Ext;
 			SAVE_TBI(i, j+1, 'I');
@@ -679,11 +654,7 @@ float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, un
 	// Drow[jhi] = DPD[i][jhi+1]
 		cmpm(i, jhi1, M0);
 		cmpd(i, jhi1, Drow[jhi1]);
-#if	TRACESTATE
-		float SavedD = Drow[jhi1];
-#else
 #define	SavedD 0
-#endif
 
 		TBrow[jhi1] = 0;
 		float md = M0 + Open;

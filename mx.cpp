@@ -76,7 +76,7 @@ void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 		{
 		if (m_AllocatedRowCount > 0)
 			{
-			if (opt(logmemgrows))
+			if (oget_flag(OPT_logmemgrows)) //src_refactor_opts
 				Log("MxBase::Alloc grow %s %u x %u -> %u x %u, %s bytes\n",
 				  Name.c_str(), m_AllocatedRowCount, m_AllocatedColCount,
 				  RowCount, ColCount,

@@ -28,8 +28,8 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 	if (m_LR.m_EOF)
 		return false;
 
-	bool TruncLabels = opt(trunclabels);
-	bool DespaceLabels = opt(despacelabels);
+	bool TruncLabels = oget_flag(OPT_trunclabels); //src_refactor_opts
+	bool DespaceLabels = oget_flag(OPT_despacelabels); //src_refactor_opts
 // Outer for loop just to allow skipping of empty sequences
 	for (;;)
 		{
@@ -73,15 +73,15 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 			Label[i-1] = c;
 			}
 		Label[n-1] = 0;
-		if (optset_truncstr)
+		if (ofilled_str(OPT_truncstr)) //src_refactor_opts
 			{
-			const char *TruncStr = opt(truncstr).c_str();
+			const char *TruncStr = oget_str(OPT_truncstr).c_str(); //src_refactor_opts
 			char *p = strstr(Label, TruncStr);
 			if (p != 0)
 				*p = 0;
 			}
 
-		const bool AllowDigits = opt(allow_digits);
+		const bool AllowDigits = oget_flag(OPT_allow_digits); //src_refactor_opts
 		unsigned SeqLength = 0;
 		for (;;)
 			{
