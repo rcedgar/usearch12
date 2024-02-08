@@ -1596,8 +1596,8 @@ void LogElapsedTimeAndRAM()
 
 	Log("\n");
 	Log("Finished %s\n", st.c_str()); // there is a newline in s
-	Log("Elapsed time %s", SecsToHHMMSS((int) Secs));
-	Log("Max memory %s", MemBytesToStr(g_PeakMemUseBytes));
+	Log("Elapsed time %s\n", SecsToHHMMSS((int) Secs));
+	Log("Max memory %s\n", MemBytesToStr(g_PeakMemUseBytes));
 	}
 
 const char *PctStr(double x, double y)

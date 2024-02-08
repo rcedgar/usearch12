@@ -10,7 +10,8 @@
 #include "progress.h"
 #include <atomic>
 
-static size_t MAX_PENDING = 128;
+static size_t DEFAULT_MAX_PENDING = 128;
+static size_t g_MaxPending = DEFAULT_MAX_PENDING;
 
 static vector<vector<SeqInfo *> > g_PendingVec;
 static UDBData *g_udb;
@@ -24,6 +25,13 @@ static mutex g_UpdateLock;
 static vector<UDBUsortedSearcher *> g_USs;
 static vector<OutputSink *> g_OSs;
 static vector<ObjMgr *> g_OMs;
+
+static void ClusterMtCB(string &s)
+	{
+	uint N = g_ClusterCount + g_MemberCount;
+	double AvgSize = g_ClusterCount == 0 ? 0 : double(N)/g_ClusterCount;
+	Ps(s, "%s clusters, avg size %.1f", IntToStr(g_ClusterCount), AvgSize);
+	}
 
 static const char *MyPCB()
 	{
@@ -93,7 +101,7 @@ static void Thread(uint ThreadIndex, SeqSource *SS, bool Nucleo)
 			Query->Up();
 			Pending.push_back(Query);
 			++g_TotalPendingCount;
-			if (g_TotalPendingCount >= MAX_PENDING)
+			if (g_TotalPendingCount >= g_MaxPending)
 				{
 				US->m_HitMgr->OnQueryDone(Query);
 				Query->Down();
@@ -131,6 +139,8 @@ void cmd_cluster_mt()
 	const string &QueryFileName = opt(cluster_mt);
 	if (!optset_id)
 		Die("Must set -id");
+	if (optset_maxpending)
+		g_MaxPending = opt(maxpending);
 
 	bool IsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &IsNucleo);
@@ -170,7 +180,7 @@ void cmd_cluster_mt()
 		g_OMs.push_back(OM);
 		}
 
-	ProgressStartSS(*SS, "Clustering");
+	ProgressStartSS(*SS, "UCLUST-mt", ClusterMtCB);
 	for (;;)
 		{
 		if (SS->m_EndOfFile)
@@ -182,7 +192,4 @@ void cmd_cluster_mt()
 	ProgressDoneSS();
 
 	g_udb->ToFasta(opt(centroids));
-//	ObjMgr::LogGlobalStats();
-	ProgressNoteLog("%u clusters, %u members",
-	  g_ClusterCount, g_MemberCount);
 	}

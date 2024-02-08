@@ -135,8 +135,11 @@ void OtuTabCB(string &str)
 		return;
 	uint OTUCount = OTUTableSink::m_OT->m_OTUCount;
 	uint SampleCount = OTUTableSink::m_OT->m_SampleCount;
-	Ps(str, "%u OTUs, %u samples, %.1f%% assigned",
-		OTUCount, SampleCount, HitMgr::GetPctMatched());
+	Ps(str, "%u OTUs, %u samples, %s assigned (%.1f%%)",
+		OTUCount,
+		SampleCount, 
+		IntToStr(HitMgr::m_QueryCount),
+		HitMgr::GetPctMatched());
 	}
 
 void UPARSECB(string &str)

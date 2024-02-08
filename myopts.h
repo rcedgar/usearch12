@@ -144,6 +144,7 @@ UNS_OPT(self_words_drop,	4,			1,			UINT_MAX)	// :document
 UNS_OPT(flank,				8,			1,			UINT_MAX)	// :document
 //UNS_OPT(minampsize,			8,			1,			UINT_MAX)	// :document
 UNS_OPT(mincount,			UINT_MAX,	0,			UINT_MAX)	// :document
+UNS_OPT(maxpending,			UINT_MAX,	0,			UINT_MAX)	// :document
 
 // uchime
 UNS_OPT(mindiffs,			3,			1,			UINT_MAX)	// Mininum diffs to allow on each side of cross-over.
