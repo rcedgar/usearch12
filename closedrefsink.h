@@ -15,6 +15,8 @@ public:
 	static vector<unsigned> *m_OTUIndexToMemberCount;
 	static FILE *m_fTab;
 	static unsigned m_OTUCount;
+	static unsigned m_AssignedCount;
+	static unsigned m_UnssignedCount;
 
 public:
 	ClosedRefSink();

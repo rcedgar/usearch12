@@ -16,6 +16,8 @@
 void InitGlobals(bool Nucleo);
 void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string> &InfoStrs);
 
+static uint g_GoodCount;
+static uint g_MinQSize;
 static FILE *g_fTab;
 
 static bool IsAccept(AlignResult *AR)
@@ -60,6 +62,11 @@ static unsigned *g_TargetIndexes;
 static unsigned *g_TotalSizes;
 static const unsigned MAX_HOT = 8;
 static const unsigned MAX_DROP = 8;
+
+static void UnoiseCB(string &s)
+	{
+	Ps(s, "%u good seqs. (minsize %u)", g_GoodCount, g_MinQSize);
+	}
 
 static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned *ptrDiffs)
 	{
@@ -152,7 +159,7 @@ void cmd_unoise3()
 	unsigned MinAmpSize = 8;
 	if (optset_minsize)
 		MinAmpSize = opt(minsize);
-	unsigned MinQSize = MinAmpSize;
+	g_MinQSize = MinAmpSize;
 	unsigned UniqCount = InputSeqCount;
 	for (unsigned SeqIndex = 0; SeqIndex < InputSeqCount; ++SeqIndex)
 		{
@@ -166,11 +173,11 @@ void cmd_unoise3()
 			}
 		}
 
-	unsigned GoodCount = 0;
+	g_GoodCount = 0;
 	unsigned CorrectedCount = 0;
 	vector<unsigned> UniqIndexToAmpIndex;
 	vector<unsigned> UniqIndexToDiffs;
-	uint32 *ptrLoopIdx = ProgressStartLoop(UniqCount, "Denoising");
+	uint32 *ptrLoopIdx = ProgressStartLoop(UniqCount, "Denoising", UnoiseCB);
 	for (uint SeqIndex = 0; SeqIndex < UniqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
@@ -211,7 +218,7 @@ void cmd_unoise3()
 			}
 		else
 			{
-			++GoodCount;
+			++g_GoodCount;
 			TargetIndex = USS->m_UDBData->AddSIToDB_CopyData(Query);
 			Diffs = 0;
 			g_TotalSizes[TargetIndex] = QSize;
@@ -233,7 +240,7 @@ void cmd_unoise3()
 	SeqDB AmpDB;
 	const SeqDB &DB = *USS->m_UDBData->m_SeqDB;
 	unsigned DBSeqCount = DB.GetSeqCount();
-	asserta(DBSeqCount == GoodCount);
+	asserta(DBSeqCount == g_GoodCount);
 	const unsigned AmpCount = DBSeqCount;
 	unsigned LastSize = UINT_MAX;
 	for (unsigned AmpIndex = 0; AmpIndex < AmpCount; ++AmpIndex)

@@ -10,6 +10,15 @@
 
 void InitGlobals(bool Nucleo);
 
+static uint g_GoodCount = 0;
+static uint g_ChimeraCount = 0;
+
+static void UchimeCB(string &s)
+	{
+	double Pct = GetPct(g_ChimeraCount, g_ChimeraCount + g_GoodCount);
+	Ps(s, "%u hits (%.1f%%)", g_ChimeraCount, Pct);
+	}
+
 void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
   vector<string> &InfoStrs)
 	{
@@ -50,12 +59,12 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	if (optset_uchimealnout)
 		fUCA = CreateStdioFile(opt(uchimealnout));
 
-	unsigned GoodCount = 0;
-	unsigned ChimeraCount = 0;
+	g_GoodCount = 0;
+	g_ChimeraCount = 0;
 	unsigned SearchSeqCount = 0;
 	unsigned LastSize = UINT_MAX;
 	vector<unsigned> Sizes;
-	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "UCHIME de novo");
+	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "Chimeras", UchimeCB);
 	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
 		{
 		*ptrLoopIdx = SeqIndex;
@@ -135,16 +144,16 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 		Query->Down();
 
 		if (IsChimera)
-			++ChimeraCount;
+			++g_ChimeraCount;
 		else
-			++GoodCount;
+			++g_GoodCount;
 		IsChimeraVec.push_back(IsChimera);
 		InfoStrs.push_back(InfoStr);
 		LastSize = QSize;
 
 		unsigned QueryCount = SeqIndex + 1;
 		}
-	ProgressDoneOther();
+	ProgressDoneLoop();
 
 	CloseStdioFile(fUCA);
 	CloseStdioFile(DeParser::m_fTab);

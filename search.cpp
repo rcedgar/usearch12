@@ -108,7 +108,15 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	bool Xlat = GetXlat(QueryIsNucleo, DBIsNucleo);
 
 	SeqSource *SS = MakeSeqSource(QueryFileName);
-	ProgressStartSS(*SS, "Searching", SearcherCB);
+	PTR_PROGRESS_CB CB = SearcherCB;
+	const char *Activity = "Searching";
+	switch (Cmd)
+		{
+	case CMD_otutab:		CB = OtuTabCB; Activity = "Mapping"; break;
+	case CMD_closed_ref:	CB = ClosedRefCB; Activity = "Mapping"; break;
+	case CMD_sintax:		CB = SintaxCB; Activity = "Classifying"; break;
+		}
+	ProgressStartSS(*SS, Activity, CB);
 
 	unsigned t1 = GetElapsedSecs();
 	unsigned ThreadCount = GetRequestedThreadCount();

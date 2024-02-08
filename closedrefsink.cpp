@@ -13,6 +13,8 @@ vector<unsigned> *ClosedRefSink::m_RefSeqIndexToOTUIndex;
 vector<unsigned> *ClosedRefSink::m_OTUIndexToTotalSize;
 vector<unsigned> *ClosedRefSink::m_OTUIndexToMemberCount;
 unsigned ClosedRefSink::m_OTUCount;
+unsigned ClosedRefSink::m_AssignedCount;
+unsigned ClosedRefSink::m_UnssignedCount;
 
 ClosedRefSink::ClosedRefSink() : HitSink(false, true, true)
 	{
@@ -38,6 +40,7 @@ void ClosedRefSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
 	if (AR0 == 0)
 		{
 		LOCK_CLASS();
+		++m_UnssignedCount;
 		if (m_fTab != 0)
 			fprintf(m_fTab, "%s\t*\t*\t*\t*\t*\n", QueryLabel);
 		UNLOCK_CLASS();
@@ -45,6 +48,7 @@ void ClosedRefSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
 		}
 
 	LOCK_CLASS();
+	++m_AssignedCount;
 	unsigned TopTargetIndex = AR0->m_Target->m_Index;
 	double TopFractId = HM->GetFractId(0);
 	const char *TopTargetLabel = AR0->m_Target->m_Label;

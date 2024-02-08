@@ -3,10 +3,13 @@
 #include "tax.h"
 #include "taxy.h"
 #include "sintaxsearcher.h"
+#include "cpplock.h"
 
 FILE *SintaxSearcher::m_f;
 Taxy *SintaxSearcher::m_Taxy;
 const vector<unsigned> *SintaxSearcher::m_SeqIndexToTaxIndex;
+uint SintaxSearcher::m_QueryCount;
+uint SintaxSearcher::m_GenusCount;
 
 void SintaxSearcher::SearchImpl()
 	{
@@ -28,6 +31,9 @@ void SintaxSearcher::SearchImpl()
 
 void SintaxSearcher::SetQueryImpl()
 	{
+	LOCK();
+	++m_QueryCount;
+	UNLOCK();
 	if (!m_Query->m_RevComp)
 		{
 		m_cStrand = '?';
@@ -243,6 +249,7 @@ void SintaxSearcher::Classify()
 	bool Prod = opt(tax_prod);
 	double ProdP = 1.0;
 	const unsigned Depth = SIZE(m_Pred);
+	double Cutoff = opt(sintax_cutoff);
 	for (unsigned i = 0; i < Depth; ++i)
 		{
 		const string &PredName = m_Pred[i];
@@ -259,6 +266,12 @@ void SintaxSearcher::Classify()
 			{
 			ProdP *= P;
 			P = ProdP;
+			}
+		if (P >= Cutoff && PredName[0] == 'g')
+			{
+			LOCK();
+			++m_GenusCount;
+			UNLOCK();
 			}
 		m_Ps.push_back(P);
 		}

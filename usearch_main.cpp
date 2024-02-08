@@ -46,11 +46,12 @@ int main(int argc, char **argv)
 	extern vector<string> g_Argv;
 	uint n = SIZE(g_Argv);
 	asserta(n > 0);
-	string ShortCmdLine = g_Argv[1];
+	string ShortCmdLine = g_Argv[1].substr(1, string::npos);
 	if (n > 2)
-		ShortCmdLine += " " + g_Argv[2];
+		ShortCmdLine += " " + basenm(g_Argv[2]);
 
 	StartProgressThread();
+	ProgressNoteNoPrefix("%s", ShortCmdLine.c_str());
 
 	InitAlpha();
 
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
 		ObjMgr::LogGlobalStats();
 
 	CheckUsedOpts(false);
-	ProgressNote("Exiting");
+	ProgressNote("Finished");
 	StopProgressThread();
 	return 0;
 	}

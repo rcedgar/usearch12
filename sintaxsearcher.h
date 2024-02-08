@@ -11,6 +11,8 @@ public:
 	static FILE *m_f;
 	static Taxy *m_Taxy;
 	static const vector<unsigned> *m_SeqIndexToTaxIndex;
+	static uint m_QueryCount;
+	static uint m_GenusCount;
 
 public:
 	char m_cStrand;

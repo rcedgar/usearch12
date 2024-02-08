@@ -4,7 +4,10 @@
 #include "cpplock.h"
 #include "hitmgr.h"
 #include "clustersink.h"
+#include "otutabsink.h"
+#include "closedrefsink.h"
 #include "upclustersink.h"
+#include "sintaxsearcher.h"
 #include <chrono>
 #include <list>
 
@@ -99,7 +102,6 @@ void SearcherCB(string &str)
 	{
 	double Pct = HitMgr::GetPctMatched();
 	uint Hits = HitMgr::m_QueryWithHitCount;
-
 	Ps(str, "%s hits (%.1f%%)", IntToStr(Hits), Pct);
 	}
 
@@ -108,6 +110,33 @@ void ClusterCB(string &str)
 	uint N = ClusterSink::m_ClusterIndex + 1;
 	double a = double(ClusterSink::m_QueryCount)/N;
 	Ps(str, "%s clusters, avg size %.1f", IntToStr(N), a);
+	}
+
+void ClosedRefCB(string &str)
+	{
+	uint OTUCount = ClosedRefSink::GetOTUCount();
+	uint NA = ClosedRefSink::m_AssignedCount;
+	uint NU = ClosedRefSink::m_UnssignedCount;
+	Ps(str, "%u OTUs, %s seqs. mapped (%.1f%%)",
+	  OTUCount, NA, GetPct(NA, NA+NU));
+	}
+
+void SintaxCB(string &str)
+	{
+	uint NQ = SintaxSearcher::m_QueryCount;
+	uint NG = SintaxSearcher::m_GenusCount;
+	Ps(str, "%u / %u predicted genus (%.1f%%)",
+	  NG, NQ, GetPct(NG, NQ));
+	}
+
+void OtuTabCB(string &str)
+	{
+	if (OTUTableSink::m_OT == 0)
+		return;
+	uint OTUCount = OTUTableSink::m_OT->m_OTUCount;
+	uint SampleCount = OTUTableSink::m_OT->m_SampleCount;
+	Ps(str, "%u OTUs, %u samples, %.1f%% assigned",
+		OTUCount, SampleCount, HitMgr::GetPctMatched());
 	}
 
 void UPARSECB(string &str)
@@ -395,7 +424,7 @@ void StopProgressThread()
 	LOCK();
 	g_AbortProgress = true;
 	OutputPendingLines();
-	fputc('\n', prog_stream);
+	fputs("\n\n", prog_stream);
 	UNLOCK();
 	}
 
@@ -415,6 +444,20 @@ void ProgressNote(const char *fmt, ...)
 	Line += " ";
 	Line += string(s);
 	PushText(Line, TT_Note);
+	UNLOCK();
+	}
+
+void ProgressNoteNoPrefix(const char *fmt, ...)
+	{
+	LOCK();
+	va_list ArgList;
+	va_start(ArgList, fmt);
+	char s[MAXSTR];
+	vsnprintf(s, MAXSTR-1, fmt, ArgList);
+	s[MAXSTR-1] = '\0';
+	va_end(ArgList);
+
+	PushText(string(s), TT_Note);
 	UNLOCK();
 	}
 
@@ -497,6 +540,7 @@ void ProgressDoneOther()
 	string Line;
 	MakeOtherLine(Line, true);
 	PushText(Line, TT_LoopLast);
+	Log("%s\n", Line.c_str());
 
 	g_State = PS_Idle;
 	g_CB = 0;
@@ -514,6 +558,7 @@ void ProgressDoneLoop()
 	string Line;
 	MakeLoopLine(Line, true);
 	PushText(Line, TT_LoopLast);
+	Log("%s\n", Line.c_str());
 
 	g_State = PS_Idle;
 	g_CB = 0;
@@ -530,6 +575,7 @@ void ProgressDoneSS()
 	string Line;
 	MakeSSLine(Line, true);
 	PushText(Line, TT_LoopLast);
+	Log("%s\n", Line.c_str());
 
 	g_SS = 0;
 	g_State = PS_Idle;
