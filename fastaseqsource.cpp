@@ -73,7 +73,7 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 			Label[i-1] = c;
 			}
 		Label[n-1] = 0;
-		if (ofilled_str(OPT_truncstr)) //src_refactor_opts
+		if (ofilled(OPT_truncstr)) //src_refactor_opts
 			{
 			const char *TruncStr = oget_str(OPT_truncstr).c_str(); //src_refactor_opts
 			char *p = strstr(Label, TruncStr);

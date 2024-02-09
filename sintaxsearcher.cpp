@@ -291,9 +291,11 @@ void SintaxSearcher::Init()
 	UNLOCK_CLASS();
 
 	m_KTop = oget_flag(OPT_ktop); //src_refactor_opts
-	optused_randseed = true;
-	optused_tax_prod = true;
-	string s = (ofilled_str(OPT_boot_subset) ? oget_str(OPT_boot_subset) : "32"); //src_refactor_opts
+	oset_unsd(OPT_randseed, 1);
+	oset_flag(OPT_tax_prod);
+	//optused_randseed = true;
+	//optused_tax_prod = true;
+	string s = (ofilled(OPT_boot_subset) ? oget_str(OPT_boot_subset) : "32"); //src_refactor_opts
 	if (s.empty())
 		s = "32";
 	if (s[0] == '/')
@@ -316,7 +318,7 @@ void SintaxSearcher::Init()
 void SintaxSearcher::OpenOutputFiles()
 	{
 	LOCK_CLASS();
-	if (ofilled_str(OPT_tabbedout) && m_f == 0) //src_refactor_opts
+	if (ofilled(OPT_tabbedout) && m_f == 0) //src_refactor_opts
 		m_f = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 	UNLOCK_CLASS();
 	}

@@ -95,7 +95,7 @@ void UDBUsortedSearcher::UDBSearchInit()
 
 	asserta(m_UDBData->m_Params.m_StepPrefix == 0);
 
-	if (!ofilled_flt(OPT_id)) //src_refactor_opts
+	if (!ofilled(OPT_id)) //src_refactor_opts
 		Die("--id not set");
 
 	m_MinFractId = float(oget_flt(OPT_id)); //src_refactor_opts

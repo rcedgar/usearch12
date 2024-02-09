@@ -162,7 +162,7 @@ unsigned GetRequestedThreadCount()
 	unsigned MaxN = std::thread::hardware_concurrency();
 	unsigned CoreCount = GetCPUCoreCount();
 	bool MsgDone = false;
-	if (ofilled_uns(OPT_threads)) //src_refactor_opts
+	if (ofilled(OPT_threads)) //src_refactor_opts
 		N = oget_uns(OPT_threads); //src_refactor_opts
 	else
 		{
@@ -1273,6 +1273,16 @@ bool IsValidFloatStr(const char *s)
 	return !Bad;
 	}
 
+bool IsValidUintStr(const char *s)
+	{
+	if (*s == 0)
+		return false;
+	for (const char *p = s; *p; ++p)
+		if (!isdigit(*p))
+			return false;
+	return true;
+	}
+
 bool IsValidFloatStr(const string &s)
 	{
 	return IsValidFloatStr(s.c_str());
@@ -1972,7 +1982,7 @@ static void InitRand()
 	g_InitRandDone = true;
 
 	unsigned Seed;
-	if (ofilled_uns(OPT_randseed)) //src_refactor_opts
+	if (ofilled(OPT_randseed)) //src_refactor_opts
 		Seed = oget_uns(OPT_randseed); //src_refactor_opts
 	else
 		Seed = (unsigned) (time(0)*getpid());

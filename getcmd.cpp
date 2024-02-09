@@ -16,7 +16,7 @@ CMD GetCmd()
 		return g_Cmd;
 
 	g_Cmd = CMD_none;
-#define A(x)	if (optset_##x) StoreCmd(CMD_##x);
+#define A(x)	if (ofilled(OPT_##x)) StoreCmd(CMD_##x);
 #include "cmds.h"
 
 	if (g_Cmd == CMD_none)

@@ -167,13 +167,13 @@ static void DoOrient(const string &QueryFileName)
 	void InitGlobals(bool Nucleo);
 	InitGlobals(true);
 
-	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+	if (ofilled(OPT_tabbedout)) //src_refactor_opts
 		g_fOut = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		g_fFa = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+	if (ofilled(OPT_fastqout)) //src_refactor_opts
 		g_fFq = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
-	if (ofilled_str(OPT_notmatched)) //src_refactor_opts
+	if (ofilled(OPT_notmatched)) //src_refactor_opts
 		g_fNot = CreateStdioFile(oget_str(OPT_notmatched)); //src_refactor_opts
 
 	bool DBIsNucleo;

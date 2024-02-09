@@ -18,7 +18,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		{
 	case CMD_cluster_otus:
 		{
-		if (ofilled_flt(OPT_id)) //src_refactor_opts
+		if (ofilled(OPT_id)) //src_refactor_opts
 			Die("-id not supported by cluster_otus");
 		oset_fltd(OPT_id, 0);
 		break;
@@ -27,7 +27,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
 		{
-		if (!ofilled_flt(OPT_id)) //src_refactor_opts
+		if (!ofilled(OPT_id)) //src_refactor_opts
 			Die("Must specify -id");
 		break;
 		}
@@ -61,7 +61,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 	UDBUsortedSearcher *US = 0;
 	if (Cmd == CMD_cluster_otus)
 		{
-		if (!ofilled_uns(OPT_maxhits)) //src_refactor_opts
+		if (!ofilled(OPT_maxhits)) //src_refactor_opts
 			{
 		// hack, not sure what is going on here...
 			oset_unsd(OPT_maxhits, 99);

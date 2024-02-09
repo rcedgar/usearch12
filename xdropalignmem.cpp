@@ -38,7 +38,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	Log("%*.*s\n", LB, LB, B);
 	Log("\n");
 #endif
-	if (ofilled_str(OPT_xdrop_save)) //src_refactor_opts
+	if (ofilled(OPT_xdrop_save)) //src_refactor_opts
 		{
 		static FILE *f = 0;
 		if (f == 0)

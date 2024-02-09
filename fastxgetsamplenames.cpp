@@ -16,7 +16,7 @@ void cmd_fastx_get_sample_names()
 	SeqInfo *SI = OM.GetSeqInfo();
 
 	FILE *fOut = 0;
-	if (ofilled_str(OPT_output)) //src_refactor_opts
+	if (ofilled(OPT_output)) //src_refactor_opts
 		fOut = CreateStdioFile(oget_str(OPT_output)); //src_refactor_opts
 
 	set<string> Samples;

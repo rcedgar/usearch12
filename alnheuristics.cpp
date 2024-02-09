@@ -36,8 +36,8 @@ void AlnHeuristics::InitFromCmdLine(const AlnParams &AP)
 	if (AP.GetIsNucleo())
 		{
 		HSPFinderWordLength = 5;
-		MinGlobalHSPFractId = max((float) oget_flt(OPT_id), 0.75f); //src_refactor_opts
-		MinGlobalHSPScore = MinGlobalHSPFractId*MinGlobalHSPLength*(float) oget_flt(OPT_match); //src_refactor_opts
+		MinGlobalHSPFractId = max((float) oget_fltd(OPT_id, 0.5), 0.75f); //src_refactor_opts
+		MinGlobalHSPScore = MinGlobalHSPFractId*MinGlobalHSPLength*(float) oget_fltd(OPT_match, 1.0); //src_refactor_opts
 		}
 	else
 		{
@@ -58,7 +58,7 @@ void AlnHeuristics::InitFromCmdLine(const AlnParams &AP)
 		MinGlobalHSPScore = MinGlobalHSPFractId*MinDiagScore*MinGlobalHSPLength;
 		}
 
-	if (ofilled_uns(OPT_hspw)) //src_refactor_opts
+	if (ofilled(OPT_hspw)) //src_refactor_opts
 		HSPFinderWordLength = oget_uns(OPT_hspw); //src_refactor_opts
 
 	if (oget_flag(OPT_fulldp)) //src_refactor_opts

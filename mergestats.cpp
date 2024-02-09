@@ -63,19 +63,19 @@ void GetMergeStatsStrs(vector<string> &Strs)
 	Ps(s, "%10u  Alignment too short (< %u) (%.2f%%)", g_OvTooShortCount, oget_uns(OPT_fastq_minovlen), GetPct(g_OvTooShortCount, g_InRecCount)); //src_refactor_opts
 	Strs.push_back(s);
 
-	if (ofilled_uns(OPT_fastq_minmergelen)) //src_refactor_opts
+	if (ofilled(OPT_fastq_minmergelen)) //src_refactor_opts
 		{
 		Ps(s, "%10u  Merged too short (< %u)", g_MergedTooShortCount, oget_uns(OPT_fastq_minmergelen)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
-	if (ofilled_uns(OPT_fastq_maxmergelen)) //src_refactor_opts
+	if (ofilled(OPT_fastq_maxmergelen)) //src_refactor_opts
 		{
 		Ps(s, "%10u  Merged too long (> %u)", g_MergedTooLongCount, oget_uns(OPT_fastq_maxmergelen)); //src_refactor_opts
 		Strs.push_back(s);
 		}
 
-	if (ofilled_uns(OPT_fastq_minqual)) //src_refactor_opts
+	if (ofilled(OPT_fastq_minqual)) //src_refactor_opts
 		{
 		Ps(s, "%10u  Min Q too low (<%u) (%.2f%%)",
 		  g_MinQCount, oget_uns(OPT_fastq_minqual), GetPct(g_MinQCount, g_InRecCount)); //src_refactor_opts

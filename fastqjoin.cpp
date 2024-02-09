@@ -56,16 +56,16 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 	{
 	SI2->GetRevComp(SI2RC);
 
-	if (ofilled_uns(OPT_stripleft)) //src_refactor_opts
+	if (ofilled(OPT_stripleft)) //src_refactor_opts
 		SI1->StripLeft(oget_uns(OPT_stripleft)); //src_refactor_opts
-	if (ofilled_uns(OPT_stripright)) //src_refactor_opts
+	if (ofilled(OPT_stripright)) //src_refactor_opts
 		SI2RC->StripRight(oget_uns(OPT_stripright)); //src_refactor_opts
 
 	const char *Pad = "NNNNNNNN";
 	const char *PadQ = "IIIIIIII";
-	if (ofilled_str(OPT_join_padgap)) //src_refactor_opts
+	if (ofilled(OPT_join_padgap)) //src_refactor_opts
 		Pad = oget_cstr(OPT_join_padgap); //src_refactor_opts
-	if (ofilled_str(OPT_join_padgap)) //src_refactor_opts
+	if (ofilled(OPT_join_padgap)) //src_refactor_opts
 		PadQ = oget_cstr(OPT_join_padgapq); //src_refactor_opts
 	unsigned PadL = ustrlen(Pad);
 	if (ustrlen(PadQ) != PadL)
@@ -89,7 +89,7 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	string Label = string(SIJ->m_Label);
 	char Tmp[16];
-	if (ofilled_str(OPT_relabel)) //src_refactor_opts
+	if (ofilled(OPT_relabel)) //src_refactor_opts
 		{
 		LOCK();
 		++g_Count;
@@ -159,10 +159,10 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 void cmd_fastq_join()
 	{
-	if (ofilled_str(OPT_output)) //src_refactor_opts
+	if (ofilled(OPT_output)) //src_refactor_opts
 		Die("Use -fastqout and/or -fastaout, not -output");
 
-	if (!ofilled_str(OPT_fastq_join) || !ofilled_str(OPT_reverse)) //src_refactor_opts
+	if (!ofilled(OPT_fastq_join) || !ofilled(OPT_reverse)) //src_refactor_opts
 		Die("Missing filename");
 
 	FastQ::InitFromCmdLine();
@@ -175,10 +175,10 @@ void cmd_fastq_join()
 
 	ProgressStartSS(SS1, "Joining");
 
-	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+	if (ofilled(OPT_fastqout)) //src_refactor_opts
 		g_fFastqOut = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		g_fFastaOut = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
 
 	unsigned ThreadCount = GetRequestedThreadCount();

@@ -40,9 +40,9 @@ Terminator::Terminator(CMD Cmd)
 		Die("Terminator: cmd=%s", CmdToStr(Cmd));
 		}
 
-	if (ofilled_uns(OPT_maxaccepts)) //src_refactor_opts
+	if (ofilled(OPT_maxaccepts)) //src_refactor_opts
 		m_MaxAccepts = oget_uns(OPT_maxaccepts); //src_refactor_opts
-	if (ofilled_uns(OPT_maxrejects)) //src_refactor_opts
+	if (ofilled(OPT_maxrejects)) //src_refactor_opts
 		m_MaxRejects = oget_uns(OPT_maxrejects); //src_refactor_opts
 
 	m_AcceptCount = 0;
@@ -64,7 +64,7 @@ void Terminator::OnNewQuery()
 
 bool Terminator::Terminate(HitMgr *HM, bool Accept)
 	{
-	if (ofilled_flt(OPT_termid)) //src_refactor_opts
+	if (ofilled(OPT_termid)) //src_refactor_opts
 		{
 		asserta(HM != 0);
 		if (HM->GetHitCount() > 0)
@@ -74,7 +74,7 @@ bool Terminator::Terminate(HitMgr *HM, bool Accept)
 				return true;
 			}
 		}
-	if (ofilled_flt(OPT_termidd)) //src_refactor_opts
+	if (ofilled(OPT_termidd)) //src_refactor_opts
 		{
 		asserta(HM != 0);
 		if (HM->GetHitCount() > 0)

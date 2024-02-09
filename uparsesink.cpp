@@ -109,13 +109,13 @@ void UParseSink::OpenOutputFiles()
 		UNLOCK();
 		return;
 		}
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		m_fFasta = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+	if (ofilled(OPT_fastqout)) //src_refactor_opts
 		m_fFastq = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
-	if (ofilled_str(OPT_uparsealnout)) //src_refactor_opts
+	if (ofilled(OPT_uparsealnout)) //src_refactor_opts
 		m_fAln = CreateStdioFile(oget_str(OPT_uparsealnout)); //src_refactor_opts
-	if (ofilled_str(OPT_uparseout)) //src_refactor_opts
+	if (ofilled(OPT_uparseout)) //src_refactor_opts
 		m_fTab = CreateStdioFile(oget_str(OPT_uparseout)); //src_refactor_opts
 	m_OpenDone = true;
 	UNLOCK();

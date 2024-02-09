@@ -883,7 +883,7 @@ double AlignResult::GetKmerId()
 	{
 	Fill();
 
-	const unsigned w = (ofilled_uns(OPT_wordlength) ? oget_uns(OPT_wordlength) : 8); //src_refactor_opts
+	const unsigned w = (ofilled(OPT_wordlength) ? oget_uns(OPT_wordlength) : 8); //src_refactor_opts
 	const unsigned MinL = min(m_Query->m_L, m_Target->m_L);
 	if (MinL < w)
 		return 0.0;

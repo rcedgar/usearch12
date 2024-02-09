@@ -391,7 +391,7 @@ unsigned HitMgr::GetHitCount()
 		return 0;
 
 	unsigned HitCount = m_HitCount;
-	if (ofilled_uns(OPT_maxhits)) //src_refactor_opts
+	if (ofilled(OPT_maxhits)) //src_refactor_opts
 		{
 		if (HitCount > oget_uns(OPT_maxhits)) //src_refactor_opts
 			HitCount = oget_uns(OPT_maxhits); //src_refactor_opts

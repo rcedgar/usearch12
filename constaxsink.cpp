@@ -15,7 +15,7 @@ ConsTaxSink::ConsTaxSink(bool Local, bool QueryNucleo, bool TargetNucleo)
 	m_Maj = (float) oget_flt(OPT_maj); //src_refactor_opts
 
 	LOCK_CLASS();
-	if (ofilled_str(OPT_tabbedout) && m_fTab == 0) //src_refactor_opts
+	if (ofilled(OPT_tabbedout) && m_fTab == 0) //src_refactor_opts
 		m_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 	UNLOCK_CLASS();
 	}

@@ -87,7 +87,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_usearch_local:
 		{
 		float DBSize = 0.0;
-		if (ofilled_flt(OPT_ka_dbsize)) //src_refactor_opts
+		if (ofilled(OPT_ka_dbsize)) //src_refactor_opts
 			DBSize = (float) oget_flt(OPT_ka_dbsize); //src_refactor_opts
 		else
 			DBSize = (float) DB->GetLetterCount();
@@ -105,14 +105,14 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			unsigned WordLength = oget_uns(OPT_hspw); //src_refactor_opts
 			if (DBIsNucleo)
 				{
-				if (!ofilled_uns(OPT_hspw)) //src_refactor_opts
+				if (!ofilled(OPT_hspw)) //src_refactor_opts
 					WordLength = 5;
 				aligner = new LocalAligner2(WordLength, 4,
 				  g_CharToLetterNucleo, g_LetterToCharNucleo);
 				}
 			else
 				{
-				if (!ofilled_uns(OPT_hspw)) //src_refactor_opts
+				if (!ofilled(OPT_hspw)) //src_refactor_opts
 					WordLength = 3;
 				aligner = new LocalAligner2(WordLength, 20,
 				  g_CharToLetterAmino, g_LetterToCharAmino);
@@ -208,9 +208,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			}
 		else
 			asserta(false);
-		if (!ofilled_flt(OPT_id)) //src_refactor_opts
-			Die("-id option required");
-		US->m_MinFractId = (float) oget_flt(OPT_id); //src_refactor_opts
+		US->m_MinFractId = (float) oget_fltd(OPT_id, 0.5); //src_refactor_opts
 		searcher = US;
 		break;
 		}
@@ -225,14 +223,14 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		HM.AddSink(CRS);
 		}
 
-	if (ofilled_str(OPT_dbmatched) || ofilled_str(OPT_dbnotmatched) || ofilled_str(OPT_dbcutout)) //src_refactor_opts
+	if (ofilled(OPT_dbmatched) || ofilled(OPT_dbnotmatched) || ofilled(OPT_dbcutout)) //src_refactor_opts
 		{
 		SeqDB *DB = searcher->GetSeqDB();
 		DBHitSink *dbhitsink = new DBHitSink(DB, Local, QueryIsNucleo, DBIsNucleo);
 		HM.AddSink(dbhitsink);
 		}
 
-	if (ofilled_str(OPT_otutabout) || ofilled_str(OPT_biomout)) //src_refactor_opts
+	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout)) //src_refactor_opts
 		{
 		OTUTableSink *sink = new OTUTableSink;
 		OTUTable *OT = sink->m_OT;

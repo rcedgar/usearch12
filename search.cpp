@@ -23,7 +23,7 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
 
 bool StrandIsBoth()
 	{
-	if (!ofilled_str(OPT_strand)) //src_refactor_opts
+	if (!ofilled(OPT_strand)) //src_refactor_opts
 		Die("Must specify -strand plus or both with nt db");
 	if (oget_str(OPT_strand) == "both") //src_refactor_opts
 		return true;
@@ -58,7 +58,7 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 	  RevComp, Xlat);
 
 	unsigned MinSize = 0;
-	if (ofilled_uns(OPT_minsize)) //src_refactor_opts
+	if (ofilled(OPT_minsize)) //src_refactor_opts
 		MinSize = oget_uns(OPT_minsize); //src_refactor_opts
 
 	ObjMgr *OM = ObjMgr::CreateObjMgr();

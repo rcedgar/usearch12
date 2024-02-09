@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 		PrintCopyright(stdout);
 		}
 
-	SetLogFileName(oget_str(OPT_log)); //src_refactor_opts
+	SetLogFileName(oget_strd(OPT_log, "")); //src_refactor_opts
 	LogProgramInfoAndCmdLine();
 #ifdef _MSC_VER
 	{

@@ -10,8 +10,8 @@ void cmd_fastx_truncate()
 	{
 	const string InputFileName(oget_str(OPT_fastx_truncate)); //src_refactor_opts
 
-	if (!ofilled_uns(OPT_trunclen) && !ofilled_uns(OPT_stripleft) && !ofilled_uns(OPT_stripright) && //src_refactor_opts
-	  !ofilled_uns(OPT_minseqlength) && !ofilled_uns(OPT_maxseqlength)) //src_refactor_opts
+	if (!ofilled(OPT_trunclen) && !ofilled(OPT_stripleft) && !ofilled(OPT_stripright) && //src_refactor_opts
+	  !ofilled(OPT_minseqlength) && !ofilled(OPT_maxseqlength)) //src_refactor_opts
 		Die("Must specify truncation option");
 
 	SeqSource &SS = *MakeSeqSource(InputFileName);
@@ -21,13 +21,13 @@ void cmd_fastx_truncate()
 
 	FILE *fFa = 0;
 	FILE *fFq = 0;
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		fFa = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+	if (ofilled(OPT_fastqout)) //src_refactor_opts
 		fFq = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 
 	char PadQ = 'I';
-	if (ofilled_str(OPT_padq)) //src_refactor_opts
+	if (ofilled(OPT_padq)) //src_refactor_opts
 		{
 		string s = string(oget_str(OPT_padq)); //src_refactor_opts
 		if (SIZE(s) != 1)
@@ -37,7 +37,7 @@ void cmd_fastx_truncate()
 
 	string Label;
 	string Suffix;
-	if (ofilled_str(OPT_label_suffix)) //src_refactor_opts
+	if (ofilled(OPT_label_suffix)) //src_refactor_opts
 		Suffix = oget_str(OPT_label_suffix); //src_refactor_opts
 
 	unsigned SeqCount = 0;
@@ -60,7 +60,7 @@ void cmd_fastx_truncate()
 			break;
 
 		++SeqCount;
-		if (ofilled_uns(OPT_stripleft)) //src_refactor_opts
+		if (ofilled(OPT_stripleft)) //src_refactor_opts
 			{
 			if (SI->m_L <= StripLeft)
 				{
@@ -70,7 +70,7 @@ void cmd_fastx_truncate()
 			SI->StripLeft(StripLeft);
 			}
 
-		if (ofilled_uns(OPT_stripright)) //src_refactor_opts
+		if (ofilled(OPT_stripright)) //src_refactor_opts
 			{
 			if (SI->m_L <= StripRight)
 				{
@@ -80,13 +80,13 @@ void cmd_fastx_truncate()
 			SI->StripRight(StripRight);
 			}
 
-		if (ofilled_uns(OPT_padlen)) //src_refactor_opts
+		if (ofilled(OPT_padlen)) //src_refactor_opts
 			{
 			if (SI->m_L < PadLen)
 				SI->Pad(PadLen, 'N', PadQ);
 			}
 
-		if (ofilled_uns(OPT_trunclen)) //src_refactor_opts
+		if (ofilled(OPT_trunclen)) //src_refactor_opts
 			{
 			if (SI->m_L < TruncLen)
 				{
@@ -96,7 +96,7 @@ void cmd_fastx_truncate()
 			SI->m_L = TruncLen;
 			}
 
-		if (ofilled_uns(OPT_minseqlength)) //src_refactor_opts
+		if (ofilled(OPT_minseqlength)) //src_refactor_opts
 			{
 			if (SI->m_L < MinL)
 				{
@@ -105,7 +105,7 @@ void cmd_fastx_truncate()
 				}
 			}
 
-		if (ofilled_uns(OPT_maxseqlength)) //src_refactor_opts
+		if (ofilled(OPT_maxseqlength)) //src_refactor_opts
 			{
 			if (SI->m_L > MaxL)
 				{
@@ -115,7 +115,7 @@ void cmd_fastx_truncate()
 			}
 
 		string Label = string(SI->m_Label);
-		if (ofilled_str(OPT_relabel)) //src_refactor_opts
+		if (ofilled(OPT_relabel)) //src_refactor_opts
 			{
 			sprintf(Tmp, "%u", ++g_ConvertedCount);
 			if (oget_str(OPT_relabel)[0] == '+') //src_refactor_opts
@@ -125,7 +125,7 @@ void cmd_fastx_truncate()
 			SI->m_Label = Label.c_str();
 			}
 
-		else if (ofilled_str(OPT_label_suffix)) //src_refactor_opts
+		else if (ofilled(OPT_label_suffix)) //src_refactor_opts
 			{
 			Label = string(SI->m_Label) + Suffix;
 			SI->m_Label = Label.c_str();

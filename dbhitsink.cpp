@@ -30,7 +30,7 @@ DBHitSink::DBHitSink(SeqDB *DB, bool Local, bool QueryNucleo, bool TargetNucleo)
 	unsigned SeqCount = DB->GetSeqCount();
 	m_HitCounts.clear();
 	m_HitCounts.resize(SeqCount, 0);
-	if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
+	if (ofilled(OPT_dbcutout)) //src_refactor_opts
 		{
 		m_LosVec.resize(SeqCount);
 		m_HisVec.resize(SeqCount);
@@ -42,11 +42,11 @@ DBHitSink::DBHitSink(SeqDB *DB, bool Local, bool QueryNucleo, bool TargetNucleo)
 
 void DBHitSink::OnAllDone()
 	{
-	if (ofilled_str(OPT_dbmatched)) //src_refactor_opts
+	if (ofilled(OPT_dbmatched)) //src_refactor_opts
 		ToFASTA(oget_str(OPT_dbmatched), true); //src_refactor_opts
-	if (ofilled_str(OPT_dbnotmatched)) //src_refactor_opts
+	if (ofilled(OPT_dbnotmatched)) //src_refactor_opts
 		ToFASTA(oget_str(OPT_dbnotmatched), false); //src_refactor_opts
-	if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
+	if (ofilled(OPT_dbcutout)) //src_refactor_opts
 		CutToFASTA(oget_str(OPT_dbcutout)); //src_refactor_opts
 	}
 
@@ -148,7 +148,7 @@ void DBHitSink::OnQueryDone(SeqInfo *Query, HitMgr *HM)
 			N = GetSizeFromLabel(Query->m_Label, 1);
 			}
 		m_HitCounts[TargetIndex] += N;
-		if (ofilled_str(OPT_dbcutout)) //src_refactor_opts
+		if (ofilled(OPT_dbcutout)) //src_refactor_opts
 			{
 			unsigned Lo = AR->GetTLo();
 			unsigned Hi = AR->GetTHi();

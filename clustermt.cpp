@@ -137,9 +137,9 @@ static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 void cmd_cluster_mt()
 	{
 	const string &QueryFileName = oget_str(OPT_cluster_mt); //src_refactor_opts
-	if (!ofilled_flt(OPT_id)) //src_refactor_opts
+	if (!ofilled(OPT_id)) //src_refactor_opts
 		Die("Must set -id");
-	if (ofilled_uns(OPT_maxpending)) //src_refactor_opts
+	if (ofilled(OPT_maxpending)) //src_refactor_opts
 		g_MaxPending = oget_uns(OPT_maxpending); //src_refactor_opts
 
 	bool IsNucleo;

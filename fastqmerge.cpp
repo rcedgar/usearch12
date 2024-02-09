@@ -112,9 +112,9 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 
 void cmd_fastq_mergepairs()
 	{
-	if (ofilled_flt(OPT_fastq_maxee)) //src_refactor_opts
+	if (ofilled(OPT_fastq_maxee)) //src_refactor_opts
 		Die("maxee filtering not supported, use fastq_filter");
-	if (ofilled_str(OPT_output)) //src_refactor_opts
+	if (ofilled(OPT_output)) //src_refactor_opts
 		Die("Use -fastqout and/or -fastaout, not -output");
 
 	if (!oget_flag(OPT_notrunclabels)) //src_refactor_opts
@@ -132,7 +132,7 @@ void cmd_fastq_mergepairs()
 
 	oset_unsd(OPT_fastq_minlen, 64);
 
-	if (ofilled_uns(OPT_fastq_minovlen) && oget_uns(OPT_minhsp) > oget_uns(OPT_fastq_minovlen)) //src_refactor_opts
+	if (ofilled(OPT_fastq_minovlen) && oget_uns(OPT_minhsp) > oget_uns(OPT_fastq_minovlen)) //src_refactor_opts
 		Warning("-fastq_minovlen %u is less than -minhsp %u", oget_uns(OPT_fastq_minovlen), oget_uns(OPT_minhsp)); //src_refactor_opts
 
 	InitGlobals(true);
@@ -140,49 +140,49 @@ void cmd_fastq_mergepairs()
 	FastQ::InitFromCmdLine();
 	FastQ::InitMerge();
 
-	if (ofilled_str(OPT_fastqout)) //src_refactor_opts
+	if (ofilled(OPT_fastqout)) //src_refactor_opts
 		g_fFastqOut = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_alnout)) //src_refactor_opts
+	if (ofilled(OPT_alnout)) //src_refactor_opts
 		g_fAln = CreateStdioFile(oget_str(OPT_alnout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+	if (ofilled(OPT_tabbedout)) //src_refactor_opts
 		g_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_report)) //src_refactor_opts
+	if (ofilled(OPT_report)) //src_refactor_opts
 		{
 		g_fRep = CreateStdioFile(oget_str(OPT_report)); //src_refactor_opts
 		g_MergeLengths = new vector<unsigned>;
 		}
 
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		g_fFastaOut = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_eetabbedout)) //src_refactor_opts
+	if (ofilled(OPT_eetabbedout)) //src_refactor_opts
 		g_fEEOut = CreateStdioFile(oget_str(OPT_eetabbedout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastqout_notmerged_fwd)) //src_refactor_opts
+	if (ofilled(OPT_fastqout_notmerged_fwd)) //src_refactor_opts
 		g_fFqNotmergedFwd = CreateStdioFile(oget_str(OPT_fastqout_notmerged_fwd)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastqout_notmerged_rev)) //src_refactor_opts
+	if (ofilled(OPT_fastqout_notmerged_rev)) //src_refactor_opts
 		g_fFqNotmergedRev = CreateStdioFile(oget_str(OPT_fastqout_notmerged_rev)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout_notmerged_fwd)) //src_refactor_opts
+	if (ofilled(OPT_fastaout_notmerged_fwd)) //src_refactor_opts
 		g_fFaNotmergedFwd = CreateStdioFile(oget_str(OPT_fastaout_notmerged_fwd)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout_notmerged_rev)) //src_refactor_opts
+	if (ofilled(OPT_fastaout_notmerged_rev)) //src_refactor_opts
 		g_fFaNotmergedRev = CreateStdioFile(oget_str(OPT_fastaout_notmerged_rev)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastqout_overlap_fwd)) //src_refactor_opts
+	if (ofilled(OPT_fastqout_overlap_fwd)) //src_refactor_opts
 		g_fFqOverlapFwd = CreateStdioFile(oget_str(OPT_fastqout_overlap_fwd)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastqout_overlap_rev)) //src_refactor_opts
+	if (ofilled(OPT_fastqout_overlap_rev)) //src_refactor_opts
 		g_fFqOverlapRev = CreateStdioFile(oget_str(OPT_fastqout_overlap_rev)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout_overlap_fwd)) //src_refactor_opts
+	if (ofilled(OPT_fastaout_overlap_fwd)) //src_refactor_opts
 		g_fFaOverlapFwd = CreateStdioFile(oget_str(OPT_fastaout_overlap_fwd)); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout_overlap_rev)) //src_refactor_opts
+	if (ofilled(OPT_fastaout_overlap_rev)) //src_refactor_opts
 		g_fFaOverlapRev = CreateStdioFile(oget_str(OPT_fastaout_overlap_rev)); //src_refactor_opts
 
 	ProgressStartOther("Merging", MergeCB);

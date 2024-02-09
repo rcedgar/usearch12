@@ -125,7 +125,7 @@ void ClosedRefSink::OnAllDone()
 	m_fTab = 0;
 
 	const unsigned OTUCount = SIZE(*m_OTUIndexToTotalSize);
-	if (!ofilled_str(OPT_dbotus) && !ofilled_str(OPT_dataotus)) //src_refactor_opts
+	if (!ofilled(OPT_dbotus) && !ofilled(OPT_dataotus)) //src_refactor_opts
 		return;
 
 	const vector<unsigned> &v = (*m_OTUIndexToTotalSize);
@@ -135,9 +135,9 @@ void ClosedRefSink::OnAllDone()
 
 	FILE *fDb = 0;
 	FILE *fData = 0;
-	if (ofilled_str(OPT_dbotus)) //src_refactor_opts
+	if (ofilled(OPT_dbotus)) //src_refactor_opts
 		fDb = CreateStdioFile(oget_str(OPT_dbotus)); //src_refactor_opts
-	if (ofilled_str(OPT_dataotus)) //src_refactor_opts
+	if (ofilled(OPT_dataotus)) //src_refactor_opts
 		fData = CreateStdioFile(oget_str(OPT_dataotus)); //src_refactor_opts
 
 	for (unsigned k = 0; k < N; ++k)

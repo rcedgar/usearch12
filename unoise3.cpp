@@ -120,12 +120,12 @@ void cmd_unoise3()
 	{
 	string InputFileName = oget_str(OPT_unoise3); //src_refactor_opts
 
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		Die("-fastaout not supported, use -zotus");
 
 	oset_fltd(OPT_abskew, 16.0);
 
-	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+	if (ofilled(OPT_tabbedout)) //src_refactor_opts
 		g_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
 
 	InitGlobals(true);
@@ -153,7 +153,7 @@ void cmd_unoise3()
 	USS->m_MinFractId = 0.9;
 
 	unsigned MinAmpSize = 8;
-	if (ofilled_uns(OPT_minsize)) //src_refactor_opts
+	if (ofilled(OPT_minsize)) //src_refactor_opts
 		MinAmpSize = oget_uns(OPT_minsize); //src_refactor_opts
 	g_MinQSize = MinAmpSize;
 	unsigned UniqCount = InputSeqCount;
@@ -265,7 +265,7 @@ void cmd_unoise3()
 	asserta(SIZE(IsChimeraVec) == DBSeqCount);
 
 	FILE *fAmp = 0;
-	if (ofilled_str(OPT_ampout)) //src_refactor_opts
+	if (ofilled(OPT_ampout)) //src_refactor_opts
 		fAmp = CreateStdioFile(oget_str(OPT_ampout)); //src_refactor_opts
 	vector<unsigned> AmpIndexToOTUIndex;
 	unsigned OTUCount = 0;
@@ -306,7 +306,7 @@ void cmd_unoise3()
 	CloseStdioFile(fAmp);
 	fAmp = 0;
 
-	if (ofilled_str(OPT_zotus)) //src_refactor_opts
+	if (ofilled(OPT_zotus)) //src_refactor_opts
 		{
 		FILE *f = CreateStdioFile(oget_str(OPT_zotus)); //src_refactor_opts
 		uint32 *ptrLoopIdx = ProgressStartLoop(AmpCount, "Writing zotus");

@@ -94,7 +94,7 @@ DerepResult::DerepResult()
 	m_SingletonCount = 0;
 	m_SumSize = 0;
 
-	m_optRelabelSet = ofilled_str(OPT_relabel); //src_refactor_opts
+	m_optRelabelSet = ofilled(OPT_relabel); //src_refactor_opts
 	m_optRelabel = string(oget_str(OPT_relabel)); //src_refactor_opts
 	m_optSizeIn = oget_flag(OPT_sizein); //src_refactor_opts
 	m_optSizeOut = oget_flag(OPT_sizeout); //src_refactor_opts
@@ -677,7 +677,7 @@ void DerepResult::ProgressResult()
 	{
 	unsigned SeqCount = m_Input->GetSeqCount();
 	unsigned N = m_ClusterCount;
-	if (ofilled_uns(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
+	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
 		N = oget_uns(OPT_topn); //src_refactor_opts
 
 	double PctSin = GetPct(m_SingletonCount, m_ClusterCount);
@@ -685,7 +685,7 @@ void DerepResult::ProgressResult()
 	unsigned MinSize = m_Sizes[m_Order[N-1]];
 	unsigned MedianSize = m_Sizes[m_Order[N/2]];
 	unsigned MaxSize = m_Sizes[m_Order[0]];
-	if (ofilled_flag(OPT_sizein)) //src_refactor_opts
+	if (ofilled(OPT_sizein)) //src_refactor_opts
 		ProgressNoteLog("%u seqs (tot.size %.0f), %u uniques, %u singletons (%.1f%%)",
 		  SeqCount,
 		  m_SumSize,
@@ -719,7 +719,7 @@ void DerepResult::ToFastx(const string &FileName, bool DoFastq)
 	FILE *f = CreateStdioFile(FileName);
 
 	unsigned N = m_ClusterCount;
-	if (ofilled_uns(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
+	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
 		N = oget_uns(OPT_topn); //src_refactor_opts
 
 	unsigned LastSize = UINT_MAX;
@@ -811,7 +811,7 @@ void DerepResult::WriteConsTaxReport1(FILE *f, unsigned ClusterIndex)
 
 void DerepResult::WriteConsTaxReport()
 	{
-	if (!ofilled_str(OPT_constax_report)) //src_refactor_opts
+	if (!ofilled(OPT_constax_report)) //src_refactor_opts
 		return;
 
 	const string &FileName = oget_str(OPT_constax_report); //src_refactor_opts
@@ -901,7 +901,7 @@ void DerepResult::Write()
 	ToUC(oget_str(OPT_uc)); //src_refactor_opts
 	ToTabbed(oget_str(OPT_tabbedout)); //src_refactor_opts
 
-	if (ofilled_str(OPT_otutabout) || ofilled_str(OPT_biomout)) //src_refactor_opts
+	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout)) //src_refactor_opts
 		{
 		OTUTable OT;
 		ToOTUTable(OT);

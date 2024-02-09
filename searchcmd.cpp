@@ -10,8 +10,10 @@ void cmd_usearch_global()
 
 void cmd_closed_ref()
 	{
-	default_opt(id, 0.97);
-	default_opt(stepwords, 0);
+	//default_opt(id, 0.97);
+	//default_opt(stepwords, 0);
+	oset_fltd(OPT_id, 0.97);
+	oset_unsd(OPT_stepwords, 0);
 
 	Search(CMD_closed_ref, oget_str(OPT_closed_ref), oget_str(OPT_db)); //src_refactor_opts
 	}
@@ -25,11 +27,11 @@ void cmd_otutab()
 	oset_strd(OPT_strand, "both");
 
 	string DBFileName;
-	if (ofilled_str(OPT_db)) //src_refactor_opts
+	if (ofilled(OPT_db)) //src_refactor_opts
 		DBFileName = oget_str(OPT_db);
-	else if (ofilled_str(OPT_otus)) //src_refactor_opts
+	else if (ofilled(OPT_otus)) //src_refactor_opts
 		DBFileName = oget_str(OPT_otus);
-	else if (ofilled_str(OPT_zotus)) //src_refactor_opts
+	else if (ofilled(OPT_zotus)) //src_refactor_opts
 		DBFileName = oget_str(OPT_zotus);
 	else
 		Die("Must specify OTU FASTA -db, -otus or -zotus");
@@ -49,7 +51,9 @@ void cmd_uparse_ref()
 
 void cmd_sintax()
 	{
-	default_opt(tax_prod, true);
-	default_opt(boot_subset, "32");
+	//default_opt(tax_prod, true);
+	//default_opt(boot_subset, "32");
+	oset_flag(OPT_tax_prod);
+	oset_strd(OPT_boot_subset, "32");
 	Search(CMD_sintax, oget_str(OPT_sintax), oget_str(OPT_db)); //src_refactor_opts
 	}

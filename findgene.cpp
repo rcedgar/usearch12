@@ -100,12 +100,12 @@ void cmd_search_16s()
 	void InitGlobals(bool Nucleo);
 	InitGlobals(true);
 
-	if (ofilled_str(OPT_start_motif)) //src_refactor_opts
+	if (ofilled(OPT_start_motif)) //src_refactor_opts
 		GeneFinder::m_StartMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_start_motif)); //src_refactor_opts
 	else
 		GeneFinder::m_StartMotifSeq = (const byte *) GF_START_MOTIF;
 
-	if (ofilled_str(OPT_end_motif)) //src_refactor_opts
+	if (ofilled(OPT_end_motif)) //src_refactor_opts
 		GeneFinder::m_EndMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_end_motif)); //src_refactor_opts
 	else
 		GeneFinder::m_EndMotifSeq = (const byte *) GF_END_MOTIF;
@@ -116,10 +116,10 @@ void cmd_search_16s()
 	GeneFinder::m_MaxStartDiffs = oget_uns(OPT_maxstartdiffs); //src_refactor_opts
 	GeneFinder::m_MaxEndDiffs = oget_uns(OPT_maxenddiffs); //src_refactor_opts
 
-	if (ofilled_uns(OPT_mincount)) //src_refactor_opts
+	if (ofilled(OPT_mincount)) //src_refactor_opts
 		GeneFinder::m_MinCount = oget_uns(OPT_mincount); //src_refactor_opts
 
-	if (!ofilled_str(OPT_bitvec)) //src_refactor_opts
+	if (!ofilled(OPT_bitvec)) //src_refactor_opts
 		Die("-bitvec required");
 
 	BitVec BV;
@@ -138,15 +138,15 @@ void cmd_search_16s()
 	ReadStdioFile(f, BV.m_Vec, Bytes);
 	CloseStdioFile(f);
 
-	if (ofilled_str(OPT_hitsout)) //src_refactor_opts
+	if (ofilled(OPT_hitsout)) //src_refactor_opts
 		GeneFinder::m_fWinFa = CreateStdioFile(oget_str(OPT_hitsout)); //src_refactor_opts
-	if (ofilled_str(OPT_tabbedout)) //src_refactor_opts
+	if (ofilled(OPT_tabbedout)) //src_refactor_opts
 		GeneFinder::m_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
-	if (ofilled_str(OPT_fastaout)) //src_refactor_opts
+	if (ofilled(OPT_fastaout)) //src_refactor_opts
 		GeneFinder::m_fGeneFa = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled_str(OPT_fragout)) //src_refactor_opts
+	if (ofilled(OPT_fragout)) //src_refactor_opts
 		GeneFinder::m_fFragFa = CreateStdioFile(oget_str(OPT_fragout)); //src_refactor_opts
-	if (ofilled_str(OPT_output2)) //src_refactor_opts
+	if (ofilled(OPT_output2)) //src_refactor_opts
 		GeneFinder::m_fCounts = CreateStdioFile(oget_str(OPT_output2)); //src_refactor_opts
 
 	bool *Vec = myalloc(bool, SlotCount);

@@ -1,5 +1,5 @@
 #include "myutils.h"
-
+#if 0
 void CompilerInfo();
 
 vector<string> g_Argv;
@@ -261,3 +261,4 @@ void MyCmdLine(int argc, char **argv)
 		Die("--threads > 1 && TIMING");
 #endif
 	}
+#endif // 0

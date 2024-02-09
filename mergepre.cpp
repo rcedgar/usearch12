@@ -18,7 +18,7 @@ bool MergePre(SeqInfo *SI, bool Fwd)
 		UNLOCK();
 		}
 
-	if (ofilled_uns(OPT_fastq_minlen) && SI->m_L < oget_uns(OPT_fastq_minlen)) //src_refactor_opts
+	if (ofilled(OPT_fastq_minlen) && SI->m_L < oget_uns(OPT_fastq_minlen)) //src_refactor_opts
 		{
 		LOCK();
 		if (Fwd)

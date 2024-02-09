@@ -51,7 +51,7 @@ void OTUTable::ToJsonFile(const string &FileName) const
 	fprintf(f ,"	\"id\":\"%s\",\n", FileName.c_str());
 	fprintf(f, "	\"format\": \"Biological Observation Matrix 1.0\",\n");
 	fprintf(f, "	\"format_url\": \"http://biom-format.org\",\n");
-	fprintf(f, "	\"generated_by\": \"usearch" MY_VERSION ",\n");
+	fprintf(f, "	\"generated_by\": \"usearch\",\n");
 	fprintf(f, "	\"type\": \"OTU table\",\n");
 	fprintf(f, "	\"date\": \"%s\",\n", TimeStr);
 	fprintf(f, "	\"matrix_type\": \"sparse\",\n");

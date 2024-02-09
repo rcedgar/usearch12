@@ -195,7 +195,7 @@ void ClusterSink::WriteConsTaxReport1(FILE *f, unsigned ClusterIndex)
 
 void ClusterSink::WriteConsTaxReport()
 	{
-	if (!ofilled_str(OPT_constax_report)) //src_refactor_opts
+	if (!ofilled(OPT_constax_report)) //src_refactor_opts
 		return;
 
 	string FileName = oget_str(OPT_constax_report); //src_refactor_opts
@@ -222,7 +222,7 @@ const char *ClusterSink::MakeCentroidLabel(unsigned ClusterIndex, string &Label)
 	if (oget_flag(OPT_sizein) || oget_flag(OPT_sizeout)) //src_refactor_opts
 		StripSize(Label);
 
-	if (ofilled_str(OPT_relabel)) //src_refactor_opts
+	if (ofilled(OPT_relabel)) //src_refactor_opts
 		{
 		static unsigned g_RelabelCounter;
 

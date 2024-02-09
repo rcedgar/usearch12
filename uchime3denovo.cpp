@@ -25,9 +25,9 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	IsChimeraVec.clear();
 	InfoStrs.clear();
 
-	if (ofilled_str(OPT_uchimeout)) //src_refactor_opts
+	if (ofilled(OPT_uchimeout)) //src_refactor_opts
 		DeParser::m_fTab = CreateStdioFile(oget_str(OPT_uchimeout)); //src_refactor_opts
-	if (ofilled_str(OPT_alnout)) //src_refactor_opts
+	if (ofilled(OPT_alnout)) //src_refactor_opts
 		DeParser::m_fAln = CreateStdioFile(oget_str(OPT_alnout)); //src_refactor_opts
 
 	const unsigned SeqCount = Input.GetSeqCount();
@@ -52,11 +52,11 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	DP->m_GA = GA;
 
 	double MinAbSkew = 16;
-	if (ofilled_flt(OPT_abskew)) //src_refactor_opts
+	if (ofilled(OPT_abskew)) //src_refactor_opts
 		MinAbSkew = oget_flt(OPT_abskew); //src_refactor_opts
 
 	FILE *fUCA = 0;
-	if (ofilled_str(OPT_uchimealnout)) //src_refactor_opts
+	if (ofilled(OPT_uchimealnout)) //src_refactor_opts
 		fUCA = CreateStdioFile(oget_str(OPT_uchimealnout)); //src_refactor_opts
 
 	g_GoodCount = 0;
@@ -180,9 +180,9 @@ void cmd_uchime3_denovo()
 	Uchime2DeNovo(Input, IsChimeraVec, InfoStrs);
 	asserta(SIZE(IsChimeraVec) == SeqCount);
 
-	if (ofilled_str(OPT_chimeras)) //src_refactor_opts
+	if (ofilled(OPT_chimeras)) //src_refactor_opts
 		fCh = CreateStdioFile(oget_str(OPT_chimeras)); //src_refactor_opts
-	if (ofilled_str(OPT_nonchimeras)) //src_refactor_opts
+	if (ofilled(OPT_nonchimeras)) //src_refactor_opts
 		fNonCh = CreateStdioFile(oget_str(OPT_nonchimeras)); //src_refactor_opts
 
 	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "Writing results");

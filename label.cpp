@@ -213,7 +213,7 @@ void GetSampleNameFromLabel(const string &Label, string &SampleName)
 	if (!SampleName.empty())
 		return;
 
-	if (ofilled_str(OPT_sample_delim)) //src_refactor_opts
+	if (ofilled(OPT_sample_delim)) //src_refactor_opts
 		{
 		const string &d = oget_str(OPT_sample_delim); //src_refactor_opts
 		size_t n = Label.find(d);

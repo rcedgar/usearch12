@@ -38,7 +38,7 @@ void Thread(DerepThreadData *aTD)
 	unsigned &TDUniqueCount = TD.UniqueCount;
 
 	unsigned SlotCount = UINT_MAX;
-	if (ofilled_uns(OPT_slots)) //src_refactor_opts
+	if (ofilled(OPT_slots)) //src_refactor_opts
 		SlotCount = oget_uns(OPT_slots); //src_refactor_opts
 	else
 		{
@@ -213,7 +213,7 @@ void DerepFull(const SeqDB &Input, DerepResult &DR, bool RevComp, bool Circles)
 
 static void Derep(const string &FileName)
 	{
-	if (ofilled_str(OPT_output)) //src_refactor_opts
+	if (ofilled(OPT_output)) //src_refactor_opts
 		Die("Use -fastaout, not -output");
 
 	bool RevComp = StrandOptToRevComp(false, false);

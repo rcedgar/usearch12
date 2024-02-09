@@ -89,7 +89,7 @@ void cmd_sintax_summary()
 	{
 	const string &FileName = oget_str(OPT_sintax_summary); //src_refactor_opts
 
-	if (!ofilled_str(OPT_rank)) //src_refactor_opts
+	if (!ofilled(OPT_rank)) //src_refactor_opts
 		Die("-rank required");
 
 	const string &Rank = oget_str(OPT_rank); //src_refactor_opts
@@ -100,7 +100,7 @@ void cmd_sintax_summary()
 	FILE *fOut = CreateStdioFile(oget_str(OPT_output)); //src_refactor_opts
 
 	OTUTable *OT = 0;
-	if (ofilled_str(OPT_otutabin)) //src_refactor_opts
+	if (ofilled(OPT_otutabin)) //src_refactor_opts
 		{
 		OT = new OTUTable;
 		OT->FromTabbedFile(oget_str(OPT_otutabin)); //src_refactor_opts

@@ -18,7 +18,7 @@ DerepResult *g_DR;
 bool StrandOptToRevComp(bool RequiredOpt, bool Default)
 	{
 	bool RevComp = Default;
-	if (ofilled_str(OPT_strand)) //src_refactor_opts
+	if (ofilled(OPT_strand)) //src_refactor_opts
 		{
 		if (oget_str(OPT_strand) == "plus") //src_refactor_opts
 			RevComp = false;
@@ -81,7 +81,7 @@ unsigned *GetSeqOrder(const DerepResult &DR,
 void ClusterFast(CMD Cmd, const string &QueryFileName)
 	{
 	if (string(oget_str(OPT_sort)) == string("other")) //src_refactor_opts
-		oset_uns(OPT_threads, 1); //src_refactor_opts
+		Die("-cluster_fast does not support -sort other, use -cluster_smallmem");
 
 	bool RevComp = StrandOptToRevComp(false, false);
 
@@ -110,7 +110,7 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 
 	Searcher *ptrSearcher = MakeClusterSearcher(g_Cmd, Nucleo);
 
-	if (ofilled_str(OPT_clusters) || ofilled_flag(OPT_constax)) //src_refactor_opts
+	if (ofilled(OPT_clusters) || ofilled(OPT_constax)) //src_refactor_opts
 		{
 		bool SaveCPaths = false;
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);

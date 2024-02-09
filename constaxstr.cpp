@@ -97,7 +97,7 @@ void ConsTaxStr::WriteReport(FILE *f) const
 		string s;
 		GetTaxStrFromLabel(Label, s);
 		unsigned n = 1;
-		if (ofilled_flag(OPT_sizein)) //src_refactor_opts
+		if (ofilled(OPT_sizein)) //src_refactor_opts
 			n = GetSizeFromLabel(Label, UINT_MAX);
 		IncCountMap(StrToCount, s, n);
 		}
