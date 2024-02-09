@@ -220,6 +220,8 @@ const char *GetPlatform()
 
 const char *BaseName(const char *PathName)
 	{
+	if (PathName == 0)
+		return "";
 	const char *q = 0;
 	for (const char *p = PathName; *p; ++p)
 		{
@@ -956,6 +958,8 @@ void Log(const char *Format, ...)
 	fflush(g_fLog);
 	}
 
+const char *g_FILE;
+uint g_LINE;
 void Die_(const char *Format, ...)
 	{
 	static mutex Lock;
@@ -972,6 +976,9 @@ void Die_(const char *Format, ...)
 	va_start(ArgList, Format);
 	myvstrprintf(Msg, Format, ArgList);
 	va_end(ArgList);
+
+	if (g_fLog != 0)
+		setbuf(g_fLog, 0);
 
 	fprintf(stderr, "\n\n");
 	Log("\n");
@@ -991,10 +998,11 @@ void Die_(const char *Format, ...)
 	Log("Elapsed time: %s\n", sstr);
 
 	const char *szStr = Msg.c_str();
+	const char *Src = BaseName(g_FILE);
 	fprintf(stderr, "Elapsed time %s\n", SecsToHHMMSS((int) ElapsedSeconds));
 	fprintf(stderr, "Max memory %s\n", MemBytesToStr(g_PeakMemUseBytes));
-	fprintf(stderr, "\n---Fatal error---\n%s\n", szStr);
-	Log("\n---Fatal error---\n%s\n", szStr);
+	fprintf(stderr, "\n*** ERROR *** %s(%u)\n%s\n", Src, g_LINE, szStr);
+	Log("\n*** ERROR *** %s(%u)\n%s\n", Src, g_LINE, szStr);
 
 #ifdef _MSC_VER
 	if (IsDebuggerPresent())
@@ -1007,9 +1015,6 @@ void Die_(const char *Format, ...)
 
 void Warning_(const char *Format, ...)
 	{
-	if (oget_flag(OPT_quiet)) //src_refactor_opts
-		return;
-
 	string Msg;
 
 	va_list ArgList;
@@ -1017,14 +1022,9 @@ void Warning_(const char *Format, ...)
 	myvstrprintf(Msg, Format, ArgList);
 	va_end(ArgList);
 
-	const char *szStr = Msg.c_str();
-
-	fprintf(stderr, "\nWARNING: %s\n\n", szStr);
-	if (g_fLog != stdout)
-		{
-		Log("\nWARNING: %s\n", szStr);
-		fflush(g_fLog);
-		}
+	ProgressNoteLogNoPrefix("");
+	ProgressNoteLogNoPrefix("*** Warning *** %s", Msg.c_str());
+	ProgressNoteLogNoPrefix("");
 	}
 
 #ifdef _MSC_VER

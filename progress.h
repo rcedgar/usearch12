@@ -10,6 +10,7 @@ typedef void (*PTR_PROGRESS_CB)(string &s);
 void ProgressNote(const char *fmt, ...);
 void ProgressNoteNoPrefix(const char *fmt, ...);
 void ProgressNoteLog(const char *fmt, ...);
+void ProgressNoteLogNoPrefix(const char *fmt, ...);
 
 void ProgressStartOther(const string &Str,
   PTR_PROGRESS_CB CB = 0);

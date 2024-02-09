@@ -122,7 +122,8 @@ void cmd_fastq_mergepairs()
 
 	vector<string> FwdFileNames;
 	vector<string> RevFileNames;
-	GetFastqs2(oget_str(OPT_fastq_mergepairs), oget_str(OPT_reverse), FwdFileNames, RevFileNames); //src_refactor_opts
+	GetFastqs2(oget_str(OPT_fastq_mergepairs), oget_strd(OPT_reverse, ""),
+	  FwdFileNames, RevFileNames); //src_refactor_opts
 
 	const unsigned N = SIZE(FwdFileNames);
 	g_NrToMerge = N;

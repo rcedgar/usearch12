@@ -94,28 +94,8 @@ void UDBParams::FromCmdLine(CMD Cmd, bool Nucleo)
 	else if (m_SlotCount == 0)
 		SetSlots(0);
 
-	//if (ofilled(OPT_posbits)) //src_refactor_opts
-	//	{
-	//	if (oget_uns(OPT_posbits) == 255) //src_refactor_opts
-	//		SetCoding(0, oget_uns(OPT_posbits)); //src_refactor_opts
-	//	else
-	//		{
-	//		asserta(oget_uns(OPT_posbits) < 32); //src_refactor_opts
-	//		unsigned IndexBits = 32 - oget_uns(OPT_posbits); //src_refactor_opts
-	//		SetCoding(IndexBits, oget_uns(OPT_posbits)); //src_refactor_opts
-	//		}
-	//	}
-	//else
 	SetCoding(32, 0);
-
-	if (ofilled(OPT_end_of_row)) //src_refactor_opts
-		{
-		if (oget_uns(OPT_posbits) != 255) //src_refactor_opts
-			Die("-end_of_row not supported");
-		m_EndOfRow = 1;
-		}
-	else
-		m_EndOfRow = 0;
+	m_EndOfRow = 0;
 
 	ValidateFeatures(Nucleo);
 	}

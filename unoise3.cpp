@@ -14,7 +14,8 @@
 #include <math.h>
 
 void InitGlobals(bool Nucleo);
-void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec, vector<string> &InfoStrs);
+uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
+  vector<string> &InfoStrs);
 
 static uint g_GoodCount;
 static uint g_MinQSize;
@@ -261,8 +262,9 @@ void cmd_unoise3()
 
 	vector<bool> IsChimeraVec;
 	vector<string> InfoStrs;
-	Uchime2DeNovo(AmpDB, IsChimeraVec, InfoStrs);
+	uint GoodCount = Uchime2DeNovo(AmpDB, IsChimeraVec, InfoStrs);
 	asserta(SIZE(IsChimeraVec) == DBSeqCount);
+	ProgressNoteLog("%u final seqs.", GoodCount);
 
 	FILE *fAmp = 0;
 	if (ofilled(OPT_ampout)) //src_refactor_opts
@@ -270,7 +272,8 @@ void cmd_unoise3()
 	vector<unsigned> AmpIndexToOTUIndex;
 	unsigned OTUCount = 0;
 	unsigned ChimeraCount = 0;
-	for (unsigned AmpIndex = 0; AmpIndex < DBSeqCount; ++AmpIndex)
+	uint32 AmpIndex = *ProgressStartLoop(DBSeqCount, "Writing output");
+	for (AmpIndex = 0; AmpIndex < DBSeqCount; ++AmpIndex)
 		{
 		string AmpType;
 		string InfoStr = InfoStrs[AmpIndex];
@@ -303,6 +306,7 @@ void cmd_unoise3()
 			fprintf(g_fTab, "\n");
 			}
 		}
+	ProgressDoneLoop();
 	CloseStdioFile(fAmp);
 	fAmp = 0;
 

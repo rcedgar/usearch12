@@ -102,7 +102,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		if (Cmd == CMD_usearch_local)
 			{
-			unsigned WordLength = oget_uns(OPT_hspw); //src_refactor_opts
+			unsigned WordLength = oget_unsd(OPT_hspw, 0); //src_refactor_opts
 			if (DBIsNucleo)
 				{
 				if (!ofilled(OPT_hspw)) //src_refactor_opts

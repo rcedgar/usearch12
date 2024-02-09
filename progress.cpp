@@ -138,7 +138,7 @@ void OtuTabCB(string &str)
 	Ps(str, "%u OTUs, %u samples, %s assigned (%.1f%%)",
 		OTUCount,
 		SampleCount, 
-		IntToStr(HitMgr::m_QueryCount),
+		IntToStr(OTUTableSink::m_AssignedCount),
 		HitMgr::GetPctMatched());
 	}
 
@@ -459,6 +459,21 @@ void ProgressNoteNoPrefix(const char *fmt, ...)
 	vsnprintf(s, MAXSTR-1, fmt, ArgList);
 	s[MAXSTR-1] = '\0';
 	va_end(ArgList);
+
+	PushText(string(s), TT_Note);
+	UNLOCK();
+	}
+
+void ProgressNoteLogNoPrefix(const char *fmt, ...)
+	{
+	LOCK();
+	va_list ArgList;
+	va_start(ArgList, fmt);
+	char s[MAXSTR];
+	vsnprintf(s, MAXSTR-1, fmt, ArgList);
+	s[MAXSTR-1] = '\0';
+	va_end(ArgList);
+	Log("%s\n", s);
 
 	PushText(string(s), TT_Note);
 	UNLOCK();

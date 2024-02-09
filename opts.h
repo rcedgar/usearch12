@@ -16,8 +16,7 @@ enum OPT_TYPE
 
 const string &oget_str(OPT_ENUM oe);
 const char *oget_cstr(OPT_ENUM oe);
-unsigned oget_uns(OPT_ENUM oe);
-double oget_flt(OPT_ENUM oe);
+
 bool oget_flag(OPT_ENUM oe);
 
 const string &oget_strd(OPT_ENUM oe, const string &dflt);
@@ -30,3 +29,9 @@ void oset_fltd(OPT_ENUM oe, double dflt);
 void oset_flag(OPT_ENUM oe);
 
 bool ofilled(OPT_ENUM oe);
+bool ocmdline(OPT_ENUM oe);
+
+unsigned oget_uns_(OPT_ENUM oe, const char *FN, uint LineNr);
+double oget_flt_(OPT_ENUM oe, const char *FN, uint LineNr);
+#define oget_uns(oe)	oget_uns_((oe), __FILE__, __LINE__)
+#define oget_flt(oe)	oget_flt_((oe), __FILE__, __LINE__)

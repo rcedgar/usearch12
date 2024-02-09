@@ -87,7 +87,7 @@ void cmd_fastq_filter2()
 	SS2.Open(ReverseFileName);
 	ProgressStartSS(SS1, "Filtering", FastqFilter2CB);
 
-	if (ofilled(OPT_fastqout)) //src_refactor_opts
+	if (ocmdline(OPT_fastqout)) //src_refactor_opts
 		{
 		g_fFastqOut1 = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
 		asserta(ofilled(OPT_output2)); //src_refactor_opts

@@ -70,7 +70,7 @@ Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo)
 		}
 	else
 		US = new UDBUsortedSearcher;
-	US->m_MinFractId = (float) oget_flt(OPT_id); //src_refactor_opts
+	US->m_MinFractId = (float) oget_fltd(OPT_id, 0.0); //src_refactor_opts
 	UDBParams Params;
 	Params.FromCmdLine(Cmd, Nucleo);
 	US->m_UDBData->CreateEmpty(Params);

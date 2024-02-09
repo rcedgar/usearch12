@@ -23,7 +23,7 @@ void GetFastqs2(const string &FwdOpt, const string &RevOpt,
 	{
 	FwdFileNames.clear();
 	RevFileNames.clear();
-	string FqDir = oget_str(OPT_fqdir); //src_refactor_opts
+	string FqDir = oget_strd(OPT_fqdir, ""); //src_refactor_opts
 	if (!FqDir.empty() && !EndsWith(FqDir, "/"))
 		FqDir += '/';
 

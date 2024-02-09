@@ -11,6 +11,7 @@ static bool flag_opts[NOPTS];
 static float flt_opts[NOPTS];
 
 static bool opt_filled[NOPTS];
+static bool opt_cmdline[NOPTS];
 static bool opt_used[NOPTS];
 
 static OPT_TYPE opt_types[NOPTS] =
@@ -62,26 +63,26 @@ OPT_ENUM cstr_to_oe(const char *cstr)
 const string &oget_str(OPT_ENUM oe)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_str);
-	if (!opt_filled[oe])
-		Die("Required option not set -%s", oe_to_str(oe));
 	opt_used[oe] = true;
 	return str_opts[oe];
 	}
 
-unsigned oget_uns(OPT_ENUM oe)
+unsigned oget_uns_(OPT_ENUM oe, const char *FN, uint LineNr)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_uns);
 	if (!opt_filled[oe])
-		Die("Required option not set -%s", oe_to_str(oe));
+		Die("%s:%u Required option not set -%s",
+		  BaseName(FN), LineNr, oe_to_str(oe));
 	opt_used[oe] = true;
 	return uns_opts[oe];
 	}
 
-double oget_flt(OPT_ENUM oe)
+double oget_flt_(OPT_ENUM oe, const char *FN, uint LineNr)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_flt);
 	if (!opt_filled[oe])
-		Die("Required option not set -%s", oe_to_str(oe));
+		Die("%s:%d Required option not set -%s",
+		  BaseName(FN), LineNr, oe_to_str(oe));
 	opt_used[oe] = true;
 	return flt_opts[oe];
 	}
@@ -90,7 +91,7 @@ bool oget_flag(OPT_ENUM oe)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_flag);
 	opt_used[oe] = true;
-	return false;
+	return flag_opts[oe];
 	}
 
 const string &oget_strd(OPT_ENUM oe, const string &dflt)
@@ -130,21 +131,30 @@ void oset_strd(OPT_ENUM oe, const string &dflt)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_str);
 	if (!opt_filled[oe])
+		{
 		str_opts[oe] = dflt;
+		opt_filled[oe] = true;
+		}
 	}
 
 void oset_unsd(OPT_ENUM oe, unsigned dflt)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_uns);
 	if (!opt_filled[oe])
+		{
 		uns_opts[oe] = dflt;
+		opt_filled[oe] = true;
+		}
 	}
 
 void oset_fltd(OPT_ENUM oe, double dflt)
 	{
 	asserta(opt_types[oe] == OPT_TYPE_flt);
 	if (!opt_filled[oe])
+		{
 		flt_opts[oe] = (float) dflt;
+		opt_filled[oe] = true;
+		}
 	}
 
 void oset_flag(OPT_ENUM oe)
@@ -157,6 +167,11 @@ void oset_flag(OPT_ENUM oe)
 bool ofilled(OPT_ENUM oe)
 	{
 	return opt_filled[oe];
+	}
+
+bool ocmdline(OPT_ENUM oe)
+	{
+	return opt_cmdline[oe];
 	}
 
 const char *oget_cstr(OPT_ENUM oe)
@@ -196,15 +211,16 @@ void CheckUsedOpts(bool LogAll)
 	string unused;
 	for (uint i = 0; i < NOPTS; ++i)
 		{
-		if (opt_filled[i] && !opt_used[i])
+		if (opt_cmdline[i] && !opt_used[i])
 			{
 			if (!unused.empty())
 				unused += " ";
+			unused += "-";
 			unused += oe_to_str((OPT_ENUM) i);
 			}
 		}
 	if (!unused.empty())
-		Warning("Options set but not used: %s", unused.c_str());
+		Warning("Option(s) set but not used: %s", unused.c_str());
 	}
 
 static void oset_str_cmdline(OPT_ENUM oe, const string &value)
@@ -212,6 +228,7 @@ static void oset_str_cmdline(OPT_ENUM oe, const string &value)
 	asserta(opt_types[oe] == OPT_TYPE_str);
 	str_opts[oe] = value;
 	opt_filled[oe] = true;
+	opt_cmdline[oe] = true;
 	}
 
 static void oset_uns_cmdline(OPT_ENUM oe, const string &value)
@@ -225,6 +242,7 @@ static void oset_uns_cmdline(OPT_ENUM oe, const string &value)
 	asserta(opt_types[oe] == OPT_TYPE_uns);
 	uns_opts[oe] = StrToUint(value);
 	opt_filled[oe] = true;
+	opt_cmdline[oe] = true;
 	}
 
 static void oset_flt_cmdline(OPT_ENUM oe, const string &value)
@@ -238,6 +256,7 @@ static void oset_flt_cmdline(OPT_ENUM oe, const string &value)
 	asserta(opt_types[oe] == OPT_TYPE_flt);
 	flt_opts[oe] = (float) StrToFloat(value);
 	opt_filled[oe] = true;
+	opt_cmdline[oe] = true;
 	}
 
 vector<string> g_Argv;

@@ -274,7 +274,7 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 		unsigned SeqIndex = Order ? Order[k] : k;
 
 		unsigned Size = GetClusterSize(SeqIndex);
-		if (Size < oget_uns(OPT_minsize)) //src_refactor_opts
+		if (Size < oget_unsd(OPT_minsize, 0)) //src_refactor_opts
 			break;
 
 		string Label;

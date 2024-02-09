@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 	if (oget_flag(OPT_log_objmgr_stats)) //src_refactor_opts
 		ObjMgr::LogGlobalStats();
 
-	CheckUsedOpts(false);
 	ProgressNote("Finished");
+	CheckUsedOpts(false);
 	StopProgressThread();
 	return 0;
 	}

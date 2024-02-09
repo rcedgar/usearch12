@@ -91,14 +91,15 @@ void InitFastqRelabel(const string &FileName)
 	else
 		g_SampleName.clear();
 
-	if (oget_str(OPT_relabel) == "@") //src_refactor_opts
+	const string &relabel = oget_strd(OPT_relabel, "");
+	if (relabel == "@") //src_refactor_opts
 		{
 		GetSampleNameFromIlluminaFileName(FileName, g_RelabelPrefix);
 		g_RelabelPrefix += ".";
 		}
 	else
 		{
-		g_RelabelPrefix = oget_str(OPT_relabel); //src_refactor_opts
+		g_RelabelPrefix = relabel; //src_refactor_opts
 		if (g_RelabelPrefix == "-")
 			g_RelabelPrefix.clear();
 		}

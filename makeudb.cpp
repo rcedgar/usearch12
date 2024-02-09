@@ -30,9 +30,6 @@ static void MakeUDB(CMD Cmd, const string &InputFileName)
 	if (InputFileName == "" || OutputFileName == "")
 		Die("Missing input or output filename");
 
-	if (ofilled(OPT_accel)) //src_refactor_opts
-		Die("Use --dbaccel, not --accel");
-
 	if (ofilled(OPT_slots)) //src_refactor_opts
 		{
 		asserta(sizeof(uint32 *) >= sizeof(uint32));

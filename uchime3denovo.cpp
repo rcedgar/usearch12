@@ -19,7 +19,7 @@ static void UchimeCB(string &s)
 	Ps(s, "%u hits (%.1f%%)", g_ChimeraCount, Pct);
 	}
 
-void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
+uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
   vector<string> &InfoStrs)
 	{
 	IsChimeraVec.clear();
@@ -158,6 +158,8 @@ void Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	CloseStdioFile(fUCA);
 	CloseStdioFile(DeParser::m_fTab);
 	CloseStdioFile(DeParser::m_fAln);
+
+	return g_GoodCount;
 	}
 
 void cmd_uchime3_denovo()

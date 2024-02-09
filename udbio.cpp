@@ -360,6 +360,7 @@ void UDBData::ToUDBFile(FILE *f) const
 
 	if (m_SeqDB->GetSeqCount() == 0)
 		Die("Empty database");
+	ProgressDoneOther();
 	m_SeqDB->ToFile(f);
 
 	uint64 EndPos = GetStdioFilePos64(f);
@@ -371,7 +372,6 @@ void UDBData::ToUDBFile(FILE *f) const
 	SetStdioFilePos64(f, StartPos);
 	WriteStdioFile(f, &Hdr, sizeof(Hdr));
 	SetStdioFilePos64(f, EndPos);
-	ProgressDoneOther();
 	}
 
 void UDBData::WriteRowsVarCoded(FILE *f, const uint32 *Sizes) const

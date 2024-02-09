@@ -275,34 +275,14 @@ void Psasc(string &Str, const char *szFormat, ...);
 void SetLogFileName(const string &FileName);
 void Log(const char *szFormat, ...);
 
-#if	DEBUG
-void Die_(const char *szFormat, ...);
-void Warning_(const char *szFormat, ...);
+extern const char *g_FILE;
+extern uint g_LINE;
 
-typedef void (*PTR_PRINTFLIKE_FN)(const char *Format, ...);
+void Die_(const char *fmt, ...);
+void Warning_(const char *fmt, ...);
 
-static inline PTR_PRINTFLIKE_FN DiePtr(const char *FileName, unsigned LineNr)
-	{
-	fprintf(stderr, "\n\n%s(%u): ", FileName, LineNr);
-	Log("\n\n%s(%u): ", FileName, LineNr);
-	return Die_;
-	}
-
-static inline PTR_PRINTFLIKE_FN WarningPtr(const char *FileName, unsigned LineNr)
-	{
-	fprintf(stderr, "\n\n%s(%u): ", FileName, LineNr);
-	Log("\n\n%s(%u): ", FileName, LineNr);
-	return Warning_;
-	}
-
-#define Die		(*DiePtr(__FILE__, __LINE__))
-#define Warning	(*WarningPtr(__FILE__, __LINE__))
-#else
-void Die_(const char *szFormat, ...);
-void Warning_(const char *szFormat, ...);
-#define Die	Die_
-#define Warning Warning_
-#endif
+#define Die		g_FILE = __FILE__, g_LINE = __LINE__, Die_
+#define Warning	g_FILE = __FILE__, g_LINE = __LINE__, Warning_
 
 void LogElapsedTimeAndRAM();
 void LogProgramInfoAndCmdLine();

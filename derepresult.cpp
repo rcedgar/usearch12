@@ -726,13 +726,14 @@ void DerepResult::ToFastx(const string &FileName, bool DoFastq)
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
 	const unsigned Total = SeqCount + m_ClusterCount;
 	unsigned Counter = 0;
+	uint minuniquesize = oget_unsd(OPT_minuniquesize, 0);
 	for (unsigned k = 0; k < N; ++k)
 		{
 		unsigned ClusterIndex = m_Order[k];
 		unsigned Size = m_Sizes[ClusterIndex];
 		asserta(Size <= LastSize);
 		LastSize = Size;
-		if (Size < oget_uns(OPT_minuniquesize)) //src_refactor_opts
+		if (Size < minuniquesize) //src_refactor_opts
 			{
 			unsigned TooSmallCount = m_ClusterCount - ClusterIndex;
 			break;

@@ -57,9 +57,7 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 	Searcher *searcher = MakeDBSearcher(Cmd, seqdb, udb, QueryIsNucleo, DBIsNucleo,
 	  RevComp, Xlat);
 
-	unsigned MinSize = 0;
-	if (ofilled(OPT_minsize)) //src_refactor_opts
-		MinSize = oget_uns(OPT_minsize); //src_refactor_opts
+	unsigned MinSize = oget_unsd(OPT_minsize, 0); //src_refactor_opts
 
 	ObjMgr *OM = ObjMgr::CreateObjMgr();
 
