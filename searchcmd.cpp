@@ -21,8 +21,8 @@ void cmd_closed_ref()
 void cmd_otutab()
 	{
 	oset_fltd(OPT_id, 0.97);
-	oset_unsd(OPT_maxaccepts, 8);
-	oset_unsd(OPT_maxrejects, 256);
+	oset_unsd(OPT_maxaccepts, 3);
+	oset_unsd(OPT_maxrejects, 32);
 	oset_unsd(OPT_stepwords, 0);
 	oset_strd(OPT_strand, "both");
 

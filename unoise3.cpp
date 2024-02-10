@@ -81,7 +81,7 @@ static unsigned SearchDenoise(SeqInfo *Query, UDBUsortedSearcher *USS, unsigned 
 	unsigned BestTargetIndex = UINT_MAX;
 	unsigned BestDiffs = UINT_MAX;
 	unsigned AcceptCount = 0;
-	unsigned MaxAccepts = oget_uns(OPT_maxaccepts);
+	unsigned MaxAccepts = oget_unsd(OPT_maxaccepts, 1);
 	ObjMgr *OM = Query->m_Owner;
 	for (unsigned HotIndex = 0; HotIndex < HotCount; ++HotIndex)
 		{

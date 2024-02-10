@@ -101,7 +101,6 @@ const string &oget_strd(OPT_ENUM oe, const string &dflt)
 	if (opt_filled[oe])
 		return str_opts[oe];
 	str_opts[oe] = dflt;
-	opt_used[oe] = true;
 	return dflt;
 	}
 
@@ -112,7 +111,6 @@ unsigned oget_unsd(OPT_ENUM oe, unsigned dflt)
 	if (opt_filled[oe])
 		return uns_opts[oe];
 	uns_opts[oe] = dflt;
-	opt_used[oe] = true;
 	return dflt;
 	}
 
@@ -123,7 +121,6 @@ double oget_fltd(OPT_ENUM oe, double dflt)
 	if (opt_filled[oe])
 		return flt_opts[oe];
 	flt_opts[oe] = (float) dflt;
-	opt_used[oe] = true;
 	return dflt;
 	}
 
