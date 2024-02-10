@@ -176,20 +176,20 @@ void GetWordCountingParams(float MinFractId, unsigned QueryUniqueWordCount,
 	unsigned ThreshCount =
 	  GetMinWindexWordCount(QueryUniqueWordCount, MinFractId, WordOnes, IsNucleo);
 
-	if (oget_uns(OPT_stepwords) == 0) //src_refactor_opts
+	if (oget_uns(OPT_stepwords) == 0)
 		{
 		Step = 1;
 		MinU = ThreshCount;
 		}
 	else
 		{
-		Step = ThreshCount/oget_uns(OPT_stepwords); //src_refactor_opts
+		Step = ThreshCount/oget_uns(OPT_stepwords);
 		if (Step == 0)
 			Step = 1;
 
-		MinU = min(ThreshCount, oget_uns(OPT_stepwords)/2); //src_refactor_opts
+		MinU = min(ThreshCount, oget_uns(OPT_stepwords)/2);
 		}
 
-	if (oget_flag(OPT_kmerid)) //src_refactor_opts
+	if (oget_flag(OPT_kmerid))
 		MinU = 1;
 	}

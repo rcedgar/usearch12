@@ -64,33 +64,33 @@ void UDBParams::FromCmdLine(CMD Cmd, bool Nucleo)
 	{
 	SetCmdDefaults(Cmd, Nucleo);
 
-	if (ofilled(OPT_wordlength) && ofilled(OPT_pattern)) //src_refactor_opts
+	if (ofilled(OPT_wordlength) && ofilled(OPT_pattern))
 		Die("Cannot set both wordlength and pattern");
 
-	if (ofilled(OPT_wordlength)) //src_refactor_opts
+	if (ofilled(OPT_wordlength))
 		{
-		SetWordLength(oget_uns(OPT_wordlength)); //src_refactor_opts
-		if (!ofilled(OPT_slots)) //src_refactor_opts
+		SetWordLength(oget_uns(OPT_wordlength));
+		if (!ofilled(OPT_slots))
 			SetSlots(0);
 		}
 
-	if (ofilled(OPT_alpha)) //src_refactor_opts
-		SetAlphaStr(oget_str(OPT_alpha)); //src_refactor_opts
+	if (ofilled(OPT_alpha))
+		SetAlphaStr(oget_str(OPT_alpha));
 
-	if (ofilled(OPT_pattern)) //src_refactor_opts
-		SetPattern(oget_cstr(OPT_pattern)); //src_refactor_opts
+	if (ofilled(OPT_pattern))
+		SetPattern(oget_cstr(OPT_pattern));
 
-	if (ofilled(OPT_dbstep)) //src_refactor_opts
-		m_DBStep = oget_uns(OPT_dbstep); //src_refactor_opts
+	if (ofilled(OPT_dbstep))
+		m_DBStep = oget_uns(OPT_dbstep);
 
-	if (ofilled(OPT_dbstep)) //src_refactor_opts
-		SetStep(oget_uns(OPT_dbstep), 0); //src_refactor_opts
+	if (ofilled(OPT_dbstep))
+		SetStep(oget_uns(OPT_dbstep), 0);
 
-	if (ofilled(OPT_dbaccelpct)) //src_refactor_opts
-		SetAccel(oget_uns(OPT_dbaccelpct)); //src_refactor_opts
+	if (ofilled(OPT_dbaccelpct))
+		SetAccel(oget_uns(OPT_dbaccelpct));
 
-	if (ofilled(OPT_slots)) //src_refactor_opts
-		SetSlots(oget_uns(OPT_slots)); //src_refactor_opts
+	if (ofilled(OPT_slots))
+		SetSlots(oget_uns(OPT_slots));
 	else if (m_SlotCount == 0)
 		SetSlots(0);
 

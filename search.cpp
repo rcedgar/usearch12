@@ -23,11 +23,11 @@ void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,
 
 bool StrandIsBoth()
 	{
-	if (!ofilled(OPT_strand)) //src_refactor_opts
+	if (!ofilled(OPT_strand))
 		Die("Must specify -strand plus or both with nt db");
-	if (oget_str(OPT_strand) == "both") //src_refactor_opts
+	if (oget_str(OPT_strand) == "both")
 		return true;
-	else if (oget_str(OPT_strand) == "plus") //src_refactor_opts
+	else if (oget_str(OPT_strand) == "plus")
 		return false;
 	else
 		Die("Invalid -strand, must be plus or both");
@@ -57,7 +57,7 @@ static void Thread(CMD Cmd, SeqSource *SS, SeqDB *seqdb, UDBData *udb,
 	Searcher *searcher = MakeDBSearcher(Cmd, seqdb, udb, QueryIsNucleo, DBIsNucleo,
 	  RevComp, Xlat);
 
-	unsigned MinSize = oget_unsd(OPT_minsize, 0); //src_refactor_opts
+	unsigned MinSize = oget_unsd(OPT_minsize, 0);
 
 	ObjMgr *OM = ObjMgr::CreateObjMgr();
 

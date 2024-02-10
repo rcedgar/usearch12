@@ -107,27 +107,27 @@ void OutputSink::OpenOutputFilesServer(const string &OutputDir)
 	{
 	asserta(!m_OpenDone);
 
-	if (ofilled(OPT_alnout)) //src_refactor_opts
+	if (ofilled(OPT_alnout))
 		{
-		m_fAln = CreateStdioFile(OutputDir + "/" + oget_str(OPT_alnout)); //src_refactor_opts
+		m_fAln = CreateStdioFile(OutputDir + "/" + oget_str(OPT_alnout));
 		PrintCmdLine(m_fAln);
 		PrintProgramInfo(m_fAln);
 		}
-	if (ofilled(OPT_blast6out)) //src_refactor_opts
-		m_fBlast6 = CreateStdioFile(OutputDir + "/" + oget_str(OPT_blast6out)); //src_refactor_opts
-	if (ofilled(OPT_userout)) //src_refactor_opts
+	if (ofilled(OPT_blast6out))
+		m_fBlast6 = CreateStdioFile(OutputDir + "/" + oget_str(OPT_blast6out));
+	if (ofilled(OPT_userout))
 		{
 		void SetUserFieldIndexes(const string &s);
-		if (!ofilled(OPT_userfields)) //src_refactor_opts
+		if (!ofilled(OPT_userfields))
 			Die("--userout requires --userfields");
-		SetUserFieldIndexes(oget_str(OPT_userfields)); //src_refactor_opts
-		m_fUser = CreateStdioFile(OutputDir + "/" + oget_str(OPT_userout)); //src_refactor_opts
+		SetUserFieldIndexes(oget_str(OPT_userfields));
+		m_fUser = CreateStdioFile(OutputDir + "/" + oget_str(OPT_userout));
 		}
-	if (ofilled(OPT_fastapairs)) //src_refactor_opts
-		m_fFastaPairs = CreateStdioFile(OutputDir + "/" + oget_str(OPT_fastapairs)); //src_refactor_opts
+	if (ofilled(OPT_fastapairs))
+		m_fFastaPairs = CreateStdioFile(OutputDir + "/" + oget_str(OPT_fastapairs));
 
-	if (ofilled(OPT_uc)) //src_refactor_opts
-		m_fUC = CreateStdioFile(OutputDir + "/" + oget_str(OPT_uc)); //src_refactor_opts
+	if (ofilled(OPT_uc))
+		m_fUC = CreateStdioFile(OutputDir + "/" + oget_str(OPT_uc));
 
 	m_OpenDone = true;
 	}
@@ -139,51 +139,51 @@ void OutputSink::OpenOutputFiles(CMD Cmd)
 
 	asserta(!m_OpenDone);
 
-	if (ofilled(OPT_alnout)) //src_refactor_opts
+	if (ofilled(OPT_alnout))
 		{
-		m_fAln = CreateStdioFile(oget_str(OPT_alnout)); //src_refactor_opts
+		m_fAln = CreateStdioFile(oget_str(OPT_alnout));
 		PrintCmdLine(m_fAln);
 		PrintProgramInfo(m_fAln);
 		}
 
-	if (ofilled(OPT_userout)) //src_refactor_opts
+	if (ofilled(OPT_userout))
 		{
 		void SetUserFieldIndexes(const string &s);
-		if (!ofilled(OPT_userfields)) //src_refactor_opts
+		if (!ofilled(OPT_userfields))
 			Die("--userout requires --userfields");
-		SetUserFieldIndexes(oget_str(OPT_userfields)); //src_refactor_opts
-		m_fUser = CreateStdioFile(oget_str(OPT_userout)); //src_refactor_opts
+		SetUserFieldIndexes(oget_str(OPT_userfields));
+		m_fUser = CreateStdioFile(oget_str(OPT_userout));
 		}
 
-	if (ofilled(OPT_blast6out)) //src_refactor_opts
-		m_fBlast6 = CreateStdioFile(oget_str(OPT_blast6out)); //src_refactor_opts
+	if (ofilled(OPT_blast6out))
+		m_fBlast6 = CreateStdioFile(oget_str(OPT_blast6out));
 
-	if (ofilled(OPT_fastapairs)) //src_refactor_opts
-		m_fFastaPairs = CreateStdioFile(oget_str(OPT_fastapairs)); //src_refactor_opts
+	if (ofilled(OPT_fastapairs))
+		m_fFastaPairs = CreateStdioFile(oget_str(OPT_fastapairs));
 
-	if (ofilled(OPT_qsegout)) //src_refactor_opts
-		m_fQSeg = CreateStdioFile(oget_str(OPT_qsegout)); //src_refactor_opts
+	if (ofilled(OPT_qsegout))
+		m_fQSeg = CreateStdioFile(oget_str(OPT_qsegout));
 
-	if (ofilled(OPT_tsegout)) //src_refactor_opts
-		m_fTSeg = CreateStdioFile(oget_str(OPT_tsegout)); //src_refactor_opts
+	if (ofilled(OPT_tsegout))
+		m_fTSeg = CreateStdioFile(oget_str(OPT_tsegout));
 
-	if (ofilled(OPT_matched)) //src_refactor_opts
-		m_fMatched = CreateStdioFile(oget_str(OPT_matched)); //src_refactor_opts
+	if (ofilled(OPT_matched))
+		m_fMatched = CreateStdioFile(oget_str(OPT_matched));
 
-	if (ofilled(OPT_matchedfq)) //src_refactor_opts
-		m_fMatchedFq = CreateStdioFile(oget_str(OPT_matchedfq)); //src_refactor_opts
+	if (ofilled(OPT_matchedfq))
+		m_fMatchedFq = CreateStdioFile(oget_str(OPT_matchedfq));
 
-	if (ofilled(OPT_notmatched)) //src_refactor_opts
-		m_fNotMatched = CreateStdioFile(oget_str(OPT_notmatched)); //src_refactor_opts
+	if (ofilled(OPT_notmatched))
+		m_fNotMatched = CreateStdioFile(oget_str(OPT_notmatched));
 
-	if (ofilled(OPT_notmatchedfq)) //src_refactor_opts
-		m_fNotMatchedFq = CreateStdioFile(oget_str(OPT_notmatchedfq)); //src_refactor_opts
+	if (ofilled(OPT_notmatchedfq))
+		m_fNotMatchedFq = CreateStdioFile(oget_str(OPT_notmatchedfq));
 
-	if (ofilled(OPT_uc)) //src_refactor_opts
-		m_fUC = CreateStdioFile(oget_str(OPT_uc)); //src_refactor_opts
+	if (ofilled(OPT_uc))
+		m_fUC = CreateStdioFile(oget_str(OPT_uc));
 
-	if (ofilled(OPT_trimout)) //src_refactor_opts
-		m_fTrimFa = CreateStdioFile(oget_str(OPT_trimout)); //src_refactor_opts
+	if (ofilled(OPT_trimout))
+		m_fTrimFa = CreateStdioFile(oget_str(OPT_trimout));
 
 	m_OpenDone = true;
 	}
@@ -202,9 +202,9 @@ void OutputSink::OutputAR(AlignResult *AR)
 
 void OutputSink::OutputQSeg(AlignResult *AR)
 	{
-	if (ofilled(OPT_trunclen)) //src_refactor_opts
+	if (ofilled(OPT_trunclen))
 		{
-		unsigned n = oget_uns(OPT_trunclen); //src_refactor_opts
+		unsigned n = oget_uns(OPT_trunclen);
 		const SeqInfo *Q = AR->m_Query;
 		const SeqInfo *T = AR->m_Target;
 		unsigned QL = Q->m_L;
@@ -234,7 +234,7 @@ void OutputSink::OutputFastaPairs(AlignResult *AR)
 		return;
 
 	fprintf(m_fFastaPairs, ">%s\n", AR->GetQueryLabel());
-	if (oget_flag(OPT_fastapairs_dots)) //src_refactor_opts
+	if (oget_flag(OPT_fastapairs_dots))
 		fprintf(m_fFastaPairs, "%s\n", AR->GetQueryRowDots());
 	else
 		fprintf(m_fFastaPairs, "%s\n", AR->GetQueryRow());
@@ -392,7 +392,7 @@ void OutputSink::OutputMatchedTrue(SeqInfo *Query, unsigned ClusterIndex)
 void OutputSink::OutputMatchedFalse(SeqInfo *Query, unsigned ClusterIndex)
 	{
 	OutputUCNoHits(Query, ClusterIndex);
-	if (oget_flag(OPT_output_no_hits)) //src_refactor_opts
+	if (oget_flag(OPT_output_no_hits))
 		{
 		OutputBlast6NoHits(Query);
 		OutputUserNoHits(Query, ClusterIndex);

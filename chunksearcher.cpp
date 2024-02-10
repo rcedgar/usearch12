@@ -12,16 +12,16 @@ void ChunkSearcher::GetChunkInfo(unsigned L, unsigned &Length, vector<unsigned> 
 	{
 	Los.clear();
 
-	if (L <= oget_uns(OPT_minchunk)) //src_refactor_opts
+	if (L <= oget_uns(OPT_minchunk))
 		{
 		Length = L;
 		Los.push_back(0);
 		return;
 		}
 
-	Length = (L - 1)/oget_uns(OPT_chunks) + 1; //src_refactor_opts
-	if (Length < oget_uns(OPT_minchunk)) //src_refactor_opts
-		Length = oget_uns(OPT_minchunk); //src_refactor_opts
+	Length = (L - 1)/oget_uns(OPT_chunks) + 1;
+	if (Length < oget_uns(OPT_minchunk))
+		Length = oget_uns(OPT_minchunk);
 
 	unsigned Lo = 0;
 	for (;;)
@@ -59,7 +59,7 @@ void ChunkSearcher::SearchImpl()
 		}
 
 	const unsigned DBSize = GetSeqCount();
-	if (DBSize <= oget_uns(OPT_uparse_maxdball)) //src_refactor_opts
+	if (DBSize <= oget_uns(OPT_uparse_maxdball))
 		{
 		AlignAll();
 		return;
@@ -79,8 +79,8 @@ void ChunkSearcher::SearchImpl()
 	m_TargetIndexes.Alloc(DBSize);
 	unsigned *TargetIndexes = m_TargetIndexes.Data;
 
-	const unsigned MaxHot = oget_uns(OPT_uparse_maxhot); //src_refactor_opts
-	const unsigned MaxDrop = oget_uns(OPT_uparse_maxdrop); //src_refactor_opts
+	const unsigned MaxHot = oget_uns(OPT_uparse_maxhot);
+	const unsigned MaxDrop = oget_uns(OPT_uparse_maxdrop);
 
 	m_Chunk->m_Label = m_Query->m_Label;
 	m_Chunk->m_L = ChunkLength;

@@ -16,8 +16,8 @@ OTUTableSink::OTUTableSink() : HitSink(false, true, true)
 	if (m_OT == 0)
 		{
 		m_OT = new OTUTable;
-		if (ofilled(OPT_mapout)) //src_refactor_opts
-			m_fMap = CreateStdioFile(oget_str(OPT_mapout)); //src_refactor_opts
+		if (ofilled(OPT_mapout))
+			m_fMap = CreateStdioFile(oget_str(OPT_mapout));
 		}
 	UNLOCK_CLASS();
 	}
@@ -62,15 +62,15 @@ void OTUTableSink::OnAllDone()
 	CloseStdioFile(m_fMap);
 	m_fMap = 0;
 
-	if (ofilled(OPT_otutabout)) //src_refactor_opts
+	if (ofilled(OPT_otutabout))
 		{
-		const string FileName = oget_str(OPT_otutabout); //src_refactor_opts
+		const string FileName = oget_str(OPT_otutabout);
 		m_OT->ToTabbedFile(FileName);
 		}
 
-	if (ofilled(OPT_biomout)) //src_refactor_opts
+	if (ofilled(OPT_biomout))
 		{
-		const string FileName = oget_str(OPT_biomout); //src_refactor_opts
+		const string FileName = oget_str(OPT_biomout);
 		m_OT->ToJsonFile(FileName);
 		}
 	}

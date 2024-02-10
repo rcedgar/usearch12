@@ -9,7 +9,7 @@ void Make3Way(const SeqInfo *SDQ, const SeqInfo *SDA, const SeqInfo *SDB,
 
 static double GetScore2(double Y, double N, double A)
 	{
-	return Y/(oget_flt(OPT_xn)*(N + oget_flt(OPT_dn)) + oget_flt(OPT_xa)*A); //src_refactor_opts
+	return Y/(oget_flt(OPT_xn)*(N + oget_flt(OPT_dn)) + oget_flt(OPT_xa)*A);
 	}
 
 void ScoreBimera(const byte *Q3, const byte *A3, const byte *B3, unsigned ColCount,

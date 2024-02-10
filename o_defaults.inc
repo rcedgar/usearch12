@@ -1,6 +1,6 @@
 oset_flt_default(OPT_accel, 0.8);
 oset_flt_default(OPT_dn, 1.4);
-oset_flt_default(OPT_ka_dbsize, 3e9);
+oset_flt_default(OPT_ka_dbsize, 1e9);
 oset_flt_default(OPT_lext, 1.0);
 oset_flt_default(OPT_lopen, 10.0);
 oset_flt_default(OPT_maj, 0.51);

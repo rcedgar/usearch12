@@ -198,7 +198,7 @@ AlignResult *LocalAligner::AlignPos(unsigned QueryPos, unsigned TargetPos)
 		}
 
 	double Evalue = g_ES->RawScoreToEvalue(GappedScore, QL, true);
-	if (Evalue > oget_flt(OPT_evalue)) //src_refactor_opts
+	if (Evalue > oget_flt(OPT_evalue))
 		{
 		PI->Down();
 		return 0;
@@ -338,7 +338,7 @@ PathInfo *LocalAligner::AlignTargetPos(const byte *T, unsigned TL,
 		}
 
 	double Evalue = g_ES->RawScoreToEvalue(GappedScore, QL, true);
-	if (Evalue > oget_flt(OPT_evalue)) //src_refactor_opts
+	if (Evalue > oget_flt(OPT_evalue))
 		{
 		PI->Down();
 		return 0;

@@ -5,7 +5,7 @@
 
 AlnHeuristics::AlnHeuristics()
 	{
-	FullDPAlways = oget_flag(OPT_fulldp); //src_refactor_opts
+	FullDPAlways = oget_flag(OPT_fulldp);
 	BandRadius = 0;
 	HSPFinderWordLength = 0;
 	XDropG = 0.0f;
@@ -25,19 +25,19 @@ void AlnHeuristics::LogMe() const
 
 void AlnHeuristics::InitFromCmdLine(const AlnParams &AP)
 	{
-	FullDPAlways = oget_flag(OPT_fulldp); //src_refactor_opts
-	XDropU = (float) oget_flt(OPT_xdrop_u); //src_refactor_opts
-	XDropG = (float) oget_flt(OPT_xdrop_g); //src_refactor_opts
-	XDropGlobalHSP = (float) oget_flt(OPT_xdrop_nw); //src_refactor_opts
+	FullDPAlways = oget_flag(OPT_fulldp);
+	XDropU = (float) oget_flt(OPT_xdrop_u);
+	XDropG = (float) oget_flt(OPT_xdrop_g);
+	XDropGlobalHSP = (float) oget_flt(OPT_xdrop_nw);
 
-	BandRadius = oget_uns(OPT_band); //src_refactor_opts
-	MinGlobalHSPLength = oget_uns(OPT_minhsp); //src_refactor_opts
+	BandRadius = oget_uns(OPT_band);
+	MinGlobalHSPLength = oget_uns(OPT_minhsp);
 
 	if (AP.GetIsNucleo())
 		{
 		HSPFinderWordLength = 5;
-		MinGlobalHSPFractId = max((float) oget_fltd(OPT_id, 0.5), 0.75f); //src_refactor_opts
-		MinGlobalHSPScore = MinGlobalHSPFractId*MinGlobalHSPLength*(float) oget_fltd(OPT_match, 1.0); //src_refactor_opts
+		MinGlobalHSPFractId = max((float) oget_fltd(OPT_id, 0.5), 0.75f);
+		MinGlobalHSPScore = MinGlobalHSPFractId*MinGlobalHSPLength*(float) oget_fltd(OPT_match, 1.0);
 		}
 	else
 		{
@@ -54,14 +54,14 @@ void AlnHeuristics::InitFromCmdLine(const AlnParams &AP)
 				MinDiagScore = Score;
 			}
 
-		MinGlobalHSPFractId = max((float) oget_flt(OPT_id), 0.5f); //src_refactor_opts
+		MinGlobalHSPFractId = max((float) oget_flt(OPT_id), 0.5f);
 		MinGlobalHSPScore = MinGlobalHSPFractId*MinDiagScore*MinGlobalHSPLength;
 		}
 
-	if (ofilled(OPT_hspw)) //src_refactor_opts
-		HSPFinderWordLength = oget_uns(OPT_hspw); //src_refactor_opts
+	if (ofilled(OPT_hspw))
+		HSPFinderWordLength = oget_uns(OPT_hspw);
 
-	if (oget_flag(OPT_fulldp)) //src_refactor_opts
+	if (oget_flag(OPT_fulldp))
 		{
 		InitGlobalFullDP();
 		return;

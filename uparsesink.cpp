@@ -60,7 +60,7 @@ const char *ModToStr(MOD Mod)
 
 bool UParseSink::ModelOk() const
 	{
-	return GetDivQM() <= oget_flt(OPT_uparse_annot_maxdivqm); //src_refactor_opts
+	return GetDivQM() <= oget_flt(OPT_uparse_annot_maxdivqm);
 	}
 
 void UParseSink::Output()
@@ -109,14 +109,14 @@ void UParseSink::OpenOutputFiles()
 		UNLOCK();
 		return;
 		}
-	if (ofilled(OPT_fastaout)) //src_refactor_opts
-		m_fFasta = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled(OPT_fastqout)) //src_refactor_opts
-		m_fFastq = CreateStdioFile(oget_str(OPT_fastqout)); //src_refactor_opts
-	if (ofilled(OPT_uparsealnout)) //src_refactor_opts
-		m_fAln = CreateStdioFile(oget_str(OPT_uparsealnout)); //src_refactor_opts
-	if (ofilled(OPT_uparseout)) //src_refactor_opts
-		m_fTab = CreateStdioFile(oget_str(OPT_uparseout)); //src_refactor_opts
+	if (ofilled(OPT_fastaout))
+		m_fFasta = CreateStdioFile(oget_str(OPT_fastaout));
+	if (ofilled(OPT_fastqout))
+		m_fFastq = CreateStdioFile(oget_str(OPT_fastqout));
+	if (ofilled(OPT_uparsealnout))
+		m_fAln = CreateStdioFile(oget_str(OPT_uparsealnout));
+	if (ofilled(OPT_uparseout))
+		m_fTab = CreateStdioFile(oget_str(OPT_uparseout));
 	m_OpenDone = true;
 	UNLOCK();
 	}
@@ -250,7 +250,7 @@ void UParseSink::SetCandidates()
 			continue;
 		double Id = AR->GetFractId();
 		asserta (Id >= 0.0);
-		if (oget_flag(OPT_selfid) && Id == 1.0f) //src_refactor_opts
+		if (oget_flag(OPT_selfid) && Id == 1.0f)
 			continue;
 
 		unsigned Diffs = AR->GetDiffCount();
@@ -280,7 +280,7 @@ void UParseSink::Parse()
 	m_Mod = MOD_other;
 	m_QuerySize = GetSizeFromLabel(m_Query->m_Label, 2);
 
-	if (oget_flag(OPT_verbose)) //src_refactor_opts
+	if (oget_flag(OPT_verbose))
 		{
 		Log("\n");
 		Log("UParseSink::Parse Q>%s\n", m_Query->m_Label);
@@ -290,21 +290,21 @@ void UParseSink::Parse()
 	unsigned HitCount = m_HitMgr->GetHitCount();
 	if (HitCount == 0)
 		{
-		if (oget_flag(OPT_verbose)) //src_refactor_opts
+		if (oget_flag(OPT_verbose))
 			Log("No hits\n");
 		SetNoHits();
 		return;
 		}
-	if (oget_flag(OPT_verbose)) //src_refactor_opts
+	if (oget_flag(OPT_verbose))
 		m_HitMgr->LogMe();
 
 	AllocHitCount(HitCount);
 	SetCandidates();
-	if (oget_flag(OPT_verbose)) //src_refactor_opts
+	if (oget_flag(OPT_verbose))
 		LogCandidates();
 	if (m_CandidateCount == 0)
 		{
-		if (oget_flag(OPT_verbose)) //src_refactor_opts
+		if (oget_flag(OPT_verbose))
 			Log("No candidates\n");
 		SetNoHits();
 		return;
@@ -317,10 +317,10 @@ void UParseSink::Parse()
 		}
 
 	StarAlign(m_Query, m_Candidates, m_CandidatePaths, m_CandidateCount, *m_MSA);
-	if (oget_flag(OPT_verbose)) //src_refactor_opts
+	if (oget_flag(OPT_verbose))
 		LogMSA();
 	DP();
-	if (oget_flag(OPT_verbose)) //src_refactor_opts
+	if (oget_flag(OPT_verbose))
 		LogSegs();
 	CompareQM();
 	}

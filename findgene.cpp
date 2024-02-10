@@ -93,37 +93,37 @@ static void Thread(SeqSource *SS, bool RevComp)
 
 void cmd_search_16s()
 	{
-	const string QueryFileName = oget_str(OPT_search_16s); //src_refactor_opts
+	const string QueryFileName = oget_str(OPT_search_16s);
 
 	bool RevComp = StrandOptToRevComp(false, true);
 
 	void InitGlobals(bool Nucleo);
 	InitGlobals(true);
 
-	if (ofilled(OPT_start_motif)) //src_refactor_opts
-		GeneFinder::m_StartMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_start_motif)); //src_refactor_opts
+	if (ofilled(OPT_start_motif))
+		GeneFinder::m_StartMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_start_motif));
 	else
 		GeneFinder::m_StartMotifSeq = (const byte *) GF_START_MOTIF;
 
-	if (ofilled(OPT_end_motif)) //src_refactor_opts
-		GeneFinder::m_EndMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_end_motif)); //src_refactor_opts
+	if (ofilled(OPT_end_motif))
+		GeneFinder::m_EndMotifSeq = (const byte *) mystrsave(oget_cstr(OPT_end_motif));
 	else
 		GeneFinder::m_EndMotifSeq = (const byte *) GF_END_MOTIF;
 
 	GeneFinder::m_StartMotifL = ustrlen((const char *) GeneFinder::m_StartMotifSeq);
 	GeneFinder::m_EndMotifL = ustrlen((const char *) GeneFinder::m_EndMotifSeq);
 
-	GeneFinder::m_MaxStartDiffs = oget_uns(OPT_maxstartdiffs); //src_refactor_opts
-	GeneFinder::m_MaxEndDiffs = oget_uns(OPT_maxenddiffs); //src_refactor_opts
+	GeneFinder::m_MaxStartDiffs = oget_uns(OPT_maxstartdiffs);
+	GeneFinder::m_MaxEndDiffs = oget_uns(OPT_maxenddiffs);
 
-	if (ofilled(OPT_mincount)) //src_refactor_opts
-		GeneFinder::m_MinCount = oget_uns(OPT_mincount); //src_refactor_opts
+	if (ofilled(OPT_mincount))
+		GeneFinder::m_MinCount = oget_uns(OPT_mincount);
 
-	if (!ofilled(OPT_bitvec)) //src_refactor_opts
+	if (!ofilled(OPT_bitvec))
 		Die("-bitvec required");
 
 	BitVec BV;
-	string BitVecFileName = oget_str(OPT_bitvec); //src_refactor_opts
+	string BitVecFileName = oget_str(OPT_bitvec);
 	FILE *f = OpenStdioFile(BitVecFileName);
 	uint32 WordLength;
 	ReadStdioFile(f, &WordLength, sizeof(WordLength));
@@ -138,16 +138,16 @@ void cmd_search_16s()
 	ReadStdioFile(f, BV.m_Vec, Bytes);
 	CloseStdioFile(f);
 
-	if (ofilled(OPT_hitsout)) //src_refactor_opts
-		GeneFinder::m_fWinFa = CreateStdioFile(oget_str(OPT_hitsout)); //src_refactor_opts
-	if (ofilled(OPT_tabbedout)) //src_refactor_opts
-		GeneFinder::m_fTab = CreateStdioFile(oget_str(OPT_tabbedout)); //src_refactor_opts
-	if (ofilled(OPT_fastaout)) //src_refactor_opts
-		GeneFinder::m_fGeneFa = CreateStdioFile(oget_str(OPT_fastaout)); //src_refactor_opts
-	if (ofilled(OPT_fragout)) //src_refactor_opts
-		GeneFinder::m_fFragFa = CreateStdioFile(oget_str(OPT_fragout)); //src_refactor_opts
-	if (ofilled(OPT_output2)) //src_refactor_opts
-		GeneFinder::m_fCounts = CreateStdioFile(oget_str(OPT_output2)); //src_refactor_opts
+	if (ofilled(OPT_hitsout))
+		GeneFinder::m_fWinFa = CreateStdioFile(oget_str(OPT_hitsout));
+	if (ofilled(OPT_tabbedout))
+		GeneFinder::m_fTab = CreateStdioFile(oget_str(OPT_tabbedout));
+	if (ofilled(OPT_fastaout))
+		GeneFinder::m_fGeneFa = CreateStdioFile(oget_str(OPT_fastaout));
+	if (ofilled(OPT_fragout))
+		GeneFinder::m_fFragFa = CreateStdioFile(oget_str(OPT_fragout));
+	if (ofilled(OPT_output2))
+		GeneFinder::m_fCounts = CreateStdioFile(oget_str(OPT_output2));
 
 	bool *Vec = myalloc(bool, SlotCount);
 	zero_array(Vec, SlotCount);

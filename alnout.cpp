@@ -87,7 +87,7 @@ void WriteAln(FILE *f, AlignResult *AR)
 	asserta(ustrlen(TRow) == AlnLength);
 	const char *AnnotRow = AR->GetAnnotRow(TargetIsNucleo);
 
-	unsigned RowLen = oget_uns(OPT_rowlen); //src_refactor_opts
+	unsigned RowLen = oget_uns(OPT_rowlen);
 	unsigned RowCount = (AlnLength + RowLen - 1)/RowLen;
 
 	unsigned QPos = AR->GetQLo_AlnOut();
@@ -98,8 +98,8 @@ void WriteAln(FILE *f, AlignResult *AR)
 	fprintf(f, "\n");
 	for (unsigned RowIndex = 0; RowIndex < RowCount; ++RowIndex)
 		{
-		unsigned ColFrom = RowIndex*oget_uns(OPT_rowlen); //src_refactor_opts
-		unsigned ColTo = ColFrom + oget_uns(OPT_rowlen) - 1; //src_refactor_opts
+		unsigned ColFrom = RowIndex*oget_uns(OPT_rowlen);
+		unsigned ColTo = ColFrom + oget_uns(OPT_rowlen) - 1;
 		if (ColTo >= AlnLength)
 			ColTo = AlnLength - 1;
 		unsigned n = ColTo - ColFrom + 1;

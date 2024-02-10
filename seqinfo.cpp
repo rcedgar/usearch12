@@ -469,7 +469,7 @@ void SeqInfo::TruncateTail(unsigned IntQual)
 		else
 			break;
 		}
-	if (TailLength > 0 && TailLength > oget_uns(OPT_fastq_tail)) //src_refactor_opts
+	if (TailLength > 0 && TailLength > oget_uns(OPT_fastq_tail))
 		TruncateLength(m_L - TailLength);
 	}
 

@@ -87,11 +87,11 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_usearch_local:
 		{
 		float DBSize = 0.0;
-		if (ofilled(OPT_ka_dbsize)) //src_refactor_opts
-			DBSize = (float) oget_flt(OPT_ka_dbsize); //src_refactor_opts
+		if (ofilled(OPT_ka_dbsize))
+			DBSize = (float) oget_flt(OPT_ka_dbsize);
 		else
 			DBSize = (float) DB->GetLetterCount();
-		g_ES = new EStats(DBIsNucleo, DBSize, (float) oget_flt(OPT_evalue)); //src_refactor_opts
+		g_ES = new EStats(DBIsNucleo, DBSize, (float) oget_flt(OPT_evalue));
 		}
 	// fall through to next case
 		}
@@ -102,17 +102,17 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		{
 		if (Cmd == CMD_usearch_local)
 			{
-			unsigned WordLength = oget_unsd(OPT_hspw, 0); //src_refactor_opts
+			unsigned WordLength = oget_unsd(OPT_hspw, 0);
 			if (DBIsNucleo)
 				{
-				if (!ofilled(OPT_hspw)) //src_refactor_opts
+				if (!ofilled(OPT_hspw))
 					WordLength = 5;
 				aligner = new LocalAligner2(WordLength, 4,
 				  g_CharToLetterNucleo, g_LetterToCharNucleo);
 				}
 			else
 				{
-				if (!ofilled(OPT_hspw)) //src_refactor_opts
+				if (!ofilled(OPT_hspw))
 					WordLength = 3;
 				aligner = new LocalAligner2(WordLength, 20,
 				  g_CharToLetterAmino, g_LetterToCharAmino);
@@ -208,7 +208,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 			}
 		else
 			asserta(false);
-		US->m_MinFractId = (float) oget_fltd(OPT_id, 0.5); //src_refactor_opts
+		US->m_MinFractId = (float) oget_fltd(OPT_id, 0.5);
 		searcher = US;
 		break;
 		}
@@ -223,14 +223,14 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		HM.AddSink(CRS);
 		}
 
-	if (ofilled(OPT_dbmatched) || ofilled(OPT_dbnotmatched) || ofilled(OPT_dbcutout)) //src_refactor_opts
+	if (ofilled(OPT_dbmatched) || ofilled(OPT_dbnotmatched) || ofilled(OPT_dbcutout))
 		{
 		SeqDB *DB = searcher->GetSeqDB();
 		DBHitSink *dbhitsink = new DBHitSink(DB, Local, QueryIsNucleo, DBIsNucleo);
 		HM.AddSink(dbhitsink);
 		}
 
-	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout)) //src_refactor_opts
+	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout))
 		{
 		OTUTableSink *sink = new OTUTableSink;
 		OTUTable *OT = sink->m_OT;
@@ -247,7 +247,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	searcher->m_RevComp = RevComp;
 	searcher->m_Xlat = Xlat;
 
-	if (oget_flag(OPT_mosaic)) //src_refactor_opts
+	if (oget_flag(OPT_mosaic))
 		{
 		if (Cmd != CMD_usearch_local)
 			Die("-mosaic not supported by %s", CmdToStr(Cmd));

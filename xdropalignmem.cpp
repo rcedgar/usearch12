@@ -38,11 +38,11 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	Log("%*.*s\n", LB, LB, B);
 	Log("\n");
 #endif
-	if (ofilled(OPT_xdrop_save)) //src_refactor_opts
+	if (ofilled(OPT_xdrop_save))
 		{
 		static FILE *f = 0;
 		if (f == 0)
-			f = CreateStdioFile(oget_str(OPT_xdrop_save)); //src_refactor_opts
+			f = CreateStdioFile(oget_str(OPT_xdrop_save));
 		fprintf(f, ">A;AncLoi=%u;AncLoj=%u;AncLen=%u;\n", AncLoi, AncLoj, AncLen);
 		fprintf(f, "%*.*s\n", LA, LA, A);
 		fprintf(f, ">B\n");

@@ -25,13 +25,13 @@ int main(int argc, char **argv)
 
 	MyCmdLine(argc, argv);
 
-	if (!oget_flag(OPT_quiet)) //src_refactor_opts
+	if (!oget_flag(OPT_quiet))
 		{
 		PrintProgramInfo(stdout);
 		PrintCopyright(stdout);
 		}
 
-	SetLogFileName(oget_strd(OPT_log, "")); //src_refactor_opts
+	SetLogFileName(oget_strd(OPT_log, ""));
 	LogProgramInfoAndCmdLine();
 #ifdef _MSC_VER
 	{
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	if (g_LowerCaseWarning)
 		Warning("Input has lower-case masked sequences");
 
-	if (oget_flag(OPT_log_objmgr_stats)) //src_refactor_opts
+	if (oget_flag(OPT_log_objmgr_stats))
 		ObjMgr::LogGlobalStats();
 
 	ProgressNote("Finished");

@@ -115,7 +115,7 @@ public:
 			for (j = from; j <= to; j++)
 				{
 				++MaskedCount;
-				if (oget_flag(OPT_hardmask)) //src_refactor_opts
+				if (oget_flag(OPT_hardmask))
 					t[i+j] = 'N';
 				else
 					t[i+j] = tolower(t[i+j]);
@@ -124,7 +124,7 @@ public:
 				for (j = a; j <= b && j < window2; j++)
 					{
 					++MaskedCount;
-					if (oget_flag(OPT_hardmask)) //src_refactor_opts
+					if (oget_flag(OPT_hardmask))
 						t[i+j] = 'N';
 					else
 						t[i+j] = tolower(t[i+j]);

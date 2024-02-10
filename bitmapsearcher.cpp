@@ -111,10 +111,10 @@ void BitMapSearcher::ClusterBitMaps()
 	const unsigned N = m_Order.Size;
 
 	unsigned MaxWordCount_Self = 0;
-	bool Self = oget_flag(OPT_self); //src_refactor_opts
+	bool Self = oget_flag(OPT_self);
 	if (Self)
 		{
-		unsigned Drop = oget_uns(OPT_self_words_drop); //src_refactor_opts
+		unsigned Drop = oget_uns(OPT_self_words_drop);
 		unsigned k = Order[0];
 		unsigned TopTargetSeqIndex = TargetSeqIndexes[k];
 		unsigned SelfWordCount = TargetSeqIndexToWordCount[TopTargetSeqIndex];

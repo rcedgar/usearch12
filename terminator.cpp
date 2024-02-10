@@ -40,10 +40,10 @@ Terminator::Terminator(CMD Cmd)
 		Die("Terminator: cmd=%s", CmdToStr(Cmd));
 		}
 
-	if (ofilled(OPT_maxaccepts)) //src_refactor_opts
-		m_MaxAccepts = oget_uns(OPT_maxaccepts); //src_refactor_opts
-	if (ofilled(OPT_maxrejects)) //src_refactor_opts
-		m_MaxRejects = oget_uns(OPT_maxrejects); //src_refactor_opts
+	if (ofilled(OPT_maxaccepts))
+		m_MaxAccepts = oget_uns(OPT_maxaccepts);
+	if (ofilled(OPT_maxrejects))
+		m_MaxRejects = oget_uns(OPT_maxrejects);
 
 	m_AcceptCount = 0;
 	m_RejectCount = 0;
@@ -64,24 +64,24 @@ void Terminator::OnNewQuery()
 
 bool Terminator::Terminate(HitMgr *HM, bool Accept)
 	{
-	if (ofilled(OPT_termid)) //src_refactor_opts
+	if (ofilled(OPT_termid))
 		{
 		asserta(HM != 0);
 		if (HM->GetHitCount() > 0)
 			{
 			float MinId = HM->GetMinFractId();
-			if (MinId <= oget_flt(OPT_termid)) //src_refactor_opts
+			if (MinId <= oget_flt(OPT_termid))
 				return true;
 			}
 		}
-	if (ofilled(OPT_termidd)) //src_refactor_opts
+	if (ofilled(OPT_termidd))
 		{
 		asserta(HM != 0);
 		if (HM->GetHitCount() > 0)
 			{
 			float MinId = HM->GetMinFractId();
 			float MaxId = HM->GetMaxFractId();
-			if (MaxId - MinId > oget_flt(OPT_termidd)) //src_refactor_opts
+			if (MaxId - MinId > oget_flt(OPT_termidd))
 				return true;
 			}
 		}

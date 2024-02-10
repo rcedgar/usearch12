@@ -79,8 +79,8 @@ GeneFinder::GeneFinder()
 	m_Win_QueryLo = UINT_MAX;
 	m_Win_QueryHi = UINT_MAX;
 
-	GeneFinder::m_MinGeneLength = oget_uns(OPT_min_gene_length); //src_refactor_opts
-	GeneFinder::m_MaxGeneLength = oget_uns(OPT_max_gene_length); //src_refactor_opts
+	GeneFinder::m_MinGeneLength = oget_uns(OPT_min_gene_length);
+	GeneFinder::m_MaxGeneLength = oget_uns(OPT_max_gene_length);
 
 	ClearWin();
 	}

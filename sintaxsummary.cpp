@@ -87,23 +87,23 @@ static void Output(FILE *f, OTUTable *OT, const string &Rank, unsigned TotalSize
 
 void cmd_sintax_summary()
 	{
-	const string &FileName = oget_str(OPT_sintax_summary); //src_refactor_opts
+	const string &FileName = oget_str(OPT_sintax_summary);
 
-	if (!ofilled(OPT_rank)) //src_refactor_opts
+	if (!ofilled(OPT_rank))
 		Die("-rank required");
 
-	const string &Rank = oget_str(OPT_rank); //src_refactor_opts
+	const string &Rank = oget_str(OPT_rank);
 	if (SIZE(Rank) != 1)
 		Die("-rank must be one letter");
 
 	FILE *fIn = OpenStdioFile(FileName);
-	FILE *fOut = CreateStdioFile(oget_str(OPT_output)); //src_refactor_opts
+	FILE *fOut = CreateStdioFile(oget_str(OPT_output));
 
 	OTUTable *OT = 0;
-	if (ofilled(OPT_otutabin)) //src_refactor_opts
+	if (ofilled(OPT_otutabin))
 		{
 		OT = new OTUTable;
-		OT->FromTabbedFile(oget_str(OPT_otutabin)); //src_refactor_opts
+		OT->FromTabbedFile(oget_str(OPT_otutabin));
 		}
 
 	string Line;

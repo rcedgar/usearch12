@@ -97,11 +97,11 @@ bool ChimeHit::IsChimeraHighConfidence() const
 bool ChimeHit::IsChimeraParams() const
 	{
 	double Div = GetDivPct();
-	if (Div < oget_flt(OPT_mindiv) || LY < oget_uns(OPT_chimera_mindiffs) || RY < oget_uns(OPT_chimera_mindiffs)) //src_refactor_opts
+	if (Div < oget_flt(OPT_mindiv) || LY < oget_uns(OPT_chimera_mindiffs) || RY < oget_uns(OPT_chimera_mindiffs))
 		return false;
-	if (DiffsQM > oget_uns(OPT_maxdqm) || DiffsQT < oget_uns(OPT_mindqt)) //src_refactor_opts
+	if (DiffsQM > oget_uns(OPT_maxdqm) || DiffsQT < oget_uns(OPT_mindqt))
 		return false;
-	if (Score < oget_flt(OPT_minh)) //src_refactor_opts
+	if (Score < oget_flt(OPT_minh))
 		return false;
 	return true;
 	}

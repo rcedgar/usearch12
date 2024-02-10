@@ -18,11 +18,11 @@ DerepResult *g_DR;
 bool StrandOptToRevComp(bool RequiredOpt, bool Default)
 	{
 	bool RevComp = Default;
-	if (ofilled(OPT_strand)) //src_refactor_opts
+	if (ofilled(OPT_strand))
 		{
-		if (oget_str(OPT_strand) == "plus") //src_refactor_opts
+		if (oget_str(OPT_strand) == "plus")
 			RevComp = false;
-		else if (oget_str(OPT_strand) == "both") //src_refactor_opts
+		else if (oget_str(OPT_strand) == "both")
 			RevComp = true;
 		else
 			Die("Invalid -strand");
@@ -80,7 +80,7 @@ unsigned *GetSeqOrder(const DerepResult &DR,
 
 void ClusterFast(CMD Cmd, const string &QueryFileName)
 	{
-	if (string(oget_str(OPT_sort)) == string("other")) //src_refactor_opts
+	if (string(oget_str(OPT_sort)) == string("other"))
 		Die("-cluster_fast does not support -sort other, use -cluster_smallmem");
 
 	bool RevComp = StrandOptToRevComp(false, false);
@@ -105,12 +105,12 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 	unsigned *UniqueSeqIndexes = myalloc(unsigned, UniqueCount);
 	DR.GetUniqueSeqIndexes(UniqueSeqIndexes);
 
-	const string OrderName = oget_str(OPT_sort); //src_refactor_opts
+	const string OrderName = oget_str(OPT_sort);
 	unsigned *Order = GetSeqOrder(DR, UniqueSeqIndexes, UniqueCount, OrderName);
 
 	Searcher *ptrSearcher = MakeClusterSearcher(g_Cmd, Nucleo);
 
-	if (ofilled(OPT_clusters) || ofilled(OPT_constax)) //src_refactor_opts
+	if (ofilled(OPT_clusters) || ofilled(OPT_constax))
 		{
 		bool SaveCPaths = false;
 		ClusterSink::Alloc(UniqueCount, SaveCPaths);
@@ -134,5 +134,5 @@ void ClusterFast(CMD Cmd, const string &QueryFileName)
 
 void cmd_cluster_fast()
 	{
-	ClusterFast(CMD_cluster_fast, oget_str(OPT_cluster_fast)); //src_refactor_opts
+	ClusterFast(CMD_cluster_fast, oget_str(OPT_cluster_fast));
 	}

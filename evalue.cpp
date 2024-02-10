@@ -47,28 +47,28 @@ void LogKarlin()
 void SetKarlin(double GappedLambda, double UngappedLambda,
   double GappedK, double UngappedK, double DBLength)
 	{
-	if (ofilled(OPT_ka_gapped_lambda)) //src_refactor_opts
-		g_GappedLambda = oget_flt(OPT_ka_gapped_lambda); //src_refactor_opts
+	if (ofilled(OPT_ka_gapped_lambda))
+		g_GappedLambda = oget_flt(OPT_ka_gapped_lambda);
 	else
 		g_GappedLambda = GappedLambda;
 
-	if (ofilled(OPT_ka_ungapped_lambda)) //src_refactor_opts
-		g_UngappedLambda = oget_flt(OPT_ka_ungapped_lambda); //src_refactor_opts
+	if (ofilled(OPT_ka_ungapped_lambda))
+		g_UngappedLambda = oget_flt(OPT_ka_ungapped_lambda);
 	else
 		g_UngappedLambda = UngappedLambda;
 
-	if (ofilled(OPT_ka_gapped_k)) //src_refactor_opts
-		g_GappedK = oget_flt(OPT_ka_gapped_k); //src_refactor_opts
+	if (ofilled(OPT_ka_gapped_k))
+		g_GappedK = oget_flt(OPT_ka_gapped_k);
 	else
 		g_GappedK = GappedK;
 
-	if (ofilled(OPT_ka_ungapped_k)) //src_refactor_opts
-		g_UngappedK = oget_flt(OPT_ka_ungapped_k); //src_refactor_opts
+	if (ofilled(OPT_ka_ungapped_k))
+		g_UngappedK = oget_flt(OPT_ka_ungapped_k);
 	else
 		g_UngappedK = UngappedK;
 
-	if (ofilled(OPT_ka_dbsize)) //src_refactor_opts
-		g_DBLength = oget_flt(OPT_ka_dbsize); //src_refactor_opts
+	if (ofilled(OPT_ka_dbsize))
+		g_DBLength = oget_flt(OPT_ka_dbsize);
 	else
 		g_DBLength = DBLength;
 

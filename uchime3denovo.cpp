@@ -25,17 +25,17 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	IsChimeraVec.clear();
 	InfoStrs.clear();
 
-	if (ofilled(OPT_uchimeout)) //src_refactor_opts
-		DeParser::m_fTab = CreateStdioFile(oget_str(OPT_uchimeout)); //src_refactor_opts
-	if (ofilled(OPT_alnout)) //src_refactor_opts
-		DeParser::m_fAln = CreateStdioFile(oget_str(OPT_alnout)); //src_refactor_opts
+	if (ofilled(OPT_uchimeout))
+		DeParser::m_fTab = CreateStdioFile(oget_str(OPT_uchimeout));
+	if (ofilled(OPT_alnout))
+		DeParser::m_fAln = CreateStdioFile(oget_str(OPT_alnout));
 
 	const unsigned SeqCount = Input.GetSeqCount();
 
 	SeqDB SearchDB;
 
-	bool DetectOffByOneChimera = oget_flag(OPT_offby1); //src_refactor_opts
-	bool CheckForMultiMeras = !oget_flag(OPT_bimeras_only); //src_refactor_opts
+	bool DetectOffByOneChimera = oget_flag(OPT_offby1);
+	bool CheckForMultiMeras = !oget_flag(OPT_bimeras_only);
 
 	AlnParams *AP = new AlnParams;
 	AlnHeuristics *AH = new AlnHeuristics;
@@ -52,12 +52,12 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	DP->m_GA = GA;
 
 	double MinAbSkew = 16;
-	if (ofilled(OPT_abskew)) //src_refactor_opts
-		MinAbSkew = oget_flt(OPT_abskew); //src_refactor_opts
+	if (ofilled(OPT_abskew))
+		MinAbSkew = oget_flt(OPT_abskew);
 
 	FILE *fUCA = 0;
-	if (ofilled(OPT_uchimealnout)) //src_refactor_opts
-		fUCA = CreateStdioFile(oget_str(OPT_uchimealnout)); //src_refactor_opts
+	if (ofilled(OPT_uchimealnout))
+		fUCA = CreateStdioFile(oget_str(OPT_uchimealnout));
 
 	g_GoodCount = 0;
 	g_ChimeraCount = 0;
@@ -164,7 +164,7 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 
 void cmd_uchime3_denovo()
 	{
-	const string &InputFileName = oget_str(OPT_uchime3_denovo); //src_refactor_opts
+	const string &InputFileName = oget_str(OPT_uchime3_denovo);
 
 	oset_fltd(OPT_abskew, 16.0);
 
@@ -182,10 +182,10 @@ void cmd_uchime3_denovo()
 	Uchime2DeNovo(Input, IsChimeraVec, InfoStrs);
 	asserta(SIZE(IsChimeraVec) == SeqCount);
 
-	if (ofilled(OPT_chimeras)) //src_refactor_opts
-		fCh = CreateStdioFile(oget_str(OPT_chimeras)); //src_refactor_opts
-	if (ofilled(OPT_nonchimeras)) //src_refactor_opts
-		fNonCh = CreateStdioFile(oget_str(OPT_nonchimeras)); //src_refactor_opts
+	if (ofilled(OPT_chimeras))
+		fCh = CreateStdioFile(oget_str(OPT_chimeras));
+	if (ofilled(OPT_nonchimeras))
+		fNonCh = CreateStdioFile(oget_str(OPT_nonchimeras));
 
 	uint *ptrLoopIdx = ProgressStartLoop(SeqCount, "Writing results");
 	for (uint SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)

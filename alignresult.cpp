@@ -352,14 +352,14 @@ const char *AlignResult::GetPath() const
 
 unsigned AlignResult::GetQLo_AlnOut()
 	{
-	if (oget_flag(OPT_show_termgaps)) //src_refactor_opts
+	if (oget_flag(OPT_show_termgaps))
 		return m_HSP.Loi;
 	return GetQLo();
 	}
 
 unsigned AlignResult::GetTLo_AlnOut()
 	{
-	if (oget_flag(OPT_show_termgaps)) //src_refactor_opts
+	if (oget_flag(OPT_show_termgaps))
 		return m_HSP.Loj;
 	return GetTLo();
 	}

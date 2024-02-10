@@ -36,7 +36,7 @@ HitMgr::HitMgr(unsigned TargetCount)
 	m_Validate = false;
 	m_Scores = 0;
 	AllocTargetCount(TargetCount);
-	m_Tov = oget_flag(OPT_tov); //src_refactor_opts
+	m_Tov = oget_flag(OPT_tov);
 	}
 
 HitMgr::~HitMgr()
@@ -87,7 +87,7 @@ void HitMgr::Clear(bool ctor)
 
 void HitMgr::SetQuery(SeqInfo *Query)
 	{
-	if (oget_flag(OPT_log_query)) //src_refactor_opts
+	if (oget_flag(OPT_log_query))
 		Log("Q>%s\n", Query->m_Label);
 	asserta(m_Query == 0);
 	m_Query = Query;
@@ -224,7 +224,7 @@ bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) cons
 
 // Hack to avoid expensive loop when many hits.
 // May fail to find multiple hits to same target.
-	if (m_HitCount > 64 && m_TargetHasHit[SeqIndex] && TL < oget_uns(OPT_long_target)) //src_refactor_opts
+	if (m_HitCount > 64 && m_TargetHasHit[SeqIndex] && TL < oget_uns(OPT_long_target))
 		return true;
 
 	for (unsigned i = 0; i < m_HitCount; ++i)
@@ -391,16 +391,16 @@ unsigned HitMgr::GetHitCount()
 		return 0;
 
 	unsigned HitCount = m_HitCount;
-	if (ofilled(OPT_maxhits)) //src_refactor_opts
+	if (ofilled(OPT_maxhits))
 		{
-		if (HitCount > oget_uns(OPT_maxhits)) //src_refactor_opts
-			HitCount = oget_uns(OPT_maxhits); //src_refactor_opts
+		if (HitCount > oget_uns(OPT_maxhits))
+			HitCount = oget_uns(OPT_maxhits);
 		}
 
-	if (oget_flag(OPT_top_hit_only) || oget_flag(OPT_bottom_hit_only) || oget_flag(OPT_random_top_hit)) //src_refactor_opts
+	if (oget_flag(OPT_top_hit_only) || oget_flag(OPT_bottom_hit_only) || oget_flag(OPT_random_top_hit))
 		return 1;
 
-	if (oget_flag(OPT_cover_query)) //src_refactor_opts
+	if (oget_flag(OPT_cover_query))
 		{
 		if (m_ChainLength == 0)
 			ChainHits();
@@ -408,7 +408,7 @@ unsigned HitMgr::GetHitCount()
 		return m_ChainLength;
 		}
 
-	if (oget_flag(OPT_top_hits_only)) //src_refactor_opts
+	if (oget_flag(OPT_top_hits_only))
 		{
 		float TopScore = GetTopScore();
 		Sort();
@@ -492,16 +492,16 @@ AlignResult *HitMgr::GetBottomHit()
 
 AlignResult *HitMgr::GetHit(unsigned Index)
 	{
-	if (oget_flag(OPT_top_hit_only) && Index == 0) //src_refactor_opts
+	if (oget_flag(OPT_top_hit_only) && Index == 0)
 		return GetTopHit();
 
-	if (oget_flag(OPT_random_top_hit) && Index == 0) //src_refactor_opts
+	if (oget_flag(OPT_random_top_hit) && Index == 0)
 		return GetRandomTopHit();
 
-	if (oget_flag(OPT_bottom_hit_only) && Index == 0) //src_refactor_opts
+	if (oget_flag(OPT_bottom_hit_only) && Index == 0)
 		return GetBottomHit();
 
-	if (oget_flag(OPT_cover_query)) //src_refactor_opts
+	if (oget_flag(OPT_cover_query))
 		{
 		asserta(Index < m_ChainLength);
 		unsigned HitIndex = m_Chain[Index];

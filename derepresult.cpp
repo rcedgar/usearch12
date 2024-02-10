@@ -94,11 +94,11 @@ DerepResult::DerepResult()
 	m_SingletonCount = 0;
 	m_SumSize = 0;
 
-	m_optRelabelSet = ofilled(OPT_relabel); //src_refactor_opts
-	m_optRelabel = string(oget_str(OPT_relabel)); //src_refactor_opts
-	m_optSizeIn = oget_flag(OPT_sizein); //src_refactor_opts
-	m_optSizeOut = oget_flag(OPT_sizeout); //src_refactor_opts
-	m_optConsTax = oget_flag(OPT_constax); //src_refactor_opts
+	m_optRelabelSet = ofilled(OPT_relabel);
+	m_optRelabel = string(oget_str(OPT_relabel));
+	m_optSizeIn = oget_flag(OPT_sizein);
+	m_optSizeOut = oget_flag(OPT_sizeout);
+	m_optConsTax = oget_flag(OPT_constax);
 	}
 
 DerepResult::~DerepResult()
@@ -293,7 +293,7 @@ void DerepResult::MakeLabel(unsigned ClusterIndex, unsigned Size,
 			AppendSize(Label, Size);
 		}
 
-	if (EE > 0.0 && oget_flag(OPT_fastq_eeout)) //src_refactor_opts
+	if (EE > 0.0 && oget_flag(OPT_fastq_eeout))
 		{
 		char Tmp[16];
 		sprintf(Tmp, "%.2g", EE);
@@ -429,7 +429,7 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 		TD.LogMe(*m_Input);
 #endif
 		asserta(TD.Done);
-		if (oget_flag(OPT_validate)) //src_refactor_opts
+		if (oget_flag(OPT_validate))
 			TD.Validate(*m_Input, FullLength);
 		m_ClusterCount += TD.UniqueCount;
 		SeqCount2 += TD.SeqCount;
@@ -651,7 +651,7 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 	ProgressResult();
 	WriteConsTaxReport();
 
-	if (oget_flag(OPT_validate)) //src_refactor_opts
+	if (oget_flag(OPT_validate))
 		Validate(FullLength, M);
 	}
 
@@ -677,15 +677,15 @@ void DerepResult::ProgressResult()
 	{
 	unsigned SeqCount = m_Input->GetSeqCount();
 	unsigned N = m_ClusterCount;
-	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
-		N = oget_uns(OPT_topn); //src_refactor_opts
+	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn))
+		N = oget_uns(OPT_topn);
 
 	double PctSin = GetPct(m_SingletonCount, m_ClusterCount);
 	double AvgSize = m_SumSize/m_ClusterCount;
 	unsigned MinSize = m_Sizes[m_Order[N-1]];
 	unsigned MedianSize = m_Sizes[m_Order[N/2]];
 	unsigned MaxSize = m_Sizes[m_Order[0]];
-	if (ofilled(OPT_sizein)) //src_refactor_opts
+	if (ofilled(OPT_sizein))
 		ProgressNoteLog("%u seqs (tot.size %.0f), %u uniques, %u singletons (%.1f%%)",
 		  SeqCount,
 		  m_SumSize,
@@ -719,8 +719,8 @@ void DerepResult::ToFastx(const string &FileName, bool DoFastq)
 	FILE *f = CreateStdioFile(FileName);
 
 	unsigned N = m_ClusterCount;
-	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn)) //src_refactor_opts
-		N = oget_uns(OPT_topn); //src_refactor_opts
+	if (ofilled(OPT_topn) && N > oget_uns(OPT_topn))
+		N = oget_uns(OPT_topn);
 
 	unsigned LastSize = UINT_MAX;
 	const unsigned SeqCount = m_Input->GetSeqCount() - m_TooShortCount;
@@ -733,7 +733,7 @@ void DerepResult::ToFastx(const string &FileName, bool DoFastq)
 		unsigned Size = m_Sizes[ClusterIndex];
 		asserta(Size <= LastSize);
 		LastSize = Size;
-		if (Size < minuniquesize) //src_refactor_opts
+		if (Size < minuniquesize)
 			{
 			unsigned TooSmallCount = m_ClusterCount - ClusterIndex;
 			break;
@@ -812,10 +812,10 @@ void DerepResult::WriteConsTaxReport1(FILE *f, unsigned ClusterIndex)
 
 void DerepResult::WriteConsTaxReport()
 	{
-	if (!ofilled(OPT_constax_report)) //src_refactor_opts
+	if (!ofilled(OPT_constax_report))
 		return;
 
-	const string &FileName = oget_str(OPT_constax_report); //src_refactor_opts
+	const string &FileName = oget_str(OPT_constax_report);
 	FILE *f = CreateStdioFile(FileName);
 	for (unsigned k = 0; k < m_ClusterCount; ++k)
 		{
@@ -842,7 +842,7 @@ const unsigned *DerepResult::SetSizes()
 		return m_Sizes;
 
 	m_Sizes = myalloc(unsigned, m_ClusterCount);
-	bool SizeIn = oget_flag(OPT_sizein); //src_refactor_opts
+	bool SizeIn = oget_flag(OPT_sizein);
 	m_SumSize = 0;
 	m_SingletonCount = 0;
 	for (unsigned ClusterIndex = 0; ClusterIndex < m_ClusterCount; ++ClusterIndex)
@@ -897,17 +897,17 @@ void DerepResult::Write()
 	string Msg;
 	Ps(Msg, "Writing %s uniques", IntToStr(m_ClusterCount));
 	ProgressStartOther(Msg);
-	ToFastx(oget_str(OPT_fastaout), false); //src_refactor_opts
-	ToFastx(oget_str(OPT_fastqout), true); //src_refactor_opts
-	ToUC(oget_str(OPT_uc)); //src_refactor_opts
-	ToTabbed(oget_str(OPT_tabbedout)); //src_refactor_opts
+	ToFastx(oget_str(OPT_fastaout), false);
+	ToFastx(oget_str(OPT_fastqout), true);
+	ToUC(oget_str(OPT_uc));
+	ToTabbed(oget_str(OPT_tabbedout));
 
-	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout)) //src_refactor_opts
+	if (ofilled(OPT_otutabout) || ofilled(OPT_biomout))
 		{
 		OTUTable OT;
 		ToOTUTable(OT);
-		OT.ToTabbedFile(oget_str(OPT_otutabout)); //src_refactor_opts
-		OT.ToJsonFile(oget_str(OPT_biomout)); //src_refactor_opts
+		OT.ToTabbedFile(oget_str(OPT_otutabout));
+		OT.ToJsonFile(oget_str(OPT_biomout));
 		}
 	ProgressDoneOther();
 	}

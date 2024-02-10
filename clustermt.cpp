@@ -136,11 +136,11 @@ static void FillPending(uint ThreadCount, SeqSource *SS, bool IsNucleo)
 
 void cmd_cluster_mt()
 	{
-	const string &QueryFileName = oget_str(OPT_cluster_mt); //src_refactor_opts
-	if (!ofilled(OPT_id)) //src_refactor_opts
+	const string &QueryFileName = oget_str(OPT_cluster_mt);
+	if (!ofilled(OPT_id))
 		Die("Must set -id");
-	if (ofilled(OPT_maxpending)) //src_refactor_opts
-		g_MaxPending = oget_uns(OPT_maxpending); //src_refactor_opts
+	if (ofilled(OPT_maxpending))
+		g_MaxPending = oget_uns(OPT_maxpending);
 
 	bool IsNucleo;
 	FILE_TYPE FileType = GetFileType(QueryFileName, &IsNucleo);
@@ -159,7 +159,7 @@ void cmd_cluster_mt()
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
 		UDBUsortedSearcher *US = new UDBUsortedSearcher(g_udb);
-		US->m_MinFractId = (float) oget_flt(OPT_id); //src_refactor_opts
+		US->m_MinFractId = (float) oget_flt(OPT_id);
 
 		HitMgr *HM = new HitMgr(1);
 		US->m_HitMgr = HM;
@@ -191,5 +191,5 @@ void cmd_cluster_mt()
 		}
 	ProgressDoneSS();
 
-	g_udb->ToFasta(oget_str(OPT_centroids)); //src_refactor_opts
+	g_udb->ToFasta(oget_str(OPT_centroids));
 	}
