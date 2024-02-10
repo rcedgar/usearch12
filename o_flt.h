@@ -3,7 +3,6 @@
 #endif o
 
 o(abskew)
-o(accel)
 o(dn)
 o(evalue)
 o(fastq_maxee)
@@ -42,8 +41,6 @@ o(uparse_annot_maxdivqm)
 o(uparse_break)
 o(uparse_match)
 o(uparse_mismatch)
-o(weak_evalue)
-o(weak_id)
 o(xa)
 o(xdrop_g)
 o(xdrop_nw)

@@ -87,8 +87,6 @@ void HitMgr::Clear(bool ctor)
 
 void HitMgr::SetQuery(SeqInfo *Query)
 	{
-	if (oget_flag(OPT_log_query))
-		Log("Q>%s\n", Query->m_Label);
 	asserta(m_Query == 0);
 	m_Query = Query;
 	if (m_Query != 0)

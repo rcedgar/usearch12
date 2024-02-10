@@ -253,7 +253,6 @@
     <ClCompile Include="clustersink.cpp" />
     <ClCompile Include="clustersmallmem.cpp" />
     <ClCompile Include="cmd.cpp" />
-    <ClCompile Include="cmdline.cpp" />
     <ClCompile Include="comppath.cpp" />
     <ClCompile Include="constaxf.cpp" />
     <ClCompile Include="constaxsink.cpp" />
@@ -458,7 +457,6 @@
     <ClInclude Include="merge.h" />
     <ClInclude Include="mergeglobals.h" />
     <ClInclude Include="mx.h" />
-    <ClInclude Include="myopts.h" />
     <ClInclude Include="myutils.h" />
     <ClInclude Include="obj.h" />
     <ClInclude Include="objmgr.h" />
@@ -472,6 +470,10 @@
     <ClInclude Include="otutabsink.h" />
     <ClInclude Include="outputsink.h" />
     <ClInclude Include="o_all.h" />
+    <ClInclude Include="o_flag.h" />
+    <ClInclude Include="o_flt.h" />
+    <ClInclude Include="o_str.h" />
+    <ClInclude Include="o_uns.h" />
     <ClInclude Include="pathinfo.h" />
     <ClInclude Include="primes.h" />
     <ClInclude Include="progress.h" />
@@ -509,6 +511,9 @@
     <ClInclude Include="zconf.h" />
     <ClInclude Include="zlib.h" />
     <ClInclude Include="zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="o_defaults.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -215,9 +215,6 @@
     <ClCompile Include="localmulti.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cmdline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -694,9 +691,6 @@
     <ClInclude Include="mx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="myopts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="myutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -856,5 +850,22 @@
     <ClInclude Include="opts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="o_flt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="o_uns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="o_flag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="o_str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="o_defaults.inc">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

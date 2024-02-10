@@ -50,19 +50,6 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 	unsigned InRecCountStart = g_InRecCount;
 	unsigned OutRecCountStart = g_OutRecCount;
 
-	Log("\n");
-	Log("Merging\n");
-	Log("  Fwd %s\n", FwdFileName.c_str());
-	Log("  Rev %s\n", RevFileName.c_str());
-
-	if (g_RelabelPrefix.empty())
-		Log("  Keep read labels");
-	else
-		Log("  Relabel reads as %s#", g_RelabelPrefix.c_str());
-
-	if (g_SampleName != "")
-		Log("  Add sample=%s;", g_SampleName.c_str());
-
 	if (g_fRep != 0)
 		{
 		fprintf(g_fRep, "\n");

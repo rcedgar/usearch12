@@ -1,6 +1,6 @@
 #pragma once
 
-enum OPT_ENUM
+enum OENUM
 	{
 #define o(x)	OPT_##x,
 #include "o_all.h"

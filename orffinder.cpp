@@ -12,12 +12,13 @@ ORFFinder::ORFFinder()
 	m_Frame = 0;
 	m_Pos = 0;
 	m_PlusOnly = oget_flag(OPT_orf_plusonly);
-	m_MinCodons = oget_uns(OPT_mincodons);
+	m_MinCodons = oget_unsd(OPT_mincodons, 20);
 
-	m_ORFStartAtSeqStart = (oget_uns(OPT_orfstyle) & 1) != 0;
-	m_ORFStartAfterStop = (oget_uns(OPT_orfstyle) & 2) != 0;
-	m_ORFEndAtSeqEnd = (oget_uns(OPT_orfstyle) & 4) != 0;
-	m_ORFIncludeStop = (oget_uns(OPT_orfstyle) & 8) != 0;
+	uint orfstyle = oget_unsd(OPT_orfstyle, 1+4);
+	m_ORFStartAtSeqStart = (orfstyle & 1) != 0;
+	m_ORFStartAfterStop = (orfstyle & 2) != 0;
+	m_ORFEndAtSeqEnd = (orfstyle & 4) != 0;
+	m_ORFIncludeStop = (orfstyle & 8) != 0;
 	}
 
 ORFFinder::~ORFFinder()

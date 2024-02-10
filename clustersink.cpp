@@ -264,8 +264,6 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 	bool SizeIn = oget_flag(OPT_sizein);
 	bool SizeOut = oget_flag(OPT_sizeout);
 	const unsigned *Order = GetClusterSizeOrder();
-	bool ForceUniqueLabels = oget_flag(OPT_force_unique_labels);
-	set<string> LabelSet;
 	uint32 *ptrLoopIdx = 
 	  ProgressStartLoop(SeqCount, "Writing " + basenm(FileName));
 	for (uint k = 0; k < SeqCount; ++k)
@@ -279,25 +277,6 @@ void ClusterSink::CentroidsToFASTA(const string &FileName)
 
 		string Label;
 		MakeCentroidLabel(SeqIndex, Label);
-		if (ForceUniqueLabels)
-			{
-			if (LabelSet.find(Label) != LabelSet.end())
-				{
-				string NewLabel;
-				for (uint i = 1; ; ++i)
-					{
-					if (i >= 1000)
-						Die("Force unique labels overflow");
-					Ps(NewLabel, "%s.%u", Label.c_str(), i);
-					if (LabelSet.find(NewLabel) == LabelSet.end())
-						{
-						Label = NewLabel;
-						break;
-						}
-					}
-				}
-			LabelSet.insert(Label);
-			}
 		m_CentroidDB->SeqToFastaLabel(f, SeqIndex, Label.c_str());
 		}
 	ProgressDoneLoop();
@@ -623,10 +602,7 @@ void ClusterSink::OnAllDone(const SeqDB *InputDB, const SeqDB *UniqueDB)
 	if (g_Cmd == CMD_cluster_otus)
 		CentroidsToFASTA(oget_str(OPT_otus));
 	else
-		{
 		CentroidsToFASTA(oget_str(OPT_centroids));
-		CentroidsToFASTQ(oget_str(OPT_centroids_fastq));
-		}
 
 	if (InputDB != 0)
 		ClustersOut(oget_str(OPT_clusters));

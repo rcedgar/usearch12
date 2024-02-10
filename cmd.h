@@ -18,14 +18,12 @@ CMD StrToCmd(const char *Str);
 
 bool CmdIsLocal(CMD Cmd);
 bool CmdIsGlobal(CMD Cmd);
-bool CmdRequiresUDBSeeds(CMD Cmd);
 bool CmdRequiresUDBIndex(CMD Cmd);
 bool CmdRequiresFastaDB(CMD Cmd);
 bool CmdNoMask(CMD Cmd);
 bool CmdCommonOutput(CMD Cmd);
 bool CmdTerm(CMD Cmd);
 bool CmdAcc(CMD Cmd);
-bool CmdAllowsWeak(CMD Cmd);
 bool CmdUsesHashIndex(CMD Cmd);
 
 CMD GetCmd();

@@ -380,22 +380,7 @@ const char *SecsToHHMMSS(int Secs);
 unsigned GetCPUCoreCount();
 
 void MyCmdLine(int argc, char **argv);
-//void CmdLineErr(const char *Format, ...);
 void GetCmdLine(string &s);
-
-//#define oc(optname)	(opt_##optname)
-//#define os(optname)	(string(opt_##optname))
-//
-//#define FLAG_OPT(Name)						extern bool opt_##Name; extern bool optset_##Name; extern bool optused_##Name;
-//#define UNS_OPT(Name, Default, Min, Max)	extern unsigned opt_##Name; extern bool optset_##Name; extern bool optused_##Name;
-//#define FLT_OPT(Name, Default, Min, Max)	extern double opt_##Name; extern bool optset_##Name; extern bool optused_##Name;
-//#define STR_OPT(Name)						extern string opt_##Name; extern bool optset_##Name; extern bool optused_##Name;
-//#include "myopts.h"
-//
-//#define sopt(Name)			(optused_##Name = true, opt_##Name.c_str())
-//#define opt(Name)			(optused_##Name = true, opt_##Name)
-//#define default_opt(Name, Value)	if (!optset_##Name) { opt_##Name = Value; optset_##Name = true; optused_##Name = true;}
-//#define set_opt(Name, Value)		{ opt_##Name = Value; optset_##Name = true; }
 
 void CheckUsedOpts(bool LogAll);
 

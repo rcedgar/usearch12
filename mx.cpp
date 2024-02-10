@@ -75,14 +75,7 @@ void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 	if (RowCount > m_AllocatedRowCount || ColCount > m_AllocatedColCount)
 		{
 		if (m_AllocatedRowCount > 0)
-			{
-			if (oget_flag(OPT_logmemgrows))
-				Log("MxBase::Alloc grow %s %u x %u -> %u x %u, %s bytes\n",
-				  Name.c_str(), m_AllocatedRowCount, m_AllocatedColCount,
-				  RowCount, ColCount,
-				  IntToStr(GetTotalBytes()));
 			++m_GrowAllocCount;
-			}
 
 		m_TotalBytes -= GetTotalBytes();
 
@@ -108,11 +101,11 @@ void MxBase::Alloc(unsigned RowCount, unsigned ColCount, const string &Name)
 void MxBase::LogMe(bool WithData, int Opts) const
 	{
 	Log("\n");
-	if (Opts & OPT_EXP)
+	if (Opts & MXBIT_EXP)
 		Log("Exp ");
-	else if (Opts & OPT_LOG)
+	else if (Opts & MXBIT_LOG)
 		Log("Log ");
-	bool ZeroBased = ((Opts & OPT_ZERO_BASED) != 0);
+	bool ZeroBased = ((Opts & MXBIT_ZERO_BASED) != 0);
 	Log("%s(%p) Rows %u/%u, Cols %u/%u",
 	  m_Name.c_str(), this,
 	  m_RowCount, m_AllocatedRowCount,
@@ -165,9 +158,9 @@ void MxBase::LogMe(bool WithData, int Opts) const
 		for (unsigned j = 0; j < m_ColCount; ++j)
 			{
 			const char *s = GetAsStr(i, j);
-			if (Opts & OPT_LOG)
+			if (Opts & MXBIT_LOG)
 				s = LogizeStr(s);
-			else if (Opts & OPT_EXP)
+			else if (Opts & MXBIT_EXP)
 				s = ExpizeStr(s);
 			Log("%s", s);
 			}

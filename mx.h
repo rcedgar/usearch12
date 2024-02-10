@@ -6,9 +6,9 @@
 #include <math.h>
 #include "myutils.h"
 
-const int OPT_LOG = 0x01;
-const int OPT_EXP = 0x02;
-const int OPT_ZERO_BASED = 0x04;
+const int MXBIT_LOG = 0x01;
+const int MXBIT_EXP = 0x02;
+const int MXBIT_ZERO_BASED = 0x04;
 const float MINUS_INFINITY = -9e9f;
 const float UNINIT = -8e8f;
 
@@ -243,10 +243,6 @@ public:
 
 	virtual void AllocData(unsigned RowCount, unsigned ColCount)
 		{
-		if (oget_flag(OPT_logmemgrows))
-			Log("MxBase::AllocData(%u,%u) %s bytes, Name=%s\n",
-			  RowCount, ColCount, IntToStr(GetTotalBytes()), m_Name.c_str());
-
 		double dRowPtrsBytes = double(sizeof(T *))*double(RowCount);
 		if (dRowPtrsBytes > (double) (UINT_MAX-16))
 			Die("Mx::AllocData Rows=%u, sizeof(T *)=%u, row %s bytes too big",
@@ -259,10 +255,6 @@ public:
 
 		unsigned RowBytes = sizeof(T *)*RowCount;
 		unsigned DataBytes = sizeof(T)*RowCount*ColCount;
-
-		if (oget_flag(OPT_logmemgrows))
-			Log("MxBase::AllocData(%u,%u) RowBytes=%u, DataBytes=%u, myalloc(%u), name %s\n",
-			  RowCount, ColCount, RowBytes, DataBytes, RowBytes + DataBytes, m_Name.c_str());
 
 		byte *Buffer = myalloc(byte, RowBytes + DataBytes);
 		m_Data = (T **) Buffer;

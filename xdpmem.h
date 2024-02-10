@@ -79,24 +79,10 @@ public:
 	void Alloc(unsigned LA, unsigned LB)
 		{
 		if (LA + 8 > m_TBBit.m_AllocatedRowCount || LB + 8 > m_TBBit.m_AllocatedColCount)
-			{
-			if (oget_flag(OPT_logmemgrows))
-				{
-				Log("XDPMem::Alloc(LA=%u, LB=%u) m_TBBit %u,%u\n",
-				  LA,
-				  LB,
-				  m_TBBit.m_AllocatedRowCount,
-				  m_TBBit.m_AllocatedColCount);
-				}
-
 			m_TBBit.Alloc("TBBit", LA+129, LB+129);
-			}
 
 		if (LA > m_MaxLA)
 			{
-			if (oget_flag(OPT_logmemgrows))
-				Log("XDPMem::Alloc(LA=%u, LB=%u) m_MaxLA %u\n", LA, LB, m_MaxLA);
-
 			m_MaxLA = LA + 128;
 			myfree(m_RevA);
 			m_RevA = myalloc(byte, m_MaxLA);
@@ -104,9 +90,6 @@ public:
 
 		if (LB > m_MaxLB)
 			{
-			if (oget_flag(OPT_logmemgrows))
-				Log("XDPMem::Alloc(LA=%u, LB=%u) m_MaxLB %u\n", LA, LB, m_MaxLB);
-
 			myfree(m_Buffer1);
 			myfree(m_Buffer2);
 			myfree(m_RevB);

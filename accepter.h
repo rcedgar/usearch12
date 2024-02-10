@@ -15,15 +15,10 @@ public:
 	~Accepter();
 	bool RejectPair(const SeqInfo *Query, const SeqInfo *Target);
 	bool AreAlignable(const SeqInfo *Query, const SeqInfo *Target);
-	bool IsAccept(AlignResult *AR, bool *ptrWeak);
-	bool IsAccept(AlignResult *AR)
-		{
-		bool Weak;
-		return IsAccept(AR, &Weak);
-		}
+	bool IsAccept(AlignResult *AR);
 
 private:
-	bool IsAcceptLo(AlignResult *AR, bool *ptrWeak);
+	bool IsAcceptLo(AlignResult *AR);
 	};
 
 #endif // accepter_h

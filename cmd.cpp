@@ -132,16 +132,6 @@ IS_TRUE(cluster_otus)
 	return false;
 	}
 
-bool CmdAllowsWeak(CMD Cmd)
-	{
-	switch (Cmd)
-		{
-IS_TRUE(usearch_global)
-IS_TRUE(usearch_local)
-		}
-	return false;
-	}
-
 bool CmdUsesHashIndex(CMD Cmd)
 	{
 	switch (Cmd)

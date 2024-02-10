@@ -649,7 +649,7 @@ void SeqDB::SortBySize(unsigned *SizeOrder)
 	for (unsigned i = 0; i < m_SeqCount; ++i)
 		{
 		const char *Label = GetLabel(i);
-		Sizes[i] = GetSizeFromLabel(Label, oget_uns(OPT_default_size));
+		Sizes[i] = GetSizeFromLabel(Label, 1);
 		}
 
 	QuickSortOrderDesc(Sizes, m_SeqCount, Order);

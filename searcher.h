@@ -36,7 +36,6 @@ public:
 	GoBuff<AlignResult *, 32, true, false> m_ARs;
 	bool m_RevComp;
 	bool m_Xlat;
-	bool m_Mosaic;
 
 	Aligner *m_Aligner;
 	Accepter *m_Accepter;
@@ -60,7 +59,6 @@ public:
 		m_Target = 0;
 		m_RevComp = false;
 		m_Xlat = false;
-		m_Mosaic = false;
 
 		InitImpl();
 		}
@@ -95,8 +93,6 @@ protected:
 
 private:
 	void SearchXlat(SeqInfo *Query);
-	void SearchMosaic(SeqInfo *Query);
-	bool MosaicMask(SeqInfo *Query, SeqInfo *SI, bool RevComp);
 	};
 
 Searcher *MakeClusterSearcher(CMD Cmd, bool Nucleo);

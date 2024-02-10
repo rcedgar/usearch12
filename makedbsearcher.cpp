@@ -247,16 +247,5 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	searcher->m_RevComp = RevComp;
 	searcher->m_Xlat = Xlat;
 
-	if (oget_flag(OPT_mosaic))
-		{
-		if (Cmd != CMD_usearch_local)
-			Die("-mosaic not supported by %s", CmdToStr(Cmd));
-
-		if (Xlat)
-			Die("-mosaic not supported for translated search");
-
-		searcher->m_Mosaic = true;
-		}
-
 	return searcher;
 	}

@@ -1809,6 +1809,7 @@ void Version(FILE *f)
 
 void cmd_version()
 	{
+	oget_str(OPT_version);// avoid not used warning
 	Version(stdout);
 	printf("\n");
 	exit(0);
@@ -1847,7 +1848,7 @@ void PrintCopyright(FILE *f)
 	if (f == 0)
 		return;
 
-	fprintf(f, "(C) Copyright 2013-18 Robert C. Edgar, all rights reserved.\n");
+	fprintf(f, "(C) Copyright 2013-24 Robert C. Edgar.\n");
 	fprintf(f, "https://drive5.com/usearch\n\n");
 	}
 

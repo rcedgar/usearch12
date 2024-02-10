@@ -195,30 +195,6 @@ void UDBUsortedSearcher::SortTop()
 		QuickSortTop();
 	else
 		CountSortTop();
-
-	if (oget_flag(OPT_log_sortedu))
-		{
-		const unsigned SeqCount = GetSeqCount();
-		Log("\n");
-		if (m_Query != 0 && m_Query->m_Label != 0)
-			Log(" SortedU Q>%s\n", m_Query->m_Label);
-		Log("  SeqIx      U  Target\n");
-		Log("-------  -----  ------\n");
-		const unsigned TopCount = m_TopOrder.Size;
-		unsigned LastWordCount = UINT_MAX;
-		for (unsigned j = 0; j < TopCount; ++j)
-			{
-			unsigned i = m_TopOrder.Data[j];
-			unsigned SeedIndex = m_TopTargetIndexes.Data[i];
-			unsigned WordCount = m_U.Data[SeedIndex];
-			const char *Label = m_UDBData->m_SeqDB->GetLabel(SeedIndex);
-			Log("%7u  %5u  %s", SeedIndex, WordCount, Label);
-			if (WordCount > LastWordCount)
-				Log(" **ORDER ERROR**");
-			Log("\n");
-			LastWordCount = WordCount;
-			}
-		}
 	}
 
 unsigned UDBUsortedSearcher::GetSeqCount() const
@@ -303,30 +279,6 @@ void UDBUsortedSearcher::SetTop(unsigned MinU)
 		SetTopBump(MinU, oget_uns(OPT_bump));
 	else
 		SetTopNoBump(MinU);
-
-	if (oget_flag(OPT_log_u))
-		{
-		Log("\n");
-		Log(" TopU Q>%s\n", m_Query->m_Label);
-		if (oget_uns(OPT_bump) == 0)
-			Log(" nobump\n");
-		else
-			Log(" bump %u\n", oget_uns(OPT_bump));
-		Log("  SeqIx      U  Target\n");
-		Log("-------  -----  ------\n");
-		const unsigned *TopU = m_TopU.Data;
-		const unsigned *TopTargetIndexes = m_TopTargetIndexes.Data;
-		const unsigned N = m_TopU.Size;
-		for (unsigned k = 0; k < N; ++k)
-			{
-			unsigned TargetIndex = TopTargetIndexes[k];
-			unsigned u = TopU[k];
-			SeqInfo *Target = m_Query->m_Owner->GetSeqInfo();
-			GetTargetSeqInfo(TargetIndex, Target);
-			Log("%7u  %5u  %s\n", TargetIndex, u, Target->m_Label);
-			Target->Down();
-			}
-		}
 	}
 
 void UDBUsortedSearcher::SetU(unsigned QueryStep)
@@ -335,25 +287,6 @@ void UDBUsortedSearcher::SetU(unsigned QueryStep)
 		SetU_Coded(QueryStep);
 	else
 		SetU_NonCoded(QueryStep);
-	if (oget_flag(OPT_log_u))
-		{
-		const unsigned SeqCount = GetSeqCount();
-		Log("\n");
-		Log(" U Q>%s\n", m_Query->m_Label);
-		Log("  SeqIx      U  Target\n");
-		Log("-------  -----  ------\n");
-		const unsigned *U = m_U.Data;
-		for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
-			{
-			unsigned u = U[SeqIndex];
-			if (u == 0)
-				continue;
-			SeqInfo *Target = m_Query->m_Owner->GetSeqInfo();
-			GetTargetSeqInfo(SeqIndex, Target);
-			Log("%7u  %5u  %s\n", SeqIndex, u, Target->m_Label);
-			Target->Down();
-			}
-		}
 	}
 
 void UDBUsortedSearcher::SetU_Coded(unsigned QueryStep)
@@ -609,25 +542,6 @@ unsigned UDBUsortedSearcher::GetHot(SeqInfo *Query, unsigned MaxHot, unsigned Ma
 	unsigned N = m_TopOrder.Size;
 	if (N == 0)
 		return 0;
-
-	if (oget_flag(OPT_log_u))
-		{
-		Log("\n");
-		Log(" HotU Q>%s\n", m_Query->m_Label);
-		Log(" %u top, max hot %u, max drop\n", N, MaxHot, MaxDrop);
-		Log("  SeqIx      U  Target\n");
-		Log("-------  -----  ------\n");
-		const unsigned *TopOrder = m_TopOrder.Data;
-		const unsigned *TopTargetIndexes = m_TopTargetIndexes.Data;
-		for (unsigned i = 0; i < min(N, MaxHot); ++i)
-			{
-			unsigned k = TopOrder[i];
-			unsigned TargetSeqIndex = TopTargetIndexes[k];
-			unsigned u = m_TopU.Data[i];
-			const char *TargetLabel = m_UDBData->m_SeqDB->GetLabel(TargetSeqIndex);
-			Log("%7u  %5u  %s\n", TargetSeqIndex, u, TargetLabel);
-			}
-		}
 
 	if (N > MaxHot)
 		N = MaxHot;

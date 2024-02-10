@@ -19,18 +19,16 @@ Accepter::~Accepter()
 	{
 	}
 
-bool Accepter::IsAccept(AlignResult *AR, bool *ptrWeak)
+bool Accepter::IsAccept(AlignResult *AR)
 	{
-	*ptrWeak = false;
 	if (AR == 0 || AR->IsEmpty())
 		return false;
-	bool Acc = IsAcceptLo(AR, ptrWeak);
+	bool Acc = IsAcceptLo(AR);
 	return Acc;
 	}
 
-bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
+bool Accepter::IsAcceptLo(AlignResult *AR)
 	{
-	*ptrWeak = false;
 	if (m_AcceptAll)
 		return true;
 
@@ -43,12 +41,6 @@ bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
 		if (FractId < oget_flt(OPT_id))
 			return false;
 
-		if (FractId < oget_flt(OPT_id) && ofilled(OPT_weak_id))
-			{
-			if (FractId >= oget_flt(OPT_weak_id))
-				*ptrWeak = true;
-			return false;
-			}
 		if (ofilled(OPT_maxid) && FractId > oget_flt(OPT_maxid))
 			return false;
 		}
@@ -110,11 +102,7 @@ bool Accepter::IsAcceptLo(AlignResult *AR, bool *ptrWeak)
 		{
 		double Evalue = AR->GetEvalue();
 		if (Evalue > oget_flt(OPT_evalue))
-			{
-			if (ofilled(OPT_weak_evalue) && Evalue <= oget_flt(OPT_weak_evalue))
-				*ptrWeak = true;
 			return false;
-			}
 		}
 
 	if (ofilled(OPT_query_cov) || ofilled(OPT_max_query_cov))
