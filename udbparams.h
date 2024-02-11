@@ -104,8 +104,6 @@ public:
 	const char *WordToStr(uint32 Word) const;
 	const char *SeqToWordStr(const byte *Seq) const;
 	unsigned GetPatternLength() const { return m_WordWidth; }
-	const bool *GetPattern() const { return m_Pattern; }
-	const char *GetPatternStr(string &s) const;
 	void ValidateFeatures(bool Nucleo) const;
 
 // Target->word stuff, not really sure belongs here

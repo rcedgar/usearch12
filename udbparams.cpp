@@ -34,11 +34,6 @@ void UDBParams::LogSettings() const
 	Log("    Word width  %u\n", m_WordWidth);
 	Log("     Word ones  %u\n", m_WordOnes);
 	Log("        Spaced  %s", YesOrNo(DBIsSpaced()));
-	if (DBIsSpaced())
-		{
-		string s;
-		Log("  %s", GetPatternStr(s));
-		}
 	Log("\n");
 	Log("        Hashed  %s\n", YesOrNo(DBIsHashed()));
 	Log("         Coded  %s\n", YesOrNo(DBIsCoded()));
@@ -124,16 +119,8 @@ void UDBParams::ValidateFeatures(bool Nucleo) const
 	asserta(m_WordWidth > 0);
 	asserta(m_WordOnes > 0);
 	asserta(m_WordOnes <= m_WordWidth);
-	if (DBIsSpaced())
-		{
-		asserta(m_Pattern != 0);
-		asserta(m_WordWidth > m_WordOnes);
-		}
-	else
-		{
-		asserta(m_Pattern == 0);
-		asserta(m_WordWidth == m_WordOnes);
-		}
+	asserta(m_Pattern == 0);
+	asserta(m_WordWidth == m_WordOnes);
 
 // Hashing
 	unsigned DictSize = UINT_MAX;
@@ -359,10 +346,7 @@ void UDBParams::FromParams(const char *AlphaStr, const char *PatternStr,
 	m_CapacityInc = 8;
 
 	SetAlphaStr(AlphaStr);
-	if (PatternStr != 0 && PatternStr[0] != 0)
-		SetPattern(PatternStr);
-	else
-		SetWordLength(WordLength);
+	SetWordLength(WordLength);
 
 	SetSlots(SlotCount);
 	SetAccel(AccelPct);
@@ -498,31 +482,6 @@ void UDBParams::SetWordLength(unsigned WordLength)
 	m_Pattern = 0;
 	m_WordWidth = WordLength;
 	m_WordOnes = WordLength;
-	}
-
-void UDBParams::SetPattern(const char *PatternStr)
-	{
-	unsigned PatternLength, PatternOnes;
-	const bool *Pattern = StrToPattern(PatternStr, PatternLength, PatternOnes);
-	asserta(PatternOnes > 0);
-
-	if (PatternLength == PatternOnes)
-		m_Pattern = 0;
-	else
-		m_Pattern = Pattern;
-
-	m_Pattern = Pattern;
-	m_WordWidth = PatternLength;
-	m_WordOnes = PatternOnes;
-	}
-
-const char *UDBParams::GetPatternStr(string &s) const
-	{
-	asserta(DBIsSpaced());
-	s.clear();
-	for (unsigned i = 0; i < m_WordWidth; ++i)
-		s.push_back(m_Pattern[i] ? '1' : '0');
-	return s.c_str();
 	}
 
 const char *UDBParams::WordToStr(uint32 Word) const

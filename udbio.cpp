@@ -33,16 +33,8 @@ void UDBFileHdr::FromParams(const UDBParams &Params, uint64 SeqCount)
 	asserta(n < sizeof(m_AlphaStr));
 	memcpy(m_AlphaStr, s, n+1);
 
-	if (Params.DBIsSpaced())
-		{
-		Params.GetPatternStr(S);
-		m_WordWidth = 0;
-		}
-	else
-		{
-		S.clear();
-		m_WordWidth = Params.m_WordWidth;
-		}
+	S.clear();
+	m_WordWidth = Params.m_WordWidth;
 
 	s = S.c_str();
 	n = (unsigned) strlen(s);
