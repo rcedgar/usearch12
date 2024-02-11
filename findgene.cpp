@@ -8,7 +8,6 @@
 #include "fragaligner.h"
 #include "accepter.h"
 #include "sort.h"
-#include "cpplock.h"
 #include "gobuff.h"
 #include "genefinder.h"
 #include "bitvec.h"

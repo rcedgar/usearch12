@@ -50,7 +50,7 @@ struct MergeThreadData
 bool IlluminaLabelPairMatch(const char *Label1, const char *Label2);
 void WriteAlnPretty(FILE *f, const byte *A, const byte *B, const char *Path,
 	bool StripTermGaps);
-void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2);
+void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, ObjMgr *OM);
 bool MergePair(MergeThreadData &TD);
 bool MergePre(SeqInfo *SI, bool Fwd);
 bool MergePost(MergeThreadData &TD);

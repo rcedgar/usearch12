@@ -5,6 +5,7 @@
 #include "alpha.h"
 #include "mx.h"
 #include "progress.h"
+#include "mymutex.h"
 #include <time.h>
 #ifdef _MSC_VER
 #include <Windows.h>
@@ -78,5 +79,6 @@ int main(int argc, char **argv)
 	ProgressNote("Finished");
 	CheckUsedOpts(false);
 	StopProgressThread();
+	mymutex::report();
 	return 0;
 	}

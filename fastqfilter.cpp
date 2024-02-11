@@ -5,8 +5,11 @@
 #include "objmgr.h"
 #include "fastq.h"
 #include "label.h"
-#include "cpplock.h"
 #include "progress.h"
+
+static mutex g_CounterLock;
+static mutex g_FastaOutLock;
+static mutex g_FastqOutLock;
 
 void InitFastqRelabel(const string &FileName);
 void FastqRelabel(SeqInfo *SI);
@@ -127,9 +130,9 @@ static void Thread(FASTQSeqSource *aSS)
 		if (!Ok)
 			break;
 
-		LOCK();
+		g_CounterLock.lock();
 		++g_RecCount;
-		UNLOCK();
+		g_CounterLock.unlock();
 		FASTQ_FILTER FF = FastqFilter(SI);
 
 		string Label = string(SI->m_Label);
@@ -143,10 +146,10 @@ static void Thread(FASTQSeqSource *aSS)
 			{
 			Discarded = false;
 
-			LOCK();
+			g_CounterLock.lock();
 			++g_OutRecCount;
+			g_CounterLock.unlock();
 			FastqRelabel(SI);
-			UNLOCK();
 
 			if (g_fEEOut != 0)
 				{
@@ -155,13 +158,13 @@ static void Thread(FASTQSeqSource *aSS)
 				fprintf(g_fEEOut, "%s\t%.2g\n", Label.c_str(), EE);
 				}
 
-			LOCK();
+			g_FastqOutLock.lock();
 			SI->ToFastq(g_fFastqOut);
-			UNLOCK();
+			g_FastqOutLock.unlock();
 
-			LOCK();
+			g_FastaOutLock.lock();
 			SI->ToFasta(g_fFastaOut);
-			UNLOCK();
+			g_FastaOutLock.unlock();
 			break;
 			}
 
@@ -187,19 +190,22 @@ static void Thread(FASTQSeqSource *aSS)
 
 		if (Discarded)
 			{
-			LOCK();
+			g_FastqOutLock.lock();
 			SI->ToFastq(g_fDiscFq, Label.c_str());
+			g_FastqOutLock.unlock();
+
+			g_FastaOutLock.lock();
 			SI->ToFasta(g_fDiscFa, Label.c_str());
-			UNLOCK();
+			g_FastaOutLock.unlock();
 			}
 		}
 
-	LOCK();
+	g_CounterLock.lock();
 	g_ShortCount += ShortCount;
 	g_BadCount += BadCount;
 	g_MaxNsCount += MaxNsCount;
 	g_MinQCount += MinQCount;
-	UNLOCK();
+	g_CounterLock.unlock();
 	}
 
 void cmd_fastq_filter()

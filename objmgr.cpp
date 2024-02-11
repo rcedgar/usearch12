@@ -3,7 +3,7 @@
 #include "seqinfo.h"
 #include "pathinfo.h"
 #include "alignresult.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "obj.h"
 
 void Obj::Up()
@@ -21,7 +21,8 @@ vector<ObjMgr *> ObjMgr::m_FreeOMs;
 
 void ObjMgr::FreeObjMgr(ObjMgr *OM)
 	{
-	LOCK();
+	static mymutex mut("ObjMgr::FreeObjMgr");
+	mut.lock();
 	m_FreeOMs.push_back(OM);
 	vector<ObjMgr *> NewOMs;
 	for (size_t i = 0; i < m_OMs.size(); ++i)
@@ -31,12 +32,13 @@ void ObjMgr::FreeObjMgr(ObjMgr *OM)
 			NewOMs.push_back(OM2);
 		}
 	m_OMs = NewOMs;
-	UNLOCK();
+	mut.unlock();
 	}
 
 ObjMgr *ObjMgr::CreateObjMgr()
 	{
-	LOCK();
+	static mymutex mut("ObjMgr::CreateObjMgr");
+	mut.lock();
 	ObjMgr *OM = 0;
 	if (!m_FreeOMs.empty())
 		{
@@ -46,7 +48,7 @@ ObjMgr *ObjMgr::CreateObjMgr()
 	else
 		OM = new ObjMgr;
 	m_OMs.push_back(OM);
-	UNLOCK();
+	mut.unlock();
 	return OM;
 	}
 

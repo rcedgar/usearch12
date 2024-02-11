@@ -1,10 +1,11 @@
 #include "myutils.h"
 #include "merge.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 void MergeLogVAln(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP)
 	{
-	LOCK();
+	static mymutex mut("MergeLogVAln");
+	mut.lock();
 	Log("\n");
 	Log(">%s\n", SI1->m_Label);
 	Log("HSP=");
@@ -97,5 +98,5 @@ void MergeLogVAln(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP)
 		  c, c, q, q, iq, iq, "", P2, P, "", EE2, EE);
 		}
 	Log("EE1=%6.4f, EE2=%6.4f, EE=%6.4f\n", EE1, EE2, EE);
-	UNLOCK();
+	mut.unlock();
 	}

@@ -3,7 +3,7 @@
 #include "seqinfo.h"
 #include "uparsesink.h"
 #include "alpha.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 double UParseSink::GetSegParentPctId(unsigned SegIndex)
 	{
@@ -215,7 +215,8 @@ void UParseSink::WriteAln(FILE *f)
 	const unsigned QL = m_Query->m_L;
 	const byte *Q = m_Query->m_Seq;
 
-	LOCK();
+	static mymutex mut("UParseSink::WriteAln");
+	mut.lock();
 	WriteAlnHeader(f);
 	fprintf(f, "\n");
 	fprintf(f, "Query %unt >%s\n", QL, QLabel);
@@ -229,7 +230,7 @@ void UParseSink::WriteAln(FILE *f)
 		}
 	else
 		fprintf(f, "No alignment\n");
-	UNLOCK();
+	mut.unlock();
 	}
 
 char UParseSink::GetSegChar(unsigned SegIndex)

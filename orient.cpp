@@ -8,7 +8,7 @@
 #include "globalaligner.h"
 #include "alignresult.h"
 #include "sort.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "progress.h"
 
 #define	TRACE		0
@@ -97,7 +97,8 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 	bool Minus = (MinusCount > PlusCount*StrandX);
 	asserta(!(Plus && Minus));
 	char c = '!';
-	LOCK();
+	static mymutex mut("orient");
+	mut.lock();
 	++g_QueryCount;
 	if (Plus)
 		{
@@ -131,7 +132,7 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 		}
 	if (g_fOut != 0)
 		fprintf(g_fOut, "%s\t%c\t%u\t%u\n", Query->m_Label, c, PlusCount, MinusCount);
-	UNLOCK();
+	mut.unlock();
 	}
 
 static void Thread(SeqSource *SS, UDBData *udb)

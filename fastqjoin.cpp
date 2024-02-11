@@ -3,7 +3,7 @@
 #include "fastqseqsource.h"
 #include "seqinfo.h"
 #include "objmgr.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "progress.h"
 
 void RevComp(const byte *Seq, unsigned L, byte *RCSeq);
@@ -91,9 +91,10 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 	char Tmp[16];
 	if (ofilled(OPT_relabel))
 		{
-		LOCK();
+		static mymutex mut("fastqjoin::g_Count");
+		mut.lock();
 		++g_Count;
-		UNLOCK();
+		mut.unlock();
 
 		sprintf(Tmp, "%u", g_Count);
 		if (oget_str(OPT_relabel)[0] == '+')
@@ -105,16 +106,18 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	if (g_fFastqOut != 0)
 		{
-		LOCK();
+		static mymutex mut("fastqjoin::fastqout");
+		mut.lock();
 		SIJ->ToFastq(g_fFastqOut);
-		UNLOCK();
+		mut.unlock();
 		}
 
 	if (g_fFastaOut != 0)
 		{
-		LOCK();
+		static mymutex mut("fastqjoin::fastaout");
+		mut.lock();
 		SIJ->ToFasta(g_fFastaOut);
-		UNLOCK();
+		mut.unlock();
 		}
 	}
 
@@ -132,10 +135,11 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		LOCK();
+		static mymutex mut("fastqjoin::GetNext");
+		mut.lock();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
-		UNLOCK();
+		mut.unlock();
 
 		if (!Ok1)
 			break;

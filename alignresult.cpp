@@ -3,12 +3,9 @@
 #include "pathinfo.h"
 #include "alignresult.h"
 #include "seqinfo.h"
-#include "cpplock.h"
 #include "alpha.h"
 #include "alnparams.h"
-#include <mutex>
-
-mutex AlignResult::m_Lock;
+#include "mymutex.h"
 
 /***
 Sequences in m_Query and m_Target are full-length sequences.
@@ -244,13 +241,14 @@ void AlignResult::LogAlnPretty(bool StripTermGaps) const
 
 void AlignResult::LogMe() const
 	{
-	LOCK();
+	static mymutex mut("AlignResult::LogMe");
+	mut.lock();
 
 	Log("\n");
 	if (m_Query == 0 || m_Target == 0)
 		{
 		Log("AlignResult::LogMe(), m_Query=%p m_Target=%p\n", m_Query, m_Target);
-		UNLOCK();
+		mut.unlock();
 		return;
 		}
 
@@ -339,7 +337,7 @@ void AlignResult::LogMe() const
 		}
 	Log("\n");
 
-	UNLOCK();
+	mut.unlock();
 	}
 
 const char *AlignResult::GetPath() const

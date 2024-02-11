@@ -1,7 +1,7 @@
 #include "myutils.h"
 #include "progress.h"
 #include "seqsource.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "hitmgr.h"
 #include "clustersink.h"
 #include "otutabsink.h"
@@ -11,10 +11,7 @@
 #include <chrono>
 #include <list>
 
-#define TEXTOUT		0
-#if TEXTOUT
-FILE *g_ftxt;
-#endif
+static mymutex mut_lines("progress::lines");
 
 enum PROG_STATE
 	{
@@ -80,9 +77,6 @@ static char *TTToStr(TEXT_TYPE TT)
 static void ppc(char c)
 	{
 	fputc(c, prog_stream);
-#if TEXTOUT
-	fputc(c, g_ftxt);
-#endif
 	}
 
 static const char *PctStr(char *Str, double p)
@@ -400,17 +394,13 @@ static void PushBackgroundLine()
 
 static void ProgressThread()
 	{
-#if TEXTOUT
-	g_ftxt = CreateStdioFile("prog.txt");
-	setbuf(g_ftxt, 0);
-#endif
 	setbuf(prog_stream, 0);
 	for (;;)
 		{
-		LOCK();
+		mut_lines.lock();
 		PushBackgroundLine();
 		OutputPendingLines();
-		UNLOCK();
+		mut_lines.unlock();
 		if (g_AbortProgress)
 			break;
 		this_thread::sleep_for(chrono::milliseconds(TICKms));
@@ -424,16 +414,16 @@ void StartProgressThread()
 
 void StopProgressThread()
 	{
-	LOCK();
+	mut_lines.lock();
 	g_AbortProgress = true;
 	OutputPendingLines();
 	fputs("\n\n", prog_stream);
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressNote(const char *fmt, ...)
 	{
-	LOCK();
+	mut_lines.lock();
 	va_list ArgList;
 	va_start(ArgList, fmt);
 	char s[MAXSTR];
@@ -446,13 +436,14 @@ void ProgressNote(const char *fmt, ...)
 	AppendSpinner(Line, true);
 	Line += " ";
 	Line += string(s);
+
 	PushText(Line, TT_Note);
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressNoteNoPrefix(const char *fmt, ...)
 	{
-	LOCK();
+	mut_lines.lock();
 	va_list ArgList;
 	va_start(ArgList, fmt);
 	char s[MAXSTR];
@@ -461,12 +452,12 @@ void ProgressNoteNoPrefix(const char *fmt, ...)
 	va_end(ArgList);
 
 	PushText(string(s), TT_Note);
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressNoteLogNoPrefix(const char *fmt, ...)
 	{
-	LOCK();
+	mut_lines.lock();
 	va_list ArgList;
 	va_start(ArgList, fmt);
 	char s[MAXSTR];
@@ -476,12 +467,12 @@ void ProgressNoteLogNoPrefix(const char *fmt, ...)
 	Log("%s\n", s);
 
 	PushText(string(s), TT_Note);
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressNoteLog(const char *fmt, ...)
 	{
-	LOCK();
+	mut_lines.lock();
 	va_list ArgList;
 	va_start(ArgList, fmt);
 	char s[MAXSTR];
@@ -496,12 +487,12 @@ void ProgressNoteLog(const char *fmt, ...)
 	Line += " ";
 	Line += string(s);
 	PushText(Line, TT_Note);
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressStartOther(const string &Msg, PTR_PROGRESS_CB CB)
 	{
-	LOCK();
+	mut_lines.lock();
 	asserta(g_State == PS_Idle);
 	g_Msg = Msg;
 	g_CB = CB;
@@ -511,12 +502,12 @@ void ProgressStartOther(const string &Msg, PTR_PROGRESS_CB CB)
 	PushText(Line, TT_LoopFirst);
 
 	g_State = PS_Other;
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 uint32 *ProgressStartLoop(uint32 N, const string &Msg, PTR_PROGRESS_CB CB)
 	{
-	LOCK();
+	mut_lines.lock();
 	asserta(g_State == PS_Idle);
 	asserta(g_LoopIdx == UINT_MAX);
 	g_Msg = Msg;
@@ -529,13 +520,13 @@ uint32 *ProgressStartLoop(uint32 N, const string &Msg, PTR_PROGRESS_CB CB)
 	PushText(Line, TT_LoopFirst);
 
 	g_State = PS_Loop;
-	UNLOCK();
+	mut_lines.unlock();
 	return &g_LoopIdx;
 	}
 
 void ProgressStartSS(SeqSource &SS, const string &Msg, PTR_PROGRESS_CB CB)
 	{
-	LOCK();
+	mut_lines.lock();
 	asserta(g_State == PS_Idle);
 	asserta(g_SS == 0);
 	g_Msg = Msg;
@@ -547,12 +538,12 @@ void ProgressStartSS(SeqSource &SS, const string &Msg, PTR_PROGRESS_CB CB)
 	PushText(Line, TT_LoopFirst);
 
 	g_State = PS_SS;
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressDoneOther()
 	{
-	LOCK();
+	mut_lines.lock();
 	asserta(g_State == PS_Other);
 
 	string Line;
@@ -563,12 +554,12 @@ void ProgressDoneOther()
 	g_State = PS_Idle;
 	g_CB = 0;
 	g_Msg = "(Working)";
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressDoneLoop()
 	{
-	LOCK();
+	mut_lines.lock();
 	g_LoopIdx = UINT_MAX;
 	g_LoopN = UINT_MAX;
 	asserta(g_State == PS_Loop);
@@ -581,12 +572,12 @@ void ProgressDoneLoop()
 	g_State = PS_Idle;
 	g_CB = 0;
 	g_Msg = "(Working)";
-	UNLOCK();
+	mut_lines.unlock();
 	}
 
 void ProgressDoneSS()
 	{
-	LOCK();
+	mut_lines.lock();
 	asserta(g_State == PS_SS);
 	asserta(g_SS != 0);
 
@@ -599,5 +590,5 @@ void ProgressDoneSS()
 	g_State = PS_Idle;
 	g_CB = 0;
 	g_Msg = "(Working)";
-	UNLOCK();
+	mut_lines.unlock();
 	}

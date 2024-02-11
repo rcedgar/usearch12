@@ -1,22 +1,18 @@
 #include "myutils.h"
-
-static void Thread(uint i)
-	{
-	Log("Tread(%u)\n", i);
-	uint ti = GetThreadIndex();
-	Log("  GTI=%u\n", ti);
-	}
+#include <chrono>
 
 void cmd_test()
 	{
 	oget_str(OPT_test);
-	unsigned ThreadCount = GetRequestedThreadCount();
-	vector<thread *> ts;
-	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
-		{
-		thread *t = new thread(Thread, ThreadIndex);
-		ts.push_back(t);
-		}
-	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
-		ts[ThreadIndex]->join();
+    typedef std::chrono::high_resolution_clock Time;
+    typedef std::chrono::milliseconds ms;
+    typedef std::chrono::duration<float> fsec;
+    auto t0 = Time::now();
+    auto t1 = Time::now();
+    fsec fs = t1 - t0;
+    ms d = std::chrono::duration_cast<ms>(fs);
+    float fcount = fs.count();
+    uint64 d64 = d.count();
+	Log("%.4g %.4g\n", fcount, double(d64));
+	Log("\n");
 	}

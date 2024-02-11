@@ -4,7 +4,7 @@
 #include "alignresult.h"
 #include "outputsink.h"
 #include "hspfinder.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 /***
 	d = i - j
@@ -250,11 +250,10 @@ bool MergeAlign(MergeThreadData &TD)
 		}
 	if (TopHSP == 0)
 		{
-		if (g_fTab)
-			fprintf(g_fTab, "\tnohsp");
-		LOCK();
+		static mymutex mut("g_NotAlignedCount");
+		mut.lock();
 		++g_NotAlignedCount;
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 
@@ -264,49 +263,40 @@ bool MergeAlign(MergeThreadData &TD)
 	int Left;
 	unsigned AlnLength;
 	GetMergeAln(TD, Left, AlnLength, Right);
-	if (g_fTab)
-		fprintf(g_fTab, "\taln=%d-%u-%d", Left, AlnLength, Right);
 	if (AlnLength < oget_uns(OPT_fastq_minovlen))
 		{
-		if (g_fTab)
-			fprintf(g_fTab, "\talntooshort");
-		LOCK();
+		static mymutex mut("g_OvTooShortCount");
+		mut.lock();
 		++g_OvTooShortCount;
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 
 	bool Stag = (Left < 0 || Right < 0);
 	if (Stag)
 		{
-		if (g_fTab)
-			fprintf(g_fTab, "\tstaggered");
-		LOCK();
+		static mymutex mut("g_StaggeredCount");
+		mut.lock();
 		++g_StaggeredCount;
-		UNLOCK();
+		mut.unlock();
 		}
 
 	if (oget_flag(OPT_fastq_nostagger) && Stag)
-		{
-		if (g_fTab)
-			fprintf(g_fTab, "\tnostagger");
 		return false;
-		}
 
 	TD.DiffCount = MergeSI(SI1, SI2RC, TD.HSP, SIOv);
-	if (g_fTab)
-		fprintf(g_fTab, "\tdiffs=%u", TD.DiffCount);
 
 	if (g_fAln != 0)
 		{
 		TD.AR = OM->GetAlignResult();
 		TD.AR->CreateLocalUngapped(*SI1, *SI2RC, TD.HSP, true);
 
-		LOCK();
+		static mymutex mut("mergealign::WriteAln");
+		mut.lock();
 		WriteAln(g_fAln, TD.AR);
 		if (Stag)
 			WriteStagger(g_fAln, *TD.AR);
-		UNLOCK();
+		mut.unlock();
 
 		TD.AR->Down();
 		TD.AR = 0;
@@ -314,31 +304,28 @@ bool MergeAlign(MergeThreadData &TD)
 
 	if (TD.DiffCount == 0)
 		{
-		LOCK();
+		static mymutex mut("mergealign::g_ExactOverlapCount");
+		mut.lock();
 		++g_ExactOverlapCount;
-		UNLOCK();
+		mut.unlock();
 		}
 
 	if (TD.DiffCount > oget_uns(OPT_fastq_maxdiffs))
 		{
-		if (g_fTab)
-			fprintf(g_fTab, "\ttoo_many_diffs");
-		LOCK();
+		static mymutex mut("mergealign::g_MaxDiffsCount");
+		mut.lock();
 		++g_MaxDiffsCount;
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 
 	double PctId = GetPct(AlnLength - TD.DiffCount, AlnLength);
-	if (g_fTab)
-		fprintf(g_fTab, "\tpctid=%.1f", PctId);
 	if (PctId < (double) oget_uns(OPT_fastq_pctid))
 		{
-		if (g_fTab)
-			fprintf(g_fTab, "\tpctid_too_low");
-		LOCK();
+		static mymutex mut("mergealign::g_MaxDiffsCount/2");
+		mut.lock();
 		++g_MaxDiffsCount;
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 

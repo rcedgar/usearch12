@@ -11,7 +11,7 @@
 #include "alignresult.h"
 #include "accepter.h"
 #include "sort.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "gobuff.h"
 #include "genefinder.h"
 
@@ -206,7 +206,8 @@ void GeneFinder::SelectStartEnds(const vector<unsigned> &InStarts, const vector<
 					unsigned Leni = Endi - Starti + 1;
 					unsigned Lenj = Endj - Startj + 1;
 
-					LOCK();
+					static mymutex mut("genefinder::GetOverlap");
+					mut.lock();
 					Log("Overlap  %u-%u(%u), %u - %u(%u) diffs %u,%u >%s\n\n",
 					  Starti, Endi, Leni,
 					  Startj, Endj, Lenj,
@@ -221,7 +222,7 @@ void GeneFinder::SelectStartEnds(const vector<unsigned> &InStarts, const vector<
 					for (unsigned k = 0; k < SIZE(InStarts); ++k)
 						Log(" %u", InEnds[k]);
 					Log("\n");
-					UNLOCK();
+					mut.unlock();
 
 					unsigned DeleteIx = (Leni <= Lenj ? i : j);
 					vector<unsigned> NewStarts;
@@ -692,18 +693,20 @@ void GeneFinder::AppendGeneInfo()
 		unsigned Ov = GetOverlap((unsigned) Lo, (unsigned) Hi, (unsigned) Lo2, (unsigned) Hi2);
 		if (Ov > 0)
 			{
-			LOCK();
+			static mymutex mut("genefinder::GetOverlap/2");
+			mut.lock();
 			WriteGeneInfo(g_fLog, GI);
 			++m_GeneOverlapCount;
-			UNLOCK();
+			mut.unlock();
 			}
 		}
 
 	m_GeneInfos.push_back(GI);
 
-	LOCK();
+	static mymutex mut("genefinder::m_TotalGeneCount");
+	mut.lock();
 	++m_TotalGeneCount;
-	UNLOCK();
+	mut.unlock();
 	}
 
 unsigned GeneFinder::SearchWindows()
@@ -1053,7 +1056,8 @@ void GeneFinder::WriteGeneFasta(FILE *f, const GF_GeneInfo &GI) const
 
 void GeneFinder::Output()
 	{
-	LOCK();
+	static mymutex mut("GeneFinder::Output");
+	mut.lock();
 	WriteQueryInfo(m_fTab);
 	for (unsigned i = 0; i < SIZE(m_WinInfos); ++i)
 		{
@@ -1073,5 +1077,5 @@ void GeneFinder::Output()
 		WriteGeneInfo(m_fTab, GI);
 		WriteGeneFasta(m_fGeneFa, GI);
 		}
-	UNLOCK();
+	mut.unlock();
 	}

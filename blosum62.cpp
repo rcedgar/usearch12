@@ -1,6 +1,6 @@
 #include "myutils.h"
 #include "mx.h"
-#include "cpplock.h"
+#include <mutex>
 
 extern Mx<float> g_SubstMxf;
 extern float **g_SubstMx;
@@ -85,11 +85,12 @@ void SetBLOSUM62Mx(Mx<float> &Sf)
 
 void SetBLOSUM62()
 	{
-	LOCK();
+	static mutex mut;
+	mut.lock();
 	if (g_SubstMx == 0)
 		{
 		SetBLOSUM62Mx(g_SubstMxf);
 		g_SubstMx = g_SubstMxf.GetData();
 		}
-	UNLOCK();
+	mut.unlock();
 	}

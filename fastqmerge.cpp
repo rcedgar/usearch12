@@ -42,7 +42,8 @@ static void MergeCB(string &s)
 		}
 	}
 
-static void MergeFiles(const string &FwdFileName, const string &RevFileName)
+static void MergeFiles(const string &FwdFileName, const string &RevFileName,
+  uint ThreadCount, vector<ObjMgr *> OMs)
 	{
 	FastqBaseName(FwdFileName.c_str(), g_CurrentFileName);
 	InitFastqRelabel(FwdFileName);
@@ -75,11 +76,10 @@ static void MergeFiles(const string &FwdFileName, const string &RevFileName)
 
 	FastQ::SetBaseGuess(FwdFileName);
 
-	unsigned ThreadCount = GetRequestedThreadCount();
 	vector<thread *> ts;
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
 		{
-		thread *t = new thread(MergeThread, &SS1, &SS2);
+		thread *t = new thread(MergeThread, &SS1, &SS2, OMs[ThreadIndex]);
 		ts.push_back(t);
 		}
 	for (uint ThreadIndex = 0; ThreadIndex < ThreadCount; ++ThreadIndex)
@@ -134,9 +134,6 @@ void cmd_fastq_mergepairs()
 	if (ofilled(OPT_alnout))
 		g_fAln = CreateStdioFile(oget_str(OPT_alnout));
 
-	if (ofilled(OPT_tabbedout))
-		g_fTab = CreateStdioFile(oget_str(OPT_tabbedout));
-
 	if (ofilled(OPT_report))
 		{
 		g_fRep = CreateStdioFile(oget_str(OPT_report));
@@ -174,12 +171,16 @@ void cmd_fastq_mergepairs()
 		g_fFaOverlapRev = CreateStdioFile(oget_str(OPT_fastaout_overlap_rev));
 
 	ProgressStartOther("Merging", MergeCB);
+	uint ThreadCount = GetRequestedThreadCount();
+	vector<ObjMgr *> OMs;
+	for (uint i = 0; i < ThreadCount; ++i)
+		OMs.push_back(ObjMgr::CreateObjMgr());
 	for (unsigned i = 0; i < N; ++i)
 		{
 		g_MergeIdx = i;
 		const string &FwdFileName = FwdFileNames[i];
 		const string &RevFileName = RevFileNames[i];
-		MergeFiles(FwdFileName, RevFileName);
+		MergeFiles(FwdFileName, RevFileName, ThreadCount, OMs);
 		}
 	ProgressDoneOther();
 
@@ -203,6 +204,5 @@ void cmd_fastq_mergepairs()
 	CloseStdioFile(g_fFaNotmergedFwd);
 	CloseStdioFile(g_fFaNotmergedRev);
 	CloseStdioFile(g_fAln);
-	CloseStdioFile(g_fTab);
 	CloseStdioFile(g_fRep);
 	}

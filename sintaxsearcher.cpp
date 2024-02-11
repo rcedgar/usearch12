@@ -3,7 +3,6 @@
 #include "tax.h"
 #include "taxy.h"
 #include "sintaxsearcher.h"
-#include "cpplock.h"
 
 FILE *SintaxSearcher::m_f;
 Taxy *SintaxSearcher::m_Taxy;

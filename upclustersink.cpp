@@ -3,7 +3,6 @@
 #include "uparsesink.h"
 #include "upclustersink.h"
 #include "seqinfo.h"
-#include "cpplock.h"
 #include <time.h>
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);

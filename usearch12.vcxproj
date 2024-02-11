@@ -322,6 +322,7 @@
     <ClCompile Include="mergestats.cpp" />
     <ClCompile Include="mergethread.cpp" />
     <ClCompile Include="mx.cpp" />
+    <ClCompile Include="mymutex.cpp" />
     <ClCompile Include="myutils.cpp" />
     <ClCompile Include="newick.cpp" />
     <ClCompile Include="objmgr.cpp" />
@@ -457,12 +458,12 @@
     <ClInclude Include="merge.h" />
     <ClInclude Include="mergeglobals.h" />
     <ClInclude Include="mx.h" />
+    <ClInclude Include="mymutex.h" />
     <ClInclude Include="myutils.h" />
     <ClInclude Include="obj.h" />
     <ClInclude Include="objmgr.h" />
     <ClInclude Include="objtype.h" />
     <ClInclude Include="objtypes.h" />
-    <ClInclude Include="cpplock.h" />
     <ClInclude Include="opts.h" />
     <ClInclude Include="opt_enum.h" />
     <ClInclude Include="orffinder.h" />

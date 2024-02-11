@@ -5,7 +5,7 @@
 #include "objmgr.h"
 #include "fastq.h"
 #include "label.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "progress.h"
 
 void InitFastqRelabel(const string &FileName);
@@ -38,30 +38,33 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 
 	for (;;)
 		{
-		LOCK();
+		static mymutex mut1("fastqfilter2::Thread/1");
+		mut1.lock();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
 		if (Ok1 != Ok2)
 			Die("Premature end-of-file in %s reads", (Ok1 ? "reverse" : "forward"));
-		UNLOCK();
+		mut1.unlock();
 		if (!Ok1)
 			break;
 
-		LOCK();
+		static mymutex mut2("fastqfilter2::Thread/2");
+		mut2.lock();
 		++g_RecCount;
-		UNLOCK();
+		mut2.unlock();
 		double EE1 = FastQ::GetEE(SI1->m_Qual, SI1->m_L);
 		double EE2 = FastQ::GetEE(SI2->m_Qual, SI2->m_L);
 		unsigned n1 = SI1->GetNCount();
 		unsigned n2 = SI2->GetNCount();
 		if (EE1 <= MaxEE && EE2 <= MaxEE && n1 == 0 && n2 == 0)
 			{
-			LOCK();
+			static mymutex mut("fastqfilter2::fastqout");
+			mut.lock();
 			++g_OutCount;
 
 			SI1->ToFastq(g_fFastqOut1);
 			SI2->ToFastq(g_fFastqOut2);
-			UNLOCK();
+			mut.unlock();
 			}
 		}
 	}

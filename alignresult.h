@@ -7,7 +7,7 @@
 #include "seqinfo.h"
 #include "label.h"
 #include "gobuff.h"
-#include <mutex>
+#include "mymutex.h"
 
 //typedef GoBuff<char, 128, true, false> t_MD;
 
@@ -17,11 +17,6 @@ class PathInfo;
 class AlignResult : public Obj
 	{
 	friend class ObjMgr;
-	static mutex m_Lock;
-
-public:
-	static void LOCK() { m_Lock.lock(); }
-	static void UNLOCK() { m_Lock.unlock(); }
 
 public:
 	bool m_Local;

@@ -7,7 +7,6 @@
 #include "objmgr.h"
 #include "label.h"
 #include "alpha.h"
-#include "cpplock.h"
 
 #define TRACE			0
 #define TRACE_ALNS		0
@@ -1014,7 +1013,8 @@ void DeParser::WriteTabbed(FILE *f) const
 	if (f == 0)
 		return;
 
-	LOCK();
+	static mymutex mut("DeParser::WriteTabbed");
+	mut.lock();
 	fprintf(f, "%s", m_Query->m_Label);
 	fprintf(f, "\t%c", pom(!m_Query->m_RevComp));
 	fprintf(f, "\t%s", DeClassToStr(m_Class));
@@ -1049,7 +1049,7 @@ void DeParser::WriteTabbed(FILE *f) const
 		s = "*";
 
 	fprintf(f, "\t%s\n", s.c_str());
-	UNLOCK();
+	mut.unlock();
 	}
 
 void DeParser::WriteTopAlnPretty(FILE *f) const
@@ -1084,7 +1084,8 @@ void DeParser::WriteAln(FILE *f) const
 	if (f == 0)
 		return;
 
-	LOCK();
+	static mymutex mut("DeParser::WriteAln");
+	mut.lock();
 	switch (m_Class)
 		{
 	case DEP_perfect:
@@ -1104,7 +1105,7 @@ void DeParser::WriteAln(FILE *f) const
 	default:
 		asserta(false);
 		}
-	UNLOCK();
+	mut.unlock();
 	}
 
 unsigned DeParser::GetSize(unsigned Index) const

@@ -15,7 +15,6 @@
 #include "hitmgr.h"
 #include "filetype.h"
 #include "label.h"
-#include "cpplock.h"
 #include "progress.h"
 
 void LoadDB(const string &DBFileName, CMD Cmd, SeqDB **ptrDB, UDBData **ptrUDB,

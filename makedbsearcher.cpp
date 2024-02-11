@@ -24,7 +24,7 @@
 #include "derepresult.h"
 #include "accepter.h"
 #include "seqdb.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 bool StrandOptToRevComp(bool RequiredOpt, bool Default);
 
@@ -35,10 +35,11 @@ bool g_Nucleo;
 
 void ResetGlobalAPAH(bool Nucleo)
 	{
-	LOCK();
+	static mymutex mut("ResetGlobalAPAH");
+	mut.lock();
 	g_AP.InitFromCmdLine(Nucleo);
 	g_AH.InitFromCmdLine(g_AP);
-	UNLOCK();
+	mut.unlock();
 	}
 
 const AlnHeuristics *AlnHeuristics::GetGlobalAH()
@@ -55,11 +56,12 @@ const AlnParams *AlnParams::GetGlobalAP()
 
 void InitGlobals(bool Nucleo)
 	{
-	LOCK();
+	static mymutex mut("InitGlobals");
+	mut.lock();
 	if (g_InitGlobalsDone)
 		{
 		asserta(Nucleo == g_Nucleo);
-		UNLOCK();
+		mut.unlock();
 		return;
 		}
 
@@ -67,8 +69,9 @@ void InitGlobals(bool Nucleo)
 	g_AH.InitFromCmdLine(g_AP);
 	g_InitGlobalsDone = true;
 	g_Nucleo = Nucleo;
-	UNLOCK();
+	mut.unlock();
 	}
+
 Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
   bool QueryIsNucleo, bool DBIsNucleo, bool RevComp, bool Xlat)
 	{
@@ -236,9 +239,10 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		OTUTable *OT = sink->m_OT;
 		asserta(OT != 0);
 		unsigned RefSeqCount = DB->GetSeqCount();
-		LOCK();
+		static mymutex mut("makedbsearcher::OT->Reserve");
+		mut.lock();
 		OT->Reserve(RefSeqCount, 1000);
-		UNLOCK();
+		mut.unlock();
 		HM.AddSink(sink);
 		}
 

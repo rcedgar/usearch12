@@ -6,8 +6,12 @@
 #include "alignresult.h"
 #include "hspfinder.h"
 #include "objmgr.h"
-#include "cpplock.h"
 #include "progress.h"
+
+static mutex g_GetNextLock;
+static mutex g_OutputLock;
+static mutex g_FastxOutLock;
+static mutex g_CounterLock;
 
 void GetMergeAln(const MergeThreadData &TD, int &Left, unsigned &AlnLength, int &Right);
 
@@ -137,17 +141,13 @@ void FastqRelabel(SeqInfo *SI)
 	if (ofilled(OPT_label_suffix))
 		Label += string(oget_str(OPT_label_suffix));
 
-	if (g_fTab)
-		fprintf(g_fTab, "\trelabel=%s", Label.c_str());
-
 	SI->SetLabel(Label.c_str());
 	}
 
-void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
+void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, ObjMgr *OM)
 	{
 	FASTQSeqSource &SS1 = *aSS1;
 	FASTQSeqSource &SS2 = *aSS2;
-	ObjMgr *OM = ObjMgr::CreateObjMgr();
 
 	MergeThreadData TD;
 
@@ -167,7 +167,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 		TD.SIOv = OM->GetSeqInfo();
 		TD.SI2RC = OM->GetSeqInfo();
 
-		LOCK();
+		g_GetNextLock.lock();
 		bool Ok1 = SS1.GetNext(TD.SI1);
 		bool Ok2 = SS2.GetNext(TD.SI2);
 		TD.FL = TD.SI1->m_L;
@@ -177,17 +177,10 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	// if reads were truncated due to bad tails.
 		unsigned L1 = TD.SI1->m_L;
 		unsigned L2 = TD.SI2->m_L;
-		UNLOCK();
+		g_GetNextLock.unlock();
 
 		if (!Ok1)
 			break;
-
-		if (g_fTab)
-			{
-			LOCK();
-			fprintf(g_fTab, "%s", TD.SI1->m_Label);
-			UNLOCK();
-			}
 
 		if (!Ok2)
 			{
@@ -204,11 +197,14 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 		bool Ok = MergePair(TD);
 
-		LOCK();
+		g_CounterLock.lock();
 		++g_InRecCount;
+		g_CounterLock.unlock();
 		if (Ok)
 			{
+			g_CounterLock.lock();
 			++g_OutRecCount;
+			g_CounterLock.unlock();
 
 			g_SumEE1 += FastQ::GetEE(TD.SI1->m_Qual, L1);
 			g_SumEE2 += FastQ::GetEE(TD.SI2->m_Qual, L2);
@@ -229,13 +225,17 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 				TD.SIOv->SetLabel(Label.c_str());
 				}
 
-			TD.SIOv->ToFasta(g_fFastaOut);
-			TD.SIOv->ToFastq(g_fFastqOut);
 			if (g_fRep)
 				{
 				asserta(TD.SIOv->m_L > 0);
+				g_CounterLock.lock();
 				g_MergeLengths->push_back(TD.SIOv->m_L);
+				g_CounterLock.unlock();
 				}
+
+			g_FastxOutLock.lock();
+			TD.SIOv->ToFasta(g_fFastaOut);
+			TD.SIOv->ToFastq(g_fFastqOut);
 
 			if (ofilled(OPT_fastqout_overlap_fwd) || ofilled(OPT_fastaout_overlap_fwd))
 				{
@@ -254,6 +254,7 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 				SeqToFastq(g_fFqOverlapRev, TD.SI2RC->m_Seq + Lo, Len, TD.SI2RC->m_Qual + Lo, TD.SIOv->m_Label);
 				SeqToFasta(g_fFaOverlapRev, TD.SI2RC->m_Seq + Lo, Len, TD.SIOv->m_Label);
 				}
+			g_FastxOutLock.unlock();
 			}
 		else
 			{
@@ -261,16 +262,13 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 			TD.SI1->m_L = L1;
 			TD.SI2->m_L = L2;
 
+			g_OutputLock.lock();
 			TD.SI1->ToFastq(g_fFqNotmergedFwd);
 			TD.SI2->ToFastq(g_fFqNotmergedRev);
 			TD.SI1->ToFasta(g_fFaNotmergedFwd);
 			TD.SI2->ToFasta(g_fFaNotmergedRev);
+			g_OutputLock.unlock();
 			}
-		if (g_fTab != 0)
-			{
-			fprintf(g_fTab, Ok ? "\tresult=merged\n" : "\tresult=notmerged\n");
-			}
-		UNLOCK();
 
 		TD.PI->Down();
 		TD.SI1->Down();
@@ -283,5 +281,4 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 	TD.SI2->Down();
 	TD.SIOv->Down();
 	TD.SI2RC->Down();
-	ObjMgr::FreeObjMgr(OM);
 	}

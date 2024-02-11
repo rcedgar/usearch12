@@ -1,33 +1,28 @@
 #include "myutils.h"
 #include "merge.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 bool MergePost(MergeThreadData &TD)
 	{
+	static mymutex mut("MergePost");
 	SeqInfo &SI = *TD.SIOv;
 	const byte *Seq = SI.m_Seq;
 	unsigned L = SI.m_L;
 	const char *Qual = SI.m_Qual;
-	if (g_fTab)
-		fprintf(g_fTab, "\tmergelen=%u", L);
 
 	if (ofilled(OPT_fastq_minmergelen) && L < oget_uns(OPT_fastq_minmergelen))
 		{
-		LOCK();
+		mut.lock();
 		++g_MergedTooShortCount;
-		if (g_fTab)
-			fprintf(g_fTab, "\tmergetooshort");
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 
 	if (ofilled(OPT_fastq_maxmergelen) && L > oget_uns(OPT_fastq_maxmergelen))
 		{
-		LOCK();
+		mut.lock();
 		++g_MergedTooLongCount;
-		if (g_fTab)
-			fprintf(g_fTab, "\tmergetoolong");
-		UNLOCK();
+		mut.unlock();
 		return false;
 		}
 
@@ -36,11 +31,9 @@ bool MergePost(MergeThreadData &TD)
 		byte MinIntQual = SI.GetMinIntQual();
 		if (MinIntQual < oget_uns(OPT_fastq_minqual))
 			{
-			LOCK();
-			if (g_fTab)
-				fprintf(g_fTab, "\tminq=%u", MinIntQual);
+			mut.lock();
 			++g_MinQCount;
-			UNLOCK();
+			mut.unlock();
 			return false;
 			}
 		}

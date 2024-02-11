@@ -1,6 +1,6 @@
 #include "myutils.h"
 #include "mx.h"
-#include "cpplock.h"
+#include "mymutex.h"
 #include "alpha.h"
 
 Mx<float> g_SubstMxf;
@@ -10,13 +10,14 @@ static const char Alphabet[] = "ACGTU";
 
 void SetNucSubstMx(double Match, double Mismatch)
 	{
-	LOCK();
+	static mymutex mut("SetNucSubstMx");
+	mut.lock();
 
 	static bool Done = false;
 	if (Done)
 		{
 		asserta(g_SubstMx != 0);
-		UNLOCK();
+		mut.unlock();
 		return;
 		}
 
@@ -94,5 +95,5 @@ void SetNucSubstMx(double Match, double Mismatch)
 			}
 		}
 
-	UNLOCK();
+	mut.unlock();
 	}

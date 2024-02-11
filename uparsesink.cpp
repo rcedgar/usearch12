@@ -7,7 +7,7 @@
 #include "seqdb.h"
 #include "label.h"
 #include "cmd.h"
-#include "cpplock.h"
+#include "mymutex.h"
 
 void StripSize(string &Label);
 void SeqToFasta(FILE *f, const byte *Seq, unsigned L, const char *Label);
@@ -65,7 +65,8 @@ bool UParseSink::ModelOk() const
 
 void UParseSink::Output()
 	{
-	LOCK();
+	static mymutex mut("UParseSink::Output");
+	mut.lock();
 	++m_QueryCount;
 	WriteFastx(m_fFasta, false);
 	WriteFastx(m_fFastq, true);
@@ -74,8 +75,7 @@ void UParseSink::Output()
 
 	if (m_Mod == MOD_perfect_chimera || m_Mod == MOD_noisy_chimera)
 		++m_ChimeraCount;
-
-	UNLOCK();
+	mut.unlock();
 	}
 
 UParseSink::UParseSink() : HitSink(false, true, true)
@@ -103,10 +103,11 @@ UParseSink::UParseSink() : HitSink(false, true, true)
 
 void UParseSink::OpenOutputFiles()
 	{
-	LOCK();
+	static mymutex mut("UParseSink::OpenOutputFiles");
+	mut.lock();
 	if (m_OpenDone)
 		{
-		UNLOCK();
+		mut.unlock();
 		return;
 		}
 	if (ofilled(OPT_fastaout))
@@ -118,15 +119,16 @@ void UParseSink::OpenOutputFiles()
 	if (ofilled(OPT_uparseout))
 		m_fTab = CreateStdioFile(oget_str(OPT_uparseout));
 	m_OpenDone = true;
-	UNLOCK();
+	mut.unlock();
 	}
 
 void UParseSink::CloseOutputFiles()
 	{
-	LOCK();
+	static mymutex mut("UParseSink::CloseOutputFiles");
+	mut.lock();
 	if (!m_OpenDone)
 		{
-		UNLOCK();
+		mut.unlock();
 		return;
 		}
 
@@ -140,7 +142,7 @@ void UParseSink::CloseOutputFiles()
 	m_fTab = 0;
 
 	m_OpenDone = false;
-	UNLOCK();
+	mut.unlock();
 	}
 
 UParseSink::~UParseSink()

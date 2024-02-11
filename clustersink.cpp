@@ -15,9 +15,9 @@
 #include "sort.h"
 #include "constaxstr.h"
 #include "label.h"
-#include <set>
-#include "cpplock.h"
 #include "progress.h"
+#include "mymutex.h"
+#include <set>
 
 extern DerepResult *g_DR;
 
@@ -226,11 +226,12 @@ const char *ClusterSink::MakeCentroidLabel(unsigned ClusterIndex, string &Label)
 		{
 		static unsigned g_RelabelCounter;
 
-		LOCK();
+		static mymutex mut("ClusterSink1");
+		mut.lock();
 		char Tmp[16];
 		sprintf(Tmp, "%u", ++g_RelabelCounter);
 		Label = oget_str(OPT_relabel) + string(Tmp);
-		UNLOCK();
+		mut.unlock();
 		}
 
 	if (oget_flag(OPT_sizeout))

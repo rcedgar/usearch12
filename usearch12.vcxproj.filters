@@ -509,6 +509,9 @@
     <ClCompile Include="opts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mymutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accepter.h">
@@ -706,9 +709,6 @@
     <ClInclude Include="objtypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpplock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="orffinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -860,6 +860,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="o_str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mymutex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
