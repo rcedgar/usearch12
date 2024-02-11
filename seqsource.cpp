@@ -37,13 +37,7 @@ bool SeqSource::GetNext(SeqInfo *SI)
 SeqSource *MakeSeqSource(const string &FileName)
 	{
 	bool Nucleo;
-	FILE_TYPE FileType = FT_FASTA;
-	if (oget_flag(OPT_fasta))
-		FileType = FT_FASTA;
-	else if (oget_flag(OPT_fastq))
-		FileType = FT_FASTQ;
-	else
-		FileType = GetFileType(FileName, &Nucleo);
+	FILE_TYPE FileType = GetFileType(FileName, &Nucleo);
 
 	SeqSource *SS = 0;
 	if (FileType == FT_FASTA)

@@ -64,9 +64,6 @@ void UDBParams::FromCmdLine(CMD Cmd, bool Nucleo)
 	{
 	SetCmdDefaults(Cmd, Nucleo);
 
-	if (ofilled(OPT_wordlength) && ofilled(OPT_pattern))
-		Die("Cannot set both wordlength and pattern");
-
 	if (ofilled(OPT_wordlength))
 		{
 		SetWordLength(oget_uns(OPT_wordlength));
@@ -76,18 +73,6 @@ void UDBParams::FromCmdLine(CMD Cmd, bool Nucleo)
 
 	if (ofilled(OPT_alpha))
 		SetAlphaStr(oget_str(OPT_alpha));
-
-	if (ofilled(OPT_pattern))
-		SetPattern(oget_cstr(OPT_pattern));
-
-	if (ofilled(OPT_dbstep))
-		m_DBStep = oget_uns(OPT_dbstep);
-
-	if (ofilled(OPT_dbstep))
-		SetStep(oget_uns(OPT_dbstep), 0);
-
-	if (ofilled(OPT_dbaccelpct))
-		SetAccel(oget_uns(OPT_dbaccelpct));
 
 	if (ofilled(OPT_slots))
 		SetSlots(oget_uns(OPT_slots));

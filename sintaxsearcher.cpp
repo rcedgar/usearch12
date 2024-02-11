@@ -197,7 +197,7 @@ void SintaxSearcher::Classify()
 
 	GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
 
-	bool Prod = oget_flag(OPT_tax_prod);
+	bool Prod = true;
 	double ProdP = 1.0;
 	const unsigned Depth = SIZE(m_Pred);
 	double Cutoff = oget_flt(OPT_sintax_cutoff);
@@ -242,9 +242,6 @@ void SintaxSearcher::Init()
 	UNLOCK_CLASS();
 
 	oset_unsd(OPT_randseed, 1);
-	oset_flag(OPT_tax_prod);
-	//optused_randseed = true;
-	//optused_tax_prod = true;
 	string s = (ofilled(OPT_boot_subset) ? oget_str(OPT_boot_subset) : "32");
 	if (s.empty())
 		s = "32";

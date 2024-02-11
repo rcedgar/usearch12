@@ -34,8 +34,6 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 
 	SeqDB SearchDB;
 
-	bool DetectOffByOneChimera = oget_flag(OPT_offby1);
-
 	AlnParams *AP = new AlnParams;
 	AlnHeuristics *AH = new AlnHeuristics;
 	AP->InitFromCmdLine(true);
@@ -112,7 +110,6 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 			{
 			unsigned Top = DP->m_Top;
 			asserta(Top < SearchSeqCount);
-			IsChimera = (IsChimeraVec[Top] && DetectOffByOneChimera);
 			break;
 			}
 
@@ -124,8 +121,6 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 
 		case DEP_off_by_one_chimera:
 			{
-			if (DetectOffByOneChimera)
-				IsChimera = true;
 			break;
 			}
 		

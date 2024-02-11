@@ -36,7 +36,6 @@ HitMgr::HitMgr(unsigned TargetCount)
 	m_Validate = false;
 	m_Scores = 0;
 	AllocTargetCount(TargetCount);
-	m_Tov = oget_flag(OPT_tov);
 	}
 
 HitMgr::~HitMgr()
@@ -161,21 +160,6 @@ void HitMgr::DeleteHits()
 
 void HitMgr::AppendHit(AlignResult *AR)
 	{
-	if (m_Tov)
-		{
-	// Check for duplicate hit
-		unsigned Midi = AR->m_HSP.GetMidi();
-		unsigned Midj = AR->m_HSP.GetMidj();
-		for (unsigned HitIndex = 0; HitIndex < m_HitCount; ++HitIndex)
-			{
-			const AlignResult *AR2 = GetHit(HitIndex);
-			unsigned Midi2 = AR2->m_HSP.GetMidi();
-			unsigned Midj2 = AR2->m_HSP.GetMidj();
-			if (Midi == Midi2 && Midj == Midj2)
-				return;
-			}
-		}
-
 	float Score = AR->GetScore();
 
 //	asserta(AR->m_Query != 0 && (AR->m_Query == m_Query || AR->m_Query->m_RevComp));
@@ -200,9 +184,6 @@ void HitMgr::AppendHit(AlignResult *AR)
 
 bool HitMgr::TargetPosCovered(unsigned SeqIndex, unsigned Pos, unsigned TL) const
 	{
-	if (m_Tov)
-		return false;
-
 #if	TRACE
 	Log("\n");
 	Log("HitMgr::TargetPosCovered(SeqIndex=%u, Pos=%u)\n", SeqIndex, Pos);
@@ -395,7 +376,7 @@ unsigned HitMgr::GetHitCount()
 			HitCount = oget_uns(OPT_maxhits);
 		}
 
-	if (oget_flag(OPT_top_hit_only) || oget_flag(OPT_random_top_hit))
+	if (oget_flag(OPT_top_hit_only))
 		return 1;
 
 	if (oget_flag(OPT_top_hits_only))
@@ -484,9 +465,6 @@ AlignResult *HitMgr::GetHit(unsigned Index)
 	{
 	if (oget_flag(OPT_top_hit_only) && Index == 0)
 		return GetTopHit();
-
-	if (oget_flag(OPT_random_top_hit) && Index == 0)
-		return GetRandomTopHit();
 
 	asserta(Index < m_HitCount);
 	Sort();

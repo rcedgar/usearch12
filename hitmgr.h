@@ -29,7 +29,6 @@ public:
 	unsigned *m_Order;
 	bool m_OrderKnown;
 	bool m_Validate;
-	bool m_Tov;
 	unsigned m_QueryClusterIndex;
 	static unsigned m_QueryCount;
 	static unsigned m_QueryWithHitCount;

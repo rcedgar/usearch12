@@ -53,7 +53,6 @@ void cmd_sintax()
 	{
 	//default_opt(tax_prod, true);
 	//default_opt(boot_subset, "32");
-	oset_flag(OPT_tax_prod);
 	oset_strd(OPT_boot_subset, "32");
 	Search(CMD_sintax, oget_str(OPT_sintax), oget_str(OPT_db));
 	}

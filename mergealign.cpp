@@ -45,9 +45,6 @@ Rev: ---XXXXXXXxxx
 static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP,
   SeqInfo *SIOv)
 	{
-	bool Ambig = oget_flag(OPT_merge_ambig);
-	bool OverlapOnly = oget_flag(OPT_overlap_only);
-
 	unsigned Lmax = SI1->m_L + SI2RC->m_L;
 	SIOv->AllocSeq(Lmax);
 	SIOv->AllocQual(Lmax);
@@ -65,13 +62,10 @@ static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData 
 	char *Qual = SIOv->m_QualBuffer;
 	for (unsigned i = 0; i < Loi; ++i)
 		{
-		if (!OverlapOnly)
-			{
-			Seq[PosOv] = S1[Pos1];
-			char q1 = Q1[Pos1];
-			Qual[PosOv] = q1;
-			++PosOv;
-			}
+		Seq[PosOv] = S1[Pos1];
+		char q1 = Q1[Pos1];
+		Qual[PosOv] = q1;
+		++PosOv;
 		++Pos1;
 		}
 
@@ -97,20 +91,10 @@ static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData 
 		else
 			{
 			++DiffCount;
-			if (Ambig)
-				{
-				byte c = IUPAC_Pair(c1, c2);
-				if ((q1 >= q2 && c1 < c2) || (q2 > q1 && c2 < c2))
-					c = tolower(c);
-				Seq[PosOv] = c;
-				}
+			if (q1 >= q2)
+				Seq[PosOv] = c1;
 			else
-				{
-				if (q1 >= q2)
-					Seq[PosOv] = c1;
-				else
-					Seq[PosOv] = c2;
-				}
+				Seq[PosOv] = c2;
 			Qual[PosOv] = MM[q1][q2];
 			}
 
@@ -122,13 +106,10 @@ static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData 
 	unsigned L2 = SI2RC->m_L;
 	while (Pos2 < L2)
 		{
-		if (!OverlapOnly)
-			{
-			Seq[PosOv] = S2[Pos2];
-			char q2 = Q2[Pos2];
-			Qual[PosOv] = q2;
-			++PosOv;
-			}
+		Seq[PosOv] = S2[Pos2];
+		char q2 = Q2[Pos2];
+		Qual[PosOv] = q2;
+		++PosOv;
 		++Pos2;
 		}
 

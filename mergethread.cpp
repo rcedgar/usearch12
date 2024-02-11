@@ -215,17 +215,6 @@ void MergeThread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, ObjMgr *OM)
 			g_SumMergedEE += EE;
 
 			FastqRelabel(TD.SIOv);
-			if (oget_flag(OPT_merge_annot))
-				{
-				string Annot;
-				MakeAnnot(TD, Annot, EE);
-				string Label = TD.SIOv->m_Label;
-				if (!EndsWith(Label, ";"))
-					Label += ";";
-				Label += Annot;
-				TD.SIOv->SetLabel(Label.c_str());
-				}
-
 			if (g_fRep)
 				{
 				asserta(TD.SIOv->m_L > 0);

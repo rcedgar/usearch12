@@ -208,6 +208,17 @@ void CheckUsedOpts(bool LogAll)
 	string unused;
 	for (uint i = 0; i < NOPTS; ++i)
 		{
+		if (oget_flag(OPT_log_touched_opts) && opt_used[i])
+			{
+			switch (opt_types[i])
+				{
+			case OTYPE_flag: if (flag_opts[i]) Log("-%s\n", oe_to_str((OENUM) i)); break;
+			case OTYPE_uns: Log("-%s %u\n", oe_to_str((OENUM) i), uns_opts[i]); break;
+			case OTYPE_flt: Log("-%s %.4g\n", oe_to_str((OENUM) i), flt_opts[i]); break;
+			case OTYPE_str: Log("-%s '%s'\n", oe_to_str((OENUM) i), str_opts[i].c_str()); break;
+			default: asserta(false);
+				}
+			}
 		if (opt_cmdline[i] && !opt_used[i])
 			{
 			if (!unused.empty())

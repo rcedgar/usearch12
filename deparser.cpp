@@ -946,8 +946,6 @@ bool DeParser::IsChimera() const
 	{
 	if (m_Class == DEP_perfect_chimera)
 		return true;
-	if (m_Class == DEP_off_by_one_chimera && oget_flag(OPT_offby1))
-		return true;
 	return false;
 	}
 
@@ -963,11 +961,6 @@ void DeParser::Classify()
 	if (m_DiffsQM == 0 && m_DiffsQT > 0)
 		{
 		m_Class = DEP_perfect_chimera;
-		return;
-		}
-	if (m_DiffsQM == 1 && m_DiffsQT > 4 && oget_flag(OPT_offby1))
-		{
-		m_Class = DEP_off_by_one_chimera;
 		return;
 		}
 	if (m_DiffsQT == 1)
