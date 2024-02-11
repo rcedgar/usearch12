@@ -2,7 +2,7 @@
 #include "merge.h"
 #include "mymutex.h"
 
-static mymutex mut("MergePre");
+static MUTEX(mut, "MergePre");
 
 bool MergePre(SeqInfo *SI, bool Fwd)
 	{

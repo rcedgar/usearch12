@@ -8,10 +8,10 @@
 #include "objmgr.h"
 #include "progress.h"
 
-static mutex g_GetNextLock;
-static mutex g_OutputLock;
-static mutex g_FastxOutLock;
-static mutex g_CounterLock;
+static mymutex g_GetNextLock("g_GetNextLock");
+static mymutex g_OutputLock("g_OutputLock");
+static mymutex g_FastxOutLock("g_FastxOutLock");
+static mymutex g_CounterLock("g_FastxOutLock");
 
 void GetMergeAln(const MergeThreadData &TD, int &Left, unsigned &AlnLength, int &Right);
 

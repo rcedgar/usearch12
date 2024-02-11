@@ -10,7 +10,7 @@ static const char Alphabet[] = "ACGTU";
 
 void SetNucSubstMx(double Match, double Mismatch)
 	{
-	static mymutex mut("SetNucSubstMx");
+	static MUTEX(mut, "SetNucSubstMx");
 	mut.lock();
 
 	static bool Done = false;

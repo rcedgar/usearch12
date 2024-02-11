@@ -38,7 +38,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 
 	for (;;)
 		{
-		static mymutex mut1("fastqfilter2::Thread/1");
+		static MUTEX(mut1, "fastqfilter2::Thread/1");
 		mut1.lock();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);
@@ -48,7 +48,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 		if (!Ok1)
 			break;
 
-		static mymutex mut2("fastqfilter2::Thread/2");
+		static MUTEX(mut2, "fastqfilter2::Thread/2");
 		mut2.lock();
 		++g_RecCount;
 		mut2.unlock();
@@ -58,7 +58,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2, double MaxEE)
 		unsigned n2 = SI2->GetNCount();
 		if (EE1 <= MaxEE && EE2 <= MaxEE && n1 == 0 && n2 == 0)
 			{
-			static mymutex mut("fastqfilter2::fastqout");
+			static MUTEX(mut, "fastqfilter2::fastqout");
 			mut.lock();
 			++g_OutCount;
 

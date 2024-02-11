@@ -215,7 +215,7 @@ void UParseSink::WriteAln(FILE *f)
 	const unsigned QL = m_Query->m_L;
 	const byte *Q = m_Query->m_Seq;
 
-	static mymutex mut("UParseSink::WriteAln");
+	static MUTEX(mut, "UParseSink::WriteAln");
 	mut.lock();
 	WriteAlnHeader(f);
 	fprintf(f, "\n");

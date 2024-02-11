@@ -35,7 +35,7 @@ bool g_Nucleo;
 
 void ResetGlobalAPAH(bool Nucleo)
 	{
-	static mymutex mut("ResetGlobalAPAH");
+	static MUTEX(mut, "ResetGlobalAPAH");
 	mut.lock();
 	g_AP.InitFromCmdLine(Nucleo);
 	g_AH.InitFromCmdLine(g_AP);
@@ -56,7 +56,7 @@ const AlnParams *AlnParams::GetGlobalAP()
 
 void InitGlobals(bool Nucleo)
 	{
-	static mymutex mut("InitGlobals");
+	static MUTEX(mut, "InitGlobals");
 	mut.lock();
 	if (g_InitGlobalsDone)
 		{
@@ -239,7 +239,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		OTUTable *OT = sink->m_OT;
 		asserta(OT != 0);
 		unsigned RefSeqCount = DB->GetSeqCount();
-		static mymutex mut("makedbsearcher::OT->Reserve");
+		static MUTEX(mut, "makedbsearcher::OT->Reserve");
 		mut.lock();
 		OT->Reserve(RefSeqCount, 1000);
 		mut.unlock();

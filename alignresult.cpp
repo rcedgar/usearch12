@@ -241,7 +241,7 @@ void AlignResult::LogAlnPretty(bool StripTermGaps) const
 
 void AlignResult::LogMe() const
 	{
-	static mymutex mut("AlignResult::LogMe");
+	static MUTEX(mut, "AlignResult::LogMe");
 	mut.lock();
 
 	Log("\n");

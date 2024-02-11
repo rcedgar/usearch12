@@ -206,7 +206,7 @@ void GeneFinder::SelectStartEnds(const vector<unsigned> &InStarts, const vector<
 					unsigned Leni = Endi - Starti + 1;
 					unsigned Lenj = Endj - Startj + 1;
 
-					static mymutex mut("genefinder::GetOverlap");
+					static MUTEX(mut, "genefinder::GetOverlap");
 					mut.lock();
 					Log("Overlap  %u-%u(%u), %u - %u(%u) diffs %u,%u >%s\n\n",
 					  Starti, Endi, Leni,
@@ -693,7 +693,7 @@ void GeneFinder::AppendGeneInfo()
 		unsigned Ov = GetOverlap((unsigned) Lo, (unsigned) Hi, (unsigned) Lo2, (unsigned) Hi2);
 		if (Ov > 0)
 			{
-			static mymutex mut("genefinder::GetOverlap/2");
+			static MUTEX(mut, "genefinder::GetOverlap/2");
 			mut.lock();
 			WriteGeneInfo(g_fLog, GI);
 			++m_GeneOverlapCount;
@@ -703,7 +703,7 @@ void GeneFinder::AppendGeneInfo()
 
 	m_GeneInfos.push_back(GI);
 
-	static mymutex mut("genefinder::m_TotalGeneCount");
+	static MUTEX(mut, "genefinder::m_TotalGeneCount");
 	mut.lock();
 	++m_TotalGeneCount;
 	mut.unlock();
@@ -1056,7 +1056,7 @@ void GeneFinder::WriteGeneFasta(FILE *f, const GF_GeneInfo &GI) const
 
 void GeneFinder::Output()
 	{
-	static mymutex mut("GeneFinder::Output");
+	static MUTEX(mut, "GeneFinder::Output");
 	mut.lock();
 	WriteQueryInfo(m_fTab);
 	for (unsigned i = 0; i < SIZE(m_WinInfos); ++i)

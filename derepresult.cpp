@@ -273,7 +273,7 @@ void DerepResult::MakeLabel(unsigned ClusterIndex, unsigned Size,
 	if (m_optRelabelSet)
 		{
 		char Tmp[16];
-		static mymutex mut("g_RelabelCounter");
+		static MUTEX(mut, "g_RelabelCounter");
 		mut.lock();
 		unsigned n = (++g_RelabelCounter);
 		mut.unlock();

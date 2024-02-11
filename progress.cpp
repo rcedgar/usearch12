@@ -11,7 +11,7 @@
 #include <chrono>
 #include <list>
 
-static mymutex mut_lines("progress::lines");
+static MUTEX(mut_lines, "progress::lines");
 
 enum PROG_STATE
 	{

@@ -226,7 +226,7 @@ const char *ClusterSink::MakeCentroidLabel(unsigned ClusterIndex, string &Label)
 		{
 		static unsigned g_RelabelCounter;
 
-		static mymutex mut("ClusterSink1");
+		static MUTEX(mut, "ClusterSink1");
 		mut.lock();
 		char Tmp[16];
 		sprintf(Tmp, "%u", ++g_RelabelCounter);

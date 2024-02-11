@@ -1013,7 +1013,7 @@ void DeParser::WriteTabbed(FILE *f) const
 	if (f == 0)
 		return;
 
-	static mymutex mut("DeParser::WriteTabbed");
+	static MUTEX(mut, "DeParser::WriteTabbed");
 	mut.lock();
 	fprintf(f, "%s", m_Query->m_Label);
 	fprintf(f, "\t%c", pom(!m_Query->m_RevComp));
@@ -1084,7 +1084,7 @@ void DeParser::WriteAln(FILE *f) const
 	if (f == 0)
 		return;
 
-	static mymutex mut("DeParser::WriteAln");
+	static MUTEX(mut, "DeParser::WriteAln");
 	mut.lock();
 	switch (m_Class)
 		{

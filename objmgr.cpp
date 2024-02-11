@@ -21,7 +21,7 @@ vector<ObjMgr *> ObjMgr::m_FreeOMs;
 
 void ObjMgr::FreeObjMgr(ObjMgr *OM)
 	{
-	static mymutex mut("ObjMgr::FreeObjMgr");
+	static MUTEX(mut, "ObjMgr::FreeObjMgr");
 	mut.lock();
 	m_FreeOMs.push_back(OM);
 	vector<ObjMgr *> NewOMs;
@@ -37,7 +37,7 @@ void ObjMgr::FreeObjMgr(ObjMgr *OM)
 
 ObjMgr *ObjMgr::CreateObjMgr()
 	{
-	static mymutex mut("ObjMgr::CreateObjMgr");
+	static MUTEX(mut, "ObjMgr::CreateObjMgr");
 	mut.lock();
 	ObjMgr *OM = 0;
 	if (!m_FreeOMs.empty())

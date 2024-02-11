@@ -5,12 +5,15 @@
 #include <map>
 #include <chrono>
 
-#define USE_MYMUTEX 0
+#define USE_MYMUTEX 1
 #if !USE_MYMUTEX
 
-#define mymutex(x)	mutex
+#define MUTEX(varname, strname)	mutex varname
 
 #else
+
+#define MUTEX(varname, strname)	mymutex varname(strname)
+
 class mymutex : public std::mutex
 	{
 public:

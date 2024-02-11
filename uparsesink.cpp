@@ -65,7 +65,7 @@ bool UParseSink::ModelOk() const
 
 void UParseSink::Output()
 	{
-	static mymutex mut("UParseSink::Output");
+	static MUTEX(mut, "UParseSink::Output");
 	mut.lock();
 	++m_QueryCount;
 	WriteFastx(m_fFasta, false);
@@ -103,7 +103,7 @@ UParseSink::UParseSink() : HitSink(false, true, true)
 
 void UParseSink::OpenOutputFiles()
 	{
-	static mymutex mut("UParseSink::OpenOutputFiles");
+	static MUTEX(mut, "UParseSink::OpenOutputFiles");
 	mut.lock();
 	if (m_OpenDone)
 		{
@@ -124,7 +124,7 @@ void UParseSink::OpenOutputFiles()
 
 void UParseSink::CloseOutputFiles()
 	{
-	static mymutex mut("UParseSink::CloseOutputFiles");
+	static MUTEX(mut, "UParseSink::CloseOutputFiles");
 	mut.lock();
 	if (!m_OpenDone)
 		{

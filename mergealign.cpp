@@ -250,7 +250,7 @@ bool MergeAlign(MergeThreadData &TD)
 		}
 	if (TopHSP == 0)
 		{
-		static mymutex mut("g_NotAlignedCount");
+		static MUTEX(mut, "g_NotAlignedCount");
 		mut.lock();
 		++g_NotAlignedCount;
 		mut.unlock();
@@ -265,7 +265,7 @@ bool MergeAlign(MergeThreadData &TD)
 	GetMergeAln(TD, Left, AlnLength, Right);
 	if (AlnLength < oget_uns(OPT_fastq_minovlen))
 		{
-		static mymutex mut("g_OvTooShortCount");
+		static MUTEX(mut, "g_OvTooShortCount");
 		mut.lock();
 		++g_OvTooShortCount;
 		mut.unlock();
@@ -275,7 +275,7 @@ bool MergeAlign(MergeThreadData &TD)
 	bool Stag = (Left < 0 || Right < 0);
 	if (Stag)
 		{
-		static mymutex mut("g_StaggeredCount");
+		static MUTEX(mut, "g_StaggeredCount");
 		mut.lock();
 		++g_StaggeredCount;
 		mut.unlock();
@@ -291,7 +291,7 @@ bool MergeAlign(MergeThreadData &TD)
 		TD.AR = OM->GetAlignResult();
 		TD.AR->CreateLocalUngapped(*SI1, *SI2RC, TD.HSP, true);
 
-		static mymutex mut("mergealign::WriteAln");
+		static MUTEX(mut, "mergealign::WriteAln");
 		mut.lock();
 		WriteAln(g_fAln, TD.AR);
 		if (Stag)
@@ -304,7 +304,7 @@ bool MergeAlign(MergeThreadData &TD)
 
 	if (TD.DiffCount == 0)
 		{
-		static mymutex mut("mergealign::g_ExactOverlapCount");
+		static MUTEX(mut, "mergealign::g_ExactOverlapCount");
 		mut.lock();
 		++g_ExactOverlapCount;
 		mut.unlock();
@@ -312,7 +312,7 @@ bool MergeAlign(MergeThreadData &TD)
 
 	if (TD.DiffCount > oget_uns(OPT_fastq_maxdiffs))
 		{
-		static mymutex mut("mergealign::g_MaxDiffsCount");
+		static MUTEX(mut, "mergealign::g_MaxDiffsCount");
 		mut.lock();
 		++g_MaxDiffsCount;
 		mut.unlock();
@@ -322,7 +322,7 @@ bool MergeAlign(MergeThreadData &TD)
 	double PctId = GetPct(AlnLength - TD.DiffCount, AlnLength);
 	if (PctId < (double) oget_uns(OPT_fastq_pctid))
 		{
-		static mymutex mut("mergealign::g_MaxDiffsCount/2");
+		static MUTEX(mut, "mergealign::g_MaxDiffsCount/2");
 		mut.lock();
 		++g_MaxDiffsCount;
 		mut.unlock();

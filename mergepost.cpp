@@ -4,7 +4,7 @@
 
 bool MergePost(MergeThreadData &TD)
 	{
-	static mymutex mut("MergePost");
+	static MUTEX(mut, "MergePost");
 	SeqInfo &SI = *TD.SIOv;
 	const byte *Seq = SI.m_Seq;
 	unsigned L = SI.m_L;

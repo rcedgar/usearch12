@@ -91,7 +91,7 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 	char Tmp[16];
 	if (ofilled(OPT_relabel))
 		{
-		static mymutex mut("fastqjoin::g_Count");
+		static MUTEX(mut, "fastqjoin::g_Count");
 		mut.lock();
 		++g_Count;
 		mut.unlock();
@@ -106,7 +106,7 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	if (g_fFastqOut != 0)
 		{
-		static mymutex mut("fastqjoin::fastqout");
+		static MUTEX(mut, "fastqjoin::fastqout");
 		mut.lock();
 		SIJ->ToFastq(g_fFastqOut);
 		mut.unlock();
@@ -114,7 +114,7 @@ static void DoPair(SeqInfo *SI1, SeqInfo *SI2, SeqInfo *SI2RC, SeqInfo *SIJ)
 
 	if (g_fFastaOut != 0)
 		{
-		static mymutex mut("fastqjoin::fastaout");
+		static MUTEX(mut, "fastqjoin::fastaout");
 		mut.lock();
 		SIJ->ToFasta(g_fFastaOut);
 		mut.unlock();
@@ -135,7 +135,7 @@ static void Thread(FASTQSeqSource *aSS1, FASTQSeqSource *aSS2)
 
 	for (;;)
 		{
-		static mymutex mut("fastqjoin::GetNext");
+		static MUTEX(mut, "fastqjoin::GetNext");
 		mut.lock();
 		bool Ok1 = SS1.GetNext(SI1);
 		bool Ok2 = SS2.GetNext(SI2);

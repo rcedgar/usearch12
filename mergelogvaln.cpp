@@ -4,7 +4,7 @@
 
 void MergeLogVAln(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData &HSP)
 	{
-	static mymutex mut("MergeLogVAln");
+	static MUTEX(mut, "MergeLogVAln");
 	mut.lock();
 	Log("\n");
 	Log(">%s\n", SI1->m_Label);

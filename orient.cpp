@@ -97,7 +97,7 @@ static void Orient(SeqInfo *Query, SeqInfo *QueryRC, UDBUsortedSearcher *US)
 	bool Minus = (MinusCount > PlusCount*StrandX);
 	asserta(!(Plus && Minus));
 	char c = '!';
-	static mymutex mut("orient");
+	static MUTEX(mut, "orient");
 	mut.lock();
 	++g_QueryCount;
 	if (Plus)

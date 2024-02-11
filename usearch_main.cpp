@@ -79,6 +79,8 @@ int main(int argc, char **argv)
 	ProgressNote("Finished");
 	CheckUsedOpts(false);
 	StopProgressThread();
+#if USE_MYMUTEX
 	mymutex::report();
+#endif
 	return 0;
 	}
