@@ -189,7 +189,4 @@ void GetWordCountingParams(float MinFractId, unsigned QueryUniqueWordCount,
 
 		MinU = min(ThreshCount, oget_uns(OPT_stepwords)/2);
 		}
-
-	if (oget_flag(OPT_kmerid))
-		MinU = 1;
 	}

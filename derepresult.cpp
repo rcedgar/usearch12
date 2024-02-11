@@ -98,7 +98,6 @@ DerepResult::DerepResult()
 	m_optRelabel = string(oget_str(OPT_relabel));
 	m_optSizeIn = oget_flag(OPT_sizein);
 	m_optSizeOut = oget_flag(OPT_sizeout);
-	m_optConsTax = oget_flag(OPT_constax);
 	}
 
 DerepResult::~DerepResult()
@@ -258,18 +257,6 @@ void DerepResult::MakeLabel(unsigned ClusterIndex, unsigned Size,
 	{
 	unsigned SeqIndex = GetSeqIndex(ClusterIndex, 0);
 	Label = m_Input->GetLabel(SeqIndex);
-	if (m_optConsTax)
-		{
-		StripTax(Label);
-
-		vector<string> Labels;
-		GetLabels(ClusterIndex, Labels);
-
-		ConsTaxStr CT;
-		const char *s = CT.FromLabels(Labels);
-		AppendTaxStr(Label, s);
-		}
-
 	if (m_optRelabelSet)
 		{
 		char Tmp[16];
@@ -430,8 +417,6 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 		TD.LogMe(*m_Input);
 #endif
 		asserta(TD.Done);
-		if (oget_flag(OPT_validate))
-			TD.Validate(*m_Input, FullLength);
 		m_ClusterCount += TD.UniqueCount;
 		SeqCount2 += TD.SeqCount;
 		}
@@ -651,9 +636,6 @@ void DerepResult::FromThreadData(const DerepThreadData *TDs, unsigned ThreadCoun
 	SetOrder();
 	ProgressResult();
 	WriteConsTaxReport();
-
-	if (oget_flag(OPT_validate))
-		Validate(FullLength, M);
 	}
 
 void DerepResult::GetUniqueSeqIndexes(unsigned *SeqIndexes) const

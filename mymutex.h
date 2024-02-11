@@ -5,7 +5,7 @@
 #include <map>
 #include <chrono>
 
-#define USE_MYMUTEX 1
+#define USE_MYMUTEX 0
 #if !USE_MYMUTEX
 
 #define MUTEX(varname, strname)	mutex varname

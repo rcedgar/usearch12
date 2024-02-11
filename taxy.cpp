@@ -3,7 +3,7 @@
 #include "label.h"
 #include "tax.h"
 #include "seqdb.h"
-#include "tree.h"
+//#include "tree.h"
 
 const vector<unsigned> &Taxy::GetChildren(unsigned Node) const
 	{
@@ -158,22 +158,6 @@ void Taxy::Validate() const
 		const string &Name = m_Names[Node];
 		asserta(GetNode(Name) == Node);
 		}
-	}
-
-void Taxy::FromTree(const Tree &T)
-	{
-	vector<string> TaxStrs;
-	const unsigned NodeCount = T.GetNodeCount();
-	for (unsigned Node = 0; Node < NodeCount; ++Node)
-		{
-		if (!T.IsLeaf(Node))
-			continue;
-		const string Label = string(T.GetLabel(Node));
-		string TaxStr;
-		GetTaxStrFromLabel(Label, TaxStr);
-		TaxStrs.push_back(TaxStr);
-		}
-	FromTaxStrs(TaxStrs);
 	}
 
 unsigned Taxy::GetTaxIndex(const string &TaxStr) const

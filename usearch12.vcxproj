@@ -292,7 +292,6 @@
     <ClCompile Include="globalalignmem.cpp" />
     <ClCompile Include="makeclustersearcher.cpp" />
     <ClCompile Include="mergealign.cpp" />
-    <ClCompile Include="mergelogvaln.cpp" />
     <ClCompile Include="gzipfileio.cpp" />
     <ClCompile Include="gzlib.c" />
     <ClCompile Include="gzread.c" />
@@ -324,7 +323,6 @@
     <ClCompile Include="mx.cpp" />
     <ClCompile Include="mymutex.cpp" />
     <ClCompile Include="myutils.cpp" />
-    <ClCompile Include="newick.cpp" />
     <ClCompile Include="objmgr.cpp" />
     <ClCompile Include="fragaligner.cpp" />
     <ClCompile Include="opts.cpp" />
@@ -362,10 +360,7 @@
     <ClCompile Include="terminator.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="tracebackbitmem.cpp" />
-    <ClCompile Include="tree.cpp" />
-    <ClCompile Include="treefromagg.cpp" />
     <ClCompile Include="trees.c" />
-    <ClCompile Include="treetofile.cpp" />
     <ClCompile Include="uchime3denovo.cpp" />
     <ClCompile Include="udbbuild.cpp" />
     <ClCompile Include="udb2bitvec.cpp" />
@@ -495,7 +490,6 @@
     <ClInclude Include="taxy.h" />
     <ClInclude Include="terminator.h" />
     <ClInclude Include="tracebit.h" />
-    <ClInclude Include="tree.h" />
     <ClInclude Include="trees.h" />
     <ClInclude Include="udbdata.h" />
     <ClInclude Include="udbfile.h" />

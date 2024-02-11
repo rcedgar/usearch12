@@ -121,56 +121,8 @@ void SintaxSearcher::SetUShuffle()
 		}
 	}
 
-void SintaxSearcher::Classify_KTop()
-	{
-	if (m_Query->m_RevComp)
-		Die("Reverse strand not supported");
-
-	unsigned SelfIndex = UINT_MAX;
-	if (oget_flag(OPT_self))
-		{
-		asserta(GetThreadIndex() == 0);
-		SelfIndex = m_Query->m_Index;
-		}
-
-	const unsigned SeqCount = GetSeqCount();
-
-	SetQueryImpl();
-	SetQueryWordsAllNoBad();
-	SetQueryUniqueWords();
-	SetU(1);
-
-	const unsigned *U = m_U.Data;
-	unsigned TopU = 0;
-	unsigned TopTargetIndex = UINT_MAX;
-	unsigned MinU = 1;
-	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
-		{
-		unsigned n = U[TargetIndex];
-		if (n > TopU && n >= MinU && TargetIndex != SelfIndex)
-			{
-			TopU = n;
-			TopTargetIndex = TargetIndex;
-			}
-		}
-
-	if (TopTargetIndex == UINT_MAX)
-		m_KTopPred = "*";
-	else
-		{
-		unsigned TaxIndex = (*m_SeqIndexToTaxIndex)[TopTargetIndex];
-		m_KTopPred = m_Taxy->GetTaxStr(TaxIndex);
-		}
-	}
-
 void SintaxSearcher::Classify()
 	{
-	if (m_KTop)
-		{
-		Classify_KTop();
-		return;
-		}
-
 	m_TopWordCount = 0;
 	m_Pred.clear();
 	m_Ps.clear();
@@ -289,7 +241,6 @@ void SintaxSearcher::Init()
 		}
 	UNLOCK_CLASS();
 
-	m_KTop = oget_flag(OPT_ktop);
 	oset_unsd(OPT_randseed, 1);
 	oset_flag(OPT_tax_prod);
 	//optused_randseed = true;
@@ -331,12 +282,6 @@ void SintaxSearcher::WriteTabbed(FILE *f)
 	{
 	if (f == 0)
 		return;
-
-	if (m_KTop)
-		{
-		fprintf(f, "%s\t%s\n", m_Query->m_Label, m_KTopPred.c_str());
-		return;
-		}
 
 	fprintf(f, "%s", m_Query->m_Label);
 	if (m_TopWordCount == 0)

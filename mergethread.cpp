@@ -7,11 +7,12 @@
 #include "hspfinder.h"
 #include "objmgr.h"
 #include "progress.h"
+#include "mymutex.h"
 
-static mymutex g_GetNextLock("g_GetNextLock");
-static mymutex g_OutputLock("g_OutputLock");
-static mymutex g_FastxOutLock("g_FastxOutLock");
-static mymutex g_CounterLock("g_FastxOutLock");
+static MUTEX(g_GetNextLock, "g_GetNextLock");
+static MUTEX(g_OutputLock, "g_OutputLock");
+static MUTEX(g_FastxOutLock, "g_FastxOutLock");
+static MUTEX(g_CounterLock, "g_FastxOutLock");
 
 void GetMergeAln(const MergeThreadData &TD, int &Left, unsigned &AlnLength, int &Right);
 

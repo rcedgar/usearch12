@@ -35,7 +35,6 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	SeqDB SearchDB;
 
 	bool DetectOffByOneChimera = oget_flag(OPT_offby1);
-	bool CheckForMultiMeras = !oget_flag(OPT_bimeras_only);
 
 	AlnParams *AP = new AlnParams;
 	AlnHeuristics *AH = new AlnHeuristics;
@@ -87,7 +86,7 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 			const byte *Seq = Input.GetSeq(i);
 			unsigned L = Input.GetSeqLength(i);
 			bool IsChimera = IsChimeraVec[i];
-			if (!IsChimera || CheckForMultiMeras)
+			if (!IsChimera)
 				{
 				SearchDB.AddSeq_CopyPtrs(Label, Seq, L);
 				++SearchSeqCount;

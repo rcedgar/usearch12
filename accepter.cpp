@@ -10,9 +10,6 @@ Accepter::Accepter(bool Global, bool AcceptAll)
 	{
 	m_Global = Global;
 	m_AcceptAll = AcceptAll;
-	oget_flag(OPT_notermgapsq);
-	oget_flag(OPT_leftjust);
-	oget_flag(OPT_rightjust);
 	}
 
 Accepter::~Accepter()
@@ -45,24 +42,10 @@ bool Accepter::IsAcceptLo(AlignResult *AR)
 			return false;
 		}
 	
-	if (ofilled(OPT_mid))
-		{
-		double Mid = AR->GetPctMatchId();
-		if (Mid < oget_flt(OPT_mid))
-			return false;
-		}
-
 	if (ofilled(OPT_mincols))
 		{
 		unsigned Cols = AR->GetAlnLength();
 		if (Cols < oget_uns(OPT_mincols))
-			return false;
-		}
-
-	if (ofilled(OPT_maxsubs))
-		{
-		unsigned Subs = AR->GetMismatchCount();
-		if (Subs > oget_uns(OPT_maxsubs))
 			return false;
 		}
 
@@ -71,31 +54,6 @@ bool Accepter::IsAcceptLo(AlignResult *AR)
 		unsigned Gaps = AR->GetGapCount();
 		if (Gaps > oget_uns(OPT_maxgaps))
 			return false;
-		}
-
-	if (ofilled(OPT_notermgapsq))
-		{
-		const char *Path = AR->GetPath();
-		if (Path[0] == 'I')
-			return false;
-
-		unsigned n = ustrlen(Path);
-		if (n > 0 && Path[n-1] != 'M')
-			return false;
-		}
-
-	if (ofilled(OPT_leftjust) || ofilled(OPT_rightjust))
-		{
-		const char *Path = AR->GetPath();
-		if (oget_flag(OPT_leftjust) && Path[0] != 'M')
-			return false;
-
-		if (oget_flag(OPT_rightjust))
-			{
-			unsigned n = ustrlen(Path);
-			if (n > 0 && Path[n-1] != 'M')
-				return false;
-			}
 		}
 
 	if (ofilled(OPT_evalue))
@@ -131,15 +89,6 @@ bool Accepter::IsAcceptLo(AlignResult *AR)
 
 	if (ofilled(OPT_abskew) && AR->GetAbSkew() < oget_flt(OPT_abskew))
 		return false;
-
-	if (ofilled(OPT_mindiffsa) || ofilled(OPT_maxdiffsa))
-		{
-		unsigned d = AR->GetDiffCountA();
-		if (ofilled(OPT_mindiffsa) && d < oget_uns(OPT_mindiffsa))
-			return false;
-		if (ofilled(OPT_maxdiffsa) && d > oget_uns(OPT_maxdiffsa))
-			return false;
-		}
 
 	return true;
 	}
@@ -215,36 +164,6 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 		double Ratio = double(TargetSize)/double(QuerySize);
 		if (Ratio < oget_flt(OPT_min_sizeratio))
 			return true;
-		}
-
-	if (ofilled(OPT_idprefix))
-		{
-		unsigned PL = oget_uns(OPT_idprefix);
-		PL = min(PL, Query->m_L);
-		PL = min(PL, Target->m_L);
-
-		const byte *Q = Query->m_Seq;
-		const byte *T = Target->m_Seq;
-
-		for (unsigned i = 0; i < PL; ++i)
-			if (toupper(Q[i]) != toupper(T[i]))
-				return true;
-		}
-
-	if (ofilled(OPT_idsuffix))
-		{
-		unsigned SL = oget_uns(OPT_idsuffix);
-		unsigned QL = Query->m_L;
-		unsigned TL = Target->m_L;
-		SL = min(SL, QL);
-		SL = min(SL, TL);
-
-		const byte *Q = Query->m_Seq;
-		const byte *T = Target->m_Seq;
-
-		for (int i = (int) SL; i >= 0; --i)
-			if (toupper(Q[QL-1-i]) != toupper(T[TL-1-i]))
-				return true;
 		}
 
 	if (ofilled(OPT_minqt) || ofilled(OPT_maxqt) || ofilled(OPT_minsl) || ofilled(OPT_maxsl))

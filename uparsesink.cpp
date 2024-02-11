@@ -282,32 +282,17 @@ void UParseSink::Parse()
 	m_Mod = MOD_other;
 	m_QuerySize = GetSizeFromLabel(m_Query->m_Label, 2);
 
-	if (oget_flag(OPT_verbose))
-		{
-		Log("\n");
-		Log("UParseSink::Parse Q>%s\n", m_Query->m_Label);
-		LogHits();
-		}
-
 	unsigned HitCount = m_HitMgr->GetHitCount();
 	if (HitCount == 0)
 		{
-		if (oget_flag(OPT_verbose))
-			Log("No hits\n");
 		SetNoHits();
 		return;
 		}
-	if (oget_flag(OPT_verbose))
-		m_HitMgr->LogMe();
 
 	AllocHitCount(HitCount);
 	SetCandidates();
-	if (oget_flag(OPT_verbose))
-		LogCandidates();
 	if (m_CandidateCount == 0)
 		{
-		if (oget_flag(OPT_verbose))
-			Log("No candidates\n");
 		SetNoHits();
 		return;
 		}
@@ -319,11 +304,7 @@ void UParseSink::Parse()
 		}
 
 	StarAlign(m_Query, m_Candidates, m_CandidatePaths, m_CandidateCount, *m_MSA);
-	if (oget_flag(OPT_verbose))
-		LogMSA();
 	DP();
-	if (oget_flag(OPT_verbose))
-		LogSegs();
 	CompareQM();
 	}
 

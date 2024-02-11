@@ -32,8 +32,6 @@ public:
 	unsigned m_r;
 	unsigned m_BootSubset;
 	bool m_BootSubsetDivide;
-	bool m_KTop;
-	string m_KTopPred;
 
 // Searcher interface
 protected:

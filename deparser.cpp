@@ -410,9 +410,6 @@ DEP_CLASS DeParser::Parse(SeqInfo *Query, SeqDB *DB)
 	WriteTabbed(m_fTab);
 	WriteAln(m_fAln);
 
-	if (m_Class == DEP_perfect_chimera && oget_flag(OPT_allxch))
-		FindAllExactBimeras();
-
 	return m_Class;
 	}
 

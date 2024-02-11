@@ -28,7 +28,6 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 		return false;
 
 	bool TruncLabels = oget_flag(OPT_trunclabels);
-	bool DespaceLabels = oget_flag(OPT_despacelabels);
 // Outer for loop just to allow skipping of empty sequences
 	for (;;)
 		{
@@ -62,9 +61,7 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 			{
 			byte c = Line[i];
 			bool IsSpace = isspace(c);
-			if (DespaceLabels && IsSpace)
-				c = '_';
-			else if (TruncLabels && IsSpace)
+			if (TruncLabels && IsSpace)
 				{
 				Label[i-1] = 0;
 				break;
@@ -80,7 +77,6 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 				*p = 0;
 			}
 
-		const bool AllowDigits = oget_flag(OPT_allow_digits);
 		unsigned SeqLength = 0;
 		for (;;)
 			{
@@ -106,8 +102,6 @@ bool FASTASeqSource::GetNextLo(SeqInfo *SI)
 					if (m_StripGaps)
 						continue;
 					}
-				else if (AllowDigits && isdigit(c))
-					;
 				else
 					{
 					BadByte(c);

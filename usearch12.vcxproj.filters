@@ -257,12 +257,6 @@
     <ClCompile Include="seqdbseqsource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="treetofile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pathinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -347,9 +341,6 @@
     <ClCompile Include="mergealign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mergelogvaln.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mergepost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -387,12 +378,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="interp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="newick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="treefromagg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="findgene.cpp">
@@ -776,9 +761,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tracebit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="trees.h">

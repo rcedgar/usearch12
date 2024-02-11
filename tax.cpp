@@ -1,7 +1,6 @@
 #include "myutils.h"
 #include "tax.h"
 #include "label.h"
-#include "tree.h"
 #include "seqdb.h"
 #include "sort.h"
 
@@ -160,23 +159,6 @@ void TaxNameSetFromLabels(const vector<string> &Labels, set<string> &NameSet)
 		for (unsigned i = 0; i < n; ++i)
 			NameSet.insert(Names[i]);
 		}
-	}
-
-void TaxNameSetFromTree(const Tree &T, set<string> &NameSet)
-	{
-	vector<string> Labels;
-	const unsigned NodeCount = T.GetNodeCount();
-	for (unsigned NodeIndex = 0; NodeIndex < NodeCount; ++NodeIndex)
-		{
-		if (!T.IsLeaf(NodeIndex))
-			continue;
-
-		string Label;
-		T.GetLabel(NodeIndex, Label);
-		Labels.push_back(Label);
-		}
-
-	TaxNameSetFromLabels(Labels, NameSet);
 	}
 
 void TaxNameSetFromSeqDB(const SeqDB &DB, set<string> &Names)

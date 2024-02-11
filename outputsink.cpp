@@ -234,10 +234,7 @@ void OutputSink::OutputFastaPairs(AlignResult *AR)
 		return;
 
 	fprintf(m_fFastaPairs, ">%s\n", AR->GetQueryLabel());
-	if (oget_flag(OPT_fastapairs_dots))
-		fprintf(m_fFastaPairs, "%s\n", AR->GetQueryRowDots());
-	else
-		fprintf(m_fFastaPairs, "%s\n", AR->GetQueryRow());
+	fprintf(m_fFastaPairs, "%s\n", AR->GetQueryRow());
 	fprintf(m_fFastaPairs, ">%s\n", AR->GetTargetLabel());
 	fprintf(m_fFastaPairs, "%s\n", AR->GetTargetRow());
 	fprintf(m_fFastaPairs, "\n");

@@ -288,9 +288,6 @@ void UDBData::FromUDBFile(FILE *f, const string &FileName)
 void UDBData::ToUDBFile(FILE *f) const
 	{
 	ProgressStartOther("Writing udb");
-	if (oget_flag(OPT_validate))
-		ValidateRows();
-
 	uint64 StartPos = GetStdioFilePos64(f);
 
 // Write invalid header in case fail before complete
@@ -384,11 +381,6 @@ void UDBData::WriteRowsVarCoded(FILE *f, const uint32 *Sizes) const
 
 		uint32 *s = m_UDBRows[i];
 		WriteStdioFile(f, s, N);
-		if (oget_flag(OPT_end_of_row))
-			{
-			const byte EndOfRow = END_OF_ROW;
-			WriteStdioFile(f, &EndOfRow, 1);
-			}
 		}
 	}
 

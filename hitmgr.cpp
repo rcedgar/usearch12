@@ -395,16 +395,8 @@ unsigned HitMgr::GetHitCount()
 			HitCount = oget_uns(OPT_maxhits);
 		}
 
-	if (oget_flag(OPT_top_hit_only) || oget_flag(OPT_bottom_hit_only) || oget_flag(OPT_random_top_hit))
+	if (oget_flag(OPT_top_hit_only) || oget_flag(OPT_random_top_hit))
 		return 1;
-
-	if (oget_flag(OPT_cover_query))
-		{
-		if (m_ChainLength == 0)
-			ChainHits();
-		assert(m_ChainLength <= m_HitCount);
-		return m_ChainLength;
-		}
 
 	if (oget_flag(OPT_top_hits_only))
 		{
@@ -495,16 +487,6 @@ AlignResult *HitMgr::GetHit(unsigned Index)
 
 	if (oget_flag(OPT_random_top_hit) && Index == 0)
 		return GetRandomTopHit();
-
-	if (oget_flag(OPT_bottom_hit_only) && Index == 0)
-		return GetBottomHit();
-
-	if (oget_flag(OPT_cover_query))
-		{
-		asserta(Index < m_ChainLength);
-		unsigned HitIndex = m_Chain[Index];
-		return m_Hits[HitIndex];
-		}
 
 	asserta(Index < m_HitCount);
 	Sort();

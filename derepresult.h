@@ -22,7 +22,6 @@ public:
 
 	bool m_optSizeIn;
 	bool m_optSizeOut;
-	bool m_optConsTax;
 	bool m_optRelabelSet;
 	string m_optRelabel;
 

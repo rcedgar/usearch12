@@ -137,8 +137,6 @@ static unsigned MergeSI(const SeqInfo *SI1, const SeqInfo *SI2RC, const HSPData 
 	SIOv->m_L = PosOv;
 	SIOv->m_Label = SI1->m_Label;
 
-	if (oget_flag(OPT_fastq_logvaln))
-		MergeLogVAln(SI1, SI2RC, HSP);
 	return DiffCount;
 	}
 

@@ -240,18 +240,6 @@ const char *ClusterSink::MakeCentroidLabel(unsigned ClusterIndex, string &Label)
 		AppendSize(Label, Size);
 		}
 
-	if (oget_flag(OPT_constax))
-		{
-		StripTax(Label);
-
-		vector<string> Labels;
-		GetLabels(ClusterIndex, Labels);
-
-		ConsTaxStr CT;
-		const char *s = CT.FromLabels(Labels);
-		AppendTaxStr(Label, s);
-		}
-
 	return Label.c_str();
 	}
 
@@ -497,10 +485,7 @@ void ClusterSink::WriteUC_CRecs(FILE *f)
 		{
 		unsigned Size = m_ClusterSizes[ClusterIndex];
 		const char *Label = 0;
-		if (oget_flag(OPT_constax))
-			Label = MakeCentroidLabel(ClusterIndex, s);
-		else
-			Label = m_CentroidDB->GetLabel(ClusterIndex);
+		Label = m_CentroidDB->GetLabel(ClusterIndex);
 		fprintf(f, "C\t%u\t%u\t*\t*\t*\t*\t*\t%s\t*\n",
 		  ClusterIndex, Size, Label);
 		}
