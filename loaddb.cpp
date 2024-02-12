@@ -10,8 +10,8 @@ SeqDB *g_MSADB = 0;
 bool FastaFileIsNucleo(FILE *f)
 	{
 	unsigned SampleSize = 1024;
-	uintB CurrPos = GetStdioFilePosB(f);
-	uintB FileSize = GetStdioFileSizeB(f);
+	uint64 CurrPos = GetStdioFilePos64(f);
+	uint64 FileSize = GetStdioFileSize64(f);
 
 	SetStdioFilePos64(f, 0);
 	byte lastc = '\n';

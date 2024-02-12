@@ -39,7 +39,6 @@ HDRS = \
   constaxsink.h \
   constaxstr.h \
   countsort.h \
-  cpplock.h \
   crc32.h \
   dbhitsink.h \
   dbtype.h \
@@ -80,12 +79,19 @@ HDRS = \
   merge.h \
   mergeglobals.h \
   mx.h \
-  myopts.h \
+  mymutex.h \
   myutils.h \
+  o_all.h \
+  o_flag.h \
+  o_flt.h \
+  o_str.h \
+  o_uns.h \
   obj.h \
   objmgr.h \
   objtype.h \
   objtypes.h \
+  opt_enum.h \
+  opts.h \
   orffinder.h \
   otutab.h \
   otutabsink.h \
@@ -110,7 +116,6 @@ HDRS = \
   taxy.h \
   terminator.h \
   tracebit.h \
-  tree.h \
   trees.h \
   udbdata.h \
   udbfile.h \
@@ -154,7 +159,6 @@ OBJS = \
   $(OBJDIR)/clustersink.o \
   $(OBJDIR)/clustersmallmem.o \
   $(OBJDIR)/cmd.o \
-  $(OBJDIR)/cmdline.o \
   $(OBJDIR)/comppath.o \
   $(OBJDIR)/constaxf.o \
   $(OBJDIR)/constaxsink.o \
@@ -192,7 +196,6 @@ OBJS = \
   $(OBJDIR)/globalalignmem.o \
   $(OBJDIR)/makeclustersearcher.o \
   $(OBJDIR)/mergealign.o \
-  $(OBJDIR)/mergelogvaln.o \
   $(OBJDIR)/gzipfileio.o \
   $(OBJDIR)/hitmgr.o \
   $(OBJDIR)/hspfinder.o \
@@ -205,7 +208,6 @@ OBJS = \
   $(OBJDIR)/localaligner.o \
   $(OBJDIR)/localaligner2.o \
   $(OBJDIR)/localmulti.o \
-  $(OBJDIR)/lockobj.o \
   $(OBJDIR)/logaln.o \
   $(OBJDIR)/make3way.o \
   $(OBJDIR)/makedbsearcher.o \
@@ -217,10 +219,11 @@ OBJS = \
   $(OBJDIR)/mergestats.o \
   $(OBJDIR)/mergethread.o \
   $(OBJDIR)/mx.o \
+  $(OBJDIR)/mymutex.o \
   $(OBJDIR)/myutils.o \
-  $(OBJDIR)/newick.o \
   $(OBJDIR)/objmgr.o \
   $(OBJDIR)/fragaligner.o \
+  $(OBJDIR)/opts.o \
   $(OBJDIR)/orffinder.o \
   $(OBJDIR)/orient.o \
   $(OBJDIR)/otutab.o \
@@ -228,7 +231,6 @@ OBJS = \
   $(OBJDIR)/outputsink.o \
   $(OBJDIR)/outputuc.o \
   $(OBJDIR)/pathinfo.o \
-  $(OBJDIR)/pattern.o \
   $(OBJDIR)/prime.o \
   $(OBJDIR)/progress.o \
   $(OBJDIR)/quarts.o \
@@ -255,9 +257,6 @@ OBJS = \
   $(OBJDIR)/terminator.o \
   $(OBJDIR)/test.o \
   $(OBJDIR)/tracebackbitmem.o \
-  $(OBJDIR)/tree.o \
-  $(OBJDIR)/treefromagg.o \
-  $(OBJDIR)/treetofile.o \
   $(OBJDIR)/uchime3denovo.o \
   $(OBJDIR)/udbbuild.o \
   $(OBJDIR)/udb2bitvec.o \

@@ -24,7 +24,7 @@ bool SeqDB::SetIsAligned()
 void SeqDB::FromFastx(const string &FileName, bool StripGaps, bool ShowProgress)
 	{
 	FILE *f = OpenStdioFile(FileName);
-	if (GetStdioFileSizeB(f) == 0)
+	if (GetStdioFileSize64(f) == 0)
 		Die("Empty file %s", FileName.c_str());
 	char c;
 	ReadStdioFile(f, &c, 1);

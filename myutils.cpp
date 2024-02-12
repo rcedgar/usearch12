@@ -63,11 +63,6 @@ static char g_TmpStr[64];
 unsigned g_AllocCount;
 unsigned g_FreeCount;
 
-#if ALLOC_TOTALS
-uint64 g_AllocTotal;
-uint64 g_FreeTotal;
-#endif
-
 static const double LOG2 = log(2.0);
 static const double LOG10 = log(10.0);
 // Fisher-Yates shuffle:
@@ -187,35 +182,6 @@ unsigned GetRequestedThreadCount()
 		ProgressNoteLog("Starting %u thread%s", N, N == 1 ? "" : "s");
 	Done = true;
 	return N;
-	}
-
-const char *GetPlatform()
-	{
-#if	BITS==32
-	asserta(sizeof(void *) == 4);
-#ifdef _MSC_VER
-	return "win32";
-#elif defined(__APPLE__)
-	return "i86osx32";
-#elif defined(__GNUC__)
-	return "i86linux32";
-#else
-#error "Unknown compiler"
-#endif
-#elif BITS==64
-	asserta(sizeof(void *) == 8);
-#ifdef _MSC_VER
-	return "win64";
-#elif defined(__APPLE__)
-	return "i86osx64";
-#elif defined(__GNUC__)
-	return "i86linux64";
-#else
-#error "Unknown compiler"
-#endif
-#else
-#error "Bad BITS"
-#endif
 	}
 
 const char *BaseName(const char *PathName)
@@ -600,53 +566,6 @@ byte *ReadAllStdioFile64(FILE *f, uint64 &FileSize)
 	return Buffer;
 	}
 
-byte *ReadAllStdioFile32(const std::string &FileName, uint32 &FileSize)
-	{
-#if	WIN32
-	FILE *f = OpenStdioFile(FileName);
-	FileSize = GetStdioFileSize32(f);
-	CloseStdioFile(f);
-
-	HANDLE h = CreateFile(FileName.c_str(), GENERIC_READ, FILE_SHARE_READ,
-	  NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (h == INVALID_HANDLE_VALUE)
-		Die("ReadAllStdioFile:Open(%s) failed", FileName.c_str());
-
-	byte *Buffer = myalloc(byte, FileSize);
-	DWORD BytesRead;
-	ReadFile(h, Buffer, FileSize, &BytesRead, NULL);
-	if (FileSize != BytesRead)
-		Die("ReadAllStdioFile:Error reading %s, attempted %u got %u",
-		  FileName.c_str(), FileSize, (unsigned) BytesRead);
-
-	CloseHandle(h);
-	return Buffer;
-#else
-	int h = open(FileName.c_str(), O_RDONLY);
-	if (h < 0)
-		Die("ReadAllStdioFile:Cannot open %s", FileName.c_str());
-	FileSize = lseek(h, 0, SEEK_END);
-#ifndef __APPLE__
-	if (FileSize == (off_t) (-1))
-		Die("ReadAllStdioFile:Error seeking %s", FileName.c_str());
-#endif
-	// byte *Buffer = myalloc<byte>(FileSize);
-	size_t stBytes = (size_t) FileSize;
-	if ((off_t) stBytes != FileSize)
-		Die("ReadAllStdioFile: off_t overflow");
-	byte *Buffer = (byte *) myalloc(byte, stBytes);
-	if (Buffer == 0)
-		Die("ReadAllStdioFile: failed to allocate %s", MemBytesToStr((double) stBytes));
-	lseek(h, 0, SEEK_SET);
-	size_t n = read(h, Buffer, stBytes);
-	if (n != FileSize)
-		Die("ReadAllStdioFile, Error reading %s, attempted %g got %g",
-		  FileName.c_str(), (double) FileSize, (double) n);
-	close(h);
-	return Buffer;
-#endif
-	}
-
 void WriteStdioFile(FILE *f, uint32 Pos, const void *Buffer, uint32 Bytes)
 	{
 	if (0 == f)
@@ -672,21 +591,6 @@ void WriteStdioFile(FILE *f, const void *Buffer, uint32 Bytes)
 	if (0 == f)
 		Die("WriteStdioFile failed, f=NULL");
 	size_t BytesWritten = fwrite(Buffer, 1, Bytes, f);
-	if (BytesWritten != Bytes)
-		{
-		LogStdioFileState(f);
-		Die("WriteStdioFile failed, attempted %ul bytes, wrote %ul bytes, errno=%d",
-		  (unsigned long) Bytes, (unsigned long) BytesWritten, errno);
-		}
-	}
-
-void WriteStdioFile64(FILE *f, const void *Buffer, uint64 Bytes)
-	{
-	if (0 == f)
-		Die("WriteStdioFile failed, f=NULL");
-	asserta(Bytes < SIZE_T_MAX);
-	size_t Bytest = (size_t) Bytes;
-	size_t BytesWritten = fwrite(Buffer, 1, Bytest, f);
 	if (BytesWritten != Bytes)
 		{
 		LogStdioFileState(f);
@@ -1028,18 +932,6 @@ void Warning_(const char *Format, ...)
 	}
 
 #ifdef _MSC_VER
-void mysleep(unsigned ms)
-	{
-	Sleep(ms);
-	}
-#else
-void mysleep(unsigned ms)
-	{
-	usleep(ms);
-	}
-#endif
-
-#ifdef _MSC_VER
 double GetMemUseBytes()
 	{
 	HANDLE hProc = GetCurrentProcess();
@@ -1166,50 +1058,6 @@ double GetPhysMemBytes()
 double GetMemUseBytes()
 	{
 	return 0.0;
-	}
-#endif
-
-#ifdef _MSC_VER
-void mylistdir(const string &DirName, vector<string> &FileNames)
-	{
-	FileNames.clear();
-	bool First = true;
-	HANDLE h = INVALID_HANDLE_VALUE;
-	WIN32_FIND_DATA FFD;
-	for (;;)
-		{
-		if (First)
-			{
-			string s = DirName + string("/*");
-			h = FindFirstFile(s.c_str(), &FFD);
-			if (h == INVALID_HANDLE_VALUE)
-				return;
-			First = false;
-			}
-		else
-			{
-			BOOL Ok = FindNextFile(h, &FFD);
-			if (!Ok)
-				return;
-			}
-		FileNames.push_back(string(FFD.cFileName));
-		}
-	}
-#else
-void mylistdir(const string &DirName, vector<string> &FileNames)
-	{
-	FileNames.clear();
-	DIR *dir = opendir(DirName.c_str());
-	if (dir == 0)
-		Die("Directory not found: %s", DirName.c_str());
-	for (;;)
-		{
-		struct dirent *dp = readdir(dir);
-		if (dp == 0)
-			break;
-		FileNames.push_back(string(dp->d_name));
-		}
-	closedir(dir);
 	}
 #endif
 
@@ -1657,43 +1505,6 @@ static unsigned GetStructPack()
 	return (unsigned) (&x.b - &x.a);
 	}
 
-void CompilerInfo()
-	{
-	printf("%u bits\n", BITS);
-
-#ifdef __GNUC__
-	printf("__GNUC__\n");
-#endif
-
-#ifdef __APPLE__
-	printf("__APPLE__\n");
-#endif
-
-#ifdef _MSC_VER
-	printf("_MSC_VER %d\n", _MSC_VER);
-#endif
-
-#define x(t)	printf("sizeof(" #t ") = %d\n", (int) sizeof(t));
-	x(int)
-	x(long)
-	x(float)
-	x(double)
-	x(void *)
-	x(off_t)
-	x(size_t)
-#undef x
-
-	printf("pack(%u)\n", GetStructPack());
-
-#ifdef _FILE_OFFSET_BITS
-    printf("_FILE_OFFSET_BITS = %d\n", _FILE_OFFSET_BITS);
-#else
-    printf("_FILE_OFFSET_BITS not defined\n");
-#endif
-
-	exit(0);
-	}
-
 bool StartsWith(const char *S, const char *T)
 	{
 	for (;;)
@@ -1795,16 +1606,7 @@ void Version(FILE *f)
 	{
 	if (f == 0)
 		return;
-	const char *Flags = ""
-#if	DEBUG
-	"D"
-#endif
-#if TIMING
-	"T"
-#endif
-	;
-// TODO TWO: git clonesrc
-	fprintf(f, PROGRAM_NAME " v%s.%s%s", MY_VERSION, GetPlatform(), Flags);
+	fprintf(f, PROGRAM_NAME " v" MY_VERSION);
 	}
 
 void cmd_version()
@@ -2013,21 +1815,6 @@ unsigned randu32()
 	return (unsigned) RandInt32();
 	}
 
-uint64 randu64()
-	{
-	union
-		{
-		struct
-			{
-			uint32 u32[2];
-			};
-		uint64 u64;
-		} x;
-	x.u32[0] = randu32();
-	x.u32[1] = randu32();
-	return x.u64;
-	}
-
 void ResetRand(unsigned Seed)
 	{
 	g_InitRandDone = true;
@@ -2086,80 +1873,9 @@ unsigned GetThreadIndex()
 #undef myalloc
 #undef myfree
 
-#if	RCE_MALLOC
-#undef mymalloc
-#undef myfree
-#undef myfree2
-
-static unsigned g_NewCalls;
-static unsigned g_FreeCalls;
-static double g_InitialMemUseBytes;
-static double g_TotalAllocBytes;
-static double g_TotalFreeBytes;
-static double g_NetBytes;
-static double g_MaxNetBytes;
-
-void LogAllocStats()
-	{
-	Log("\n");
-	Log("       Allocs  %u\n", g_NewCalls);
-	Log("        Frees  %u\n", g_FreeCalls);
-	Log("Initial alloc  %s\n", MemBytesToStr(g_InitialMemUseBytes));
-	Log("  Total alloc  %s\n", MemBytesToStr(g_TotalAllocBytes));
-	Log("   Total free  %s\n", MemBytesToStr(g_TotalFreeBytes));
-	Log("    Net bytes  %s\n", MemBytesToStr(g_NetBytes));
-	Log("Max net bytes  %s\n", MemBytesToStr(g_MaxNetBytes));
-	Log("   Peak total  %s\n", MemBytesToStr(g_MaxNetBytes + g_InitialMemUseBytes));
-	}
-
-void *mymalloc(unsigned n, unsigned bytes, const char *FileName, int Line)
-	{
-	void *rce_malloc(unsigned bytes, const char *FileName, int Line);
-	return rce_malloc(n*bytes, FileName, Line);
-	}
-
-void myfree(void *p, const char *FileName, int Line)
-	{
-	void rce_free(void *p, const char *FileName, int Line);
-	rce_free(p, FileName, Line);
-	}
-
-void myfree2(void *p, unsigned bytes, const char *FileName, int Line)
-	{
-	void rce_free(void *p, const char *FileName, int Line);
-	rce_free(p, FileName, Line);
-	}
-
-#else // RCE_MALLOC
-
-#if	ALLOC_TOTALS
-void LogAllocSummary()
-	{
-	extern unsigned g_AllocCount;
-	extern unsigned g_FreeCount;
-	extern uint64 g_AllocTotal;
-	extern uint64 g_FreeTotal;
-
-	double RAM = GetMemUseBytes();
-	Log("RAM %s", MemBytesToStr(RAM));
-	Log(", malloc %s", MemBytesToStr(g_AllocTotal));
-	Log(", free %s",  MemBytesToStr(g_FreeTotal));
-	Log(", net %s\n", MemBytesToStr(g_AllocTotal - g_FreeTotal));
-	}
-#endif
-
 void *mymalloc64(unsigned BytesPerObject, uint64 N)
 	{
 	uint64 Bytes = N*BytesPerObject;
-	//byte *p = 0;
-	//try
-	//	{
-	//	p = new byte[Bytes];
-	//	}
-	//catch (...)
-	//	{
-	//	Die("myalloc64(%u, %.3g) failed", BytesPerObject, double(N));
-	//	}
 	asserta(Bytes < SIZE_T_MAX);
 	size_t Bytest = (size_t) Bytes;
 	byte *p = (byte *) malloc(Bytest);
@@ -2176,10 +1892,6 @@ void *mymalloc(unsigned n, unsigned bytes)
 	if (Bytes64 > uint64(UINT_MAX))
 		Die("%s(%u): mymalloc(%u, %u) overflow", g_AllocFile, g_AllocLine, n, bytes);
 
-#if	ALLOC_TOTALS
-	g_AllocTotal += Bytes64;
-	Bytes64 += 4;
-#endif
 	uint32 Bytes32 = uint32(Bytes64);
 	void *p = malloc(Bytes32);
 	if (0 == p)
@@ -2195,12 +1907,7 @@ void *mymalloc(unsigned n, unsigned bytes)
 		Die("%s(%u): Out of memory, mymalloc(%u, %u), curr %.3g bytes, total %.3g (%s)\n",
 		  g_AllocFile, g_AllocLine, n, bytes, b, Total, MemBytesToStr(Total));
 		}
-#if	ALLOC_TOTALS
-	*((uint32 *) p) = Bytes32;
-	return (void *) ((byte *) p + 4);
-#else
 	return p;
-#endif
 	}
 
 void myfree(void *p)
@@ -2208,14 +1915,5 @@ void myfree(void *p)
 	if (p == 0)
 		return;
 	++g_FreeCount;
-#if	ALLOC_TOTALS
-	uint32 *pi = (uint32 *) p;
-	uint32 Bytes32 = *(pi - 1);
-	g_FreeTotal += Bytes32;
-	free((void *) (pi - 1));
-#else
 	free(p);
-#endif
 	}
-
-#endif // RCE_MALLOC

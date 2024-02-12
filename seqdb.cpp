@@ -18,6 +18,8 @@ void SeqToFastq(FILE *f, const byte *Seq, unsigned L, const char *Qual,
 		return;
 	if (Qual == 0)
 		Die("Cannot convert FASTA to FASTQ");
+	if (Seq == 0)
+		return;
 
 	fprintf(f, "@%s\n", Label);
 	fprintf(f, "%*.*s\n", L, L, Seq);

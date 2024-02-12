@@ -126,13 +126,15 @@ void cmd_search_16s()
 	FILE *f = OpenStdioFile(BitVecFileName);
 	uint32 WordLength;
 	ReadStdioFile(f, &WordLength, sizeof(WordLength));
-	uint32 BitVecFileSize = GetStdioFileSize32(f);
+	uint64 BitVecFileSize64 = GetStdioFileSize64(f);
+	asserta(BitVecFileSize64 < UINT_MAX);
+	uint32 BitVecFileSize32 = uint32(BitVecFileSize64);
 	uint32 SlotCount = myipow(4, WordLength);
 	unsigned Bytes = SlotCount/8 + 1;
 	uint32 ExpectedFileSize = Bytes + sizeof(uint32);
-	if (ExpectedFileSize != BitVecFileSize)
+	if (ExpectedFileSize != BitVecFileSize32)
 		Die("Bad bitvec file size is %u expected %u, w %u\n",
-		  BitVecFileSize, ExpectedFileSize, WordLength);
+		  BitVecFileSize32, ExpectedFileSize, WordLength);
 	BV.Alloc(SlotCount);
 	ReadStdioFile(f, BV.m_Vec, Bytes);
 	CloseStdioFile(f);

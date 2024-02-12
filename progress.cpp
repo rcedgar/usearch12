@@ -60,7 +60,7 @@ static const char *StateToStr(PROG_STATE State)
 	return "PS_???";
 	}
 
-static char *TTToStr(TEXT_TYPE TT)
+static const char *TTToStr(TEXT_TYPE TT)
 	{
 	switch (TT)
 		{
@@ -279,7 +279,7 @@ static void AppendSpinner(string &Line, bool Done = false)
 		return;
 		}
 	const uint N = 4;
-	static char *SpinnerStrs[N] =
+	static const char *SpinnerStrs[N] =
 		{
 		". ....",
 		".. ...",

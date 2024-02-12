@@ -33,17 +33,17 @@ void UDBParams::LogSettings() const
 	Log("      Alphabet  %s\n", m_Alpha->ToStr(stmp).c_str());
 	Log("    Word width  %u\n", m_WordWidth);
 	Log("     Word ones  %u\n", m_WordOnes);
-	Log("        Spaced  %s", YesOrNo(DBIsSpaced()));
+	Log("        Spaced  %c", yon(DBIsSpaced()));
 	Log("\n");
-	Log("        Hashed  %s\n", YesOrNo(DBIsHashed()));
-	Log("         Coded  %s\n", YesOrNo(DBIsCoded()));
+	Log("        Hashed  %c\n", yon(DBIsHashed()));
+	Log("         Coded  %c\n", yon(DBIsCoded()));
 	if (DBIsCoded())
 		{
 		Log("Seq index bits  %u\n", m_SeqIndexBits);
 		Log("  Seq pos bits  %u\n", m_SeqPosBits);
 		}
 
-	Log("       Stepped  %s\n", YesOrNo(DBIsStepped()));
+	Log("       Stepped  %c\n", yon(DBIsStepped()));
 	if (DBIsStepped())
 		{
 		if (m_StepPrefix != 0)

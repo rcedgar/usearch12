@@ -1,6 +1,6 @@
 #ifndef o
 #error "o not defined"
-#endif o
+#endif
 
 o(alnout)
 o(alpha)

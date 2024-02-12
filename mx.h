@@ -17,7 +17,7 @@ struct SeqData;
 template<class T> const char *TypeToStr(T t)
 	{
 	Die("Unspecialised TypeToStr() called");
-	ureturn(0);
+	return 0;
 	}
 
 template<> inline const char *TypeToStr<unsigned short>(unsigned short f)
