@@ -20,10 +20,8 @@ public:
 	std::string m_name;
 
 public:
-	static std::map<std::string, std::chrono::duration<double> > 
-	  mymutex::m_name_to_total;
-	static std::map<std::string, unsigned> 
-	  mymutex::m_name_to_nrcalls;
+	static std::map<std::string, std::chrono::duration<double> >  m_name_to_total;
+	static std::map<std::string, unsigned>  m_name_to_nrcalls;
 
 private:
 	static std::mutex g_mylock;
