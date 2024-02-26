@@ -51,7 +51,6 @@ IS_TRUE(otutab)
 IS_TRUE(closed_ref)
 IS_TRUE(cluster_fast)
 IS_TRUE(cluster_smallmem)
-IS_TRUE(uparse_ref)
 IS_TRUE(cluster_otus)
 		}
 	return false;
@@ -66,7 +65,6 @@ IS_TRUE(usearch_global)
 IS_TRUE(otutab)
 IS_TRUE(closed_ref)
 IS_TRUE(usearch_local)
-IS_TRUE(uparse_ref)
 IS_TRUE(sintax)
 IS_TRUE(fastx_orient)
 		}
@@ -75,10 +73,6 @@ IS_TRUE(fastx_orient)
 
 bool CmdNoMask(CMD Cmd)
 	{
-	switch (Cmd)
-		{
-IS_TRUE(uparse_ref)
-		}
 	return false;
 	}
 

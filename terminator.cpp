@@ -26,7 +26,6 @@ Terminator::Terminator(CMD Cmd)
 // UChime/UParse commands must hack these
 // if needed to prevent premature termination.
 	case CMD_cluster_otus:
-	case CMD_uparse_ref:
 		m_MaxAccepts = 1;
 		m_MaxRejects = 32;
 		break;

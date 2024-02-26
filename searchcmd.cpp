@@ -44,15 +44,8 @@ void cmd_usearch_local()
 	Search(CMD_usearch_local, oget_str(OPT_usearch_local), oget_str(OPT_db));
 	}
 
-void cmd_uparse_ref()
-	{
-	Search(CMD_uparse_ref, oget_str(OPT_uparse_ref), oget_str(OPT_db));
-	}
-
 void cmd_sintax()
 	{
-	//default_opt(tax_prod, true);
-	//default_opt(boot_subset, "32");
 	oset_strd(OPT_boot_subset, "32");
 	Search(CMD_sintax, oget_str(OPT_sintax), oget_str(OPT_db));
 	}

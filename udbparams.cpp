@@ -84,10 +84,6 @@ void UDBParams::SetCmdDefaults(CMD Algo, bool Nucleo)
 	{
 	switch (Algo)
 		{
-	case CMD_uparse_ref:
-		SetDefaults_UChime(Nucleo);
-		return;
-
 	case CMD_cluster_fast:
 	case CMD_cluster_smallmem:
 	case CMD_cluster_mt:

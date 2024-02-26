@@ -129,7 +129,6 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	case CMD_usearch_global:
 	case CMD_otutab:
 	case CMD_closed_ref:
-	case CMD_uparse_ref:
 	case CMD_cluster_otus:
 		{
 		asserta(aligner == 0);
@@ -146,9 +145,7 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 		Die("MakeDBSearcher(%s)", CmdToStr(Cmd));
 		}
 
-	if (Cmd == CMD_uparse_ref)
-		oset_fltd(OPT_id, 0);
-	else if (Cmd == CMD_sintax)
+	if (Cmd == CMD_sintax)
 		oset_fltd(OPT_id, 0.5);
 
 	bool AcceptAll = false;
@@ -169,29 +166,13 @@ Searcher *MakeDBSearcher(CMD Cmd, SeqDB *seqdb, UDBData *udb,
 	Searcher *searcher = 0;
 	switch (Cmd)
 		{
-	case CMD_uparse_ref:
-		{
-		UParseSink *UPS = new UParseSink;
-
-		//if (seqdb != 0)
-		//	UPS->m_OTUDB = seqdb;
-		//else if (udb != 0)
-		//	UPS->m_OTUDB = udb->m_SeqDB;
-		//else
-		//	asserta(false);
-
-		HM.AddSink(UPS);
-	// Fall through to CMD_uchime_ref case
-		}
 	case CMD_usearch_global:
 	case CMD_otutab:
 	case CMD_closed_ref:
 	case CMD_usearch_local:
 	case CMD_sintax:
 		{
-		if (Cmd == CMD_uparse_ref)
-			US = new BitMapSearcher;
-		else if (Cmd == CMD_sintax)
+		if (Cmd == CMD_sintax)
 			{
 			SintaxSearcher *UTS = new SintaxSearcher;
 			UTS->m_UDBData->FromUDBData(*udb);

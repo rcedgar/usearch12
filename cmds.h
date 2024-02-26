@@ -27,7 +27,6 @@ A(sintax_summary)
 A(uchime3_denovo)
 
 A(unoise3)
-A(uparse_ref)
 A(usearch_global)
 A(usearch_local)
 
