@@ -54,7 +54,7 @@ void AlnHeuristics::InitFromCmdLine(const AlnParams &AP)
 				MinDiagScore = Score;
 			}
 
-		MinGlobalHSPFractId = max((float) oget_flt(OPT_id), 0.5f);
+		MinGlobalHSPFractId = max((float) oget_fltd(OPT_id, 0.5f), 0.5f);
 		MinGlobalHSPScore = MinGlobalHSPFractId*MinDiagScore*MinGlobalHSPLength;
 		}
 

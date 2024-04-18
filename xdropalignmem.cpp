@@ -11,20 +11,20 @@
 
 #define TRACE	0
 
-float XDropFwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  const AlnParams &AP, float X, unsigned &Leni, unsigned &Lenj, PathInfo &PI);
+float XDropFwdFastMem(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  const AlnParams &AP, float X, uint &Leni, uint &Lenj, PathInfo &PI);
 
-float XDropBwdFastMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  const AlnParams &AP, float X, unsigned &Leni, unsigned &Lenj, PathInfo &PI);
+float XDropBwdFastMem(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  const AlnParams &AP, float X, uint &Leni, uint &Lenj, PathInfo &PI);
 
-float XDropFwdSplit(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  const AlnParams &AP, float X, unsigned &Leni, unsigned &Lenj, PathInfo &PI);
+float XDropFwdSplit(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  const AlnParams &AP, float X, uint &Leni, uint &Lenj, PathInfo &PI);
 
-float XDropBwdSplit(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  const AlnParams &AP, float X, unsigned &Leni, unsigned &Lenj, PathInfo &PI);
+float XDropBwdSplit(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  const AlnParams &AP, float X, uint &Leni, uint &Lenj, PathInfo &PI);
 
-static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  unsigned AncLoi, unsigned AncLoj, unsigned AncLen, const AlnParams &AP,
+static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  uint AncLoi, uint AncLoj, uint AncLen, const AlnParams &AP,
   float X, HSPData &HSP, PathInfo &PI, double MaxL2)
 	{
 #if TRACE
@@ -66,8 +66,8 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 
 	PI.SetEmpty();
 
-	unsigned AncHii = AncLoi + AncLen - 1;
-	unsigned AncHij = AncLoj + AncLen - 1;
+	uint AncHii = AncLoi + AncLen - 1;
+	uint AncHij = AncLoj + AncLen - 1;
 	asserta(AncHii < LA);
 	asserta(AncHij < LB);
 
@@ -78,10 +78,10 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	const byte *FwdA = A + AncHii;
 	const byte *FwdB = B + AncHij;
 
-	unsigned FwdLA = LA - AncHii;
-	unsigned FwdLB = LB - AncHij;
+	uint FwdLA = LA - AncHii;
+	uint FwdLB = LB - AncHij;
 
-	unsigned BwdLeni, BwdLenj;
+	uint BwdLeni, BwdLenj;
 	float BwdScore = 0.0f;
 
 	if (AncLoi > g_MaxL || AncLoj > g_MaxL)
@@ -105,7 +105,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 
 #if	DEBUG
 	{
-	unsigned M, D, I;
+	uint M, D, I;
 	BwdPI->GetCounts(M, D, I);
 	asserta(M + D == BwdLeni);
 	asserta(M + I == BwdLenj);
@@ -114,7 +114,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 
 	PI.AppendPath(*BwdPI);
 
-	unsigned FwdLeni, FwdLenj;
+	uint FwdLeni, FwdLenj;
 	float FwdScore = 0.0f;
 
 	if (FwdLA > g_MaxL || FwdLB > g_MaxL)
@@ -139,7 +139,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 		}
 #if	DEBUG
 	{
-	unsigned M, D, I;
+	uint M, D, I;
 	FwdPI->GetCounts(M, D, I);
 	asserta(M + D == FwdLeni);
 	asserta(M + I == FwdLenj);
@@ -147,7 +147,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 #endif
 
 // First & last col in anchor are included in xdrop alignmnets
-	//for (unsigned i = 2; i < AncLen; ++i)
+	//for (uint i = 2; i < AncLen; ++i)
 	//	*PathPtr++ = 'M';
 
 	asserta(AncLen >= 2);
@@ -162,7 +162,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	const float * const *SubstMx = AP.SubstMx;
 
 	float AncScore = 0.0f;
-	for (unsigned k = 0; k < AncLen; ++k)
+	for (uint k = 0; k < AncLen; ++k)
 		{
 		byte a = A[AncLoi+k];
 		byte b = B[AncLoj+k];
@@ -205,7 +205,7 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 
 #if	DEBUG
 	{
-	unsigned M, D, I;
+	uint M, D, I;
 	PI.GetCounts(M, D, I);
 	asserta(M + D == HSP.Leni);
 	asserta(M + I == HSP.Lenj);
@@ -215,8 +215,8 @@ static float XDropAlignMemMaxL2(XDPMem &Mem, const byte *A, unsigned LA, const b
 	return HSP.Score;
 	}
 	
-float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsigned LB,
-  unsigned AncLoi, unsigned AncLoj, unsigned AncLen, const AlnParams &AP,
+float XDropAlignMem(XDPMem &Mem, const byte *A, uint LA, const byte *B, uint LB,
+  uint AncLoi, uint AncLoj, uint AncLen, const AlnParams &AP,
   float X, HSPData &HSP, PathInfo &PI)
 	{
 	float ScoreSplit = XDropAlignMemMaxL2(Mem, A, LA, B, LB, AncLoi, AncLoj, AncLen, AP,
@@ -224,7 +224,7 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 
 #if	DEBUG
 	{
-	unsigned M, D, I;
+	uint M, D, I;
 	PI.GetCounts(M, D, I);
 	if (ScoreSplit > 0.0f && (M + D != HSP.Leni || M + I != HSP.Lenj))
 		{
@@ -247,8 +247,8 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //	{
 //	const char *A = "NIEQFESALKLQSYAGKCPDIEGSGGKTHSKGITHVRNKFLSNAVYESAISLVMNKNKEFYDIFNREIGKKKSNVQAYIAVSKRLLFHIYSIMKNHKPYKEKMVGNYKRYA";
 //	const char *B = "NYRDFQTPEQLAKWCGLNPGENESAGKKRKCGITKRGSKYIRVVLVEAAQTIANMKNTGLSRFYKRLSKKKEHNVAIVAVARKLICLIYHLLINQEFYQEVDCRKRKKGRNESCHEPSLKDEHLTDKVAAIVDAFYGMSDSSRKKALLRALEDISVNKPDQKRSSDGGGMSQRLCFKIPRETNTYADVLMALGTASLLNEIYGDEARTTIEDRGDNLSIEVSSDKGLEFLDTFTRLDIGYPFVKQKNDEIIPNGVDDVFDYEKNKEIEEAYNKFIKTSGKRKNKISNKMIDSGFDKPYEPDPNLKLHKILASMRKGWKSDKEFHEYFINNREKISKLAMINLRHLSDPCFEKCSSDDLDKIVSGSQVLLPIGGKGVNRSKPDSTGKSGLPSDFIDWFSEWMKYRGMFKFLLPYRNGDDFKFLVIVPKDISYNSVVSIHNDLFKMNLWGGIKLDIQATLSLAKILVNHSEEYDKEKGSFKMLNRRPNQVIEGLYQAYFKSMGTAASLMNYSFIGLPGWFTIDDNKTAHEFMDILDEHGKCIGALQEEISSDIPLLQDYRNFLSSGDYRHFLEFLSLFGTYVMQRREKNKWVMQFTVQNLRRIFMVDKDYSEIISDEGFLNLASAIRRATVNAQYRKAQGRRDWDIKYGLAQDWKRVAEQPDKLVIAISEFVQQYNAENARHAEENKERRKNITTRDLDQVLNLIKNYGSFLVGMLLLAYGYARDVKETDESNSTEIKEGEIKMLKPSLIDGYASFFKEITSYCPYPYQEKVFSLLDRGKSVVLRAPTGSGKTLSVIMPYLYLRKNNEKMADRIIYALPMRALAFDLYNSTIQTAEKAGFCVVEDPEKRSGEDRDSEICITIQTGELQNDHFFEGDIIFTTIDQLLSGYLTLPVSLPDRLGNINIGAIIGSLIVFDEVHLMEFQRSFLTATEMMNRFEGLAQFFVMTATLTEPTQKWLAKQIKAEPITCSINELKSVPGYEKRSRVYSFENSPISSDTVIKNHRQKTLVICNRVDKAQQIYSELKEKLINADTKIALLHSRFFKRDRSEIEKNLQLWFGKRSEDVNAILVSTQVVEAGIDISCNTMHTELAPANSLIQRAGRCARYSGTGNVFIHEIEDPSNPLPYPKNEVDATRKEIKNFREKELDPDFEKDLVERVHAPLDDSRLIDSLQNRRGEVNEAMDHGHSSSIQKLIREVDSVNIILTPNPHSENLEISWPEMLSVPRSTLYKLKKKGADDWIFKIPIFSDDEEFKGVKWEKVESVRDISWLVALNPKFARYSQEVGLIFGEEGTRCIILNKKSPYKSYKYSCESFQEHTHRVIAEARSLIPLSDKGIMKLSKKMRLDRNHSIEKMILLACALHDTGKLSVRWQGAMNRWQGISNPNAEQFIKGLPLAHTTYDPVKDWIRMQELKIQKGPHAAEGAYAVFTMIFKGSQTMLGDGDDTQNMAIGIMAAIARHHGPRTSNLQPFELIPQAKNVLNDAMKTLEIDLGDMEISETPNKDVIDSFRQYLKISEIDNGIFLYWLSVRIIRLADQRATSKIGAMSRIILSDRGTFLGKSSEQFRITRKDLPDVLVPARGVEQILVLGSGISVSSDAIQMADELGVEVVFASYYGKPMARLIPASLGGTVKTRREQYNAYNDSRGTNLARSFVRGKLKNQASLLKSFAKKWKGERQDLWGEFRNNSNQIEELIPRLNLIKGKVDDVRGEIMGVEGIGAEIYWRTWAKLIPDDWSFPGRDYPAARDQINSLLNFGYYLLEQEVWAAILYAGLDPYAGFLHADRPGKEKLVYDMMEEFRPLVVDRVVVSLAREMRQGHFQDDCRMTKDGIKIASKAFYGRLDERITYREKSQILRNIIRSQASSVATFLRGERPCYEPFTPRWMDTIIIYDISDNSLRARVAKVLLDFGCIRIQKSAFWGIMNHNTREKLRLRLERMMHEKEGNIQFYPMCSKCFSLKDSIGEIYEVEEEDVSVFMKQYLYCPKIIYFDHVLHIPKPPDQKLQTGIEMHDSITAKEKRRKGAIFYDPELDQA";
-//	unsigned LA = 111; // (unsigned) strlen(A);
-//	unsigned LB = 169; // (unsigned) strlen(B);
+//	uint LA = 111; // (uint) strlen(A);
+//	uint LB = 169; // (uint) strlen(B);
 //
 //	XDPMem Mem;
 //	ObjMgr OM;
@@ -259,7 +259,7 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //	AlnHeuristics AH;
 //	AH.InitFromCmdLine(AP);
 //	float X = AH.XDropG;
-//	unsigned Leni, Lenj;
+//	uint Leni, Lenj;
 //	float Score = XDropFwdSplit(Mem, (const byte *) A, LA, (const byte *) B, LB, AP, X, Leni, Lenj, *PI);
 //
 //	Log("A %2u %*.*s\n", LA, LA, LA, A);
@@ -273,8 +273,8 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //	{
 //	const char *A = "DDLEAFAKQFKQRRIT";
 //	const char *B = "DDLEQFAKMFKQRRIV";
-//	unsigned LA = (unsigned) strlen(A);
-//	unsigned LB = (unsigned) strlen(B);
+//	uint LA = (uint) strlen(A);
+//	uint LB = (uint) strlen(B);
 //
 //	XDPMem Mem;
 //	ObjMgr OM;
@@ -285,7 +285,7 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //	AlnHeuristics AH;
 //	AH.InitFromCmdLine(AP);
 //	float X = AH.XDropG;
-//	unsigned Leni, Lenj;
+//	uint Leni, Lenj;
 //	float Score = XDropBwdFastMem(Mem, (const byte *) A, LA, (const byte *) B, LB, AP, X, Leni, Lenj, *PI);
 //
 //	Log("A %2u %*.*s\n", LA, LA, LA, A);
@@ -295,8 +295,8 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //		LogAln((const byte *) A + LA - Leni, (const byte *) B + LB - Lenj, PI->m_Path);
 //	}
 
-//void TestXDrop2(const byte *A, unsigned LA, const byte *B, unsigned LB,
-//  unsigned AncLoi, unsigned AncLoj, unsigned AncLen)
+//void TestXDrop2(const byte *A, uint LA, const byte *B, uint LB,
+//  uint AncLoi, uint AncLoj, uint AncLen)
 //	{
 //	XDPMem Mem;
 //	HSPData HSP;
@@ -308,17 +308,17 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //	float X = AH.XDropG;
 //	Log("A=%*.*s\n", LA, LA, A);
 //	Log("  ");
-//	for (unsigned i = 0; i < AncLoi; ++i)
+//	for (uint i = 0; i < AncLoi; ++i)
 //		Log(" ");
-//	for (unsigned i = 0; i < AncLen; ++i)
+//	for (uint i = 0; i < AncLen; ++i)
 //		Log("^");
 //	Log("\n");
 //
 //	Log("B=%*.*s\n", LB, LB, B);
 //	Log("  ");
-//	for (unsigned i = 0; i < AncLoj; ++i)
+//	for (uint i = 0; i < AncLoj; ++i)
 //		Log(" ");
-//	for (unsigned i = 0; i < AncLen; ++i)
+//	for (uint i = 0; i < AncLen; ++i)
 //		Log("^");
 //	Log("\n");
 //
@@ -333,18 +333,32 @@ float XDropAlignMem(XDPMem &Mem, const byte *A, unsigned LA, const byte *B, unsi
 //		}
 //	}
 
-unsigned GetIntField(const string &Label, const string &Name)
+void cmd_test()
 	{
-	vector<string> Fields;
-	Split(Label, Fields, ';');
-	unsigned N = SIZE(Fields);
-	unsigned n = SIZE(Name);
-	for (unsigned i = 0; i < N; ++i)
-		{
-		const string &Field = Fields[i];
-		if (Field.substr(0, n) == Name)
-			return (unsigned) atoi(Field.substr(n+1, string::npos).c_str());
-		}
-	Die("Field '%s' not found in label '%s'", Name.c_str(), Label.c_str());
-	return 0;
+	oget_str(OPT_test);
+
+	const string sA = "SEQVENCE";
+	const string sB = "SEQVECE";
+	uint LA = SIZE(sA);
+	uint LB = SIZE(sB);
+	const byte *A = (const byte *) sA.c_str();
+	const byte *B = (const byte *) sB.c_str();
+
+	XDPMem Mem;
+	ObjMgr &OM = *ObjMgr::CreateObjMgr();
+	PathInfo *PI = OM.GetPathInfo();
+	AlnParams AP;
+	AP.InitFromCmdLine(false);
+	AlnHeuristics AH;
+	AH.InitFromCmdLine(AP);
+	float X = AH.XDropG;
+	uint Leni, Lenj;
+	//float Score = XDropFwdSplit(Mem, A, LA, B, LB, AP, X, Leni, Lenj, *PI);
+	float Score = XDropFwdFastMem(Mem, A, LA, B, LB, AP, X, Leni, Lenj, *PI);
+
+	Log("A %2u %*.*s\n", LA, LA, LA, A);
+	Log("B %2u %*.*s\n", LB, LB, LB, B);
+	Log("XDropFwdFastMem %.1f, Leni %u, Lenj %u\n", Score, Leni, Lenj);
+	if (Score > 0.0f)
+		LogAln(A, B, PI->GetPath());
 	}
