@@ -11,6 +11,8 @@
 #include <Windows.h>
 #endif
 
+extern vector<string> g_Argv;
+
 bool g_LowerCaseWarning = false;
 bool g_AbortProgress = false;
 
@@ -25,6 +27,11 @@ int main(int argc, char **argv)
 	thread::id Id = std::this_thread::get_id();
 
 	MyCmdLine(argc, argv);
+	if (SIZE(g_Argv) < 2)
+		{
+		Help();
+		return 0;
+		}
 
 	if (!oget_flag(OPT_quiet))
 		{
@@ -44,13 +51,10 @@ int main(int argc, char **argv)
 	}
 #endif
 
-	extern vector<string> g_Argv;
 	uint n = SIZE(g_Argv);
-	asserta(n > 0);
+	asserta(n > 2);
 	string ShortCmdLine = g_Argv[1].substr(1, string::npos);
-	if (n > 2)
-		ShortCmdLine += " " + basenm(g_Argv[2]);
-
+	ShortCmdLine += " " + basenm(g_Argv[2]);
 	StartProgressThread();
 	ProgressNoteNoPrefix("%s", ShortCmdLine.c_str());
 
