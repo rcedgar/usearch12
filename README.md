@@ -21,15 +21,15 @@ Download the binary (executable) file for your operating system. There are no de
 
 To build using [Microsoft Visual C++](https://visualstudio.microsoft.com/) (MSVC), load the solution file `usearch12.sln` and select `Build` then `Rebuild Solution` from the main menu bar. 
 
-To build from the command line, run `./build_win.bash` from a command prompt with `src/` as the current directory. This requires that the MSVC build tools are in your PATH. The `build_win.bash` script (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` file with the latest commit hash, and (3) runs `MSBuild.txt` to compile and link `usearch12.exe`.
+To build from the command line, run `./build_win.bash` from a command prompt with `src/` as the current directory. This requires that the MSVC build tools are in your PATH. The `build_win.bash` script (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, and (3) runs `MSBuild.txt` to compile and link `usearch12.exe`.
 
 ### Linux
 
-The primary development environment is MSVC. This means that the Linux `Makefile` is generated automatically from the MSVC project file `usearch12.vcxproj`. 
+The primary development environment is MSVC. The Linux `Makefile` is generated automatically by `build_linux.py` from the MSVC project file `usearch12.vcxproj`. To build on Linux you need `gcc`, `ccache` and `make`.
 
 A pre-generated `Makefile` is included in the `src/` directory. This means that you can run `make` in the usual way. Generally, this `Makefile` should not be manually edited because changes will be lost the next time it is generated. 
 
-Alternatively you can run the `./build_linux.py` script with `src/` as the current directory, which (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` file with the latest commit hash, (3) generates a new `Makefile` from `usearch12.vcxproj`, and (4) runs `MSBuild.exe` (MSVC's equivalent of `make`) to compile and link `usearch12.exe`.
+Alternatively you can run the `./build_linux.py` script with `src/` as the current directory, which (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, (3) generates a new `Makefile` from `usearch12.vcxproj`, and (4) runs `make`. To run this you need `python3`.
 
 ### OSX
 
