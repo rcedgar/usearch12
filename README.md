@@ -2,7 +2,7 @@
 
 Usearch implements several popular biological sequence search and clustering algorithms, including USEARCH, UCLUST, UPARSE, UCHIME, UNOISE and SINTAX.
 
-Version 12 is the first open-source version of usearch. Compared to earlier versions, functionality which is well covered by other open-source projects has been removed. In particular, there is no support for OTU table manipulation or diversity analysis which is well supported by other tools such as [QIIME](https://qiime2.org/) and [DADA2](https://benjjneb.github.io/dada2/). The goal here is to simplify the package as much as reasonably possible to encourage collaborators to join the open-source project.
+Version 12 is the first open-source version of usearch. Compared to earlier versions, functionality which is sufficiently covered by other open-source projects has been removed. In particular, there is no support for OTU table manipulation or diversity analysis which is well supported by other tools such as [QIIME](https://qiime2.org/) and [DADA2](https://benjjneb.github.io/dada2/). The goal here is to simplify the package as much as reasonably possible to encourage collaborators to join the open-source project.
 
 ### Documentation
 
@@ -19,13 +19,13 @@ Download the binary (executable) file for your operating system. There are no de
 
 ### Windows
 
-To build from the MSVC app, load the solution file `usearch12.sln` and select `Build` then `Rebuild Solution` from the main menu bar. 
+To build using [Microsoft Visual C++](https://visualstudio.microsoft.com/) (MSVC), load the solution file `usearch12.sln` and select `Build` then `Rebuild Solution` from the main menu bar. 
 
 To build from the command line, run `src/build_win.bash` from a command prompt. This requires that the MSVC build tools are in your PATH. The `build_win.bash` script (1) checks that there are no uncommitted changes to the repo, (2) generates a new `gitver.txt` file with the latest commit hash, and (3) runs `MSBuild.txt` to compile and link `usearch12.exe`.
 
 ### Linux
 
-The primary development environment is Microsoft Visual C++ (MSVC). This means that the Linux `Makefile` is generated automatically from the MSVC project file `usearch12.vcxproj`. 
+The primary development environment is MSVC. This means that the Linux `Makefile` is generated automatically from the MSVC project file `usearch12.vcxproj`. 
 
 A pre-generated `Makefile` is included in the `src/` directory. This means that you can run `make` in the usual way. Generally, this `Makefile` should not be manually edited because changes will be lost the next time it is generated. 
 
