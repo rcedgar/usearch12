@@ -151,10 +151,12 @@ with open("Makefile", "w") as f:
     Out("clean:")
     Out("	rm -rf $(OBJDIR)/ $(BINPATH)")
 
-rc = os.system("rm -f o/myutils.o ../bin/reseek")
+rc = os.system("rm -f o/myutils.o ../bin/usearch12")
 
 rc = os.system("make > make.stdout 2> make.stderr")
 if rc != 0:
     os.system("tail make.stderr")
     sys.stderr.write("\n\nERROR -- make failed, see make.stderr\n\n")
     sys.exit(1)
+
+rc = os.system("ls -lh ../bin/usearch12")
