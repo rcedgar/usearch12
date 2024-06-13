@@ -1,0 +1,4 @@
+MSBuild.log
+make.stdout
+make.stderr
+gitver.txt
