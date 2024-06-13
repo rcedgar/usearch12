@@ -4,7 +4,7 @@ Usearch implements several popular biological sequence search and clustering alg
 
 Version 12 is the first open-source version of usearch. Compared to earlier versions, functionality which is sufficiently covered by other open-source projects has been removed. In particular, there is no support for OTU table manipulation or diversity analysis which is well supported by other tools such as [QIIME](https://qiime2.org/) and [DADA2](https://benjjneb.github.io/dada2/). The goal here is to simplify the package as much as reasonably possible to encourage collaborators to join the open-source project.
 
-### Documentation
+## Documentation
 
 Docs. web site: [https://rcedgar.github.io/usearch12_documentation/](https://rcedgar.github.io/usearch12_documentation/)
 
@@ -35,6 +35,6 @@ Alternatively you can run the `./build_linux.py` script, which (1) checks that t
 
 Currently building on OSX is not implemented. The Linux `Makefile` might work as-is, at most a few simple tweaks will be needed.
 
-### Citing usearch
+## Citing usearch
 
 Please cite the appropriate paper(s) listed here: [https://rcedgar.github.io/usearch12_documentation/citation.html](https://rcedgar.github.io/usearch12_documentation/citation.html)
