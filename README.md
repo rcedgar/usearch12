@@ -1,4 +1,4 @@
-<p align="left"><img src="https://rcedgar.github.io/usearch12_documentation/usearch12_banner.jpg" height="100"/></p>
+<p align="left"><img src="https://rcedgar.github.io/usearch12_documentation/usearch12_banner.jpg"/></p>
 
 Usearch implements several popular biological sequence search and clustering algorithms, including USEARCH, UCLUST, UPARSE, UCHIME, UNOISE and SINTAX.
 
@@ -13,7 +13,7 @@ Docs. source: [https://github.com/rcedgar/usearch12_documentation](https://githu
 
 ## Installation
 
-Download a binary (executable) file. There are no dependencies, so that is typically all you need to do. Make sure the execute bit is set if you are using Linux or OSX, and make sure the binary is in your PATH (or, you can type the full path name). For more details see [https://rcedgar.github.io/usearch12_documentation/install.html](https://rcedgar.github.io/usearch12_documentation/install.html).
+Download the binary (executable) file for your operating system. There are no dependencies, so that is typically all you need to do. Make sure the execute bit is set if you are using Linux or OSX, and make sure the binary is in your PATH (or, you can type the full path name). For more details see [https://rcedgar.github.io/usearch12_documentation/install.html](https://rcedgar.github.io/usearch12_documentation/install.html).
 
 ## Building from source
 
