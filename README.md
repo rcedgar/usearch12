@@ -21,7 +21,7 @@ Download the binary (executable) file for your operating system. There are no de
 
 To build using [Microsoft Visual C++](https://visualstudio.microsoft.com/) (MSVC), load the solution file `usearch12.sln` and select `Build` then `Rebuild Solution` from the main menu bar. 
 
-To build from the command line, run `./build_win.bash` from a command prompt with `src/` as the current directory. This requires that the MSVC build tools are in your PATH. The `build_win.bash` script (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, and (3) runs `MSBuild.txt` to compile and link `usearch12.exe`.
+To build from the command line, run `./build_win.bash` from a command prompt. This requires that the MSVC build tools are in your PATH. The `build_win.bash` script (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, and (3) runs `MSBuild` to compile and link `usearch12.exe`.
 
 ### Linux
 
