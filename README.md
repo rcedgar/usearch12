@@ -37,4 +37,4 @@ Currently building on OSX is not implemented. The Linux `Makefile` might work as
 
 ### Citing usearch
 
-Please see [https://rcedgar.github.io/usearch12_documentation/citation.html](https://rcedgar.github.io/usearch12_documentation/citation.html)
+Please cite the appropriate paper(s) listed here: [https://rcedgar.github.io/usearch12_documentation/citation.html](https://rcedgar.github.io/usearch12_documentation/citation.html)
