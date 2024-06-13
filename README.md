@@ -27,9 +27,9 @@ To build from the command line, run `./build_win.bash` from a command prompt wit
 
 The primary development environment is MSVC. The Linux `Makefile` is generated automatically by `build_linux.py` from the MSVC project file `usearch12.vcxproj`. To build on Linux you need `gcc`, `ccache` and `make`.
 
-A pre-generated `Makefile` is included in the `src/` directory. This means that you can run `make` in the usual way. Generally, this `Makefile` should not be manually edited because changes will be lost the next time it is generated. 
+A pre-generated `Makefile` is included. This means that you can run `make` in the usual way. Generally, this `Makefile` should not be manually edited because changes will be lost the next time it is generated. 
 
-Alternatively you can run the `./build_linux.py` script with `src/` as the current directory, which (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, (3) generates a new `Makefile` from `usearch12.vcxproj`, and (4) runs `make`. To run this you need `python3`.
+Alternatively you can run the `./build_linux.py` script, which (1) checks that there are no uncommitted changes to the repo, (2) overwrites `gitver.txt` with the latest commit hash, (3) generates a new `Makefile` from `usearch12.vcxproj`, and (4) runs `make`. To run this you need `python3` as well.
 
 ### OSX
 
