@@ -1606,11 +1606,17 @@ void Split(const string &Str, vector<string> &Fields, char Sep)
 		Fields.push_back(s);
 	}
 
+const char *gitver = 
+#include "gitver.txt"
+;
+
 void Version(FILE *f)
 	{
 	if (f == 0)
 		return;
 	fprintf(f, PROGRAM_NAME " v" MY_VERSION);
+	if (string(gitver) != "")
+		fprintf(f, " [%s]", gitver);
 	}
 
 void cmd_version()
