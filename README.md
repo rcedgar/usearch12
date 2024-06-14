@@ -33,7 +33,7 @@ Alternatively you can run the `./build_linux.py` script, which (1) checks that t
 
 ### OSX
 
-Currently building on OSX is not implemented. The Linux `Makefile` might work as-is, at most a few simple tweaks will be needed.
+Currently building on OSX is not implemented. The Linux `Makefile` might work as-is, at most a few simple tweaks will be needed. An OSX binary is included in Release [12.0-beta1](https://github.com/rcedgar/usearch12/releases/tag/v12.0-beta1), this binary was kindly provided by [@igortru](https://github.com/igortru).
 
 ## Citing usearch
 
