@@ -40,4 +40,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: usearch12-windows-binary.exe
-          path: D:\a\usearch12\usearch12\src\Release\usearch12.exe
+          path: D:\a\usearch12\usearch12\src\x64\Release\usearch12.exe
