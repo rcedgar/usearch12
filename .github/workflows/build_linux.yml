@@ -29,23 +29,6 @@ jobs:
           cd src/
           python3 build_linux.py
           file /usearch12/bin/usearch12 | grep aarch64
-          ls
-          pwd
-    - name: Upload binary artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: usearch12-linux-aarch64-binary
-        path: /usearch12/bin/usearch12
-    - name: Upload make.stderr artifact
-      uses: actions/upload-artifact@v4
-      with:
-          name: make.stderr-linux-aarch64
-          path: /usearch12/src/make.stderr
-    - name: Upload make.stdout  artifact
-      uses: actions/upload-artifact@v4
-      with:
-          name: make.stdout-linux-aarch64
-          path: /usearch12/src/make.stdout
   build:
     name: Linux x86_64
     runs-on: ubuntu-latest
