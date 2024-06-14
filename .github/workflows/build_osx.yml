@@ -1,4 +1,4 @@
-`name: build_osx
+name: build_osx
 
 on:
   workflow_dispatch:
