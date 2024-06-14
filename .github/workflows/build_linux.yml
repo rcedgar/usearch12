@@ -56,13 +56,13 @@ jobs:
       with:
        arch: aarch64
        distro: ubuntu20.04
-        githubToken: ${{ github.token }}
+       githubToken: ${{ github.token }}
        dockerRunArgs: |
           --volume "${PWD}:/reseek"
        install: |
           apt-get update -q -y
           apt-get install -q -y make g++ file git python3 ccache
-        run: |
+       run: |
           git config --global --add safe.directory /
           cd /usearch12  
           uname -a
@@ -76,7 +76,7 @@ jobs:
         name: usearch12-linux-aarch64-binary
         path: /usearch12/bin/usearch12
     - name: Upload make.stderr artifact
-        uses: actions/upload-artifact@v4
-        with:
+      uses: actions/upload-artifact@v4
+      with:
           name: make.stderr-linux-aarch64
           path: /home/runner/work/usearch12/usearch12/src/make.stderr-linux
