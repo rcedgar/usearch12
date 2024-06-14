@@ -67,6 +67,7 @@ jobs:
           cd src/
           python3 build_linux.py
           file /usearch12/bin/usearch12 | grep aarch64
+          ls
     - name: Upload binary artifact
       uses: actions/upload-artifact@v4
       with:
