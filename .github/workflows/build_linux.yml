@@ -80,4 +80,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: make.stdout-linux-aarch64
-          path: usearch12/src/make.stdout
+          path: /usearch12/src/make.stdout
