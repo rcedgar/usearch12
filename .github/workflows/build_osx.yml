@@ -1,4 +1,4 @@
-name: build_osx
+`name: build_osx
 
 on:
   workflow_dispatch:
@@ -40,3 +40,8 @@ jobs:
         with:
           name: makefile.stderr-osx
           path: /Users/runner/work/usearch12/usearch12/src/makefile.stderr
+      - name: Upload makefile.stdout artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: makefile.stdout-osx
+          path: /Users/runner/work/usearch12/usearch12/src/makefile.stdout
