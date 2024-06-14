@@ -40,34 +40,34 @@ jobs:
           name: usearch12-linux-binary
           path: /home/runner/work/usearch12/usearch12/bin/usearch12
 
-#  build-aarch64:
-#    name: Linux aarch64
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Checkout
-#      uses: actions/checkout@v4
+  build-aarch64:
+    name: Linux aarch64
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-#    - name: Build
-#      uses: uraimo/run-on-arch-action@v2
-#      with:
-#       arch: aarch64
-#       distro: ubuntu20.04
-#        githubToken: ${{ github.token }}
-#       dockerRunArgs: |
-#          --volume "${PWD}:/reseek"
-#       install: |
-#          apt-get update -q -y
-#          apt-get install -q -y make g++ file git python3 ccache
-#        run: |
-#          git config --global --add safe.directory /
-#          cd /usearch12  
-#          uname -a
-#          lscpu
-#          cd src/
-#          python3 build_linux.py
-#          file /usearch12/bin/usearch12 | grep aarch64
-#    - name: Upload binary artifact
-#      uses: actions/upload-artifact@v4
-#      with:
-#        name: usearch12-linux-aarch64-binary
-#        path: /usearch12/bin/usearch12
+    - name: Build
+      uses: uraimo/run-on-arch-action@v2
+      with:
+       arch: aarch64
+       distro: ubuntu20.04
+        githubToken: ${{ github.token }}
+       dockerRunArgs: |
+          --volume "${PWD}:/reseek"
+       install: |
+          apt-get update -q -y
+          apt-get install -q -y make g++ file git python3 ccache
+        run: |
+          git config --global --add safe.directory /
+          cd /usearch12  
+          uname -a
+          lscpu
+          cd src/
+          python3 build_linux.py
+          file /usearch12/bin/usearch12 | grep aarch64
+    - name: Upload binary artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: usearch12-linux-aarch64-binary
+        path: /usearch12/bin/usearch12
