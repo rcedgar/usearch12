@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: make.stderr-linux
-          path: /home/runner/work/usearch12/usearch12/src/make.stderr-linux
+          path: /home/runner/work/usearch12/usearch12/src/make.stderr
   build-aarch64:
     name: Linux aarch64
     runs-on: ubuntu-latest
@@ -70,4 +70,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: make.stderr-linux-aarch64
-          path: /home/runner/work/usearch12/usearch12/src/make.stderr-linux
+          path: /home/runner/work/usearch12/usearch12/src/make.stderr
