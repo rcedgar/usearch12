@@ -60,7 +60,7 @@ jobs:
           apt-get update -q -y
           apt-get install -q -y make g++ file git python3 ccache
        run: |
-          git config --global --add safe.directory /
+          git config --global --add safe.directory /usearch12
           cd /usearch12  
           uname -a
           lscpu
