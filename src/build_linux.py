@@ -10,7 +10,7 @@ import sys
 
 import subprocess
 
-result = subprocess.run(['test', '-z', "$(git status --porcelain)"], capture_output=True, text=True, stderr=subprocess.DEVNULL)
+result = subprocess.run(['test', '-z', "$(git status --porcelain)"])
 
 if result.returncode != 0:
     sys.stderr.write("\n\nERROR -- Uncommited changes\n\n")
