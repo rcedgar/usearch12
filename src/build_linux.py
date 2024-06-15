@@ -3,18 +3,11 @@
 import os
 import sys
 
-#rc = os.system('test -z $(git status --porcelain) 2> /dev/null')
-#if rc != 0:
-#    sys.stderr.write("\n\nERROR -- Uncommited changes\n\n")
-#    sys.exit(1)
-
-import subprocess
-
-result = subprocess.run(['test', '-z', "$(git status --porcelain)"])
-
-if result.returncode != 0:
+rc = os.system('test -z "$(git status --porcelain)" 2> /dev/null')
+if rc != 0:
     sys.stderr.write("\n\nERROR -- Uncommited changes\n\n")
     sys.exit(1)
+
 
 
 rc = os.system(r'echo \"$(git log --oneline | head -n1 | cut "-d " -f1)\" | tee gitver.txt')
