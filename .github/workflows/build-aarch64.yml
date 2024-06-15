@@ -1,4 +1,4 @@
-name: build_aarh64
+name: build_aarch64
 
 on:
   workflow_dispatch:
