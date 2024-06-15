@@ -35,6 +35,10 @@ Alternatively you can run the `./build_linux.py` script, which (1) checks that t
 
 Currently building on OSX is not implemented. The Linux `Makefile` might work as-is, at most a few simple tweaks will be needed. An OSX binary is included in Release [12.0-beta1](https://github.com/rcedgar/usearch12/releases/tag/v12.0-beta1), this binary was kindly provided by [@igortru](https://github.com/igortru).
 
+## Older versions of usearch
+
+Binaries for usearch versions 5 though 11 are provided at [https://github.com/rcedgar/usearch_old_binaries/](https://github.com/rcedgar/usearch_old_binaries/), licensed under CC0-1.0 (public domain). There are no plans to provide source code for the older versions.
+
 ## Citing usearch
 
 Please cite the appropriate paper(s) listed here: [https://rcedgar.github.io/usearch12_documentation/citation.html](https://rcedgar.github.io/usearch12_documentation/citation.html)
