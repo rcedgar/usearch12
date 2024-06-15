@@ -32,17 +32,17 @@ jobs:
     - name: Upload binary artifact
       uses: actions/upload-artifact@v4
       with:
-          name: usearch12-linux-binary
+          name: usearch12.arch64-binary
           path: /home/runner/work/usearch12/usearch12/bin/usearch12
     - name: Upload make.stderr  artifact
       uses: actions/upload-artifact@v4
       with:
-          name: make.stderr-linux
+          name: make.aarch64-stderr
           path: /home/runner/work/usearch12/usearch12/src/make.stderr
     - name: Upload make.stdout  artifact
       uses: actions/upload-artifact@v4
       with:
-          name: make.stdout-linux
+          name: make.aarch64-stdout
           path: /home/runner/work/usearch12/usearch12/src/make.stdout  
   build:
     name: Linux x86_64
@@ -70,15 +70,15 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
         with:
-          name: usearch12-linux-binary
+          name: usearch12.linux-binary
           path: /home/runner/work/usearch12/usearch12/bin/usearch12
       - name: Upload make.stderr  artifact
         uses: actions/upload-artifact@v4
         with:
-          name: make.stderr-linux
+          name: make.linux-stderr
           path: /home/runner/work/usearch12/usearch12/src/make.stderr
       - name: Upload make.stdout  artifact
         uses: actions/upload-artifact@v4
         with:
-          name: make.stdout-linux
+          name: make.linux-stdout
           path: /home/runner/work/usearch12/usearch12/src/make.stdout
