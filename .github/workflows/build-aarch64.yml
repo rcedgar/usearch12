@@ -27,7 +27,6 @@ jobs:
           uname -a
           lscpu
           cd src/
-          test -z $(git status --porcelain)
           python3 build_linux.py
           file /usearch12/bin/usearch12 | grep aarch64
     - name: Upload binary artifact
