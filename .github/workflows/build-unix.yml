@@ -1,0 +1,37 @@
+name: build_unix
+
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            preset: linux-release
+            artifact: usearch12.linux-binary
+          - os: ubuntu-24.04-arm
+            preset: linux-arm64-release
+            artifact: usearch12.arch64-binary
+          - os: macos-14
+            preset: macos-release
+            artifact: usearch12-osx-m-binary
+          - os: macos-15-intel
+            preset: macos-release
+            artifact: usearch12-osx-binary
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure and Build
+        run: |
+          cmake --preset ${{ matrix.preset }}
+          cmake --build --preset ${{ matrix.preset }} -- -k0
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: ${{ matrix.artifact }}
+            path: ${{ github.workspace }}/out/build/${{ matrix.preset }}/usearch12
+            if-no-files-found: error

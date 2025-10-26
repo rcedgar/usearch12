@@ -3,15 +3,6 @@ name: build_windows
 on:
   workflow_dispatch:
 
-env:
-  # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: ./src
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
-
 permissions:
   contents: read
 
@@ -22,22 +13,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+    - name: Configure and Build
+      shell: cmd
       run: |
-           cd D:\a\usearch12\usearch12\src
-           bash build_win.bash
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=amd64 -host_arch=amd64
+        IF %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
+        cl /Bv
+        set CXX=cl
+        set CC=cl
+        cmake --preset Win-x64-Release
+        IF %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
+        cmake --build --preset windows-release -- -k0
     - name: Upload binary artifact
       uses: actions/upload-artifact@v4
       with:
           name: usearch12-windows-binary.exe
-          path: D:\a\usearch12\usearch12\src\x64\Release\usearch12.exe
+          path: ${{ github.workspace }}\out\build\Win-x64-Release\usearch12.exe
+          if-no-files-found: error
