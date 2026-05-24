@@ -6,9 +6,13 @@
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++
 // FOLLOWING THREE DELARATIONS ADDED BY ROBERT EDGAR
 // to suppress implicit declarations warnings from gcc
+#if !defined(_WIN32)
+#include <unistd.h>
+#else
 long lseek();
 int read();
 int close();
+#endif
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #ifdef _LARGEFILE64_SOURCE
