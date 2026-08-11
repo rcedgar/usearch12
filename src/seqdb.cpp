@@ -690,6 +690,7 @@ void SeqDB::SortByLength()
 			Sorted = false;
 			break;
 			}
+               PrevL = L;
 		}
 	if (Sorted)
 		return;
@@ -715,6 +716,16 @@ void SeqDB::SortByLength()
 		NewSeqs[i] = m_Seqs[Order[i]];
 	myfree(m_Seqs);
 	m_Seqs = NewSeqs;
+        if (m_Quals != 0)
+             {
+             char **NewQuals = myalloc(char *, m_SeqCount);
+             for (unsigned i = 0; i < m_SeqCount; ++i)
+                 NewQuals[i] = m_Quals[Order[i]];
+             myfree(m_Quals);
+             m_Quals = NewQuals;
+             }
+
+        myfree(Order); 
 	ProgressDoneOther();
 	}
 
