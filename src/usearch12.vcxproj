@@ -263,6 +263,7 @@
     <ClCompile Include="deflate.c" />
     <ClCompile Include="deparser.cpp" />
     <ClCompile Include="derepfull.cpp" />
+    <ClCompile Include="sortbylength.cpp" /> 
     <ClCompile Include="derepresult.cpp" />
     <ClCompile Include="diagbox.cpp" />
     <ClCompile Include="dustmask.cpp" />

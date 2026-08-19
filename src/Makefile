@@ -170,6 +170,7 @@ OBJS = \
   $(OBJDIR)/dbhitsink.o \
   $(OBJDIR)/deparser.o \
   $(OBJDIR)/derepfull.o \
+  $(OBJDIR)/sortbylength.o \
   $(OBJDIR)/derepresult.o \
   $(OBJDIR)/diagbox.o \
   $(OBJDIR)/dustmask.o \
