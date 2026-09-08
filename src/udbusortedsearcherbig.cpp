@@ -114,7 +114,8 @@ void UDBUsortedSearcher::UDBSearchBig()
 	for (unsigned i = 0; i < TopCount2; ++i)
 		{
 		unsigned TargetIndex = TopTargetIndexes2[i];
-		if (QueryBlocklist::IsExcluded(TargetIndex))
+		if (QueryBlocklist::m_Any &&
+				QueryBlocklist::IsExcluded(TargetIndex))
 			continue;
 
 		m_Target = OM->GetSeqInfo();

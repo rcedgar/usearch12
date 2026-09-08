@@ -158,9 +158,28 @@ void SintaxSearcher::Classify()
 		asserta(m_U.Size == SeqCount);
 
 		unsigned TopU = 0;
-		for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
-				 ++TargetIndex)
+		if (!QueryBlocklist::m_Any)
 		{
+			for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
+					 ++TargetIndex)
+			{
+				unsigned u = U[TargetIndex];
+
+				if (u > TopU && TargetIndex != SelfIndex)
+				{
+					TopU = u;
+					TopTargetIndexes.clear();
+				}
+
+				if (u == TopU && TargetIndex != SelfIndex)
+					TopTargetIndexes.push_back(TargetIndex);
+			}
+		}
+		else
+		{
+			for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
+					 ++TargetIndex)
+			{
 				unsigned u = U[TargetIndex];
 				if (u == 0)
 					continue;
@@ -170,14 +189,15 @@ void SintaxSearcher::Classify()
 					continue;
 
 				if (u > TopU)
-			{
-				TopU = u;
-				TopTargetIndexes.clear();
-			}
+				{
+					TopU = u;
+					TopTargetIndexes.clear();
+				}
 
 				if (u == TopU)
 					TopTargetIndexes.push_back(TargetIndex);
 			}
+		}
 
 		unsigned M = SIZE(TopTargetIndexes);
 		if (M == 0)

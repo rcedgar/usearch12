@@ -218,7 +218,8 @@ void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 			unsigned n = U[TargetIndex];
 			if (n < MinU)
 				continue;
-			if (QueryBlocklist::IsExcluded(TargetIndex))
+			if (QueryBlocklist::m_Any &&
+					QueryBlocklist::IsExcluded(TargetIndex))
 				continue;
 			TopU[TopCount] = n;
 			TopTargetIndexes[TopCount] = TargetIndex;
@@ -251,7 +252,8 @@ void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 			unsigned n = U[TargetIndex];
 			if (n < MinU)
 				continue;
-			if (QueryBlocklist::IsExcluded(TargetIndex))
+			if (QueryBlocklist::m_Any &&
+					QueryBlocklist::IsExcluded(TargetIndex))
 				continue;
 			if (n > MaxCount)
 		{
