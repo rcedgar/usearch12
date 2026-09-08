@@ -3,6 +3,7 @@
 #include "tax.h"
 #include "taxy.h"
 #include "sintaxsearcher.h"
+#include "queryblacklist.h"
 
 FILE *SintaxSearcher::m_f;
 Taxy *SintaxSearcher::m_Taxy;
@@ -159,16 +160,20 @@ void SintaxSearcher::Classify()
 		unsigned TopU = 0;
 		for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 			{
-			unsigned u = U[TargetIndex];
+				if (TargetIndex == SelfIndex ||
+						QueryBlacklist::IsExcluded(TargetIndex))
+					continue;
 
-			if (u > TopU && TargetIndex != SelfIndex)
-				{
+				unsigned u = U[TargetIndex];
+
+				if (u > TopU)
+			{
 				TopU = u;
 				TopTargetIndexes.clear();
 				}
-			
-			if (u == TopU && TargetIndex != SelfIndex)
-				TopTargetIndexes.push_back(TargetIndex);
+
+				if (u == TopU)
+					TopTargetIndexes.push_back(TargetIndex);
 			}
 
 		unsigned M = SIZE(TopTargetIndexes);
@@ -186,22 +191,25 @@ void SintaxSearcher::Classify()
 		IncCountMap(TaxStrToCount, TaxStr);
 		}
 
-	vector<string> TaxStrs;
-	vector<unsigned> Counts;
-	CountMapToVecs(TaxStrToCount, TaxStrs, Counts);
-	const unsigned N = SIZE(TaxStrs);
-	asserta(N > 0 && SIZE(Counts) == N);
+		if (TaxStrToCount.empty())
+			return;
 
-	const string &TopTaxStr = TaxStrs[0];
-	unsigned TopCount = Counts[0];
+		vector<string> TaxStrs;
+		vector<unsigned> Counts;
+		CountMapToVecs(TaxStrToCount, TaxStrs, Counts);
+		const unsigned N = SIZE(TaxStrs);
+		asserta(N > 0 && SIZE(Counts) == N);
 
-	GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
+		const string &TopTaxStr = TaxStrs[0];
+		unsigned TopCount = Counts[0];
 
-	bool Prod = true;
-	double ProdP = 1.0;
-	const unsigned Depth = SIZE(m_Pred);
-	double Cutoff = oget_flt(OPT_sintax_cutoff);
-	for (unsigned i = 0; i < Depth; ++i)
+		GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
+
+		bool Prod = true;
+		double ProdP = 1.0;
+		const unsigned Depth = SIZE(m_Pred);
+		double Cutoff = oget_flt(OPT_sintax_cutoff);
+		for (unsigned i = 0; i < Depth; ++i)
 		{
 		const string &PredName = m_Pred[i];
 		unsigned PredNameCount = TopCount;
