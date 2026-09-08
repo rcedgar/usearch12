@@ -1,33 +1,33 @@
 #include "myutils.h"
-#include "queryblacklist.h"
+#include "queryblocklist.h"
 #include "seqdb.h"
 #include "label.h"
 #include "tax.h"
 #include "taxy.h"
 
-bool QueryBlacklist::m_Loaded = false;
-const SeqDB *QueryBlacklist::m_DB = 0;
-map<string, QueryBlacklist::ItemSet> QueryBlacklist::m_QueryToBlack;
-map<string, QueryBlacklist::ItemSet> QueryBlacklist::m_QueryToWhite;
-map<string, QueryBlacklist::InternedItems>
-		QueryBlacklist::m_QueryToBlackI;
-map<string, QueryBlacklist::InternedItems>
-		QueryBlacklist::m_QueryToWhiteI;
+bool QueryBlocklist::m_Loaded = false;
+const SeqDB *QueryBlocklist::m_DB = 0;
+map<string, QueryBlocklist::ItemSet> QueryBlocklist::m_QueryToBlock;
+map<string, QueryBlocklist::ItemSet> QueryBlocklist::m_QueryToUnblock;
+map<string, QueryBlocklist::InternedItems>
+		QueryBlocklist::m_QueryToBlockI;
+map<string, QueryBlocklist::InternedItems>
+		QueryBlocklist::m_QueryToUnblockI;
 
-const Taxy *QueryBlacklist::m_Taxy = 0;
-const vector<unsigned> *QueryBlacklist::m_SeqIndexToTaxIndex = 0;
-vector<unsigned> QueryBlacklist::m_TaxStrToLeaf;
-vector<unsigned> QueryBlacklist::m_SeqAccId;
+const Taxy *QueryBlocklist::m_Taxy = 0;
+const vector<unsigned> *QueryBlocklist::m_SeqIndexToTaxIndex = 0;
+vector<unsigned> QueryBlocklist::m_TaxStrToLeaf;
+vector<unsigned> QueryBlocklist::m_SeqAccId;
 
-thread_local bool QueryBlacklist::m_Any = false;
-thread_local const QueryBlacklist::ItemSet *QueryBlacklist::m_Black = 0;
-thread_local const QueryBlacklist::ItemSet *QueryBlacklist::m_White = 0;
-thread_local const QueryBlacklist::InternedItems *
-		QueryBlacklist::m_BlackI = 0;
-thread_local const QueryBlacklist::InternedItems *
-		QueryBlacklist::m_WhiteI = 0;
+thread_local bool QueryBlocklist::m_Any = false;
+thread_local const QueryBlocklist::ItemSet *QueryBlocklist::m_Block = 0;
+thread_local const QueryBlocklist::ItemSet *QueryBlocklist::m_Unblock = 0;
+thread_local const QueryBlocklist::InternedItems *
+		QueryBlocklist::m_BlockI = 0;
+thread_local const QueryBlocklist::InternedItems *
+		QueryBlocklist::m_UnblockI = 0;
 
-bool QueryBlacklist::IsTaxonItem(const string &Item)
+bool QueryBlocklist::IsTaxonItem(const string &Item)
 	{
 	if (SIZE(Item) < 3)
 		return false;
@@ -36,7 +36,7 @@ bool QueryBlacklist::IsTaxonItem(const string &Item)
 	return strchr(RANKS, Item[0]) != 0;
 	}
 
-void QueryBlacklist::AddItems(ItemSet &IS, const string &Rest)
+void QueryBlocklist::AddItems(ItemSet &IS, const string &Rest)
 	{
 	vector<string> Items;
 	Split(Rest, Items, ',');
@@ -54,7 +54,7 @@ void QueryBlacklist::AddItems(ItemSet &IS, const string &Rest)
 		}
 	}
 
-void QueryBlacklist::ParseFile(const string &FileName,
+void QueryBlocklist::ParseFile(const string &FileName,
   map<string, ItemSet> &QueryToItems)
 	{
 	FILE *f = OpenStdioFile(FileName);
@@ -88,7 +88,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 	CloseStdioFile(f);
 	}
 
-	bool QueryBlacklist::IdInVec(const vector<unsigned> &V, unsigned Id)
+	bool QueryBlocklist::IdInVec(const vector<unsigned> &V, unsigned Id)
 	{
 		const unsigned N = SIZE(V);
 		for (unsigned i = 0; i < N; ++i)
@@ -99,7 +99,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return false;
 	}
 
-	bool QueryBlacklist::PathHasNode(unsigned Leaf,
+	bool QueryBlocklist::PathHasNode(unsigned Leaf,
 																	 const vector<unsigned> &Needles)
 	{
 		if (Leaf == UINT_MAX || Needles.empty())
@@ -115,7 +115,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return false;
 	}
 
-	bool QueryBlacklist::Matches(const ItemSet &IS, const string &Acc,
+	bool QueryBlocklist::Matches(const ItemSet &IS, const string &Acc,
 															 const string &TaxStr)
 	{
 		if (IS.Accs.find(Acc) != IS.Accs.end())
@@ -129,7 +129,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return false;
 	}
 
-	bool QueryBlacklist::MatchesInterned(const InternedItems &II,
+	bool QueryBlocklist::MatchesInterned(const InternedItems &II,
 																			 unsigned AccId, unsigned Leaf)
 	{
 		if (AccId != UINT_MAX && IdInVec(II.AccIds, AccId))
@@ -137,7 +137,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return PathHasNode(Leaf, II.TaxNodes);
 	}
 
-	bool QueryBlacklist::MatchesMixed(const ItemSet &IS,
+	bool QueryBlocklist::MatchesMixed(const ItemSet &IS,
 																		const InternedItems *II, unsigned AccId, const string &TaxStr)
 	{
 		if (II != 0 && AccId != UINT_MAX &&
@@ -152,28 +152,28 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return false;
 	}
 
-	bool QueryBlacklist::IsExcludedAccTax(const string &Acc,
+	bool QueryBlocklist::IsExcludedAccTax(const string &Acc,
 																				const string &TaxStr)
 	{
 		if (!m_Any)
 			return false;
-		if (m_White != 0 && Matches(*m_White, Acc, TaxStr))
+		if (m_Unblock != 0 && Matches(*m_Unblock, Acc, TaxStr))
 			return false;
-		if (m_Black != 0 && Matches(*m_Black, Acc, TaxStr))
+		if (m_Block != 0 && Matches(*m_Block, Acc, TaxStr))
 			return true;
 		return false;
 	}
 
-	bool QueryBlacklist::IsExcludedInterned(unsigned AccId, unsigned Leaf)
+	bool QueryBlocklist::IsExcludedInterned(unsigned AccId, unsigned Leaf)
 	{
-		if (m_WhiteI != 0 && MatchesInterned(*m_WhiteI, AccId, Leaf))
+		if (m_UnblockI != 0 && MatchesInterned(*m_UnblockI, AccId, Leaf))
 			return false;
-		if (m_BlackI != 0 && MatchesInterned(*m_BlackI, AccId, Leaf))
+		if (m_BlockI != 0 && MatchesInterned(*m_BlockI, AccId, Leaf))
 			return true;
 		return false;
 	}
 
-	bool QueryBlacklist::IsExcludedLabel(const char *Label)
+	bool QueryBlocklist::IsExcludedLabel(const char *Label)
 	{
 		if (!m_Any || Label == 0)
 			return false;
@@ -184,7 +184,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return IsExcludedAccTax(Acc, TaxStr);
 	}
 
-	bool QueryBlacklist::IsExcludedIndex(unsigned TargetIndex)
+	bool QueryBlocklist::IsExcludedIndex(unsigned TargetIndex)
 	{
 		asserta(m_DB != 0);
 		if (m_Taxy != 0)
@@ -207,11 +207,11 @@ void QueryBlacklist::ParseFile(const string &FileName,
 				AccId = m_SeqAccId[TargetIndex];
 			string TaxStr;
 			GetTaxStrFromLabel(m_DB->GetLabel(TargetIndex), TaxStr);
-			if (m_White != 0 &&
-					MatchesMixed(*m_White, m_WhiteI, AccId, TaxStr))
+			if (m_Unblock != 0 &&
+					MatchesMixed(*m_Unblock, m_UnblockI, AccId, TaxStr))
 				return false;
-			if (m_Black != 0 &&
-					MatchesMixed(*m_Black, m_BlackI, AccId, TaxStr))
+			if (m_Block != 0 &&
+					MatchesMixed(*m_Block, m_BlockI, AccId, TaxStr))
 				return true;
 			return false;
 		}
@@ -219,18 +219,18 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return IsExcludedLabel(m_DB->GetLabel(TargetIndex));
 	}
 
-	bool QueryBlacklist::AnyAccItems()
+	bool QueryBlocklist::AnyAccItems()
 	{
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToBlack.begin();
-				 p != m_QueryToBlack.end(); ++p)
+						 m_QueryToBlock.begin();
+				 p != m_QueryToBlock.end(); ++p)
 		{
 			if (!p->second.Accs.empty())
 				return true;
 		}
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToWhite.begin();
-				 p != m_QueryToWhite.end(); ++p)
+						 m_QueryToUnblock.begin();
+				 p != m_QueryToUnblock.end(); ++p)
 		{
 			if (!p->second.Accs.empty())
 				return true;
@@ -238,21 +238,21 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		return false;
 	}
 
-	void QueryBlacklist::InitInterned()
+	void QueryBlocklist::InitInterned()
 	{
-		m_QueryToBlackI.clear();
-		m_QueryToWhiteI.clear();
+		m_QueryToBlockI.clear();
+		m_QueryToUnblockI.clear();
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToBlack.begin();
-				 p != m_QueryToBlack.end(); ++p)
-			m_QueryToBlackI[p->first];
+						 m_QueryToBlock.begin();
+				 p != m_QueryToBlock.end(); ++p)
+			m_QueryToBlockI[p->first];
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToWhite.begin();
-				 p != m_QueryToWhite.end(); ++p)
-			m_QueryToWhiteI[p->first];
+						 m_QueryToUnblock.begin();
+				 p != m_QueryToUnblock.end(); ++p)
+			m_QueryToUnblockI[p->first];
 	}
 
-	void QueryBlacklist::InternAccsIfNeeded()
+	void QueryBlocklist::InternAccsIfNeeded()
 	{
 		m_SeqAccId.clear();
 		if (!AnyAccItems())
@@ -261,8 +261,8 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		map<string, unsigned> AccToId;
 		unsigned Next = 0;
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToBlack.begin();
-				 p != m_QueryToBlack.end(); ++p)
+						 m_QueryToBlock.begin();
+				 p != m_QueryToBlock.end(); ++p)
 		{
 			for (set<string>::const_iterator q = p->second.Accs.begin();
 					 q != p->second.Accs.end(); ++q)
@@ -272,8 +272,8 @@ void QueryBlacklist::ParseFile(const string &FileName,
 			}
 		}
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToWhite.begin();
-				 p != m_QueryToWhite.end(); ++p)
+						 m_QueryToUnblock.begin();
+				 p != m_QueryToUnblock.end(); ++p)
 		{
 			for (set<string>::const_iterator q = p->second.Accs.begin();
 					 q != p->second.Accs.end(); ++q)
@@ -296,20 +296,20 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		}
 
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToBlack.begin();
-				 p != m_QueryToBlack.end(); ++p)
+						 m_QueryToBlock.begin();
+				 p != m_QueryToBlock.end(); ++p)
 		{
-			InternedItems &II = m_QueryToBlackI[p->first];
+			InternedItems &II = m_QueryToBlockI[p->first];
 			II.AccIds.clear();
 			for (set<string>::const_iterator q = p->second.Accs.begin();
 					 q != p->second.Accs.end(); ++q)
 				II.AccIds.push_back(AccToId[*q]);
 		}
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToWhite.begin();
-				 p != m_QueryToWhite.end(); ++p)
+						 m_QueryToUnblock.begin();
+				 p != m_QueryToUnblock.end(); ++p)
 		{
-			InternedItems &II = m_QueryToWhiteI[p->first];
+			InternedItems &II = m_QueryToUnblockI[p->first];
 			II.AccIds.clear();
 			for (set<string>::const_iterator q = p->second.Accs.begin();
 					 q != p->second.Accs.end(); ++q)
@@ -317,7 +317,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		}
 	}
 
-	void QueryBlacklist::InternTaxa(const ItemSet &IS, InternedItems &II)
+	void QueryBlocklist::InternTaxa(const ItemSet &IS, InternedItems &II)
 	{
 		II.TaxNodes.clear();
 		const unsigned N = SIZE(IS.Taxa);
@@ -329,7 +329,7 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		}
 	}
 
-	void QueryBlacklist::SetTaxy(const Taxy *T,
+	void QueryBlocklist::SetTaxy(const Taxy *T,
 															 const vector<unsigned> *SeqIndexToTaxIndex)
 	{
 		m_Taxy = 0;
@@ -354,79 +354,79 @@ void QueryBlacklist::ParseFile(const string &FileName,
 		}
 
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToBlack.begin();
-				 p != m_QueryToBlack.end(); ++p)
-			InternTaxa(p->second, m_QueryToBlackI[p->first]);
+						 m_QueryToBlock.begin();
+				 p != m_QueryToBlock.end(); ++p)
+			InternTaxa(p->second, m_QueryToBlockI[p->first]);
 		for (map<string, ItemSet>::const_iterator p =
-						 m_QueryToWhite.begin();
-				 p != m_QueryToWhite.end(); ++p)
-			InternTaxa(p->second, m_QueryToWhiteI[p->first]);
+						 m_QueryToUnblock.begin();
+				 p != m_QueryToUnblock.end(); ++p)
+			InternTaxa(p->second, m_QueryToUnblockI[p->first]);
 	}
 
-	void QueryBlacklist::FromFiles(const SeqDB &DB)
+	void QueryBlocklist::FromFiles(const SeqDB &DB)
 	{
-		if (ofilled(OPT_whitelist) && !ofilled(OPT_blacklist))
-			Die("-whitelist requires -blacklist");
-		if (!ofilled(OPT_blacklist))
+		if (ofilled(OPT_unblocklist) && !ofilled(OPT_blocklist))
+			Die("-unblocklist requires -blocklist");
+		if (!ofilled(OPT_blocklist))
 			return;
 
 		m_DB = &DB;
 		m_Taxy = 0;
 		m_SeqIndexToTaxIndex = 0;
 		m_TaxStrToLeaf.clear();
-		m_QueryToBlack.clear();
-		m_QueryToWhite.clear();
+		m_QueryToBlock.clear();
+		m_QueryToUnblock.clear();
 
-		ParseFile(oget_str(OPT_blacklist), m_QueryToBlack);
-		if (ofilled(OPT_whitelist))
-			ParseFile(oget_str(OPT_whitelist), m_QueryToWhite);
+		ParseFile(oget_str(OPT_blocklist), m_QueryToBlock);
+		if (ofilled(OPT_unblocklist))
+			ParseFile(oget_str(OPT_unblocklist), m_QueryToUnblock);
 
 		InitInterned();
 		InternAccsIfNeeded();
 		m_Loaded = true;
 	}
 
-	void QueryBlacklist::BindQuery(const char *Label)
+	void QueryBlocklist::BindQuery(const char *Label)
 	{
 		m_Any = false;
-		m_Black = 0;
-		m_White = 0;
-		m_BlackI = 0;
-		m_WhiteI = 0;
+		m_Block = 0;
+		m_Unblock = 0;
+		m_BlockI = 0;
+		m_UnblockI = 0;
 		if (!m_Loaded || Label == 0)
 			return;
 
 		string Acc;
 		GetAccFromLabel(Label, Acc);
 		map<string, ItemSet>::const_iterator pb =
-				m_QueryToBlack.find(Acc);
-		if (pb == m_QueryToBlack.end() || pb->second.Empty())
+				m_QueryToBlock.find(Acc);
+		if (pb == m_QueryToBlock.end() || pb->second.Empty())
 			return;
 
-		m_Black = &pb->second;
+		m_Block = &pb->second;
 		m_Any = true;
 		map<string, InternedItems>::const_iterator pbi =
-				m_QueryToBlackI.find(Acc);
-		if (pbi != m_QueryToBlackI.end())
-			m_BlackI = &pbi->second;
+				m_QueryToBlockI.find(Acc);
+		if (pbi != m_QueryToBlockI.end())
+			m_BlockI = &pbi->second;
 
-		map<string, ItemSet>::const_iterator pw =
-				m_QueryToWhite.find(Acc);
-		if (pw != m_QueryToWhite.end())
+		map<string, ItemSet>::const_iterator pu =
+				m_QueryToUnblock.find(Acc);
+		if (pu != m_QueryToUnblock.end())
 		{
-			m_White = &pw->second;
-			map<string, InternedItems>::const_iterator pwi =
-					m_QueryToWhiteI.find(Acc);
-			if (pwi != m_QueryToWhiteI.end())
-				m_WhiteI = &pwi->second;
+			m_Unblock = &pu->second;
+			map<string, InternedItems>::const_iterator pui =
+					m_QueryToUnblockI.find(Acc);
+			if (pui != m_QueryToUnblockI.end())
+				m_UnblockI = &pui->second;
 		}
 
-		if (m_Taxy != 0 && (m_BlackI == 0 || m_BlackI->Empty()))
+		if (m_Taxy != 0 && (m_BlockI == 0 || m_BlockI->Empty()))
 		{
 			m_Any = false;
-			m_Black = 0;
-			m_White = 0;
-			m_BlackI = 0;
-			m_WhiteI = 0;
+			m_Block = 0;
+			m_Unblock = 0;
+			m_BlockI = 0;
+			m_UnblockI = 0;
 		}
 	}

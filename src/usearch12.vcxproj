@@ -337,7 +337,7 @@
     <ClCompile Include="prime.cpp" />
     <ClCompile Include="progress.cpp" />
     <ClCompile Include="quarts.cpp" />
-    <ClCompile Include="queryblacklist.cpp" />
+    <ClCompile Include="queryblocklist.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="searchcmd.cpp" />
     <ClCompile Include="searcher.cpp" />
@@ -475,7 +475,7 @@
     <ClInclude Include="primes.h" />
     <ClInclude Include="progress.h" />
     <ClInclude Include="quarts.h" />
-    <ClInclude Include="queryblacklist.h" />
+    <ClInclude Include="queryblocklist.h" />
     <ClInclude Include="searcher.h" />
     <ClInclude Include="segmask.h" />
     <ClInclude Include="seqdb.h" />

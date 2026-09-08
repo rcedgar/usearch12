@@ -3,7 +3,7 @@
 #include "alignresult.h"
 #include "seqinfo.h"
 #include "cmd.h"
-#include "queryblacklist.h"
+#include "queryblocklist.h"
 
 unsigned GetSizeFromLabel(const string &Label, unsigned Default);
 
@@ -143,7 +143,7 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 	if (m_AcceptAll)
 		return false;
 
-	if (QueryBlacklist::IsExcludedLabel(Target->m_Label))
+	if (QueryBlocklist::IsExcludedLabel(Target->m_Label))
 		return true;
 
 	if (oget_flag(OPT_self) && strcmp(Query->m_Label, Target->m_Label) == 0)

@@ -3,7 +3,7 @@
 #include "tax.h"
 #include "taxy.h"
 #include "sintaxsearcher.h"
-#include "queryblacklist.h"
+#include "queryblocklist.h"
 
 FILE *SintaxSearcher::m_f;
 Taxy *SintaxSearcher::m_Taxy;
@@ -166,7 +166,7 @@ void SintaxSearcher::Classify()
 					continue;
 				if (TargetIndex == SelfIndex)
 					continue;
-				if (QueryBlacklist::IsExcluded(TargetIndex))
+				if (QueryBlocklist::IsExcluded(TargetIndex))
 					continue;
 
 				if (u > TopU)
@@ -249,7 +249,7 @@ void SintaxSearcher::Init()
 		vector<unsigned> *SeqIndexToTaxIndex = new vector<unsigned>;
 		m_Taxy->FromSeqDB(*m_UDBData->m_SeqDB, SeqIndexToTaxIndex);
 		m_SeqIndexToTaxIndex = SeqIndexToTaxIndex;
-		QueryBlacklist::SetTaxy(m_Taxy, m_SeqIndexToTaxIndex);
+		QueryBlocklist::SetTaxy(m_Taxy, m_SeqIndexToTaxIndex);
 		}
 	UNLOCK_CLASS();
 

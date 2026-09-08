@@ -103,7 +103,7 @@ HDRS = \
   primes.h \
   progress.h \
   quarts.h \
-  queryblacklist.h \
+  queryblocklist.h \
   searcher.h \
   segmask.h \
   seqdb.h \
@@ -239,7 +239,7 @@ OBJS = \
   $(OBJDIR)/prime.o \
   $(OBJDIR)/progress.o \
   $(OBJDIR)/quarts.o \
-  $(OBJDIR)/queryblacklist.o \
+  $(OBJDIR)/queryblocklist.o \
   $(OBJDIR)/search.o \
   $(OBJDIR)/searchcmd.o \
   $(OBJDIR)/searcher.o \

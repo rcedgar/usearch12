@@ -8,7 +8,7 @@
 #include "hspfinder.h"
 #include "alignresult.h"
 #include "sort.h"
-#include "queryblacklist.h"
+#include "queryblocklist.h"
 
 unsigned GetMinWindexWordCount(unsigned QueryUniqueWordCount, double FractId,
   unsigned WordLength, bool Nucleo);
@@ -218,7 +218,7 @@ void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 			unsigned n = U[TargetIndex];
 			if (n < MinU)
 				continue;
-			if (QueryBlacklist::IsExcluded(TargetIndex))
+			if (QueryBlocklist::IsExcluded(TargetIndex))
 				continue;
 			TopU[TopCount] = n;
 			TopTargetIndexes[TopCount] = TargetIndex;
@@ -251,7 +251,7 @@ void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 			unsigned n = U[TargetIndex];
 			if (n < MinU)
 				continue;
-			if (QueryBlacklist::IsExcluded(TargetIndex))
+			if (QueryBlocklist::IsExcluded(TargetIndex))
 				continue;
 			if (n > MaxCount)
 		{
