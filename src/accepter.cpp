@@ -143,7 +143,7 @@ bool Accepter::RejectPair(const SeqInfo *Query, const SeqInfo *Target)
 	if (m_AcceptAll)
 		return false;
 
-	if (QueryBlacklist::IsExcluded(Target->m_Index))
+	if (QueryBlacklist::IsExcludedLabel(Target->m_Label))
 		return true;
 
 	if (oget_flag(OPT_self) && strcmp(Query->m_Label, Target->m_Label) == 0)

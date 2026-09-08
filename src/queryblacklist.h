@@ -3,45 +3,90 @@
 
 #include "myutils.h"
 #include <map>
+#include <set>
 
 class SeqDB;
+class Taxy;
 
 class QueryBlacklist
 	{
 public:
+	struct ItemSet
+	{
+		set<string> Accs;
+		vector<string> Taxa;
+		bool Empty() const
+		{
+			return Accs.empty() && Taxa.empty();
+		}
+	};
+
+	struct InternedItems
+	{
+		vector<unsigned> AccIds;
+		vector<unsigned> TaxNodes;
+		bool Empty() const
+		{
+			return AccIds.empty() && TaxNodes.empty();
+		}
+	};
+
 	static bool m_Loaded;
-	static unsigned m_SeqCount;
-	static map<string, vector<unsigned> > m_QueryToBlack;
-	static map<string, vector<unsigned> > m_QueryToWhite;
+	static const SeqDB *m_DB;
+	static map<string, ItemSet> m_QueryToBlack;
+	static map<string, ItemSet> m_QueryToWhite;
+	static map<string, InternedItems> m_QueryToBlackI;
+	static map<string, InternedItems> m_QueryToWhiteI;
+
+	static const Taxy *m_Taxy;
+	static const vector<unsigned> *m_SeqIndexToTaxIndex;
+	static vector<unsigned> m_TaxStrToLeaf;
+	static vector<unsigned> m_SeqAccId;
 
 	static thread_local bool m_Any;
-	static thread_local vector<char> m_Mask;
+	static thread_local const ItemSet *m_Black;
+	static thread_local const ItemSet *m_White;
+	static thread_local const InternedItems *m_BlackI;
+	static thread_local const InternedItems *m_WhiteI;
 
 public:
 	static void FromFiles(const SeqDB &DB);
+	static void SetTaxy(const Taxy *T,
+											const vector<unsigned> *SeqIndexToTaxIndex);
 	static void BindQuery(const char *Label);
 
 	static bool IsExcluded(unsigned TargetIndex)
 		{
-		return m_Any && TargetIndex < m_SeqCount &&
-		  m_Mask[TargetIndex];
+			if (!m_Any)
+				return false;
+			return IsExcludedIndex(TargetIndex);
 		}
 
-private:
-	struct ItemSet
-		{
-		vector<string> Accs;
-		vector<string> Taxa;
-		};
+		static bool IsExcludedLabel(const char *Label);
+		static bool IsExcludedAccTax(const string &Acc,
+																 const string &TaxStr);
 
-	static void ParseFile(const string &FileName,
-	  map<string, ItemSet> &QueryToItems);
-	static void AddItems(ItemSet &IS, const string &Rest);
-	static bool IsTaxonItem(const string &Item);
-	static void ResolveQuery(const ItemSet &IS,
-	  const map<string, vector<unsigned> > &AccToIndexes,
-	  const map<string, vector<unsigned> > &TaxToIndexes,
-	  vector<unsigned> &TargetIndexes);
+	private:
+		static bool IsExcludedIndex(unsigned TargetIndex);
+		static bool IsExcludedInterned(unsigned AccId, unsigned Leaf);
+		static bool Matches(const ItemSet &IS, const string &Acc,
+												const string &TaxStr);
+		static bool MatchesInterned(const InternedItems &II,
+																unsigned AccId, unsigned Leaf);
+		static bool MatchesMixed(const ItemSet &IS,
+														 const InternedItems *II, unsigned AccId,
+														 const string &TaxStr);
+		static bool IdInVec(const vector<unsigned> &V, unsigned Id);
+		static bool PathHasNode(unsigned Leaf,
+														const vector<unsigned> &Needles);
+		static void ParseFile(const string &FileName,
+													map<string, ItemSet> &QueryToItems);
+		static void AddItems(ItemSet &IS, const string &Rest);
+		static bool IsTaxonItem(const string &Item);
+		static void InitInterned();
+		static void InternAccsIfNeeded();
+		static void InternTaxa(const ItemSet &IS, InternedItems &II);
+		static bool AnyAccItems();
 	};
 
 #endif // queryblacklist_h

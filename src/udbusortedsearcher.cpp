@@ -215,15 +215,14 @@ void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
+			unsigned n = U[TargetIndex];
+			if (n < MinU)
+				continue;
 			if (QueryBlacklist::IsExcluded(TargetIndex))
 				continue;
-			unsigned n = U[TargetIndex];
-			if (n >= MinU)
-			{
 			TopU[TopCount] = n;
 			TopTargetIndexes[TopCount] = TargetIndex;
 			++TopCount;
-			}
 		}
 
 	m_TopU.Size = TopCount;
@@ -249,22 +248,21 @@ void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 	unsigned MaxU = 0;
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
+			unsigned n = U[TargetIndex];
+			if (n < MinU)
+				continue;
 			if (QueryBlacklist::IsExcluded(TargetIndex))
 				continue;
-			unsigned n = U[TargetIndex];
-			if (n >= MinU)
-			{
 			if (n > MaxCount)
-				{
-				unsigned NewMinCount = unsigned(n*Bump);
-				if (NewMinCount > MinU && NewMinCount < MaxCount)
-					MinU = NewMinCount;
-				MaxCount = n;
-				}
-			TopU[TopCount] = n;
-			TopTargetIndexes[TopCount] = TargetIndex;
-			++TopCount;
-			}
+		{
+			unsigned NewMinCount = unsigned(n * Bump);
+			if (NewMinCount > MinU && NewMinCount < MaxCount)
+				MinU = NewMinCount;
+			MaxCount = n;
+		}
+		TopU[TopCount] = n;
+		TopTargetIndexes[TopCount] = TargetIndex;
+		++TopCount;
 		}
 
 	m_TopU.Size = TopCount;

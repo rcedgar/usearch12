@@ -158,19 +158,22 @@ void SintaxSearcher::Classify()
 		asserta(m_U.Size == SeqCount);
 
 		unsigned TopU = 0;
-		for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
-			{
-				if (TargetIndex == SelfIndex ||
-						QueryBlacklist::IsExcluded(TargetIndex))
-					continue;
-
+		for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
+				 ++TargetIndex)
+		{
 				unsigned u = U[TargetIndex];
+				if (u == 0)
+					continue;
+				if (TargetIndex == SelfIndex)
+					continue;
+				if (QueryBlacklist::IsExcluded(TargetIndex))
+					continue;
 
 				if (u > TopU)
 			{
 				TopU = u;
 				TopTargetIndexes.clear();
-				}
+			}
 
 				if (u == TopU)
 					TopTargetIndexes.push_back(TargetIndex);
@@ -246,6 +249,7 @@ void SintaxSearcher::Init()
 		vector<unsigned> *SeqIndexToTaxIndex = new vector<unsigned>;
 		m_Taxy->FromSeqDB(*m_UDBData->m_SeqDB, SeqIndexToTaxIndex);
 		m_SeqIndexToTaxIndex = SeqIndexToTaxIndex;
+		QueryBlacklist::SetTaxy(m_Taxy, m_SeqIndexToTaxIndex);
 		}
 	UNLOCK_CLASS();
 
