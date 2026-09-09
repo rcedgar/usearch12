@@ -485,6 +485,9 @@
     <ClCompile Include="progress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="queryblocklist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -710,6 +713,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="quarts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="queryblocklist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="searcher.h">

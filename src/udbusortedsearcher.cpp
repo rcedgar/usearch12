@@ -8,6 +8,7 @@
 #include "hspfinder.h"
 #include "alignresult.h"
 #include "sort.h"
+#include "queryblocklist.h"
 
 unsigned GetMinWindexWordCount(unsigned QueryUniqueWordCount, double FractId,
   unsigned WordLength, bool Nucleo);
@@ -214,13 +215,15 @@ void UDBUsortedSearcher::SetTopNoBump(unsigned MinU)
 
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
-		unsigned n = U[TargetIndex];
-		if (n >= MinU)
-			{
+			unsigned n = U[TargetIndex];
+			if (n < MinU)
+				continue;
+			if (QueryBlocklist::m_Any &&
+					QueryBlocklist::IsExcluded(TargetIndex))
+				continue;
 			TopU[TopCount] = n;
 			TopTargetIndexes[TopCount] = TargetIndex;
 			++TopCount;
-			}
 		}
 
 	m_TopU.Size = TopCount;
@@ -246,20 +249,22 @@ void UDBUsortedSearcher::SetTopBump(unsigned MinU, unsigned BumpPct)
 	unsigned MaxU = 0;
 	for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
 		{
-		unsigned n = U[TargetIndex];
-		if (n >= MinU)
-			{
+			unsigned n = U[TargetIndex];
+			if (n < MinU)
+				continue;
+			if (QueryBlocklist::m_Any &&
+					QueryBlocklist::IsExcluded(TargetIndex))
+				continue;
 			if (n > MaxCount)
-				{
-				unsigned NewMinCount = unsigned(n*Bump);
-				if (NewMinCount > MinU && NewMinCount < MaxCount)
-					MinU = NewMinCount;
-				MaxCount = n;
-				}
-			TopU[TopCount] = n;
-			TopTargetIndexes[TopCount] = TargetIndex;
-			++TopCount;
-			}
+		{
+			unsigned NewMinCount = unsigned(n * Bump);
+			if (NewMinCount > MinU && NewMinCount < MaxCount)
+				MinU = NewMinCount;
+			MaxCount = n;
+		}
+		TopU[TopCount] = n;
+		TopTargetIndexes[TopCount] = TargetIndex;
+		++TopCount;
 		}
 
 	m_TopU.Size = TopCount;

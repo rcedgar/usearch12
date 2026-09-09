@@ -6,6 +6,7 @@
 #include "alignresult.h"
 #include "terminator.h"
 #include "orffinder.h"
+#include "queryblocklist.h"
 
 mutex Searcher::m_Lock;
 
@@ -108,6 +109,7 @@ void Searcher::SearchXlat(SeqInfo *Query)
 			break;
 			}
 		m_Query = ORFSI;
+		QueryBlocklist::BindQuery(ORFSI->m_Label);
 		SetQueryImpl();
 		m_Aligner->SetQuery(ORFSI);
 		m_Terminator->OnNewQuery();
@@ -132,6 +134,7 @@ void Searcher::Search(SeqInfo *Query, bool KeepHits)
 
 	m_HitMgr->SetQuery(Query);
 	m_Query = Query;
+	QueryBlocklist::BindQuery(Query->m_Label);
 	SetQueryImpl();
 	if (m_Aligner != 0)
 		m_Aligner->SetQuery(Query);
@@ -146,6 +149,7 @@ void Searcher::Search(SeqInfo *Query, bool KeepHits)
 		SeqInfo *QueryRC = m_OM->GetSeqInfo();
 		Query->GetRevComp(QueryRC);
 		m_Query = QueryRC;
+		QueryBlocklist::BindQuery(QueryRC->m_Label);
 		SetQueryImpl();
 		if (m_Aligner != 0)
 			m_Aligner->SetQuery(QueryRC);

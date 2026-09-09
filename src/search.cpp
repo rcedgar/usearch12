@@ -12,6 +12,7 @@
 #include "uparsesink.h"
 #include "otutabsink.h"
 #include "sintaxsearcher.h"
+#include "queryblocklist.h"
 #include "hitmgr.h"
 #include "filetype.h"
 #include "label.h"
@@ -100,6 +101,19 @@ void Search(CMD Cmd, const string &QueryFileName, const string &DBFileName)
 	SeqDB *seqdb = 0;
 	bool DBIsNucleo = false;
 	LoadDB(DBFileName, Cmd, &seqdb, &udb, &DBIsNucleo);
+
+	if (ofilled(OPT_unblocklist) && !ofilled(OPT_blocklist))
+		Die("-unblocklist requires -blocklist");
+	if (ofilled(OPT_blocklist))
+	{
+		SeqDB *DB = seqdb;
+		if (DB == 0)
+		{
+			asserta(udb != 0 && udb->m_SeqDB != 0);
+			DB = udb->m_SeqDB;
+		}
+		QueryBlocklist::FromFiles(*DB);
+	}
 
 	bool RevComp = GetRevComp(QueryIsNucleo, DBIsNucleo);
 	bool Xlat = GetXlat(QueryIsNucleo, DBIsNucleo);

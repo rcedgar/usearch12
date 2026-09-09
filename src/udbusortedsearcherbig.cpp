@@ -7,6 +7,7 @@
 #include "hspfinder.h"
 #include "alignresult.h"
 #include "sort.h"
+#include "queryblocklist.h"
 
 #if	0
 
@@ -113,6 +114,9 @@ void UDBUsortedSearcher::UDBSearchBig()
 	for (unsigned i = 0; i < TopCount2; ++i)
 		{
 		unsigned TargetIndex = TopTargetIndexes2[i];
+		if (QueryBlocklist::m_Any &&
+				QueryBlocklist::IsExcluded(TargetIndex))
+			continue;
 
 		m_Target = OM->GetSeqInfo();
 		GetTargetSeqInfo(TargetIndex, m_Target);

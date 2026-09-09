@@ -3,6 +3,7 @@
 #include "tax.h"
 #include "taxy.h"
 #include "sintaxsearcher.h"
+#include "queryblocklist.h"
 
 FILE *SintaxSearcher::m_f;
 Taxy *SintaxSearcher::m_Taxy;
@@ -157,19 +158,46 @@ void SintaxSearcher::Classify()
 		asserta(m_U.Size == SeqCount);
 
 		unsigned TopU = 0;
-		for (unsigned TargetIndex = 0; TargetIndex < SeqCount; ++TargetIndex)
+		if (!QueryBlocklist::m_Any)
+		{
+			for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
+					 ++TargetIndex)
 			{
-			unsigned u = U[TargetIndex];
+				unsigned u = U[TargetIndex];
 
-			if (u > TopU && TargetIndex != SelfIndex)
+				if (u > TopU && TargetIndex != SelfIndex)
 				{
-				TopU = u;
-				TopTargetIndexes.clear();
+					TopU = u;
+					TopTargetIndexes.clear();
 				}
-			
-			if (u == TopU && TargetIndex != SelfIndex)
-				TopTargetIndexes.push_back(TargetIndex);
+
+				if (u == TopU && TargetIndex != SelfIndex)
+					TopTargetIndexes.push_back(TargetIndex);
 			}
+		}
+		else
+		{
+			for (unsigned TargetIndex = 0; TargetIndex < SeqCount;
+					 ++TargetIndex)
+			{
+				unsigned u = U[TargetIndex];
+				if (u == 0)
+					continue;
+				if (TargetIndex == SelfIndex)
+					continue;
+				if (QueryBlocklist::IsExcluded(TargetIndex))
+					continue;
+
+				if (u > TopU)
+				{
+					TopU = u;
+					TopTargetIndexes.clear();
+				}
+
+				if (u == TopU)
+					TopTargetIndexes.push_back(TargetIndex);
+			}
+		}
 
 		unsigned M = SIZE(TopTargetIndexes);
 		if (M == 0)
@@ -186,22 +214,25 @@ void SintaxSearcher::Classify()
 		IncCountMap(TaxStrToCount, TaxStr);
 		}
 
-	vector<string> TaxStrs;
-	vector<unsigned> Counts;
-	CountMapToVecs(TaxStrToCount, TaxStrs, Counts);
-	const unsigned N = SIZE(TaxStrs);
-	asserta(N > 0 && SIZE(Counts) == N);
+		if (TaxStrToCount.empty())
+			return;
 
-	const string &TopTaxStr = TaxStrs[0];
-	unsigned TopCount = Counts[0];
+		vector<string> TaxStrs;
+		vector<unsigned> Counts;
+		CountMapToVecs(TaxStrToCount, TaxStrs, Counts);
+		const unsigned N = SIZE(TaxStrs);
+		asserta(N > 0 && SIZE(Counts) == N);
 
-	GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
+		const string &TopTaxStr = TaxStrs[0];
+		unsigned TopCount = Counts[0];
 
-	bool Prod = true;
-	double ProdP = 1.0;
-	const unsigned Depth = SIZE(m_Pred);
-	double Cutoff = oget_flt(OPT_sintax_cutoff);
-	for (unsigned i = 0; i < Depth; ++i)
+		GetTaxNamesFromTaxStr(TopTaxStr, m_Pred);
+
+		bool Prod = true;
+		double ProdP = 1.0;
+		const unsigned Depth = SIZE(m_Pred);
+		double Cutoff = oget_flt(OPT_sintax_cutoff);
+		for (unsigned i = 0; i < Depth; ++i)
 		{
 		const string &PredName = m_Pred[i];
 		unsigned PredNameCount = TopCount;
@@ -238,6 +269,7 @@ void SintaxSearcher::Init()
 		vector<unsigned> *SeqIndexToTaxIndex = new vector<unsigned>;
 		m_Taxy->FromSeqDB(*m_UDBData->m_SeqDB, SeqIndexToTaxIndex);
 		m_SeqIndexToTaxIndex = SeqIndexToTaxIndex;
+		QueryBlocklist::SetTaxy(m_Taxy, m_SeqIndexToTaxIndex);
 		}
 	UNLOCK_CLASS();
 
