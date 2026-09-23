@@ -1477,7 +1477,15 @@ void ChimeraPool::WorkerScan(unsigned ThreadIndex)
 	DeParser *DP = W.DP;
 	SeqDB *DB = m_DB;
 	const bool SelfFlag = m_SelfFlag;
-	GA->SetQuery(m_Query);
+
+	// The query must be worker-local: the alignment path refcounts and
+	// allocates through Query.m_Owner (GlobalAlign_AllOpts takes SubPath
+	// from Query.m_Owner; AlignResult::Create/Down Up/Down the query;
+	// Aligner::SetQuery/OnQueryDone Up/Down it). A single query shared by
+	// all workers would be a data race.
+	SeqInfo *QSI = W.OM->GetSeqInfo();
+	QSI->Copy(*m_Query);
+	GA->SetQuery(QSI);
 	for (unsigned SeqIndex = W.Start; SeqIndex < W.End; ++SeqIndex)
 		{
 		SeqInfo *SI = W.OM->GetSeqInfo();
@@ -1539,5 +1547,6 @@ void ChimeraPool::WorkerScan(unsigned ThreadIndex)
 			break;
 			}
 		}
-	GA->OnQueryDone(m_Query);
+	GA->OnQueryDone(QSI);
+	QSI->Down();
 	}
