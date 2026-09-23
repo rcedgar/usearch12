@@ -48,6 +48,12 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 	DeParser *DP = new DeParser(OM);
 	DP->m_GA = GA;
 
+	// Worker pool for the parallel per-query target scan. Honors -threads
+	// (see GetRequestedThreadCount); results are identical to the serial scan.
+	ChimeraPool CP;
+	CP.Init(AP, AH);
+	DP->m_CP = &CP;
+
 	double MinAbSkew = 16;
 	if (ofilled(OPT_abskew))
 		MinAbSkew = oget_flt(OPT_abskew);
@@ -148,6 +154,9 @@ uint Uchime2DeNovo(const SeqDB &Input, vector<bool> &IsChimeraVec,
 		unsigned QueryCount = SeqIndex + 1;
 		}
 	ProgressDoneLoop();
+
+	DP->m_CP = 0;
+	CP.Free();
 
 	CloseStdioFile(fUCA);
 	CloseStdioFile(DeParser::m_fTab);

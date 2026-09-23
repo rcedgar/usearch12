@@ -11,6 +11,9 @@
 #define TRACE			0
 #define TRACE_ALNS		0
 
+// Min targets in search DB to use the parallel scan
+#define MIN_PAR_SCAN_SEQS	256
+
 void WriteAlnPretty(FILE *f, const byte *A, const byte *B, const char *Path,
   bool StripTermGaps);
 void Make3Way(const SeqInfo *SDQ, const SeqInfo *SDA, const SeqInfo *SDB,
@@ -421,8 +424,19 @@ void DeParser::ParseLo()
 #endif
 	ClearHit();
 	unsigned SeqCount = GetSeqCount();
-
 	m_Paths.clear();
+
+	if (m_CP != 0 && m_CP->m_Ready && SeqCount >= MIN_PAR_SCAN_SEQS &&
+	  DeParser::m_fTab == 0 && DeParser::m_fAln == 0)
+		ScanTargetsParallel(m_CP, SeqCount);
+	else
+		ScanTargetsSerial(SeqCount);
+
+	FinishScan();
+	}
+
+void DeParser::ScanTargetsSerial(unsigned SeqCount)
+	{
 	m_GA->SetQuery(m_Query);
 	double BestAbSkew = -1.0;
 	for (unsigned SeqIndex = 0; SeqIndex < SeqCount; ++SeqIndex)
@@ -508,7 +522,52 @@ void DeParser::ParseLo()
 			break;
 		}
 	m_GA->OnQueryDone(m_Query);
+	}
 
+void DeParser::ScanTargetsParallel(ChimeraPool *CP, unsigned SeqCount)
+	{
+	CP->Scan(m_Query, m_DB);
+
+	// Merge chunk results in index order. The same strict comparisons as
+	// the serial scan preserve first-wins tie-breaking, so the merged m_*
+	// state is identical to the serial scan's. Stop after the first chunk
+	// that found an exact match (the serial break point).
+	for (unsigned i = 0; i < CP->m_N; ++i)
+		{
+		const DepScanPart &P = CP->GetPart(i);
+		if (P.DiffsQT != UINT_MAX && P.DiffsQT < m_DiffsQT)
+			{
+			m_Top = P.Top;
+			m_DiffsQT = P.DiffsQT;
+			}
+		if (P.Pos_BestLeft0d != UINT_MAX && P.Pos_BestLeft0d > m_Pos_BestLeft0d)
+			{
+			m_Pos_BestLeft0d = P.Pos_BestLeft0d;
+			m_BestLeft0d = P.BestLeft0d;
+			}
+		if (P.Pos_BestRight0d != UINT_MAX && P.Pos_BestRight0d < m_Pos_BestRight0d)
+			{
+			m_Pos_BestRight0d = P.Pos_BestRight0d;
+			m_BestRight0d = P.BestRight0d;
+			}
+		if (P.Pos_BestLeft1d != UINT_MAX && P.Pos_BestLeft1d > m_Pos_BestLeft1d)
+			{
+			m_Pos_BestLeft1d = P.Pos_BestLeft1d;
+			m_BestLeft1d = P.BestLeft1d;
+			}
+		if (P.Pos_BestRight1d != UINT_MAX && P.Pos_BestRight1d < m_Pos_BestRight1d)
+			{
+			m_Pos_BestRight1d = P.Pos_BestRight1d;
+			m_BestRight1d = P.BestRight1d;
+			}
+		m_Paths.insert(m_Paths.end(), P.Paths.begin(), P.Paths.end());
+		if (P.ExactFound)
+			break;
+		}
+	}
+
+void DeParser::FinishScan()
+	{
 	if (m_DiffsQT == 0)
 		{
 #if	TRACE
@@ -1263,6 +1322,222 @@ void DeParser::AppendInfoStr(string &s) const
 
 	case DEP_other:
 		s += "DEP_error";
-		break;		
+		break;
 		}
+	}
+
+void DepScanPart::Init()
+	{
+	DiffsQT = UINT_MAX;
+	Top = UINT_MAX;
+	Pos_BestLeft0d = 0;
+	BestLeft0d = UINT_MAX;
+	Pos_BestRight0d = UINT_MAX;
+	BestRight0d = UINT_MAX;
+	Pos_BestLeft1d = 0;
+	BestLeft1d = UINT_MAX;
+	Pos_BestRight1d = UINT_MAX;
+	BestRight1d = UINT_MAX;
+	ExactFound = false;
+	Paths.clear();
+	}
+
+ChimeraPool::ChimeraPool()
+	: m_N(0)
+	, m_Ready(false)
+	, m_Exit(false)
+	, m_JobSeq(0)
+	, m_DoneCount(0)
+	, m_Query(0)
+	, m_DB(0)
+	, m_SelfFlag(false)
+	{
+	}
+
+ChimeraPool::~ChimeraPool()
+	{
+	Free();
+	}
+
+void ChimeraPool::Init(const AlnParams *AP, const AlnHeuristics *AH)
+	{
+	Free();
+	m_N = GetRequestedThreadCount();
+	asserta(m_N > 0);
+	m_Workers.resize(m_N);
+	for (unsigned i = 0; i < m_N; ++i)
+		{
+		Worker &W = m_Workers[i];
+		W.OM = ObjMgr::CreateObjMgr();
+		W.GA = new GlobalAligner;
+		W.GA->Init(AP, AH);
+		W.GA->m_FailIfNoHSPs = false;
+		W.GA->m_FullDPAlways = false;
+		W.DP = new DeParser(W.OM);
+		W.DP->m_GA = W.GA;
+		W.Start = 0;
+		W.End = 0;
+		W.LastJobSeq = 0;
+		W.Part.Init();
+		}
+	m_JobSeq = 0;
+	m_DoneCount = 0;
+	m_Exit = false;
+	for (unsigned i = 0; i < m_N; ++i)
+		{
+		std::thread *t = new std::thread(&ChimeraPool::WorkerLoop, this, i);
+		m_Threads.push_back(t);
+		}
+	m_Ready = true;
+	}
+
+void ChimeraPool::Free()
+	{
+	if (m_N == 0 && m_Threads.empty())
+		return;
+	{
+	std::lock_guard<std::mutex> Lk(m_Mutex);
+	m_Exit = true;
+	}
+	m_CV_Work.notify_all();
+	for (unsigned i = 0; i < m_N; ++i)
+		{
+		m_Threads[i]->join();
+		delete m_Threads[i];
+		}
+	m_Threads.clear();
+	for (unsigned i = 0; i < m_N; ++i)
+		{
+		Worker &W = m_Workers[i];
+		delete W.DP;
+		delete W.GA;
+		ObjMgr::FreeObjMgr(W.OM);
+		}
+	m_Workers.clear();
+	m_N = 0;
+	m_Ready = false;
+	}
+
+bool ChimeraPool::Scan(SeqInfo *Query, SeqDB *DB)
+	{
+	asserta(m_Ready);
+	const unsigned SeqCount = DB->GetSeqCount();
+	{
+	std::lock_guard<std::mutex> Lk(m_Mutex);
+	for (unsigned i = 0; i < m_N; ++i)
+		{
+		Worker &W = m_Workers[i];
+		W.Start = SeqCount*i/m_N;
+		W.End = SeqCount*(i+1)/m_N;
+		W.Part.Init();
+		}
+	m_Query = Query;
+	m_DB = DB;
+	m_SelfFlag = oget_flag(OPT_self);
+	++m_JobSeq;
+	m_DoneCount = 0;
+	}
+	m_CV_Work.notify_all();
+	{
+	std::unique_lock<std::mutex> Lk(m_Mutex);
+	m_CV_Done.wait(Lk, [this]{ return m_DoneCount == m_N; });
+	}
+	return true;
+	}
+
+void ChimeraPool::WorkerLoop(unsigned ThreadIndex)
+	{
+	while (true)
+		{
+		{
+		std::unique_lock<std::mutex> Lk(m_Mutex);
+		m_CV_Work.wait(Lk,
+		  [this, ThreadIndex]{ return m_Exit || m_Workers[ThreadIndex].LastJobSeq != m_JobSeq; });
+		if (m_Exit)
+			return;
+		m_Workers[ThreadIndex].LastJobSeq = m_JobSeq;
+		}
+		WorkerScan(ThreadIndex);
+		{
+		std::lock_guard<std::mutex> Lk(m_Mutex);
+		++m_DoneCount;
+		}
+		m_CV_Done.notify_all();
+		}
+	}
+
+// One worker's chunk of the ParseLo target scan. Mirrors the serial loop
+// body statement-for-statement; only the accumulated state (Part) and the
+// per-thread ObjMgr/GlobalAligner/DeParser differ.
+void ChimeraPool::WorkerScan(unsigned ThreadIndex)
+	{
+	Worker &W = m_Workers[ThreadIndex];
+	DepScanPart &P = W.Part;
+	GlobalAligner *GA = W.GA;
+	DeParser *DP = W.DP;
+	SeqDB *DB = m_DB;
+	const bool SelfFlag = m_SelfFlag;
+	GA->SetQuery(m_Query);
+	for (unsigned SeqIndex = W.Start; SeqIndex < W.End; ++SeqIndex)
+		{
+		SeqInfo *SI = W.OM->GetSeqInfo();
+		DB->GetSI(SeqIndex, *SI);
+		GA->SetTarget(SI);
+		AlignResult *AR = GA->Align();
+		GA->OnTargetDone(SI);
+		asserta(AR != 0);
+		if (SelfFlag && AR->GetDiffCount() == 0)
+			{
+			P.Paths.push_back("");
+			AR->Down();
+			SI->Down();
+			}
+		else
+			{
+			string Path = string(AR->GetPath());
+			P.Paths.push_back(Path);
+			unsigned Diffs;
+			unsigned Pos_Left0d;
+			unsigned Pos_Left1d;
+			unsigned Pos_Right0d;
+			unsigned Pos_Right1d;
+			DP->GetLeftRight(AR, Diffs, Pos_Left0d, Pos_Left1d, Pos_Right0d, Pos_Right1d);
+			if (Diffs != UINT_MAX)
+				{
+				if (Diffs < P.DiffsQT)
+					{
+					P.Top = SeqIndex;
+					P.DiffsQT = Diffs;
+					}
+				}
+			if (Pos_Left0d != UINT_MAX && Pos_Left0d > P.Pos_BestLeft0d)
+				{
+				P.Pos_BestLeft0d = Pos_Left0d;
+				P.BestLeft0d = SeqIndex;
+				}
+			if (Pos_Right0d != UINT_MAX && Pos_Right0d < P.Pos_BestRight0d)
+				{
+				P.Pos_BestRight0d = Pos_Right0d;
+				P.BestRight0d = SeqIndex;
+				}
+			if (Pos_Left1d != UINT_MAX && Pos_Left1d > P.Pos_BestLeft1d)
+				{
+				P.Pos_BestLeft1d = Pos_Left1d;
+				P.BestLeft1d = SeqIndex;
+				}
+			if (Pos_Right1d != UINT_MAX && Pos_Right1d < P.Pos_BestRight1d)
+				{
+				P.Pos_BestRight1d = Pos_Right1d;
+				P.BestRight1d = SeqIndex;
+				}
+			}
+		AR->Down();
+		SI->Down();
+		if (P.DiffsQT == 0)
+			{
+			P.ExactFound = true;
+			break;
+			}
+		}
+	GA->OnQueryDone(m_Query);
 	}

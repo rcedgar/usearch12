@@ -6,9 +6,91 @@ class SeqDB;
 class AlignResult;
 class ObjMgr;
 class GlobalAligner;
+class AlnParams;
+class AlnHeuristics;
+class DeParser;
 
 #include "seqdb.h"
 #include "chimehit.h"
+#include <mutex>
+#include <condition_variable>
+
+// Partial results of one chunk of the DeParser::ParseLo target scan.
+// Fields accumulate with the same first-wins tie-breaking as the serial
+// scan, so merging chunks in index order reproduces the serial state
+// exactly.
+struct DepScanPart
+	{
+	unsigned DiffsQT;
+	unsigned Top;
+	unsigned Pos_BestLeft0d;
+	unsigned BestLeft0d;
+	unsigned Pos_BestRight0d;
+	unsigned BestRight0d;
+	unsigned Pos_BestLeft1d;
+	unsigned BestLeft1d;
+	unsigned Pos_BestRight1d;
+	unsigned BestRight1d;
+	bool ExactFound;
+	vector<string> Paths;
+
+	void Init();
+	};
+
+// Pool of persistent worker threads used to parallelize the per-query
+// target scan in the de novo chimera stage (Uchime2DeNovo). Each worker
+// has its own ObjMgr/GlobalAligner/DeParser, so no state is shared
+// between workers. Results are byte-identical to the serial scan.
+class ChimeraPool
+	{
+public:
+	ChimeraPool();
+	~ChimeraPool();
+
+	unsigned m_N;
+	bool m_Ready;
+
+	void Init(const AlnParams *AP, const AlnHeuristics *AH);
+	void Free();
+
+	// Parallel scan of DB for Query; fills worker parts.
+	bool Scan(SeqInfo *Query, SeqDB *DB);
+
+	const DepScanPart &GetPart(unsigned i) const
+		{
+		return m_Workers[i].Part;
+		}
+
+private:
+	struct Worker
+		{
+		ObjMgr *OM;
+		GlobalAligner *GA;
+		DeParser *DP;
+		DepScanPart Part;
+		unsigned Start;
+		unsigned End;
+		unsigned LastJobSeq;
+		};
+
+	std::vector<Worker> m_Workers;
+	std::vector<std::thread *> m_Threads;
+
+	std::mutex m_Mutex;
+	std::condition_variable m_CV_Work;
+	std::condition_variable m_CV_Done;
+	bool m_Exit;
+	unsigned m_JobSeq;
+	unsigned m_DoneCount;
+
+	// Job state, set by Scan() before workers are woken
+	SeqInfo *m_Query;
+	SeqDB *m_DB;
+	bool m_SelfFlag;
+
+	void WorkerLoop(unsigned ThreadIndex);
+	void WorkerScan(unsigned ThreadIndex);
+	};
 
 enum TLR
 	{
@@ -39,6 +121,7 @@ public:
 	SeqInfo *m_Query;
 	GlobalAligner *m_GA;
 	SeqDB *m_DB;
+	ChimeraPool *m_CP;
 
 	DEP_CLASS m_Class;
 
@@ -85,6 +168,7 @@ public:
 		m_Query = 0;
 		m_DB = 0;
 		m_GA = 0;
+		m_CP = 0;
 		m_OM = OM;
 		ClearHit();
 		}
@@ -93,6 +177,11 @@ public:
 	void ClearHit();
 	DEP_CLASS Parse(SeqInfo *Query, SeqDB *DB);
 	void ParseLo();
+	// Target-scan pieces of ParseLo; the parallel path fills the same
+	// m_* state as the serial path
+	void ScanTargetsSerial(unsigned SeqCount);
+	void ScanTargetsParallel(ChimeraPool *CP, unsigned SeqCount);
+	void FinishScan();
 	void Classify();
 	bool IsChimera() const;
 	void WriteTabbed(FILE *f) const;
