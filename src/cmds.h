@@ -5,6 +5,7 @@
 A(version)
 
 A(cluster_fast)
+A(cluster_circ)
 A(cluster_otus)
 A(cluster_smallmem)
 A(cluster_mt)

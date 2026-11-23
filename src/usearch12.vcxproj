@@ -248,7 +248,9 @@
     <ClCompile Include="chimehit.cpp" />
     <ClCompile Include="chunksearcher.cpp" />
     <ClCompile Include="closedrefsink.cpp" />
+    <ClCompile Include="aligncirc.cpp" />
     <ClCompile Include="clusterfast.cpp" />
+    <ClCompile Include="clustercirc.cpp" />
     <ClCompile Include="clustermt.cpp" />
     <ClCompile Include="clustersink.cpp" />
     <ClCompile Include="clustersmallmem.cpp" />
